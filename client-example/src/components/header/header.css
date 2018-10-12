@@ -1,0 +1,38 @@
+h1 {
+  margin-top: 0;
+  font-size: 3.998em; }
+
+h1, h2 {
+  font-size: 2.827em; }
+
+h3 {
+  font-size: 1.999em; }
+
+h4 {
+  font-size: 1.414em; }
+
+.topbar {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  padding: 0 24px;
+  height: 60px;
+  background: #F6E27F; }
+  .topbar .button {
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+    text-align: right; }
+    .topbar .button:hover {
+      color: black; }
+  .topbar nav {
+    flex: 1 auto; }
+    .topbar nav ul {
+      display: flex; }
+    .topbar nav a {
+      margin-right: 24px;
+      color: rgba(0, 0, 0, 0.5);
+      font-weight: 500; }
+      .topbar nav a:hover {
+        color: black; }
+    .topbar nav a.active {
+      color: black; }
