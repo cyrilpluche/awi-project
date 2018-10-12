@@ -21,7 +21,6 @@ class Header extends Component {
                 <nav>
                     <ul>
                         <li><NavLink exact activeClassName="active" to="/">Home</NavLink></li>
-                        <li><NavLink exact activeClassName="active" to="/dashboard">Dashboard</NavLink></li>
                         {authenticated ? <li><NavLink activeClassName="active" to="/posts">Posts</NavLink></li> : ''}
                     </ul>
                 </nav>

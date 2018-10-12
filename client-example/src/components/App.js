@@ -6,7 +6,6 @@ import Home from './home/home';
 import Header from './header/header';
 import Posts from './posts/posts';
 import Post from './posts/post/post';
-import Dashboard from "./dashboard/Dashboard";
 class App extends Component {
     render() {
         return (
@@ -32,13 +31,6 @@ class App extends Component {
              path="/posts/:id"
              render={props => (
                  <LazyRoute {...props} component={Post} />
-             )}
-         />
-         <Route
-             exact
-             path="/dashboard"
-             render={props => (
-                 <LazyRoute {...props} component={Dashboard} />
              )}
          />
          <footer>
