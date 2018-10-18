@@ -11,3 +11,11 @@ DB_PORT=yourDbPort
 SERVER_URL=http://localhost
 SERVER_PORT=3000
 CLIENT_PORT=8080
+
+3. Generate sequelize models, run these commands :
+
+npm install -g pg-generator (Only on the first time)
+pgen template sequelize -t sequelize-template
+pgen exec sequelize-template -d db_name -u user -p password -t model
+
+Don't forget to delete old "models" path and rename the new one "model" to "models"

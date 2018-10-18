@@ -1,0 +1,174 @@
+
+
+Action
+------
+has many          actiononcard                             as OncardAction0Fks 
+has many          actiononlist                             as OnlistAction0Fks 
+has many          actiononproject                          as OnprojectAction0Fks 
+has many          actiononteam                             as OnteamAction0Fks 
+belongs to        member                                   as Member 
+belongs to many   card                                     as ActiononcardCards 
+belongs to many   list                                     as ActiononlistLists 
+belongs to many   project                                  as ActiononprojectProjects 
+belongs to many   team                                     as ActiononteamTeams 
+
+
+Actiononcard
+------------
+belongs to        action                                   as Action 
+belongs to        card                                     as Card 
+
+
+Actiononlist
+------------
+belongs to        action                                   as Action 
+belongs to        list                                     as List 
+
+
+Actiononproject
+---------------
+belongs to        action                                   as Action 
+belongs to        project                                  as Project 
+
+
+Actiononteam
+------------
+belongs to        action                                   as Action 
+belongs to        team                                     as Team 
+
+
+Attachment
+----------
+belongs to        card                                     as Card 
+
+
+Card
+----
+has many          actiononcard                             as ActiononcardCard1Fks 
+has many          attachment                               as AttachmentCard0Fks 
+has many          card                                     as Card1Fks 
+has many          cardhaslabel                             as HaslabelCard0Fks 
+has many          task                                     as TaskCard0Fks 
+belongs to        card                                     as RelatedCardIdIsthefather 
+belongs to        list                                     as List 
+belongs to many   action                                   as ActiononcardActions 
+belongs to many   list                                     as CardLists 
+belongs to many   label                                    as CardhaslabelLabels 
+
+
+Cardhaslabel
+------------
+belongs to        card                                     as Card 
+belongs to        label                                    as Label 
+
+
+Label
+-----
+has many          cardhaslabel                             as CardhaslabelLabel1Fks 
+belongs to many   card                                     as CardhaslabelCards 
+
+
+List
+----
+has many          actiononlist                             as ActiononlistList1Fks 
+has many          card                                     as CardList0Fks 
+has many          list                                     as List1Fks 
+belongs to        list                                     as RelatedListIdIsthefather 
+belongs to        project                                  as Project 
+belongs to many   action                                   as ActiononlistActions 
+belongs to many   card                                     as CardCardIdIsthefathers 
+belongs to many   project                                  as ListProjects 
+
+
+Member
+------
+has many          action                                   as ActionMember0Fks 
+has many          memberhaspermissionproject               as HaspermissionprojectMember2Fks 
+has many          memberhaspermissionteam                  as HaspermissionteamMember2Fks 
+has many          memberhasproject                         as HasprojectMember1Fks 
+has many          teamhasmember                            as TeamhasmemberMember1Fks 
+belongs to many   permission                               as MemberhaspermissionprojectPermissions 
+belongs to many   project                                  as MemberhaspermissionprojectProjects 
+belongs to many   permission                               as MemberhaspermissionteamPermissions 
+belongs to many   team                                     as MemberhaspermissionteamTeams 
+belongs to many   project                                  as MemberhasprojectProjects 
+belongs to many   team                                     as TeamhasmemberTeams 
+
+
+Memberhaspermissionproject
+--------------------------
+belongs to        member                                   as Member 
+belongs to        permission                               as Permission 
+belongs to        project                                  as Project 
+
+
+Memberhaspermissionteam
+-----------------------
+belongs to        member                                   as Member 
+belongs to        permission                               as Permission 
+belongs to        team                                     as Team 
+
+
+Memberhasproject
+----------------
+belongs to        member                                   as Member 
+belongs to        project                                  as Project 
+
+
+Permission
+----------
+has many          memberhaspermissionproject               as MemberhaspermissionprojectPermission0Fks 
+has many          memberhaspermissionteam                  as MemberhaspermissionteamPermission1Fks 
+belongs to many   member                                   as MemberhaspermissionprojectMembers 
+belongs to many   project                                  as MemberhaspermissionprojectProjects 
+belongs to many   member                                   as MemberhaspermissionteamMembers 
+belongs to many   team                                     as MemberhaspermissionteamTeams 
+
+
+Project
+-------
+has many          actiononproject                          as ActiononprojectProject1Fks 
+has many          list                                     as ListProject0Fks 
+has many          memberhaspermissionproject               as MemberhaspermissionprojectProject1Fks 
+has many          memberhasproject                         as MemberhasprojectProject0Fks 
+has many          teamhasproject                           as TeamhasprojectProject0Fks 
+belongs to many   action                                   as ActiononprojectActions 
+belongs to many   list                                     as ListListIdIsthefathers 
+belongs to many   member                                   as MemberhaspermissionprojectMembers 
+belongs to many   permission                               as MemberhaspermissionprojectPermissions 
+belongs to many   member                                   as MemberhasprojectMembers 
+belongs to many   team                                     as TeamhasprojectTeams 
+
+
+SequelizeMetum
+--------------
+
+
+Task
+----
+belongs to        card                                     as Card 
+
+
+Team
+----
+has many          actiononteam                             as ActiononteamTeam1Fks 
+has many          memberhaspermissionteam                  as MemberhaspermissionteamTeam0Fks 
+has many          teamhasmember                            as HasmemberTeam0Fks 
+has many          teamhasproject                           as HasprojectTeam1Fks 
+belongs to many   action                                   as ActiononteamActions 
+belongs to many   member                                   as MemberhaspermissionteamMembers 
+belongs to many   permission                               as MemberhaspermissionteamPermissions 
+belongs to many   member                                   as TeamhasmemberMembers 
+belongs to many   project                                  as TeamhasprojectProjects 
+
+
+Teamhasmember
+-------------
+belongs to        member                                   as Member 
+belongs to        team                                     as Team 
+
+
+Teamhasproject
+--------------
+belongs to        project                                  as Project 
+belongs to        team                                     as Team 
