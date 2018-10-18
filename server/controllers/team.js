@@ -1,7 +1,6 @@
 require('dotenv').load();
 var Sequelize = require('sequelize');
-//var sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, { dialect: 'postgres', logging: false });
-const sequelize = new Sequelize('prello', 'postgres', 'postgres', {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: 'localhost',
     dialect: 'postgres',
     operatorsAliases: false
@@ -18,6 +17,7 @@ module.exports = {
     },
 
     findAll(req, res) {
+        console.log(process.env.DB_HOSTNAME)
         return Team
             .findAll()
             .then(teams => res.status(201).send(teams))
