@@ -15,19 +15,39 @@ module.exports = {
      *  req.body = {
      *      teamName = name
      *  }
+     *
+     *  return: Array with the Team object (size = 1).
      */
     create(req, res) {
         return Team
             .create(req.body)
-            .then(team => res.status(201).send(team))
+            .then(team => res.status(201).send([team]))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/team/find_all */
+    /*  localhost:4200/api/team/find_all
+     *
+     *  return: Array of team objects.
+     */
     findAll(req, res) {
         return Team
             .findAll({ order : sequelize.col('teamId')})
             .then(teams => res.status(201).send(teams))
+            .catch(error => res.status(400).send(error));
+    },
+
+    /*  localhost:4200/api/team/find_one/2
+     *
+     *  return: Array with the team object (size = 1).
+     */
+    findOne(req, res) {
+        return Team
+            .findOne({
+                where: {
+                    teamId : req.params.id
+                }
+            })
+            .then(teams => res.status(201).send([teams]))
             .catch(error => res.status(400).send(error));
     },
 
@@ -36,9 +56,12 @@ module.exports = {
      *  req.body = {
      *      teamName = name
      *  }
+     *
+     *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
+     *
+     *  Warning: If the id don't match, status 201 is returned with boolean = 0.
      */
     update(req, res) {
-        console.log(req.params.id)
         return Team
             .update(req.body, {
                 where: { teamId: req.params.id }
@@ -46,6 +69,23 @@ module.exports = {
             .then(isUpdated => {
                 res.status(201).send(isUpdated)
             })
+            .catch(error => res.status(400).send(error));
+    },
+
+    /*  localhost:4200/api/delete/5
+     *
+     *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
+     *
+     *  Warning: If the id don't match, status 201 is returned with boolean = 0.
+     */
+    delete(req, res) {
+        return Team
+            .destroy({
+                where: {
+                    teamId: req.params.id
+                }
+            })
+            .then(team => res.status(201).send([team]))
             .catch(error => res.status(400).send(error));
     }
 }
