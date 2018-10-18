@@ -10,6 +10,8 @@ var Team = require('../models/index.js').init(sequelize).Team;
 
 module.exports = {
 
+    /* =================
+
     /*  localhost:4200/api/team/create
      *
      *  req.body = {
@@ -18,7 +20,7 @@ module.exports = {
      *
      *  return: Array with the Team object (size = 1).
      */
-    create(req, res) {
+    create(req, res, next) {
         return Team
             .create(req.body)
             .then(team => res.status(201).send([team]))
@@ -29,7 +31,7 @@ module.exports = {
      *
      *  return: Array of team objects.
      */
-    findAll(req, res) {
+    findAll(req, res, next) {
         return Team
             .findAll({ order : sequelize.col('teamId')})
             .then(teams => res.status(201).send(teams))
@@ -40,7 +42,7 @@ module.exports = {
      *
      *  return: Array with the team object (size = 1).
      */
-    findOne(req, res) {
+    findOne(req, res, next) {
         return Team
             .findOne({
                 where: {
@@ -61,7 +63,7 @@ module.exports = {
      *
      *  Warning: If the id don't match, status 201 is returned with boolean = 0.
      */
-    update(req, res) {
+    update(req, res, next) {
         return Team
             .update(req.body, {
                 where: { teamId: req.params.id }
@@ -78,7 +80,7 @@ module.exports = {
      *
      *  Warning: If the id don't match, status 201 is returned with boolean = 0.
      */
-    delete(req, res) {
+    delete(req, res, next) {
         return Team
             .destroy({
                 where: {

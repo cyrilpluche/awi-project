@@ -1,5 +1,5 @@
-const team = require('./team');
+const Team = require('./Team');
 
 module.exports = {
-    team
+    Team
 };
