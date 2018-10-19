@@ -1,12 +1,14 @@
-require('dotenv').load();
-var Sequelize = require('sequelize');
+/*var Sequelize = require('sequelize');
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     operatorsAliases: false
 })
 
-var Team = require('../models/index.js').init(sequelize).Team;
+var Team = require('../models/index.js').init(sequelize).Team;*/
+
+var Team = require('../config/db_connection').Team;
+var sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
@@ -74,7 +76,7 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/delete/5
+    /*  localhost:4200/api/member/delete/5
      *
      *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
      *

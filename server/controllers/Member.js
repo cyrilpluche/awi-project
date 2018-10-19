@@ -1,12 +1,5 @@
-require('dotenv').load();
-var Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOSTNAME,
-    dialect: 'postgres',
-    operatorsAliases: false
-})
-
-var Member = require('../models/index.js').init(sequelize).Member;
+var Member = require('../config/db_connection').Member;
+var sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
@@ -28,42 +21,50 @@ module.exports = {
      *  return: Array with the Member object (size = 1).
      */
     create(req, res, next) {
+        console.log(sequelize)
         return Member
             .create(req.body)
             .then(member => res.status(201).send([member]))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/team/find_all
+    /*  localhost:4200/api/member/find_all
      *
-     *  return: Array of team objects.
+     *  return: Array of member objects.
      */
     findAll(req, res, next) {
-        return Team
-            .findAll({ order : sequelize.col('teamId')})
-            .then(teams => res.status(201).send(teams))
+        return Member
+            .findAll({ order : sequelize.col('memberId')})
+            .then(members => res.status(201).send(members))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/team/find_one/2
+    /*  localhost:4200/api/member/find_one/2
      *
-     *  return: Array with the team object (size = 1).
+     *  return: Array with the member object (size = 1).
      */
     findOne(req, res, next) {
-        return Team
+        return Member
             .findOne({
                 where: {
-                    teamId : req.params.id
+                    memberId : req.params.id
                 }
             })
-            .then(teams => res.status(201).send([teams]))
+            .then(members => res.status(201).send([members]))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/team/update/2
+    /*  localhost:4200/api/member/update/2
      *
      *  req.body = {
-     *      teamName = name
+     *      memberFirstname = firstname, (optional)
+     *      memberLastname = lastname, (optional)
+     *      memberPseudo = pseudo, (optional)
+     *      memberEmail = email, (optional)
+     *      memberPassword = password, (optional)
+     *      memberPicture = url, (optional)
+     *      memberStatus = status, (optional)
+     *      memberOauthGithub = url (optional)
      *  }
      *
      *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
@@ -71,9 +72,9 @@ module.exports = {
      *  Warning: If the id don't match, status 201 is returned with boolean = 0.
      */
     update(req, res, next) {
-        return Team
+        return Member
             .update(req.body, {
-                where: { teamId: req.params.id }
+                where: { memberId: req.params.id }
             })
             .then(isUpdated => {
                 res.status(201).send(isUpdated)
@@ -81,20 +82,20 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/delete/5
+    /*  localhost:4200/api/member/delete/5
      *
      *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
      *
      *  Warning: If the id don't match, status 201 is returned with boolean = 0.
      */
     delete(req, res, next) {
-        return Team
+        return Member
             .destroy({
                 where: {
-                    teamId: req.params.id
+                    memberId: req.params.id
                 }
             })
-            .then(team => res.status(201).send([team]))
+            .then(member => res.status(201).send([member]))
             .catch(error => res.status(400).send(error));
     }
 }

@@ -16,7 +16,7 @@
     "pg-generator": "^4.8.0",
     "pg-hstore": "^2.3.2",
     "pug": "2.0.0-beta11",
-    "sequelize": "^4.39.1",
+    "sequelize": "^4.40.0",
     "sequelize-cli": "^5.1.0"
   }
 }
