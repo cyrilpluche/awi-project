@@ -35,7 +35,7 @@ CREATE TABLE public.Member(
 	member_pseudo         VARCHAR (250) NOT NULL ,
 	member_email          VARCHAR (50)  ,
 	member_password       VARCHAR (50)  ,
-	member_picture        VARCHAR (250) NOT NULL ,
+	member_picture        VARCHAR (250) ,
 	member_status         INT  NOT NULL ,
 	member_oauth_github   VARCHAR (250)   ,
 	CONSTRAINT Member_PK PRIMARY KEY (member_id)

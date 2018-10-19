@@ -21,7 +21,6 @@ module.exports = {
      *  return: Array with the Member object (size = 1).
      */
     create(req, res, next) {
-        console.log(sequelize)
         return Member
             .create(req.body)
             .then(member => res.status(201).send([member]))
