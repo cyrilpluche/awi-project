@@ -22,11 +22,15 @@ module.exports = {
      *  return: Token generated with member informations. Stored in req.body.memberToken.
      */
     generateToken(req, res, next) {
-        var payload = req.body
+        var payload = Object.assign({}, req.body)
         payload.memberPassword = null
+        console.log('Body : ', req.body)
+        console.log('Pay : ', payload)
         req.body.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 // expires in 24 hours
         });
+        console.log('Final : ', req.body)
+
         next()
     },
 
