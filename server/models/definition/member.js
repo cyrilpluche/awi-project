@@ -34,10 +34,15 @@ module.exports = (sequelize, DataTypes) => {
             field: 'member_password',
             allowNull: true
         },
+        memberToken: {
+            type: DataTypes.STRING(500),
+            field: 'member_token',
+            allowNull: false
+        },
         memberPicture: {
             type: DataTypes.STRING(250),
             field: 'member_picture',
-            allowNull: false
+            allowNull: true
         },
         memberStatus: {
             type: DataTypes.INTEGER,

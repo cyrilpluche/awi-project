@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---        Script Postgre 
+--        Delete table if exists
 ------------------------------------------------------------
 
 DROP TABLE IF EXISTS public.Member CASCADE;
@@ -24,6 +24,11 @@ DROP TABLE IF EXISTS public.ActionOnCard CASCADE;
 DROP TABLE IF EXISTS public.ActionOnList CASCADE;
 DROP TABLE IF EXISTS public.CardHasLabel CASCADE;
 
+------------------------------------------------------------
+--        Script Postgre
+------------------------------------------------------------
+
+
 
 ------------------------------------------------------------
 -- Table: Member
@@ -35,7 +40,8 @@ CREATE TABLE public.Member(
 	member_pseudo         VARCHAR (250) NOT NULL ,
 	member_email          VARCHAR (50)  ,
 	member_password       VARCHAR (50)  ,
-	member_picture        VARCHAR (250) ,
+	member_token          VARCHAR (500) NOT NULL ,
+	member_picture        VARCHAR (250)  ,
 	member_status         INT  NOT NULL ,
 	member_oauth_github   VARCHAR (250)   ,
 	CONSTRAINT Member_PK PRIMARY KEY (member_id)
@@ -220,12 +226,12 @@ CREATE TABLE public.Attachment(
 ------------------------------------------------------------
 -- Table: task
 ------------------------------------------------------------
-CREATE TABLE public.Task(
+CREATE TABLE public.task(
 	task_id      SERIAL NOT NULL ,
 	task_title   VARCHAR (250) NOT NULL ,
 	cht_state    BOOL  NOT NULL ,
 	card_id      INT  NOT NULL  ,
-	CONSTRAINT Task_PK PRIMARY KEY (task_id)
+	CONSTRAINT task_PK PRIMARY KEY (task_id)
 )WITHOUT OIDS;
 
 

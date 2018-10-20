@@ -21,11 +21,12 @@ module.exports = {
      *  return: Array with the Member object (size = 1).
      */
     create(req, res, next) {
+        console.log(req.body)
         return Member
             .create(req.body)
             .then(member => {
                 member.memberPassword = null
-                res.status(201).send([member])
+                res.status(201).send({token: req.body.memberToken})
             })
             .catch(error => res.status(400).send(error));
     },
@@ -46,14 +47,37 @@ module.exports = {
      *  return: Array with the member object (size = 1).
      */
     findOne(req, res, next) {
-        return Member
-            .findOne({
-                where: {
-                    memberId : req.params.id
-                }
-            })
-            .then(members => res.status(201).send([members]))
-            .catch(error => res.status(400).send(error));
+        var memberId = req.params.id
+        if (memberId) {
+            // We are searching for a member with the given Id
+            return Member
+                .findOne({
+                    where: {
+                        memberId : req.params.id
+                    }
+                })
+                .then(members => res.status(201).send([members]))
+                .catch(error => res.status(400).send(error));
+        } else {
+            // We are searching a member for a connexion
+            return Member
+                .findOne({
+                    where: {
+                        memberEmail: req.body.memberEmail
+                    }
+                })
+                .then(member => {
+                    console.log(member.dataValues)
+                    console.log(req.body.memberPassword)
+
+                    if (member.memberPassword === req.body.memberPassword) {
+                        req.body = member
+                        next()
+                    } else res.status(400).send('Failed to log the member (1).')
+                })
+                .catch(error => res.status(400).send('Failed to log the member (0).'));
+        }
+
     },
 
     /*  localhost:4200/api/member/update/2
@@ -99,5 +123,20 @@ module.exports = {
             })
             .then(member => res.status(201).send([member]))
             .catch(error => res.status(400).send(error));
+    },
+
+    /* ================= METHODS ================= */
+
+    /*  localhost:4200/api/member/sign_in
+     *
+     *  req.body = {
+     *      memberPseudo = pseudo || memberEmail = email,
+     *      memberPassword = password
+     *  }
+     *
+     *  return: A new token if the user matched, else an error.
+     */
+    signIn(req, res, next) {
+        return res.status(201).send({token: req.body.memberToken})
     }
 }

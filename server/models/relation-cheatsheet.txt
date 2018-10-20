@@ -140,10 +140,6 @@ belongs to many   member                                   as MemberhasprojectMe
 belongs to many   team                                     as TeamhasprojectTeams 
 
 
-SequelizeMetum
---------------
-
-
 Task
 ----
 belongs to        card                                     as Card 
