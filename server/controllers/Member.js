@@ -3,7 +3,7 @@ var sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
-    /* =================
+    /* ================= CRUD ================= */
 
     /*  localhost:4200/api/member/create
      *
@@ -23,7 +23,10 @@ module.exports = {
     create(req, res, next) {
         return Member
             .create(req.body)
-            .then(member => res.status(201).send([member]))
+            .then(member => {
+                member.memberPassword = null
+                res.status(201).send([member])
+            })
             .catch(error => res.status(400).send(error));
     },
 

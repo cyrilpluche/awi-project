@@ -12,7 +12,7 @@ var sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
-    /* =================
+    /* ================= CRUD ================= */
 
     /*  localhost:4200/api/team/create
      *

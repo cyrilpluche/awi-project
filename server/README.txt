@@ -11,6 +11,7 @@ DB_PORT=yourDbPort
 SERVER_URL=http://localhost
 SERVER_PORT=3000
 CLIENT_PORT=8080
+JWT_SECRET=yourSecret
 
 3. Generate sequelize models, run these commands :
 
