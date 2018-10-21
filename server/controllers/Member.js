@@ -1,5 +1,6 @@
 var Member = require('../config/db_connection').Member;
 var sequelize = require('../config/db_connection').sequelize;
+var mw = require('../middlewares')
 
 module.exports = {
 
@@ -25,6 +26,7 @@ module.exports = {
             .create(req.body)
             .then(member => {
                 member.memberPassword = null
+                mw.Email.sendEmail(member, req.body.memberToken)
                 res.status(201).send({token: req.body.memberToken})
             })
             .catch(error => res.status(400).send(error));

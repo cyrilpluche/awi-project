@@ -22,18 +22,19 @@ module.exports = {
      *  return: Token generated with member informations. Stored in req.body.memberToken.
      */
     generateToken(req, res, next) {
+        // We copy the object because we don't want to encrypt the token with the user's password.
         var payload = Object.assign({}, req.body)
         payload.memberPassword = null
-        console.log('Body : ', req.body)
-        console.log('Pay : ', payload)
         req.body.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 // expires in 24 hours
         });
-        console.log('Final : ', req.body)
-
         next()
     },
 
+    /*  before all routes
+     *
+     *  return: If the token is valid, continue to next action, else send an error.
+     */
     verifyToken(req, res, next) {
         var token = req.body.memberToken || req.query.memberToken || req.headers['x-access-token'];
         if (token) {

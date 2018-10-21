@@ -12,6 +12,9 @@ SERVER_URL=http://localhost
 SERVER_PORT=3000
 CLIENT_PORT=8080
 JWT_SECRET=yourSecret
+USER_MAIL_ADDRESS=awi.project.option1.g1@gmail.com
+USER_MAIL_PWD=Polytech34
+USER_MAIL_SERVICE=gmail
 
 3. Generate sequelize models, run these commands :
 
