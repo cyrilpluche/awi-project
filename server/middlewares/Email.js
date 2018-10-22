@@ -18,17 +18,19 @@ module.exports = {
 
         var attachments = [
             {
-                filename: 'logo.png',
-                filePath: '../public/images/prello-logo.png',
-                cid: 'unique@kreata.ee' //same cid value as in the html img src
+                filename: 'prello-logo.png',
+                path: 'server/public/images/prello-logo.png',
+                cid: 'maillogo' //same cid value as in the html img src
             }
         ]
 
         var html =
-            `<img style="width: 10%" src="cid:unique@kreata.ee"/><br>` +
+            `<div style="margin: auto; text-align: center;">` +
+            `<img style="width: 20%" src="cid:maillogo"/><br>` +
             `<h3 style="color: blue">Ton compte est crée <b>${member.memberFirstname}</b>.</h3><br><br>` +
-            `<p>Clique sur le lien ci-dessous pour activer ton compte et pouvoir te connecter à Prello.</p><br><br>` +
-            `<h4><a href="${validationLink}">Valider mon compte</a></h4>`
+            `<p>Clique sur le lien ci-dessous pour activer ton compte et pouvoir te connecter à Prello.</p><br>` +
+            `<h4><a href="${validationLink}">Valider mon compte</a></h4>` +
+            `<div>`
 
         var mailOptions = {
             from: process.env.USER_MAIL_ADDRESS,
