@@ -27,6 +27,7 @@ function init(sequelize) {
     model.Memberhasproject = sequelize.import('./definition/memberhasproject.js');
     model.Permission = sequelize.import('./definition/permission.js');
     model.Project = sequelize.import('./definition/project.js');
+    model.SequelizeMetum = sequelize.import('./definition/sequelize-meta.js');
     model.Task = sequelize.import('./definition/task.js');
     model.Team = sequelize.import('./definition/team.js');
     model.Teamhasmember = sequelize.import('./definition/teamhasmember.js');
@@ -49,6 +50,7 @@ function init(sequelize) {
     require('./definition/memberhasproject.js').initRelations();
     require('./definition/permission.js').initRelations();
     require('./definition/project.js').initRelations();
+    require('./definition/sequelize-meta.js').initRelations();
     require('./definition/task.js').initRelations();
     require('./definition/team.js').initRelations();
     require('./definition/teamhasmember.js').initRelations();

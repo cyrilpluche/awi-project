@@ -36,18 +36,24 @@ module.exports = {
      *  return: If the token is valid, continue to next action, else send an error.
      */
     verifyToken(req, res, next) {
-        var token = req.body.memberToken || req.query.memberToken || req.headers['x-access-token'];
-        if (token) {
-            jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-                if (err) {
-                    res.status(400).send('Failed to authenticate token.');
-                } else {
-                    req.decoded = decoded;
-                    next();
-                }
-            })
+        // We can activate or disable token checking for development purposes.
+        if (false) {
+            var token = req.body.memberToken || req.query.memberToken || req.headers['x-access-token'];
+            if (token) {
+                jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+                    if (err) {
+                        res.status(400).send('Failed to authenticate token.');
+                    } else {
+                        req.decoded = decoded;
+                        next();
+                    }
+                })
+            } else {
+                res.status(400).send('No token provided.');
+            }
         } else {
-            res.status(400).send('No token provided.');
+            next()
         }
+
     }
 }

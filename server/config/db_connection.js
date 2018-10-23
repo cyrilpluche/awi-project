@@ -20,5 +20,8 @@ module.exports = {
     sequelize,
     Team: models.Team,
     Member: models.Member,
-    Project: models.Project
+    Project: models.Project,
+    List: models.List,
+    Card: models.Card
+
 };

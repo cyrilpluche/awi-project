@@ -48,13 +48,18 @@ module.exports = (sequelize, DataTypes) => {
         cardIdIsthefather: {
             type: DataTypes.INTEGER,
             field: 'card_id_isthefather',
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'card',
                 key: 'card_id'
             },
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
+        },
+        cardIdIsthechild: {
+            type: DataTypes.INTEGER,
+            field: 'card_id_isthechild',
+            allowNull: true
         }
     }, {
         schema: 'public',

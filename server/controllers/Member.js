@@ -19,10 +19,10 @@ module.exports = {
      *      memberOauthGithub = url (optional)
      *  }
      *
-     *  return: Array with the Member object (size = 1).
+     *  return: A new token specific for the member created.
      */
     create(req, res, next) {
-        return Member
+        Member
             .create(req.body)
             .then(member => {
                 member.memberPassword = null
@@ -37,7 +37,7 @@ module.exports = {
      *  return: Array of member objects.
      */
     findAll(req, res, next) {
-        return Member
+        Member
             .findAll({ order : sequelize.col('memberId')})
             .then(members => res.status(201).send(members))
             .catch(error => res.status(400).send(error));
@@ -45,32 +45,29 @@ module.exports = {
 
     /*  localhost:4200/api/member/find_one/2
      *
-     *  return: Array with the member object (size = 1).
+     *  return: Member object with the given id.
      */
     findOne(req, res, next) {
         var memberId = req.params.id
         if (memberId) {
             // We are searching for a member with the given Id
-            return Member
+            Member
                 .findOne({
                     where: {
                         memberId : req.params.id
                     }
                 })
-                .then(members => res.status(201).send([members]))
+                .then(member => res.status(201).send(member))
                 .catch(error => res.status(400).send(error));
         } else {
             // We are searching a member for a connexion
-            return Member
+            Member
                 .findOne({
                     where: {
                         memberEmail: req.body.memberEmail
                     }
                 })
                 .then(member => {
-                    console.log(member.dataValues)
-                    console.log(req.body.memberPassword)
-
                     if (member.memberPassword === req.body.memberPassword) {
                         req.body = member
                         next()
@@ -94,35 +91,31 @@ module.exports = {
      *      memberOauthGithub = url (optional)
      *  }
      *
-     *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
-     *
-     *  Warning: If the id don't match, status 201 is returned with boolean = 0.
+     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
-        return Member
+        Member
             .update(req.body, {
                 where: { memberId: req.params.id }
             })
             .then(isUpdated => {
-                res.status(201).send(isUpdated)
+                res.status(201).send(isUpdated[0] === 1)
             })
             .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/member/delete/5
      *
-     *  return: Array with a boolean. 1 = Updated, 0 = Not updated (size = 1).
-     *
-     *  Warning: If the id don't match, status 201 is returned with boolean = 0.
+     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
-        return Member
+        Member
             .destroy({
                 where: {
                     memberId: req.params.id
                 }
             })
-            .then(member => res.status(201).send([member]))
+            .then(isDeleted => res.status(201).send(isDeleted === 1))
             .catch(error => res.status(400).send(error));
     },
 

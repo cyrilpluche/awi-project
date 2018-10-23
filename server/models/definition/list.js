@@ -33,13 +33,18 @@ module.exports = (sequelize, DataTypes) => {
         listIdIsthefather: {
             type: DataTypes.INTEGER,
             field: 'list_id_isthefather',
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'list',
                 key: 'list_id'
             },
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
+        },
+        listIdIsthechild: {
+            type: DataTypes.INTEGER,
+            field: 'list_id_isthechild',
+            allowNull: true
         }
     }, {
         schema: 'public',

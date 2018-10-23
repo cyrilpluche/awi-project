@@ -18,8 +18,11 @@ USER_MAIL_SERVICE=gmail
 
 3. Generate sequelize models, run these commands :
 
-npm install -g pg-generator (Only on the first time)
-pgen template sequelize -t sequelize-template
-pgen exec sequelize-template -d db_name -u user -p password -t model
+(Only on the first time)
+    npm install -g pg-generator
+    pgen template sequelize -t sequelize-template
+
+(Every time you change database structure)
+    pgen exec sequelize-template -d db_name -u user -p password -t models
 
 Don't forget to delete old "models" path and rename the new one "model" to "models"

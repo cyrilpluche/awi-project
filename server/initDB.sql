@@ -40,7 +40,7 @@ CREATE TABLE public.Member(
 	member_pseudo         VARCHAR (250) NOT NULL ,
 	member_email          VARCHAR (50)  ,
 	member_password       VARCHAR (50)  ,
-	member_token          VARCHAR (500) NOT NULL ,
+	member_token          VARCHAR (500) ,
 	member_picture        VARCHAR (250)  ,
 	member_status         INT  NOT NULL ,
 	member_oauth_github   VARCHAR (250)   ,
@@ -190,7 +190,8 @@ CREATE TABLE public.List(
 	list_title            VARCHAR (250) NOT NULL ,
 	list_status           INT  NOT NULL ,
 	project_id            INT  NOT NULL ,
-	list_id_isTheFather   INT  NOT NULL  ,
+	list_id_isTheFather   INT  ,
+	list_id_isTheChild   INT  ,
 	CONSTRAINT List_PK PRIMARY KEY (list_id)
 )WITHOUT OIDS;
 
@@ -206,7 +207,8 @@ CREATE TABLE public.Card(
 	card_date_target      DATE   ,
 	card_date_end         DATE   ,
 	list_id               INT  NOT NULL ,
-	card_id_isTheFather   INT  NOT NULL  ,
+	card_id_isTheFather   INT ,
+	card_id_isTheChild   INT ,
 	CONSTRAINT Card_PK PRIMARY KEY (card_id)
 )WITHOUT OIDS;
 
@@ -355,7 +357,7 @@ ALTER TABLE public.ActionOnTeam
 ALTER TABLE public.List
 	ADD CONSTRAINT List_Project0_FK
 	FOREIGN KEY (project_id)
-	REFERENCES public.Project(project_id);
+	REFERENCES public.Project(project_id) ON DELETE CASCADE;
 
 ALTER TABLE public.List
 	ADD CONSTRAINT List_List1_FK
@@ -365,7 +367,7 @@ ALTER TABLE public.List
 ALTER TABLE public.Card
 	ADD CONSTRAINT Card_List0_FK
 	FOREIGN KEY (list_id)
-	REFERENCES public.List(list_id);
+	REFERENCES public.List(list_id) ON DELETE CASCADE;
 
 ALTER TABLE public.Card
 	ADD CONSTRAINT Card_Card1_FK
@@ -375,12 +377,12 @@ ALTER TABLE public.Card
 ALTER TABLE public.Attachment
 	ADD CONSTRAINT Attachment_Card0_FK
 	FOREIGN KEY (card_id)
-	REFERENCES public.Card(card_id);
+	REFERENCES public.Card(card_id) ON DELETE CASCADE;
 
 ALTER TABLE public.task
 	ADD CONSTRAINT task_Card0_FK
 	FOREIGN KEY (card_id)
-	REFERENCES public.Card(card_id);
+	REFERENCES public.Card(card_id) ON DELETE CASCADE;
 
 ALTER TABLE public.ActionOnCard
 	ADD CONSTRAINT ActionOnCard_Action0_FK

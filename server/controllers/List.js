@@ -1,69 +1,71 @@
-var Project = require('../config/db_connection').Project;
+var List = require('../config/db_connection').List;
 var sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
     /* =================
 
-    /*  localhost:4200/api/project/create
+    /*  localhost:4200/api/list/create
      *
      *  req.body = {
-     *      projectTitle = project title,
-     *      projectVisibility = 1,
-     *      projectStatus = 2,
-     *      projectDateTarget = 01/01/2018 (optional)
+     *      listTitle: String,
+     *      listStatus: Int,
+     *      projectId: Int,
+     *      listIdIsTheFather: Int, (optional),
+     *      listIdIsTheChild: Int, (optional)
      *  }
      *
-     *  return: The Project object.
+     *  return: New List object.
      */
     create(req, res, next) {
-        Project
+        List
             .create(req.body)
-            .then(project => res.status(201).send(project))
+            .then(list => res.status(201).send(list))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/project/find_all
+    /*  localhost:4200/api/list/find_all
      *
-     *  return: Array of Project objects.
+     *  return: Array of List objects.
      */
     findAll(req, res, next) {
-        Project
-            .findAll({ order : sequelize.col('projectId')})
-            .then(projects => res.status(201).send(projects))
+        List
+            .findAll({ order : sequelize.col('listId')})
+            .then(lists => res.status(201).send(lists))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/project/find_one/2
+    /*  localhost:4200/api/list/find_one/:id
      *
-     *  return: Project object with the given id.
+     *  return: List object with the given id.
      */
     findOne(req, res, next) {
-        Project
+        List
             .findOne({
                 where: {
-                    projectId : req.params.id
+                    listId : req.params.id
                 }
             })
-            .then(project => res.status(201).send(project))
+            .then(list => res.status(201).send(list))
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/project/update/2
+    /*  localhost:4200/api/list/update/:id
      *
      *  req.body = {
-     *      projectTitle = project title, (optional)
-     *      projectVisibility = 1, (optional)
-     *      projectStatus = 2, (optional)
-     *      projectDateTarget = 01/01/2018 (optional)
+     *      listTitle: String, (optional)
+     *      listStatus: Int, (optional)
+     *      projectId: Int, (optional)
+     *      listIdIsTheFather: Int, (optional),
+     *      listIdIsTheChild: Int, (optional)
      *  }
      *
      *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
-        Project
+        List
             .update(req.body, {
-                where: { projectId: req.params.id }
+                where: { listId: req.params.id }
             })
             .then(isUpdated => {
                 res.status(201).send(isUpdated[0] === 1)
@@ -71,15 +73,15 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/project/delete/5
+    /*  localhost:4200/api/list/delete/:id
      *
      *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
-        Project
+        List
             .destroy({
                 where: {
-                    projectId: req.params.id
+                    listId: req.params.id
                 }
             })
             .then(isDeleted => res.status(201).send(isDeleted === 1))
