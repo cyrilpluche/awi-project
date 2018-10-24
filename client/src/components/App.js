@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Signin from './signin/Signin'
+import Signin from './signin/signin'
 import SignUp from './signup/SignUp'
 import {  BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import NotFound from './layouts/not-found'
