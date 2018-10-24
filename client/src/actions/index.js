@@ -12,3 +12,12 @@ export function signIn(login, password){
         })*/
     }
 }
+
+export function signUp(new_user){
+    return{
+        type: AT_PRELLO.CREATE_USER,
+        payload: {
+            user: new_user
+        }
+    }
+}
