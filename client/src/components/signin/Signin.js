@@ -68,7 +68,7 @@ class SignInForm extends Component{
 
     render () {
 
-        const { handleSubmit,classes } = this.props;
+        const { handleSubmit, classes } = this.props;
         console.log(this.props)
         return (
             <React.Fragment>
