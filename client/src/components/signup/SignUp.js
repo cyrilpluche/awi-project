@@ -49,6 +49,7 @@ class SignUpForm extends React.Component {
             lastName: '',
             email: '',
             password: '',
+            checkPassword: '',
             showPassword: false,
         };
 
@@ -69,8 +70,7 @@ class SignUpForm extends React.Component {
             let newUser = {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
-                email: this.state.email,
-                password: this.state.password
+                email: this.state.email
             };
             this.onAddUser(newUser)
     };
@@ -87,7 +87,6 @@ class SignUpForm extends React.Component {
                     value={this.state.firstName}
                     onChange={this.handleChange('firstName')}
                     required
-                    //helperText="Weight"
                 />
                 <TextField
                     id="signUpLastName"
@@ -97,7 +96,6 @@ class SignUpForm extends React.Component {
                     value={this.state.lastName}
                     onChange={this.handleChange('lastName')}
                     required
-                    //helperText="Weight"
                 />
                 <TextField
                     id="signUpEmail"
@@ -107,7 +105,6 @@ class SignUpForm extends React.Component {
                     value={this.state.email}
                     onChange={this.handleChange('email')}
                     required
-                    //helperText="Weight"
                 />
                 <TextField
                     id="signUpPassword"
@@ -117,6 +114,28 @@ class SignUpForm extends React.Component {
                     label="Password"
                     value={this.state.password}
                     onChange={this.handleChange('password')}
+                    required
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Toggle password visibility"
+                                    onClick={this.handleClickShowPassword}
+                                >
+                                    {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    id="signUpCheckPassword"
+                    className={classNames(classes.margin, classes.textField)}
+                    variant="outlined"
+                    type={this.state.showPassword ? 'text' : 'checkPassword'}
+                    label="Check password"
+                    value={this.state.checkPassword}
+                    onChange={this.handleChange('checkPassword')}
                     required
                     InputProps={{
                         endAdornment: (
