@@ -1,27 +1,20 @@
 import React, {Component} from 'react';
-import { Header, Footer } from './layouts'
+import Signin from './signin/Signin'
+import SignUp from './signup/SignUp'
+import {  BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import NotFound from './layouts/not-found'
 
-import Grid from '@material-ui/core/Grid';
-import Style from './styles/Style'
-import Paper from '@material-ui/core/Paper'
 
 export default class extends Component {
     render () {
         return (
-            <div>
-                <Header/>
-
-                <Grid container>
-                    <Grid item xs>
-                        Mehdi
-                    </Grid>
-                    <Grid item xs>
-                        Mehdi
-                    </Grid>
-                </Grid>
-
-                <Footer/>
-            </div>
+            <Router>
+            <Switch>
+                <Route exact path="/" component={Signin}/>
+                <Route exact path="/signup" component={SignUp}/>
+                <Route component={NotFound}/>
+            </Switch>
+            </Router>
         )
     }
 }
