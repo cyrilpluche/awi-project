@@ -25,34 +25,42 @@ module.exports = {
     create(req, res, next) {
         Team
             .create(req.body)
-            .then(team => res.status(201).send(team))
-            .catch(error => res.status(400).send(error));
+            .then(team => {
+                req.body.result = team
+                next()
+            })
+            .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/team/find_all
+    /*  localhost:4200/api/team/find_all --- ?teamName=name... (optional)
      *
-     *  return: Array of team objects.
+     *  return: Array of team objects with given attributes.
      */
     findAll(req, res, next) {
         Team
-            .findAll({ order : sequelize.col('teamId')})
-            .then(teams => res.status(201).send(teams))
-            .catch(error => res.status(400).send(error));
+            .findAll({
+                order : sequelize.col('teamId'),
+                where: req.query
+            })
+            .then(teams => {
+                req.body.result = teams
+                next()
+            })
+            .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/team/find_one/2
+    /*  localhost:4200/api/team/find_one --- ?teamName=name... (optional)
      *
-     *  return: Team object with the given id.
+     *  return: Team object with given attributes.
      */
     findOne(req, res, next) {
         Team
-            .findOne({
-                where: {
-                    teamId : req.params.id
-                }
+            .findOne({ where: req.query })
+            .then(team => {
+                req.body.result = team
+                next()
             })
-            .then(team => res.status(201).send(team))
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error));
     },
 
     /*  localhost:4200/api/team/update/2
@@ -69,9 +77,10 @@ module.exports = {
                 where: { teamId: req.params.id }
             })
             .then(isUpdated => {
-                res.status(201).send(isUpdated[0] === 1)
+                req.body.result = isUpdated[0] === 1
+                next()
             })
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error))
     },
 
     /*  localhost:4200/api/member/delete/5
@@ -85,7 +94,10 @@ module.exports = {
                     teamId: req.params.id
                 }
             })
-            .then(isDeleted => res.status(201).send(isDeleted === 1))
-            .catch(error => res.status(400).send(error));
+            .then(isDeleted => {
+                req.body.result = isDeleted === 1
+                next()
+            })
+            .catch(error => next(error));
     }
 }

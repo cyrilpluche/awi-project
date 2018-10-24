@@ -26,56 +26,41 @@ module.exports = {
             .create(req.body)
             .then(member => {
                 member.memberPassword = null
-                mw.Email.sendEmail(member, req.body.memberToken)
-                res.status(201).send({token: req.body.memberToken})
+                req.body.result = member
+                next()
             })
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/member/find_all
+    /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)
      *
-     *  return: Array of member objects.
+     *  return: Array of member objects with given attributes.
      */
     findAll(req, res, next) {
         Member
-            .findAll({ order : sequelize.col('memberId')})
-            .then(members => res.status(201).send(members))
-            .catch(error => res.status(400).send(error));
+            .findAll({
+                order : sequelize.col('memberId'),
+                where: req.query
+            })
+            .then(members => {
+                req.body.result = members
+                next()
+            })
+            .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/member/find_one/2
+    /*  localhost:4200/api/member/find_one --- ?memberId=id... (optional)
      *
-     *  return: Member object with the given id.
+     *  return: Member object with given attributes.
      */
     findOne(req, res, next) {
-        var memberId = req.params.id
-        if (memberId) {
-            // We are searching for a member with the given Id
-            Member
-                .findOne({
-                    where: {
-                        memberId : req.params.id
-                    }
-                })
-                .then(member => res.status(201).send(member))
-                .catch(error => res.status(400).send(error));
-        } else {
-            // We are searching a member for a connexion
-            Member
-                .findOne({
-                    where: {
-                        memberEmail: req.body.memberEmail
-                    }
-                })
-                .then(member => {
-                    if (member.memberPassword === req.body.memberPassword) {
-                        req.body = member
-                        next()
-                    } else res.status(400).send('Failed to log the member (1).')
-                })
-                .catch(error => res.status(400).send('Failed to log the member (0).'));
-        }
-
+        Member
+            .findOne({ where: req.query })
+            .then(member => {
+                req.body.result = member
+                next()
+            })
+            .catch(error => next(error));
     },
 
     /*  localhost:4200/api/member/update/2
@@ -99,9 +84,10 @@ module.exports = {
                 where: { memberId: req.params.id }
             })
             .then(isUpdated => {
-                res.status(201).send(isUpdated[0] === 1)
+                req.body.result = isUpdated[0] === 1
+                next()
             })
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error));
     },
 
     /*  localhost:4200/api/member/delete/5
@@ -115,8 +101,11 @@ module.exports = {
                     memberId: req.params.id
                 }
             })
-            .then(isDeleted => res.status(201).send(isDeleted === 1))
-            .catch(error => res.status(400).send(error));
+            .then(isDeleted => {
+                req.body.result = isDeleted === 1
+                next()
+            })
+            .catch(error => next(error));
     },
 
     /* ================= METHODS ================= */
@@ -124,13 +113,39 @@ module.exports = {
     /*  localhost:4200/api/member/sign_in
      *
      *  req.body = {
-     *      memberPseudo = pseudo || memberEmail = email,
+     *      memberPseudo = memberEmail,
      *      memberPassword = password
      *  }
      *
-     *  return: A new token if the user matched, else an error.
+     *  return: Find the user and connect him if credentials matched.
      */
-    signIn(req, res, next) {
-        return res.status(201).send({token: req.body.memberToken})
+    findOneSignIn(req, res, next) {
+        Member
+            .findOne({
+                where: {
+                    memberEmail: req.body.memberEmail,
+                }
+            })
+            .then(member => {
+                if (member && member.memberEmail === req.body.memberEmail) {
+                    if (member.memberPassword === req.body.memberPassword) {
+                        req.body.result = member
+                        next()
+                    }
+                    else res.status(400).send('Failed to log the member. (1)')
+                }
+                else res.status(400).send('Failed to log the member. (0)')
+            })
+            .catch(error => next(error));
+    },
+
+    /*  localhost:4200/api/member/sign_in
+     *
+     *  return: A new token of the user.
+     */
+    sign(req, res, next) {
+        req.body.result = {token: req.body.memberToken}
+        next()
     }
+
 }

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Header, Footer } from './layouts'
-import { Signin } from './signin/Signin'
 
 import Grid from '@material-ui/core/Grid';
 import Style from './styles/Style'
@@ -12,7 +11,14 @@ export default class extends Component {
             <div>
                 <Header/>
 
-                <Signin/>
+                <Grid container>
+                    <Grid item xs>
+                        Mehdi
+                    </Grid>
+                    <Grid item xs>
+                        Mehdi
+                    </Grid>
+                </Grid>
 
                 <Footer/>
             </div>

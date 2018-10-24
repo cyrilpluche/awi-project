@@ -23,7 +23,7 @@ module.exports = {
      */
     generateToken(req, res, next) {
         // We copy the object because we don't want to encrypt the token with the user's password.
-        var payload = Object.assign({}, req.body)
+        var payload = Object.assign({}, req.body.result.dataValues)
         payload.memberPassword = null
         req.body.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 // expires in 24 hours

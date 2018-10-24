@@ -1,3 +1,4 @@
+const End = require('./Endpoint');
 const Team = require('./Team');
 const Member = require('./Member');
 const Project = require('./Project');
@@ -9,5 +10,6 @@ module.exports = {
     Member,
     Project,
     List,
-    Card
+    Card,
+    End
 };

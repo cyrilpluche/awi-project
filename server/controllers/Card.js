@@ -23,34 +23,42 @@ module.exports = {
     create(req, res, next) {
         Card
             .create(req.body)
-            .then(card => res.status(201).send(card))
-            .catch(error => res.status(400).send(error));
+            .then(card => {
+                req.body.result = card
+                next()
+            })
+            .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/card/find_all
+    /*  localhost:4200/api/card/find_all --- ?cardTitle=title... (optional)
      *
-     *  return: Array of Card objects.
+     *  return: Array of Card objects with given attributes.
      */
     findAll(req, res, next) {
         Card
-            .findAll({ order : sequelize.col('cardId')})
-            .then(cards => res.status(201).send(cards))
-            .catch(error => res.status(400).send(error));
+            .findAll({
+                order : sequelize.col('cardId'),
+                where: req.query
+            })
+            .then(cards => {
+                req.body.result = cards
+                next()
+            })
+            .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/card/find_one/:id
+    /*  localhost:4200/api/card/find_one --- ?cardTitle=title... (optional)
      *
-     *  return: Card object with the given id.
+     *  return: Card object with given attributes.
      */
     findOne(req, res, next) {
         Card
-            .findOne({
-                where: {
-                    cardId : req.params.id
-                }
+            .findOne({ where: req.query })
+            .then(card => {
+                req.body.result = card
+                next()
             })
-            .then(card => res.status(201).send(card))
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error));
     },
 
     /*  localhost:4200/api/card/update/:id
@@ -74,9 +82,10 @@ module.exports = {
                 where: { cardId: req.params.id }
             })
             .then(isUpdated => {
-                res.status(201).send(isUpdated[0] === 1)
+                req.body.result = isUpdated[0] === 1
+                next()
             })
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error));
     },
 
     /*  localhost:4200/api/card/delete/:id
@@ -90,7 +99,10 @@ module.exports = {
                     cardId: req.params.id
                 }
             })
-            .then(isDeleted => res.status(201).send(isDeleted === 1))
-            .catch(error => res.status(400).send(error));
+            .then(isDeleted => {
+                req.body.result = isDeleted === 1
+                next()
+            })
+            .catch(error => next(error))
     }
 }

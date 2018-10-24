@@ -13,8 +13,8 @@ module.exports = {
      *
      *  return: Void function that send an email to the given adress.
      */
-    sendEmail(member, seed) {
-        var validationLink = process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/authentication/account-validation/' + seed
+    sendEmail(req, res, next) {
+        var validationLink = process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/authentication/account-validation/' + req.body.memberToken
 
         var attachments = [
             {
@@ -27,14 +27,14 @@ module.exports = {
         var html =
             `<div style="margin: auto; text-align: center;">` +
             `<img style="width: 20%" src="cid:maillogo"/><br>` +
-            `<h3 style="color: blue">Ton compte est crée <b>${member.memberFirstname}</b>.</h3><br><br>` +
+            `<h3 style="color: blue">Ton compte est crée <b>${req.body.result.memberFirstname}</b>.</h3><br><br>` +
             `<p>Clique sur le lien ci-dessous pour activer ton compte et pouvoir te connecter à Prello.</p><br>` +
             `<h4><a href="${validationLink}">Valider mon compte</a></h4>` +
             `<div>`
 
         var mailOptions = {
             from: process.env.USER_MAIL_ADDRESS,
-            to: member.memberEmail,
+            to: req.body.result.memberEmail,
             subject: 'Activate your Prello account',
             html: html,
             attachments: attachments
@@ -42,10 +42,11 @@ module.exports = {
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log('Failed to send email.');
-                console.log(error);
+                console.log(error)
+                res.status(400).send('Failed to send email.');
             } else {
-                console.log('Email sent.');
+                console.log('Email sent.')
+                next()
             }
         });
     }
