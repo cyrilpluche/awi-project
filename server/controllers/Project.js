@@ -19,34 +19,42 @@ module.exports = {
     create(req, res, next) {
         Project
             .create(req.body)
-            .then(project => res.status(201).send(project))
-            .catch(error => res.status(400).send(error));
+            .then(projects => {
+                req.body.result = projects
+                next()
+            })
+            .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/project/find_all
+    /*  localhost:4200/api/project/find_all --- ?projectTitle=title... (optional)
      *
-     *  return: Array of Project objects.
+     *  return: Array of Project objects with given attributes.
      */
     findAll(req, res, next) {
         Project
-            .findAll({ order : sequelize.col('projectId')})
-            .then(projects => res.status(201).send(projects))
-            .catch(error => res.status(400).send(error));
+            .findAll({
+                order : sequelize.col('projectId'),
+                where: req.query
+            })
+            .then(projects => {
+                req.body.result = projects
+                next()
+            })
+            .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/project/find_one/2
+    /*  localhost:4200/api/project/find_one --- ?projectTitle=title... (optional)
      *
-     *  return: Project object with the given id.
+     *  return: Project object with given attributes.
      */
     findOne(req, res, next) {
         Project
-            .findOne({
-                where: {
-                    projectId : req.params.id
-                }
+            .findOne({ where: req.query })
+            .then(project => {
+                req.body.result = project
+                next()
             })
-            .then(project => res.status(201).send(project))
-            .catch(error => res.status(400).send(error));
+            .catch(error => next(error));
     },
 
     /*  localhost:4200/api/project/update/2
@@ -66,9 +74,9 @@ module.exports = {
                 where: { projectId: req.params.id }
             })
             .then(isUpdated => {
-                res.status(201).send(isUpdated[0] === 1)
+                req.body.result = isUpdated[0] === 1
+                next()
             })
-            .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/project/delete/5
@@ -82,7 +90,10 @@ module.exports = {
                     projectId: req.params.id
                 }
             })
-            .then(isDeleted => res.status(201).send(isDeleted === 1))
-            .catch(error => res.status(400).send(error));
+            .then(isDeleted => {
+                req.body.result = isDeleted === 1
+                next()
+            })
+            .catch(error => next(error));
     }
 }

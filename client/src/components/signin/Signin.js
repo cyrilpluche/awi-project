@@ -1,22 +1,4 @@
-import React, { Component } from 'react'
-import {Field,reduxForm} from 'redux-form'
-import { Link } from 'react-router-dom'
-import {signIn} from "../../actions/index"
-import {bindActionCreators} from "redux"
-import {connect} from "react-redux"
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
-import classNames from 'classnames';
-import Button from '@material-ui/core/Button';
-
-
-
+import React from 'react';
 
 const formConfig ={
   form: 'signInForm',
@@ -51,7 +33,7 @@ const styles = theme => ({
     },
     submit: {
       marginTop: theme.spacing.unit * 3,
-      
+
     },
   });
 
@@ -71,22 +53,22 @@ class SignInForm extends Component{
     );
 
     renderButton =  ({text, type,className,color,fullWidth, meta: { touched,error },...custom}) => (
-         
+
         <Button
-        
+
         fullWidth
         variant="contained"
         color={color}
         className={className}
         type={type}
       >{text}
-        
+
       </Button>
     );
 
     render () {
-        
-        const { handleSubmit,classes } = this.props; 
+
+        const { handleSubmit,classes } = this.props;
         console.log(this.props)
         return (
             <React.Fragment>
@@ -99,31 +81,31 @@ class SignInForm extends Component{
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <form onSubmit={handleSubmit(this.signIn.bind(this)) } className={classes.form}>                                                                 
+                        <form onSubmit={handleSubmit(this.signIn.bind(this)) } className={classes.form}>
                             <div>
                                 <Field name="email" label="Email" component={this.renderField} type='text'/>
                             </div>
                             <div>
                                 <Field name="password" label="Password" component={this.renderField}  type='password'/>
-                            </div>                                                                                    
+                            </div>
                             <div>
-                            <Link  to="/Home"><Field name="login" type="submit" component={this.renderButton} text="Sign In"  color="primary" className={classes.submit}/></Link>                                
+                            <Link  to="/Home"><Field name="login" type="submit" component={this.renderButton} text="Sign In"  color="primary" className={classes.submit}/></Link>
                             </div>
                             <div>
                                 <Link  to="/Board"> <Field name="github" component={this.renderButton} text="Sign In with Github"  color="default" className={classes.submit}/></Link>
                             </div>
-                                                                    
+
                         </form>
                     </Paper>
                 </main>
             </React.Fragment>
-           
-        
+
+
         )
     }
 
     signIn(user){
-        this.props.signIn(user)        
+        this.props.signIn(user)
     }
 
 
