@@ -1,8 +1,13 @@
 import { dashboardAction } from '../actions/Dashboard.action';
 
 const labels = dashboardAction.labels
+const initialState = {
+    project: {
+        projectTitle: 'Hello Moto'
+    }
+};
 
-const reducer = (state = {}, action) => {
+export function dashboard (state = initialState, action) {
     switch (action.type) {
         case labels.SELECT_PROJECT:
             return { ...state, project: action.project };
@@ -11,11 +16,6 @@ const reducer = (state = {}, action) => {
         case labels.RECEIVE_PROJECT:
             return { ...state, project: action.json, loading: false };
         default:
-            return {
-                project: {
-                    projectTitle: "Wesh alors"
-                }
-            };
+            return state
     }
 };
-export default reducer;

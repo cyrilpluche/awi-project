@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
         return (
             <div onClick={this.onClick}>
                 <p>Hello</p>
-                <p>{this.props.project.projectTitle}</p>
+                <p>{this.props.project}</p>
             </div>
         )
     }
