@@ -132,9 +132,9 @@ module.exports = {
                         req.body.result = member
                         next()
                     }
-                    else res.status(400).send('Failed to log the member. (1)')
+                    else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).send('Failed to log the member. (0)')
+                else res.status(400).send('Email or password is incorrect.')
             })
             .catch(error => next(error));
     },

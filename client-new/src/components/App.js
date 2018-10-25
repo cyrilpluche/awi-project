@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Signin from './signin/Signin'
 import Dashboard from './dashboard/Dashboard'
 import {  BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Signin from "./signin/Signin";
 
 class App extends Component {
   render() {

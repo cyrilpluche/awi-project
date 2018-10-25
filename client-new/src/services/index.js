@@ -1,7 +1,9 @@
 import Project from './Project.service';
+import Member from './Member.service';
 
 const service = {
-    Project
+    Project,
+    Member
 }
 
 export default service

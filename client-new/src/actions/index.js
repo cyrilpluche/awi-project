@@ -1,7 +1,10 @@
 import { dashboardAction } from './Dashboard.action';
+import { signinAction } from './Signin.action';
+
 
 const _action = {
-    dashboardAction
+    dashboardAction,
+    signinAction
 }
 
 export default _action

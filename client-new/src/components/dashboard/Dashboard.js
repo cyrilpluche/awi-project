@@ -15,7 +15,6 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <div onClick={this.onClick}>
                 <p>Hello</p>
