@@ -1,6 +1,7 @@
 import { dashboardAction } from '../actions/Dashboard.action';
 
 const labels = dashboardAction.labels
+
 const initialState = {
     project: {
         projectTitle: 'Hello Moto'
