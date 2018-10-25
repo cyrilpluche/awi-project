@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import reducer from './reducers'
+import reducer from './reducers/Dashboard.reducer'
 import './css/styles.css'
 import App from './components/App';
 
