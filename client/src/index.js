@@ -3,17 +3,20 @@ import { render } from 'react-dom';
 import './index.css';
 import App from './components/App';
 import { Provider } from 'react-redux';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {createStore} from 'redux';
 import reducers from './reducers';
-import thunk from 'redux-thunk'
-
-const allStoreEnhancers = compose(
-    applyMiddleware(thunk),
-    reducers
-)
 
 const store = createStore(
-    allStoreEnhancers,
+    reducers,
+    {
+        dashboard: {
+            project: {
+                projectTitle: 'Initial project',
+                projectVisibility: '-1'
+            }
+        }
+
+    },
     window.devToolsExtension && window.devToolsExtension()
 );
 
