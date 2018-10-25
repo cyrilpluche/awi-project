@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _services from '../services'
 
 const config = {
     headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -23,14 +24,15 @@ export const receivedProject = json => ({
 
 export function fetchProject(project) {
     return (dispatch) => {
-        dispatch(findOneProject());
-        return axios.get('http://localhost:4200/api/project/find_one?projectId=1', config)
+
+        dispatch(findOneProject())
+
+        _services.Project.getAll()
             .then(res => {
-                console.log(res)
-                dispatch(receivedProject({project: res.data}));
+                dispatch(receivedProject({project: res.data[0]}));
             })
-            .catch((json) => {
-                dispatch(receivedProject({project: "motozerr"}));
+            .catch((err) => {
+                console.log('Error : ', err)
             });
     };
 }
