@@ -5,7 +5,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
     operatorsAliases: false
 })
 
-var Team = require('../models/index.js').init(sequelize).Team;*/
+var Team = require('../models/Dashboard.action.js').init(sequelize).Team;*/
 
 var Team = require('../config/db_connection').Team;
 var sequelize = require('../config/db_connection').sequelize;

@@ -1,12 +1,14 @@
-import { SELECT_PROJECT, FIND_ONE_PROJECT, RECEIVE_PROJECT } from '../actions';
+import { dashboardAction } from '../actions/Dashboard.action';
+
+const labels = dashboardAction.labels
 
 const reducer = (state = {}, action) => {
     switch (action.type) {
-        case SELECT_PROJECT:
+        case labels.SELECT_PROJECT:
             return { ...state, project: action.project };
-        case FIND_ONE_PROJECT:
+        case labels.FIND_ONE_PROJECT:
             return { ...state, loading: true };
-        case RECEIVE_PROJECT:
+        case labels.RECEIVE_PROJECT:
             return { ...state, project: action.json, loading: false };
         default:
             return {

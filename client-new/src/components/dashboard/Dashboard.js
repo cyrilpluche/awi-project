@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchProject } from '../../actions'
+import _action from '../../actions'
 
 class Dashboard extends React.Component {
     constructor (props) {
@@ -30,7 +30,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    onClick: fetchProject
+    onClick: _action.dashboardAction.fetchProject
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Dashboard);
