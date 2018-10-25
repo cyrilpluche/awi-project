@@ -9,7 +9,9 @@ class Dashboard extends React.Component {
     }
 
     onClick () {
-        this.props.onClick()
+        this.props.onClick({
+            projectTitle: 'Awi'
+        })
     }
 
     render() {

@@ -1,7 +1,7 @@
 import Project from './Project.service';
 
-const services = {
+const service = {
     Project
 }
 
-export default services
+export default service
