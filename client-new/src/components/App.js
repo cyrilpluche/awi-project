@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Dashboard from './dashboard/Dashboard'
-import {  BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {  Router, Route, Switch } from 'react-router-dom'
 import Signin from "./signin/Signin";
+import _helper from '../helpers'
 
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router history={_helper.History}>
         <Switch>
             <Route exact path="/" component={Signin}/>
             <Route exact path="/home" component={Dashboard}/>

@@ -1,4 +1,5 @@
 import _service from '../services'
+import _helper from '../helpers';
 
 const labels = {
     LOGIN : "LOGIN",
@@ -28,6 +29,7 @@ function signin (memberEmail, memberPassword) {
         _service.Member.signIn(body)
             .then(res => {
                 localStorage.setItem('token', res.token)
+                _helper.History.push('/home');
                 dispatch(signSuccess(res));
             })
             .catch((err) => {
