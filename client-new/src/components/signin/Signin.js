@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import _action from '../../actions'
 import { style } from './Style'
 
-
-
 // CSS imports
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -16,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
-
 
 
 class Signin extends React.Component {

@@ -5,12 +5,15 @@ const labels = {
     LOGIN : "LOGIN",
     ERROR : "ERROR",
     CREATE_USER : "CREATE_USER",
-    IS_LOGGED: "IS_LOGGED"
+    IS_LOGGED: "IS_LOGGED",
+    IS_NOT_LOGGED: "IS_NOT_LOGGED"
 }
 
 const signSuccess = token => ({
     type: labels.LOGIN,
-    payload: token,
+    payload: {
+        memberToken: token
+    }
 })
 
 const signError = {
@@ -26,7 +29,6 @@ function signin (memberEmail, memberPassword) {
     return dispatch => {
         _service.Member.signIn(body)
             .then(res => {
-                console.log(res)
                 localStorage.setItem('memberToken', res.memberToken)
                 _helper.History.push('/home');
                 dispatch(signSuccess(res));
@@ -39,7 +41,8 @@ function signin (memberEmail, memberPassword) {
 
 function isMemberLogged () {
     return (dispatch) => {
-        if (localStorage.getItem('memberToken')) {
+        var memberToken = localStorage.getItem('memberToken')
+        if (memberToken) {
             _service.Member.isLogged()
                 .then(res => {
                     dispatch({
@@ -49,8 +52,8 @@ function isMemberLogged () {
                 })
         } else {
             dispatch({
-                type: labels.IS_LOGGED,
-                payload: false
+                type: labels.IS_NOT_LOGGED,
+                payload: { isLogged: false }
             })
         }
     }

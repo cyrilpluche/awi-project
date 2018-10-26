@@ -1,6 +1,5 @@
-
 \.env
 
-server/node_modules/
-
 \.idea/workspace\.xml
+
+server/node_modules/

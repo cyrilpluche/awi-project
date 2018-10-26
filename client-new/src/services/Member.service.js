@@ -1,5 +1,4 @@
 import axios from 'axios';
-import helper from '../helpers'
 
 const url = 'http://localhost:4200/api/member/'
 
@@ -11,15 +10,24 @@ const Member = {
 
     isLogged () {
         const memberToken = localStorage.getItem('memberToken')
+
         if (memberToken) {
+            // eslint-disable-next-line
             return axios.get(url + 'is_logged' + '?memberToken=' + memberToken)
                 .then(res => {
-                    console.log(res)
-                    return true
+                    return {
+                        member: {
+                            memberToken: memberToken
+                        },
+                        isLogged: true
+                    }
                 })
-                .catch(err => false)
+                .catch(err => {
+                    localStorage.removeItem('memberToken')
+                    return { isLogged: false }
+                })
         } else {
-            return false
+            return { isLogged: false }
         }
     }
 
