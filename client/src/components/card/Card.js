@@ -41,23 +41,25 @@ class Cardboard extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Card className={classes.card}>
+            <div>
+            <Modal
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                open={this.state.open}
+                onClose={this.handleClose}
+            >
+                <div style={this.getModalStyle()} className={classes.paper}>
+                    <Typography variant="h6" id="modal-title">
+                        Text in a modal
+                    </Typography>
+                    <Typography variant="subtitle1" id="simple-modal-description">
+                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                    </Typography>
+                </div>
+            </Modal>
+            <Card className={classes.card} >
                 <CardActionArea onClick={this.handleOpen}>
-                    <Modal
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                    >
-                        <div style={this.getModalStyle()} className={classes.paper}>
-                            <Typography variant="h6" id="modal-title">
-                                Text in a modal
-                            </Typography>
-                            <Typography variant="subtitle1" id="simple-modal-description">
-                                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                            </Typography>
-                        </div>
-                    </Modal>
+
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             Lizard
@@ -69,6 +71,7 @@ class Cardboard extends React.Component {
                     </CardContent>
                 </CardActionArea>
             </Card>
+            </div>
         );
     }
 }
@@ -77,4 +80,7 @@ Cardboard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Cardboard);
+// We need an intermediary variable for handling the recursive nesting.
+const CardboardWrapped = withStyles(styles)(Cardboard);
+
+export default CardboardWrapped;
