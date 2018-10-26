@@ -13,4 +13,6 @@ router.put('/update/:id', mw.Token.verifyToken, cardController.update);
 
 router.delete('/delete/:id', mw.Token.verifyToken, cardController.delete);
 
+console.log('crotte')
+
 module.exports = router;
