@@ -50,9 +50,9 @@ class App extends Component {
         <div className="container">
             <Navbar/>
             <Route exact path="/home" component={Dashboard}/>
-            <Route path="/" render={() => <Redirect to="/home" />} />
         </div>
     )
+    // <Route path="/" render={() => <Redirect to="/home" />} />
 
     render() {
         return (
