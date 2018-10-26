@@ -9,3 +9,5 @@ server/models/
 \.idea/codeStyles/Project\.xml
 
 \.idea/workspace\.xml
+
+\.idea/jsLibraryMappings\.xml
