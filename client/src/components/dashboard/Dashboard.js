@@ -1,38 +1,35 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ProjectAction from '../../actions/project_action'
+import React from 'react'
+import { connect } from 'react-redux'
+import _action from '../../actions'
 
-class SignUpForm extends React.Component {
+class Dashboard extends React.Component {
     constructor (props) {
         super(props)
-        this.onFindOneProject = this.onFindOneProject.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
-    onFindOneProject () {
-        this.props.onFindOneProject()
+    onClick () {
+        this.props.onClick({
+            projectTitle: 'Awi'
+        })
     }
 
     render() {
-        console.log(this.props)
         return (
-            <div>
-                <div onClick={this.onFindOneProject}>
-                    Wohou
-                </div>
-                {this.props.project.projectTitle}
+            <div onClick={this.onClick}>
+                <p>Hello</p>
+                <p>{this.props.project.projectTitle}</p>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => {
-    console.log(state)
-    return {
-        project: state.dashboard.project
-    }
-}
-const mapActionToProps = {
-    onFindOneProject: ProjectAction.findOneProject
-};
+const mapStateToProps = (state) => ({
+    project: state.dashboard.project
+})
 
-export default connect(mapStateToProps, mapActionToProps)(SignUpForm);
+const mapDispatchToProps = {
+    onClick: _action.dashboardAction.fetchProject
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Dashboard);

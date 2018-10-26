@@ -5,7 +5,6 @@ const labels = _action.signinAction.labels
 const initialState = { isLoading: true }
 
 export function signin (state = initialState, action){
-    console.log(action)
     switch (action.type) {
         case labels.LOGIN:
             return {

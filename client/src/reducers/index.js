@@ -1,14 +1,10 @@
-import {applyMiddleware, combineReducers, compose} from 'redux';
-import userReducer from "./reducer_signup";
-import dashboardReducer from "./dashboard_reducer";
-import thunk from "redux-thunk";
+import { combineReducers } from 'redux';
+import { dashboard } from './Dashboard.reducer';
+import { signin } from './Signin.reducer';
 
-const rootReducer = compose(
-    //applyMiddleware(thunk),
-    combineReducers({
-        user: userReducer,
-        dashboard: dashboardReducer
-    })
-)
+const rootReducer = combineReducers({
+    dashboard,
+    signin
+});
 
 export default rootReducer;

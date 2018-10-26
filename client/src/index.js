@@ -1,27 +1,12 @@
-import React from 'react';
-import { render } from 'react-dom';
-import './index.css';
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { Store } from './helpers';
 import App from './components/App';
-import { Provider } from 'react-redux';
-import {createStore} from 'redux';
-import reducers from './reducers';
-
-const store = createStore(
-    reducers,
-    {
-        dashboard: {
-            project: {
-                projectTitle: 'Initial project',
-                projectVisibility: '-1'
-            }
-        }
-
-    },
-    window.devToolsExtension && window.devToolsExtension()
-);
 
 render(
-    <Provider store={store}>
+    <Provider store={Store}>
         <App />
-    </Provider>
-    , document.getElementById('root'));
+    </Provider>,
+    document.getElementById('root')
+)
