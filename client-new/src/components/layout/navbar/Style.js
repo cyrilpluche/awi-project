@@ -1,4 +1,3 @@
-import React from 'react';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 

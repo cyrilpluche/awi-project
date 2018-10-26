@@ -37,7 +37,7 @@ class App extends Component {
     DefaultContainer = () => (
         <div className="container">
             <Navbar/>
-            <Route path="/home" component={Dashboard}/>
+            <Route exact path="/home" component={Dashboard}/>
         </div>
     )
 
@@ -45,7 +45,8 @@ class App extends Component {
         return (
             <Router history={_helper.History}>
                 <Switch>
-                    <Route path="/" component={this.routesAuthorization()}/>
+                    <Route exact path="/login" component={this.routesAuthorization()}/>
+                    <Route path="/" render={() => <Redirect to="/login" />} />
                 </Switch>
             </Router>
         );
