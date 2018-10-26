@@ -8,6 +8,11 @@ const Member = {
         return axios.post(url + 'sign_in', body).then(res => res.data)
     },
 
+    signUp (body) {
+        console.log(body)
+        return axios.post(url + 'sign_up', body).then(res => res.data)
+    },
+
     isLogged () {
         const memberToken = localStorage.getItem('memberToken')
 

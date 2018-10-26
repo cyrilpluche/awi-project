@@ -29,7 +29,4 @@ export const style = theme => ({
         marginTop: theme.spacing.unit * 3,
 
     },
-    errorLabel:{
-        marginTop: theme.spacing.unit * 2,
-    }
 });
