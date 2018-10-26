@@ -31,7 +31,6 @@ function signup (memberFirstname, memberLastname, memberPseudo, memberEmail, mem
     return dispatch => {
         _service.Member.signUp(body)
             .then(res => {
-                localStorage.setItem('memberToken', res.memberToken)
                 _helper.History.push('/home');
                 dispatch(signSuccess(res));
             })

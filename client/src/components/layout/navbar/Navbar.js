@@ -6,18 +6,22 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import _helper from "../../../helpers";
+import { NavLink } from "react-router-dom/";
+import { MuiThemeProvider } from "@material-ui/core/es/styles";
+import { Theme } from "../../ui/palette/Palette";
+
 
 class Navbar extends React.Component {
     state = {
@@ -42,6 +46,11 @@ class Navbar extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
+    handleRoutes (route) {
+        console.log(route)
+        _helper.History.push(route);
+    }
+
     render() {
         const { anchorEl, mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
@@ -58,6 +67,7 @@ class Navbar extends React.Component {
             >
                 <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
                 <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+                <MenuItem onClick={this.handleMenuClose}>Log off</MenuItem>
             </Menu>
         );
 
@@ -71,8 +81,8 @@ class Navbar extends React.Component {
             >
                 <MenuItem>
                     <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <MailIcon />
+                        <Badge badgeContent={4} color="secondary" >
+                            <MailIcon/>
                         </Badge>
                     </IconButton>
                     <p>Messages</p>
@@ -95,58 +105,60 @@ class Navbar extends React.Component {
         );
 
         return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                            Material-UI
-                        </Typography>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
+            <MuiThemeProvider theme={Theme.classic}>
+                <div className={classes.root}>
+                    <AppBar position="static">
+                        <Toolbar>
+                            <NavLink to='/home'>
+                                <IconButton className={classes.menuButton} color="inherit">
+                                    <HomeIcon color="secondary" />
+                                </IconButton>
+                            </NavLink>
+
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    placeholder="Search"
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                />
                             </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                            />
-                        </div>
-                        <div className={classes.grow} />
-                        <div className={classes.sectionDesktop}>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={17} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton
-                                aria-owns={isMenuOpen ? 'material-appbar' : null}
-                                aria-haspopup="true"
-                                onClick={this.handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                        </div>
-                        <div className={classes.sectionMobile}>
-                            <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
-                                <MoreIcon />
-                            </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                {renderMenu}
-                {renderMobileMenu}
-            </div>
+                            <div className={classes.grow} />
+                            <div className={classes.sectionDesktop}>
+                                <IconButton color="inherit">
+                                    <Badge badgeContent={4} color="secondary">
+                                        <MailIcon />
+                                    </Badge>
+                                </IconButton>
+                                <IconButton color="inherit">
+                                    <Badge badgeContent={17} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
+                                <IconButton
+                                    aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </div>
+                            <div className={classes.sectionMobile}>
+                                <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+                                    <MoreIcon />
+                                </IconButton>
+                            </div>
+                        </Toolbar>
+                    </AppBar>
+                    {renderMenu}
+                    {renderMobileMenu}
+                </div>
+            </MuiThemeProvider>
         );
     }
 }
