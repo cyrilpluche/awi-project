@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Dashboard from './dashboard/Dashboard'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
-import Navbar from "./layout/navbar/Navbar"
+import Navbar from "./layout/navbar/Navbar";
+import LoaderPage from './loaderPage/LoaderPage'
 import _helper from '../helpers'
 import connect from "react-redux/es/connect/connect";
 import _action from "../actions";
@@ -21,6 +22,9 @@ class App extends Component {
      * Else we display only the login component
      */
     routesAuthorization () {
+        if (this.props.isLoading) {
+            return this.LoaderPageContainer
+        }
         if (this.props.isLogged) {
             return this.DefaultContainer
         } else {
@@ -30,7 +34,14 @@ class App extends Component {
 
     LoginContainer = () => (
         <div className="container">
-            <Route path="/" component={Signin} />
+            <Route path="/login" component={Signin} />
+            <Route path="/" render={() => <Redirect to="/login" />} />
+        </div>
+    )
+
+    LoaderPageContainer = () => (
+        <div className="container">
+            <Route path="/" component={LoaderPage} />
         </div>
     )
 
@@ -38,6 +49,7 @@ class App extends Component {
         <div className="container">
             <Navbar/>
             <Route exact path="/home" component={Dashboard}/>
+            <Route path="/" render={() => <Redirect to="/home" />} />
         </div>
     )
 
@@ -45,8 +57,7 @@ class App extends Component {
         return (
             <Router history={_helper.History}>
                 <Switch>
-                    <Route exact path="/login" component={this.routesAuthorization()}/>
-                    <Route path="/" render={() => <Redirect to="/login" />} />
+                    <Route path="/" component={this.routesAuthorization()}/>
                 </Switch>
             </Router>
         );
@@ -55,7 +66,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isLogged: state.signin.isLogged
+    isLogged: state.signin.isLogged,
+    isLoading: state.signin.isLoading
 })
 
 const mapDispatchToProps = {
