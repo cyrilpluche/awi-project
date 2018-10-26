@@ -4,6 +4,7 @@ import _action from '../../actions'
 import { style } from './Style'
 
 
+
 // CSS imports
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -15,7 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
-import { bindActionCreators } from 'redux';
+
+
 
 class Signin extends React.Component {
     constructor (props) {
@@ -27,6 +29,8 @@ class Signin extends React.Component {
             memberEmail: '',
             memberPassword: '',
         };
+
+        
     }
 
     submit () {
@@ -38,31 +42,32 @@ class Signin extends React.Component {
     }
 
     handleChange (event) {
-        var { name, value } = event.target;
+        var { name, value } = event.target; 
         this.setState({ [name]: value });
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes,errorMsg } = this.props;
         return (
             <React.Fragment>
                 <CssBaseline />
 
                 <main className={classes.layout}>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} >
                         <Avatar className={classes.avatar}>
-                            <Icon className={classNames(classes.icon, 'fa fa-plus-circle')} />
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-
+                        
+                        <label className={classes.errorLabel}>{errorMsg}</label>
                         <form className={classes.form}>
                             <div>
                                 <TextField
+                                    error={errorMsg? true :false}
                                     required
                                     name="memberEmail"
-                                    id="email"
+                                    id='email'
                                     label="Email"
                                     margin="normal"
                                     variant="outlined"
@@ -75,7 +80,8 @@ class Signin extends React.Component {
                             <div>
                                 <TextField
                                     required
-                                    id="password"
+                                    error={errorMsg? true:false}
+                                    id='password'
                                     name="memberPassword"
                                     label="Password"
                                     margin="normal"
@@ -89,8 +95,10 @@ class Signin extends React.Component {
                             <div>
                                 <Button
                                     variant="contained"
-                                    fullWidth color="primary"
+                                    fullWidth 
+                                    color="primary"
                                     onClick={this.submit}
+                                    className={classes.submit}
                                 >
                                     Sign In
                                 </Button>
@@ -98,7 +106,9 @@ class Signin extends React.Component {
                             <div>
                                 <Button
                                     variant="contained"
-                                    fullWidth color="default"
+                                    fullWidth 
+                                    color="default"
+                                    className={classes.submit}
                                 >
                                     Sign In with Github
                                 </Button>
@@ -120,8 +130,11 @@ Signin.propTypes = {
     classes: PropTypes.object.isRequired
 }
 
+const mapStateToProps = (state) => ({
+    errorMsg: state.signin.msgError
+})
 const mapDispatchToProps = {
     onLogin : _action.signinAction.signin
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(style)(Signin));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Signin));
