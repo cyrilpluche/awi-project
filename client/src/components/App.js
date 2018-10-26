@@ -3,6 +3,7 @@ import Dashboard from './dashboard/Dashboard'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
+import Profile from './profile/Profile'
 import Navbar from "./layout/navbar/Navbar"
 import _helper from '../helpers'
 import connect from "react-redux/es/connect/connect";
@@ -50,6 +51,7 @@ class App extends Component {
         <div className="container">
             <Navbar/>
             <Route exact path="/home" component={Dashboard}/>
+            <Route exact path="/account" component={Profile}/>
         </div>
     )
     // <Route path="/" render={() => <Redirect to="/home" />} />

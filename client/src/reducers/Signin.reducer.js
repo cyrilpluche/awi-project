@@ -1,6 +1,7 @@
 import _action from '../actions';
 
 const labels = _action.signinAction.labels
+const labelsNavbar = _action.navbarAction.labels
 
 const initialState = { isLoading: true }
 
@@ -33,6 +34,13 @@ export function signin (state = initialState, action){
             return {
                 ...state,
                 isLogged: action.payload.isLogged,
+                isLoading: false
+            }
+
+        case labelsNavbar.LOG_OFF:
+            return {
+                ...state,
+                isLogged: false,
                 isLoading: false
             }
 

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { style } from './Style'
+import css from './Style.css'
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -18,16 +19,22 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import _helper from "../../../helpers";
-import { NavLink } from "react-router-dom/";
+import { Link } from "react-router-dom/";
 import { MuiThemeProvider } from "@material-ui/core/es/styles";
 import { Theme } from "../../ui/palette/Palette";
+import _action from "../../../actions";
 
 
 class Navbar extends React.Component {
-    state = {
-        anchorEl: null,
-        mobileMoreAnchorEl: null,
-    };
+
+    constructor (props) {
+        super(props)
+        this.logOff = this.logOff.bind(this);
+        this.state = {
+            anchorEl: null,
+            mobileMoreAnchorEl: null,
+        };
+    }
 
     handleProfileMenuOpen = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -46,9 +53,9 @@ class Navbar extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
-    handleRoutes (route) {
-        console.log(route)
-        _helper.History.push(route);
+    logOff () {
+        this.handleMenuClose()
+        this.props.onLogOff()
     }
 
     render() {
@@ -63,11 +70,12 @@ class Navbar extends React.Component {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={isMenuOpen}
-                onClose={this.handleMenuClose}
+                style={{ textDecoration: 'none' }}
+
             >
-                <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+                <MenuItem onClick={this.handleMenuClose}><Link to='/account'>Profile</Link></MenuItem>
                 <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-                <MenuItem onClick={this.handleMenuClose}>Log off</MenuItem>
+                <MenuItem onClick={this.logOff}>Log off</MenuItem>
             </Menu>
         );
 
@@ -109,11 +117,11 @@ class Navbar extends React.Component {
                 <div className={classes.root}>
                     <AppBar position="static">
                         <Toolbar>
-                            <NavLink to='/home'>
+                            <Link to='/home'>
                                 <IconButton className={classes.menuButton} color="inherit">
                                     <HomeIcon color="secondary" />
                                 </IconButton>
-                            </NavLink>
+                            </Link>
 
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
@@ -167,4 +175,8 @@ Navbar.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default connect()(withStyles(style)(Navbar));
+const mapDispatchToProps = {
+    onLogOff: _action.navbarAction.logOff
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(style)(Navbar));
