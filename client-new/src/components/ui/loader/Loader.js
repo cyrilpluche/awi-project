@@ -10,20 +10,17 @@ const styles = theme => ({
     },
 });
 
-function CircularIndeterminate(props) {
+function Loader(props) {
     const { classes } = props;
     return (
         <div>
-            <CircularProgress className={classes.progress} />
-            <CircularProgress className={classes.progress} size={50} />
-            <CircularProgress className={classes.progress} color="secondary" />
-            <CircularProgress className={classes.progress} style={{ color: purple[500] }} thickness={7} />
+            <CircularProgress className={classes.progress} size={150} />
         </div>
     );
 }
 
-CircularIndeterminate.propTypes = {
+Loader.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CircularIndeterminate);
+export default withStyles(styles)(Loader);
