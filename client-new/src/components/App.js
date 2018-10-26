@@ -48,8 +48,8 @@ class App extends Component {
     DefaultContainer = () => (
         <div className="container">
             <Navbar/>
-            <Route path="/loader" component={LoaderPage} />
             <Route exact path="/home" component={Dashboard}/>
+            <Route path="/" render={() => <Redirect to="/home" />} />
         </div>
     )
 
