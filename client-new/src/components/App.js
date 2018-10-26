@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Dashboard from './dashboard/Dashboard'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
+import Signup from "./signup/Signup";
 import Navbar from "./layout/navbar/Navbar"
 import _helper from '../helpers'
 import connect from "react-redux/es/connect/connect";
@@ -30,7 +31,8 @@ class App extends Component {
 
     LoginContainer = () => (
         <div className="container">
-            <Route path="/" component={Signin} />
+            <Route path="/signin" component={Signin} />
+            <Route path="/signup" component={Signup} />
         </div>
     )
 
