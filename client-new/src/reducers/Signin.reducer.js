@@ -5,8 +5,6 @@ const labels = _action.signinAction.labels
 const initialState = ""
 
 export function signin (state = initialState, action){
-
-
     switch (action.type) {
         case labels.LOGIN:
             return {
@@ -20,6 +18,12 @@ export function signin (state = initialState, action){
                 ...state,
                 isLogged: false,
                 msgError: action.payload
+            }
+
+        case labels.IS_LOGGED:
+            return {
+                ...state,
+                isLogged: action.payload
             }
 
         default:

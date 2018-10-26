@@ -10,9 +10,13 @@ const Member = {
     },
 
     isLogged () {
-        if (localStorage.getItem('memberToken')) {
-            return axios.get(url + 'is_logged')
-                .then(res => true)
+        const memberToken = localStorage.getItem('memberToken')
+        if (memberToken) {
+            return axios.get(url + 'is_logged' + '?memberToken=' + memberToken)
+                .then(res => {
+                    console.log(res)
+                    return true
+                })
                 .catch(err => false)
         } else {
             return false

@@ -14,8 +14,7 @@ class App extends Component {
     }
 
     componentDidMount () {
-        console.log('Mounted !')
-        //this.props.onIsMemberLogged()
+        this.props.onIsMemberLogged()
     }
 
     /* If the user is logged we choose the default component with all components of the application
