@@ -1,30 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { styles } from './Style'
 import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
-import Button from "@material-ui/core/Button/Button";
+import Modal from '@material-ui/core/Modal';
 
 
 class Cardboard extends React.Component {
-    state = { expanded: false };
+    state = {
+        open: false,
+    };
 
-    handleDisplayClick = () => {
-        console.log("On click");
+    rand = () =>{
+        return Math.round(Math.random() * 20) - 10;
+    };
+
+    getModalStyle = () =>{
+        const top = 50 + this.rand();
+        const left = 50 + this.rand();
+
+        return {
+            top: `${top}%`,
+            left: `${left}%`,
+            transform: `translate(-${top}%, -${left}%)`,
+        };
+    };
+
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
     };
 
     render() {
@@ -32,7 +42,22 @@ class Cardboard extends React.Component {
 
         return (
             <Card className={classes.card}>
-                <CardActionArea onClick = {this.handleDisplayClick}>
+                <CardActionArea onClick={this.handleOpen}>
+                    <Modal
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                    >
+                        <div style={this.getModalStyle()} className={classes.paper}>
+                            <Typography variant="h6" id="modal-title">
+                                Text in a modal
+                            </Typography>
+                            <Typography variant="subtitle1" id="simple-modal-description">
+                                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                            </Typography>
+                        </div>
+                    </Modal>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             Lizard
