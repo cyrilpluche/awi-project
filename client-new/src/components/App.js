@@ -1,21 +1,65 @@
 import React, { Component } from 'react';
 import Dashboard from './dashboard/Dashboard'
-import {  Router, Route, Switch } from 'react-router-dom'
+import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
+import Navbar from "./layout/navbar/Navbar"
 import _helper from '../helpers'
+import connect from "react-redux/es/connect/connect";
+import _action from "../actions";
 
 class App extends Component {
-  render() {
-    return (
-      <Router history={_helper.History}>
-        <Switch>
-            <Route exact path="/" component={Signin}/>
-            <Route exact path="/home" component={Dashboard}/>
-            <Route component={Signin}/>
-        </Switch>
-      </Router>
-    );
-  }
+    constructor (props) {
+        super(props)
+        this.routesAuthorization = this.routesAuthorization.bind(this);
+    }
+
+    componentDidMount () {
+        console.log('Mounted !')
+        //this.props.onIsMemberLogged()
+    }
+
+    /* If the user is logged we choose the default component with all components of the application
+     * Else we display only the login component
+     */
+    routesAuthorization () {
+        if (this.props.isLogged) {
+            return this.DefaultContainer
+        } else {
+            return this.LoginContainer
+        }
+    }
+
+    LoginContainer = () => (
+        <div className="container">
+            <Route path="/" component={Signin} />
+        </div>
+    )
+
+    DefaultContainer = () => (
+        <div className="container">
+            <Navbar/>
+            <Route path="/home" component={Dashboard}/>
+        </div>
+    )
+
+    render() {
+        return (
+            <Router history={_helper.History}>
+                <Switch>
+                    <Route path="/" component={this.routesAuthorization()}/>
+                </Switch>
+            </Router>
+        );
+    }
+
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    isLogged: state.signin.isLogged
+})
+
+const mapDispatchToProps = {
+    onIsMemberLogged: _action.signinAction.isMemberLogged
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -23,8 +23,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
+// API Sequelize
 app.use('/api', indexRouter);
 app.use('/api', end.sendRes);
+
+// GraphQL
+app.use('/graphql', require('./routes/GraphQL'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

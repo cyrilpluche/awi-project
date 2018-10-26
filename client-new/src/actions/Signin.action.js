@@ -4,7 +4,8 @@ import _helper from '../helpers';
 const labels = {
     LOGIN : "LOGIN",
     ERROR : "ERROR",
-    CREATE_USER : "CREATE_USER"
+    CREATE_USER : "CREATE_USER",
+    IS_LOGGED: "IS_LOGGED"
 }
 
 const signSuccess = token => ({
@@ -18,28 +19,45 @@ const signError = {
 }
 
 function signin (memberEmail, memberPassword) {
-
     const body = {
         memberEmail: memberEmail,
         memberPassword: memberPassword
     }
-
     return dispatch => {
-
         _service.Member.signIn(body)
             .then(res => {
-                localStorage.setItem('token', res.token)
+                console.log(res)
+                localStorage.setItem('memberToken', res.memberToken)
                 _helper.History.push('/home');
                 dispatch(signSuccess(res));
             })
             .catch((err) => {
                 dispatch(signError)
             });
+    }
+}
 
+function isMemberLogged () {
+    return (dispatch) => {
+        if (localStorage.getItem('memberToken')) {
+            _service.Member.isLogged()
+                .then(res => {
+                    dispatch({
+                        type: labels.IS_LOGGED,
+                        payload: res
+                    })
+                })
+        } else {
+            dispatch({
+                type: labels.IS_LOGGED,
+                payload: false
+            })
+        }
     }
 }
 
 export const signinAction = {
     labels,
-    signin
+    signin,
+    isMemberLogged
 }

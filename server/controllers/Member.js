@@ -144,7 +144,7 @@ module.exports = {
      *  return: A new token of the user.
      */
     sign(req, res, next) {
-        req.body.result = {token: req.body.memberToken}
+        req.body.result = {memberToken: req.body.memberToken}
         next()
     }
 

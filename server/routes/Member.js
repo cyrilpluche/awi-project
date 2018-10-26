@@ -3,10 +3,10 @@ var router = express.Router();
 var mw = require('../middlewares');
 
 var memberController = require('../controllers').Member;
-var end = require('../controllers').End;
 
 router.get('/find_all', mw.Token.verifyToken, memberController.findAll);
 router.get('/find_one/:id', mw.Token.verifyToken, memberController.findOne);
+router.get('/is_logged', mw.Token.verifyToken);
 
 router.post('/create', mw.Token.verifyToken, memberController.create);
 router.post('/sign_up', memberController.create, mw.Token.generateToken, mw.Email.sendEmail, memberController.sign);

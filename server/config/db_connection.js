@@ -8,7 +8,7 @@ var sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, proc
 sequelize
     .authenticate()
     .then(() => {
-        console.log('Connection has been established successfully.\n');
+        console.log('\x1b[32m', 'Connection has been established successfully.\n', '\x1b[0m');
     })
     .catch(err => {
         console.error('Unable to connect to the database:\n', err);
