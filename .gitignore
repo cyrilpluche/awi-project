@@ -1,0 +1,6 @@
+
+\.env
+
+server/node_modules/
+
+\.idea/workspace\.xml
