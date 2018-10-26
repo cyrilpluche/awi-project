@@ -25,12 +25,12 @@ function signup (memberFirstname, memberLastname, memberPseudo, memberEmail, mem
         memberLastname: memberLastname,
         memberPseudo: memberEmail,
         memberEmail: memberEmail,
-        memberPassword: memberPassword
+        memberPassword: memberPassword,
+        memberStatus: 0
     }
     return dispatch => {
         _service.Member.signUp(body)
             .then(res => {
-                console.log(res)
                 localStorage.setItem('memberToken', res.memberToken)
                 _helper.History.push('/home');
                 dispatch(signSuccess(res));
@@ -60,7 +60,7 @@ function isMemberLogged () {
     }
 }
 
-export const signinAction = {
+export const signupAction = {
     labels,
     signup,
     isMemberLogged

@@ -10,6 +10,7 @@ const Member = {
     },
 
     signUp (body) {
+        console.log(body)
         return axios.post(url + 'sign_up', body).then(res => res.data)
     },
 

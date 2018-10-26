@@ -163,7 +163,7 @@ Signup.propTypes = {
 }
 
 const mapDispatchToProps = {
-    onAdd : _action.signinAction.signup
+    onAdd : _action.signupAction.signup
 }
 
 export default connect(null, mapDispatchToProps)(withStyles(style)(Signup));
