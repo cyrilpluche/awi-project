@@ -10,9 +10,14 @@ import Modal from '@material-ui/core/Modal';
 
 
 class Cardboard extends React.Component {
-    state = {
-        open: false,
-    };
+    constructor (props) {
+        super(props)
+
+        this.state = {
+            open: false,
+        };
+    }
+
 
     rand = () =>{
         return Math.round(Math.random() * 20) - 10;
@@ -59,10 +64,9 @@ class Cardboard extends React.Component {
             </Modal>
             <Card className={classes.card} >
                 <CardActionArea onClick={this.handleOpen}>
-
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Lizard
+                            {this.props.content.title}
                         </Typography>
                         <Typography component="p">
                             Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging

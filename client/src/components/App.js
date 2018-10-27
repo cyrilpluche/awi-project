@@ -3,7 +3,7 @@ import Dashboard from './dashboard/Dashboard'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
-import Card from "./card/Card";
+import Cards from "./card/Cards";
 import Profile from './profile/Profile'
 import Navbar from "./layout/navbar/Navbar"
 import _helper from '../helpers'
@@ -39,7 +39,7 @@ class App extends Component {
         <div className="container">
             <Route exact path="/" component={Signin} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/card" component={Card} />
+            <Route exact path="/card" component={Cards} />
         </div>
     )
 
