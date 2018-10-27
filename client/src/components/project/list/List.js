@@ -4,10 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-
 import { styles } from './Style'
-
-  
 
 
 class List extends Component{
@@ -27,13 +24,15 @@ class List extends Component{
                         <Button className={classes.button} variant="fab" mini  aria-label="Add">
                             <AddIcon />
                         </Button>
-                        <Droppable droppableId={this.props.list.listId}>
+                        <Droppable droppableId={this.props.list.listId} type="CARD">
                             {(provided) =>(
                                     <div 
                                     ref={provided.innerRef} 
-                                    {...provided.droppableProps}>
+                                    {...provided.droppableProps}
+                                    className={classes.dropSpace}>
                                         {list.listContent.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
                                     {provided.placeholder}
+                                    
                                     </div>
                             )}
                         </Droppable>

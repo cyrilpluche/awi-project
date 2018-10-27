@@ -33,5 +33,8 @@ export const styles = theme => ({
     },
     button:{
         marginTop:`5px`
+    },
+    dropSpace:{
+        minHeight:`100px`
     }
 });
