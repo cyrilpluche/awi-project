@@ -71,7 +71,7 @@ class Navbar extends React.Component {
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={isMenuOpen}
                 style={{ textDecoration: 'none' }}
-
+                onClose={this.handleMenuClose}
             >
                 <MenuItem onClick={this.handleMenuClose}><Link to='/account'>Profile</Link></MenuItem>
                 <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>

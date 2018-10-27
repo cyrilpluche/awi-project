@@ -36,22 +36,28 @@ class App extends Component {
 
     LoginContainer = () => (
         <div className="container">
-            <Route exact path="/" component={Signin} />
-            <Route exact path="/signup" component={Signup} />
+            <Switch>
+                <Route exact path="/login" component={Signin} />
+                <Route exact path="/signup" component={Signup} />
+                <Route path='*' render={() => <Redirect to="/login" />}/>
+            </Switch>
         </div>
     )
 
     LoaderPageContainer = () => (
         <div className="container">
-            <Route path="/" component={LoaderPage} />
+            <Route component={LoaderPage} />
         </div>
     )
 
     DefaultContainer = () => (
         <div className="container">
             <Navbar/>
-            <Route exact path="/home" component={Dashboard}/>
-            <Route exact path="/account" component={Profile}/>
+            <Switch>
+                <Route path="/home" component={Dashboard}/>
+                <Route path="/account" component={Profile}/>
+                <Route path='*' render={() => <Redirect to="/home" />}/>
+            </Switch>
         </div>
     )
     // <Route path="/" render={() => <Redirect to="/home" />} />
@@ -60,7 +66,7 @@ class App extends Component {
         return (
             <Router history={_helper.History}>
                 <Switch>
-                    <Route path="/" component={this.routesAuthorization()}/>
+                    <Route component={this.routesAuthorization()}/>
                 </Switch>
             </Router>
         );
