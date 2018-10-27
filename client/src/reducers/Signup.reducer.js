@@ -20,12 +20,6 @@ export function signup (state = initialState, action){
                 msgError: action.payload
             }
 
-        case labels.IS_LOGGED:
-            return {
-                ...state,
-                isLogged: action.payload
-            }
-
         default:
             return state
     }

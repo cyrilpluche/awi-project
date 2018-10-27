@@ -4,6 +4,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 export const style = theme => ({
     root: {
         width: '100%',
+        marginBottom: theme.spacing.unit * 4
     },
     grow: {
         flexGrow: 1,

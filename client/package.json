@@ -10,7 +10,6 @@
     "icons": "^1.0.0",
     "material-icons-react": "^1.0.4",
     "react": "^16.6.0",
-    "react-beautiful-dnd": "^9.0.2",
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",

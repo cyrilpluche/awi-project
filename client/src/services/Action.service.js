@@ -1,0 +1,22 @@
+import axios from 'axios';
+import helper from '../helpers'
+
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
+
+const url = 'http://localhost:4200/api/action/'
+
+const Action = {
+
+    getAll () {
+        console.log('Go')
+        return axios.get(url + 'find_all').then(res => res.data)
+    },
+
+    get (object) {
+        var where = helper.Request.urlFromObject(object)
+        return axios.get(url + 'find_one' + where).then(res => res.data)
+    }
+
+}
+
+export default Action

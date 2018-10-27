@@ -1,8 +1,10 @@
-import _service from '../services'
 import _helper from '../helpers';
+import _service from "../services";
 
 const labels = {
-    LOG_OFF : "LOG_OFF"
+    LOG_OFF : "LOG_OFF",
+    GET_ALL_NOTIFICATIONS: "GET_ALL_NOTIFICATIONS",
+    GET_ALL_NOTIFICATIONS_ERROR: "GET_ALL_NOTIFICATIONS_ERROR"
 }
 
 function logOff () {
@@ -15,7 +17,25 @@ function logOff () {
     }
 }
 
+function getAllNotifications () {
+    return dispatch => {
+        _service.Action.getAll()
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_NOTIFICATIONS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.GET_ALL_NOTIFICATIONS_ERROR
+                })
+            });
+    }
+}
+
 export const navbarAction = {
     labels,
-    logOff
+    logOff,
+    getAllNotifications
 }
