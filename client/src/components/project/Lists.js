@@ -1,49 +1,53 @@
 import React, { Component } from 'react';
 import List from './List'
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable } from 'react-beautiful-dnd';
 
 const liststodos = [
-    {   listId:1, 
+    {   listId:"list1", 
         listTitle: "To do",
         listContent:[
-        {cardId : 1, cardContent:"Contenu de la card1 dans lalist1"},
-        {cardId : 2, cardContent:"Contenu de la card2 dans lalist1"}
+        {cardId : "card1", cardContent:"Contenu de la card1 dans lalist1"},
+        {cardId : "card2", cardContent:"Contenu de la card2 dans lalist1"},
+        {cardId : "card2", cardContent:"Contenu de la card2 dans lalist1"},
         ]
     },
-    {
-        listId:2, 
-        listTitle: "In progress",
+    {   listId:"list3", 
+        listTitle: "To do",
         listContent:[
-        {cardId : 3, cardContent:"Contenu de la card1 dans lalist2"},
-        {cardId : 4, cardContent:"Contenu de la card2 dans lalist2"}
-        ]  
-    }]
+        {cardId : "card5", cardContent:"Contenu de la card1 dans lalist1"},
+        {cardId : "card6", cardContent:"Contenu de la card2 dans lalist1"}
+        ]
+    },
+]
 
 
 const styles = theme => ({
-        progress: {
+        listArea: {
             margin: theme.spacing.unit * 2,
             display: 'flex',
+            padding:theme.spacing.unit * 2,           
+            whiteSpace: `nowrap`
+            
             
         },
     });
-
+    
 class Lists extends Component {
     
     render() {
         const { classes } = this.props;
         return (
-            <Droppable droppableId="allList" direction="horizontal">
+            <Droppable droppableId="allList" direction="horizontal" type="LISTS">
                 {(provided) =>(
-                    <div className={classes.progress}
+                    <div className={classes.listArea}
                         ref={provided.innerRef} 
                         {...provided.droppableProps}>
                         {liststodos.map((list, index) => 
                                         <List key={list.listId} list={list} index={index}></List>
                                     )}
                         {provided.placeholder}
+                        <button>Add a list</button>
                     </div>
                 )}
                 

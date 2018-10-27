@@ -12,6 +12,8 @@ const styles = theme => ({
             progress: {
                 margin: theme.spacing.unit * 2,
                 border:`1px solid blue`,
+                backgroundColor:`white`,
+                minHeight:`100px`
                 
             },
             titles: {
@@ -21,7 +23,20 @@ const styles = theme => ({
         });
 
 class List extends Component{
-
+    constructor(props){
+        super(props)
+        this.state = {
+            cards : this.props.list.listContent
+        }
+    }
+    addCard(){
+        const oldCards = this.state.cards
+        console.log(oldCards)
+        const newCard = {cardId:oldCards.size+1, cardContent:"Je suis un carte ajouté"}
+        const newCards = Object.assign({newCard}, oldCards)
+        console.log(newCards)
+        this.setState({[cards]:newCards})
+    }
     render() {
         const {classes} = this.props
         return (
@@ -29,14 +44,23 @@ class List extends Component{
                 {(provided) =>(
                     <div className={classes.progress} 
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
+                        
                         ref={provided.innerRef}
                     >
-                        <h5 className={classes.titles}>{this.props.list.listTitle}</h5>
-                        {this.props.list.listContent.map(card =><Card key={card.cardId} card={card}></Card> ) }
+                        <h5 className={classes.titles} {...provided.dragHandleProps}>{this.props.list.listTitle}</h5>
+                        <Droppable droppableId={this.props.list.listId}>
+                            {(provided) =>(
+                                    <div 
+                                    ref={provided.innerRef} 
+                                    {...provided.droppableProps}>
+                                        {this.state.cards.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                    {provided.placeholder}
+                                    </div>
+                            )}
+                        </Droppable>
+                        <button onClick={this.addCard.bind(this)}>Add a card</button>
                     </div>
-                )}
-                 
+                )}           
             </Draggable>   
         )
     }
