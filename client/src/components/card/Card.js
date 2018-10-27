@@ -9,6 +9,8 @@ import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
 import Modal from '@material-ui/core/Modal';
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Button from "@material-ui/core/Button/Button";
+import AddIcon from '@material-ui/icons/Add';
+import TextField from "@material-ui/core/TextField/TextField";
 
 
 class Cardboard extends React.Component {
@@ -49,11 +51,35 @@ class Cardboard extends React.Component {
             >
                 <div style={this.getModalStyle()} className={classes.paper}>
                     <Typography variant="h5" id="modal-title">
-                        Ajout au github
+                        Clean the github
                     </Typography>
-                    <div className={classes.rowModal}>
-                        <div><p>member</p></div>
-                        <div><p>Label</p></div>
+                    <div>
+                        <h4>Members</h4>
+                        <div className={classes.row}>
+                            <Avatar className={classes.marginCard}>H</Avatar>
+                            <Button variant="fab" aria-label="Add" className={classes.sizeButtonModal}><AddIcon/></Button>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Labels</h4>
+                    </div>
+                    <div>
+                        <h4>Description</h4>
+                        <TextField
+                            placeholder="Add your description here ..."
+                            multiline={true}
+                            rows={2}
+                            rowsMax={4}
+                        />
+                    </div>
+                    <div>
+                        <h4>Add comment</h4>
+                        <TextField
+                            placeholder="Add your comment here ..."
+                            multiline={true}
+                            rows={2}
+                            rowsMax={4}
+                        />
                     </div>
                 </div>
             </Modal>
@@ -61,13 +87,13 @@ class Cardboard extends React.Component {
                     <CardActionArea onClick={this.handleOpen}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
-                                Ajout au github
+                                Clean the github
                             </Typography>
                             <Typography component="p">
-                                Gérer tous les merges sans beugs
+                                By merging all branches update the master branch
                             </Typography>
-                            <div className={classes.row}><Avatar className={classes.avatar}>H</Avatar></div>
-                            <Button variant="outlined" color="secondary" className={classes.dateCard}>10/01</Button>
+                            <div className={classes.rowRight}><Avatar className={classes.marginCard}>H</Avatar></div>
+                            <Button variant="outlined" color="secondary" className={classes.marginCard}>10/01</Button>
                         </CardContent>
                     </CardActionArea>
                 </Card>

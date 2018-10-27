@@ -30,19 +30,24 @@ export const styles = theme => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
     },
-    avatar: {
-        margin: 5
-    },
-    dateCard: {
+    marginCard: {
         margin: 5
     },
     row: {
         display: 'flex',
         justifyContent: 'right',
+        margin: 5
+    },
+    rowRight: {
+        display: 'flex',
+        justifyContent: 'right',
         float: 'right'
     },
-    rowModal: {
-        display: 'flex',
-        margin: 5
+    sizeButtonModal: {
+        margin: 5,
+        maxWidth: '40px',
+        maxHeight: '40px',
+        minWidth: '40px',
+        minHeight: '40px'
     }
 });
