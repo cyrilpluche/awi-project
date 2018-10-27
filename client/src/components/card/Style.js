@@ -31,10 +31,18 @@ export const styles = theme => ({
         padding: theme.spacing.unit * 4,
     },
     avatar: {
-        margin: 5,
+        margin: 5
+    },
+    dateCard: {
+        margin: 5
     },
     row: {
         display: 'flex',
-        justifyContent: 'right'
+        justifyContent: 'right',
+        float: 'right'
+    },
+    rowModal: {
+        display: 'flex',
+        margin: 5
     }
 });
