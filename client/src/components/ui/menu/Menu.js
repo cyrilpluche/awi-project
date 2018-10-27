@@ -6,11 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import connect from "react-redux/es/connect/connect";
-import _action from "../../../actions";
 import {Link} from "react-router-dom";
 
 const styles = theme => ({
@@ -19,7 +16,7 @@ const styles = theme => ({
             backgroundColor: theme.palette.primary.main,
             '& $primary, & $icon': {
                 color: theme.palette.common.white
-            },
+            }
         },
     },
     primary: {},
@@ -52,7 +49,6 @@ class Menu extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
         this.buildLinks()
         return (
             <Paper>
