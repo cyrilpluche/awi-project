@@ -1,4 +1,5 @@
 import axios from 'axios';
+import helper from "../helpers";
 
 const url = 'http://localhost:4200/api/member/'
 
@@ -9,10 +10,10 @@ const Member = {
     },
 
     signUp (body) {
-        console.log(body)
         return axios.post(url + 'sign_up', body).then(res => res.data)
     },
 
+    /* Retrieve member's token and check if he is connected are not */
     isLogged () {
         const memberToken = localStorage.getItem('memberToken')
 
@@ -34,8 +35,12 @@ const Member = {
         } else {
             return { isLogged: false }
         }
-    }
+    },
 
+    get (object) {
+        var where = helper.Request.urlFromObject(object)
+        return axios.get(url + 'find_one' + where).then(res => res.data)
+    }
 }
 
 export default Member

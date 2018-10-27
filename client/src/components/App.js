@@ -16,7 +16,7 @@ class App extends Component {
         this.routesAuthorization = this.routesAuthorization.bind(this);
     }
 
-    componentDidMount () {
+    componentWillMount () {
         this.props.onIsMemberLogged()
     }
 
@@ -71,7 +71,6 @@ class App extends Component {
             </Router>
         );
     }
-
 }
 
 const mapStateToProps = (state) => ({
