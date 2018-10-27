@@ -2,37 +2,32 @@ import React, { Component } from 'react';
 import List from './List'
 import { withStyles } from '@material-ui/core/styles';
 import { Droppable } from 'react-beautiful-dnd';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
+import { styles } from './Style'
 
 const liststodos = [
     {   listId:"list1", 
         listTitle: "To do",
         listContent:[
-        {cardId : "card1", cardContent:"Contenu de la card1 dans lalist1"},
-        {cardId : "card2", cardContent:"Contenu de la card2 dans lalist1"},
-        {cardId : "card2", cardContent:"Contenu de la card2 dans lalist1"},
+            {cardId : "card1", cardContent:"Contenu de la card1 dans lalist1"},
+            {cardId : "card2", cardContent:"Contenu de la card2 dans lalist1zaezaeaeaeaeze"},
+            {cardId : "card3", cardContent:"Contenu de la card2 dans lalist1"},
+        
         ]
     },
     {   listId:"list3", 
         listTitle: "To do",
         listContent:[
-        {cardId : "card5", cardContent:"Contenu de la card1 dans lalist1"},
-        {cardId : "card6", cardContent:"Contenu de la card2 dans lalist1"}
+            {cardId : "card5", cardContent:"Contenu de la card1 dans lalist1"},
+            {cardId : "card6", cardContent:"Contenu de la card2 dans lalist1"}
         ]
     },
 ]
 
 
-const styles = theme => ({
-        listArea: {
-            margin: theme.spacing.unit * 2,
-            display: 'flex',
-            padding:theme.spacing.unit * 2,           
-            whiteSpace: `nowrap`
-            
-            
-        },
-    });
-    
+
+
 class Lists extends Component {
     
     render() {
@@ -47,7 +42,9 @@ class Lists extends Component {
                                         <List key={list.listId} list={list} index={index}></List>
                                     )}
                         {provided.placeholder}
-                        <button>Add a list</button>
+                        <Button variant="fab"  aria-label="Add" className={classes.buttonList}>
+                            <AddIcon />
+                        </Button>
                     </div>
                 )}
                 

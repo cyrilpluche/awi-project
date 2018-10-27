@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { DragDropContext} from 'react-beautiful-dnd';
-import Lists from './Lists'
+import Lists from './list/Lists'
 
 import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+    projectBody: {
+        fontFamily : `"Roboto", "Helvetica", "Arial", sans-serif`
+    },
+});
 
 
 
@@ -11,11 +17,14 @@ class Project extends Component {
         //Todo
     }
     render() {  
+        const {classes} = this.props
         return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
-            <Lists ></Lists>
-            </DragDropContext>
-           
+            <div className={classes.projectBody}>
+                
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Lists ></Lists>
+                </DragDropContext>
+            </div>
         )
     }
 }
@@ -23,4 +32,4 @@ class Project extends Component {
 
 
 
-export default Project
+export default withStyles(styles)(Project)
