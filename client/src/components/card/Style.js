@@ -1,8 +1,7 @@
-import red from "@material-ui/core/colors/red";
-
 export const styles = theme => ({
     card: {
-        maxWidth: 400,
+        maxWidth: 300,
+        margin: 5
     },
     media: {
         height: 0,
@@ -24,14 +23,18 @@ export const styles = theme => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    avatar: {
-        backgroundColor: red[500],
-    },
     paper: {
         position: 'absolute',
         width: theme.spacing.unit * 50,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
+    },
+    avatar: {
+        margin: 5,
+    },
+    row: {
+        display: 'flex',
+        justifyContent: 'right'
     }
 });

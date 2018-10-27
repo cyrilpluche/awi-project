@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { styles } from './Style'
 import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
 import Modal from '@material-ui/core/Modal';
+import Avatar from "@material-ui/core/Avatar/Avatar";
 
 
 class Cardboard extends React.Component {
@@ -47,7 +48,7 @@ class Cardboard extends React.Component {
 
         return (
             <div>
-            <Modal
+                <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 open={this.state.open}
@@ -62,19 +63,22 @@ class Cardboard extends React.Component {
                     </Typography>
                 </div>
             </Modal>
-            <Card className={classes.card} >
-                <CardActionArea onClick={this.handleOpen}>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {this.props.content.title}
-                        </Typography>
-                        <Typography component="p">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                            across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+                <Card className={classes.card} >
+                    <CardActionArea onClick={this.handleOpen}>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                Ajout au github
+                            </Typography>
+                            <Typography component="p">
+                                Gérer tous les merges sans beugs
+                            </Typography>
+                            <div className={classes.row}>
+                                <p>10/01</p>
+                                <Avatar className={classes.avatar} size={20}>H</Avatar>
+                            </div>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
             </div>
         );
     }
@@ -85,6 +89,4 @@ Cardboard.propTypes = {
 };
 
 // We need an intermediary variable for handling the recursive nesting.
-const CardboardWrapped = withStyles(styles)(Cardboard);
-
-export default CardboardWrapped;
+export default withStyles(styles)(Cardboard);
