@@ -6,6 +6,7 @@ const labels = {
     ADD : "ADD",
     ERROR : "ERROR",
     CREATE_USER : "CREATE_USER",
+    IS_LOGGED: "IS_LOGGED"
 }
 
 const signSuccess = token => ({
@@ -39,7 +40,27 @@ function signup (memberFirstname, memberLastname, memberPseudo, memberEmail, mem
     }
 }
 
+function isMemberLogged () {
+    return (dispatch) => {
+        if (localStorage.getItem('memberToken')) {
+            _service.Member.isLogged()
+                .then(res => {
+                    dispatch({
+                        type: labels.IS_LOGGED,
+                        payload: res
+                    })
+                })
+        } else {
+            dispatch({
+                type: labels.IS_LOGGED,
+                payload: false
+            })
+        }
+    }
+}
+
 export const signupAction = {
     labels,
-    signup
+    signup,
+    isMemberLogged
 }

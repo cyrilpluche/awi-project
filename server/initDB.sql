@@ -88,7 +88,6 @@ CREATE TABLE public.Permission(
 CREATE TABLE public.Action(
 	action_id            SERIAL NOT NULL ,
 	action_type          INT  NOT NULL ,
-	action_title         VARCHAR (250) NOT NULL,
 	action_description   VARCHAR (250) NOT NULL ,
 	member_id            INT  NOT NULL  ,
 	CONSTRAINT Action_PK PRIMARY KEY (action_id)

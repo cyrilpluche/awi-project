@@ -1,14 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Menu from '../ui/menu/Menu'
+import _action from '../../actions'
 import { Grid } from "@material-ui/core";
 import {Route, Router, Switch} from "react-router-dom";
 import Dashboard from '../dashboard/Dashboard'
 import Signin from "../signin/Signin";
+import _helper from "../../helpers";
 import {createBrowserHistory} from "history";
 const History = createBrowserHistory();
 
 class Profile extends React.Component {
+    constructor (props) {
+        super(props)
+    }
 
     render() {
 
