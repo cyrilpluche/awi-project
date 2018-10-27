@@ -9,6 +9,7 @@ import _helper from '../helpers'
 import connect from "react-redux/es/connect/connect";
 import _action from "../actions";
 import LoaderPage from "./loaderPage/LoaderPage";
+import Project from './project/Project'
 
 class App extends Component {
     constructor (props) {
@@ -52,6 +53,7 @@ class App extends Component {
             <Navbar/>
             <Route exact path="/home" component={Dashboard}/>
             <Route exact path="/account" component={Profile}/>
+            <Route exact path="/account" component={Project}/>
         </div>
     )
     // <Route path="/" render={() => <Redirect to="/home" />} />
