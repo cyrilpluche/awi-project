@@ -11,6 +11,9 @@ import Avatar from "@material-ui/core/Avatar/Avatar";
 import Button from "@material-ui/core/Button/Button";
 import AddIcon from '@material-ui/icons/Add';
 import TextField from "@material-ui/core/TextField/TextField";
+import Paper from "@material-ui/core/Paper/Paper";
+import MenuList from "@material-ui/core/MenuList/MenuList";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 
 
 class Cardboard extends React.Component {
@@ -44,44 +47,51 @@ class Cardboard extends React.Component {
         return (
             <div>
                 <Modal
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
                 open={this.state.open}
                 onClose={this.handleClose}
             >
-                <div style={this.getModalStyle()} className={classes.paper}>
-                    <Typography variant="h5" id="modal-title">
-                        Clean the github
-                    </Typography>
-                    <div>
-                        <h4>Members</h4>
-                        <div className={classes.row}>
-                            <Avatar className={classes.marginCard}>H</Avatar>
-                            <Button variant="fab" aria-label="Add" className={classes.sizeButtonModal}><AddIcon/></Button>
+                    <div style={this.getModalStyle()} className={classes.paper}>
+                        <div className={classes.column} style={{ borderRight: '0.1em solid grey'}}>
+                            <Typography variant="h5" id="modal-title">
+                                Clean the github
+                            </Typography>
+                            <div>
+                                <h4>Members</h4>
+                                <div className={classes.row}>
+                                    <Avatar className={classes.marginCard}>H</Avatar>
+                                    <Button variant="fab" aria-label="Add" className={classes.sizeButtonModal}><AddIcon/></Button>
+                                </div>
+                                </div>
+                            <div>
+                                <h4>Labels</h4>
+                            </div>
+                            <div>
+                                <h4>Description</h4>
+                                <TextField className={classes.row}
+                                           placeholder="Add your description here ..."
+                                           multiline={true}
+                                           rows={2}
+                                           rowsMax={4}
+                                />
+                            </div>
+                            <div>
+                                <h4>Add comment</h4>
+                                <TextField className={classes.row}
+                                           placeholder="Add your comment here ..."
+                                           multiline={true}
+                                           rows={2}
+                                           rowsMax={4}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <MenuList>
+                                <MenuItem>Profile</MenuItem>
+                                <MenuItem>My account</MenuItem>
+                                <MenuItem>Logout</MenuItem>
+                            </MenuList>
                         </div>
                     </div>
-                    <div>
-                        <h4>Labels</h4>
-                    </div>
-                    <div>
-                        <h4>Description</h4>
-                        <TextField
-                            placeholder="Add your description here ..."
-                            multiline={true}
-                            rows={2}
-                            rowsMax={4}
-                        />
-                    </div>
-                    <div>
-                        <h4>Add comment</h4>
-                        <TextField
-                            placeholder="Add your comment here ..."
-                            multiline={true}
-                            rows={2}
-                            rowsMax={4}
-                        />
-                    </div>
-                </div>
             </Modal>
                 <Card className={classes.card} >
                     <CardActionArea onClick={this.handleOpen}>
