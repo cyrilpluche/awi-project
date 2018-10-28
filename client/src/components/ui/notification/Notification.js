@@ -10,10 +10,16 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import _action from "../../../actions";
 import connect from "react-redux/es/connect/connect";
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import Fade from "@material-ui/core/Fade/Fade";
 
 const styles = {
     card: {
-        maxWidth: '100%',
+        width: '100%',
+    },
+    cardUnread: {
+        width: '100%',
+        backgroundColor: '#e7ecff'
     },
     bullet: {
         display: 'inline-block',
@@ -24,8 +30,12 @@ const styles = {
         fontSize: 14,
     },
     pos: {
-        marginBottom: 12,
+        paddingBottom: 0,
     },
+    content: {
+        paddingTop: 10,
+        paddingBottom: 0,
+    }
 };
 
 class Notification extends React.Component {
@@ -45,7 +55,6 @@ class Notification extends React.Component {
 
         this.state = {
             isRead: this.props.notification.actionStatus === 1,
-            label: 'mark as read',
             updatedNotifications: []
         }
     }
@@ -65,14 +74,27 @@ class Notification extends React.Component {
         this.props.updateNotification(item)
     };
 
+    computeBackground = () => {
+        const { classes } = this.props;
+        if (this.props.notification.actionStatus === 1) return classes.card
+        else return classes.cardUnread
+    }
 
     render() {
         const { classes } = this.props;
         const notification = this.props.notification
 
         return (
-            <Card className={classes.card}>
-                <CardContent>
+            <Card className={this.computeBackground()}>
+                <CardContent className={classes.content}>
+                    <Typography align='right' variant="caption" className={classes.pos}>
+                        {notification.actionDateCreation}
+                    </Typography>
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title="Mark as read"
+                        placement="top-start">
                         <FormControlLabel
                             control={
                                 <Checkbox
@@ -84,7 +106,8 @@ class Notification extends React.Component {
                             }
                             label={notification.actionTitle}
                         />
-                        <Typography className={classes.pos} color="textSecondary">
+                    </Tooltip>
+                    <Typography className={classes.pos} color="textSecondary">
                         {notification.actionDescription}
                     </Typography>
                 </CardContent>

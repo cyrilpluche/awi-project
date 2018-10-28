@@ -11,7 +11,7 @@ const styles = theme => ({
     primary: {},
     icon: {},
     list: {
-        width: 250,
+        width: 300,
     },
     fullList: {
         width: 'auto',

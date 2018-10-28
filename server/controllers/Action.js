@@ -36,12 +36,12 @@ module.exports = {
 
     /*  localhost:4200/api/action/find_all --- ?actionTitle=title... (optional)
      *
-     *  return: Array of Action objects with given attributes.
+     *  return: Array of Action objects with given attributes sorted by actionDateCreation.
      */
     findAll(req, res, next) {
         Action
             .findAll({
-                order : sequelize.col('actionId'),
+                order : sequelize.col('actionDateCreation'),
                 where: req.query
             })
             .then(actions => {
@@ -165,7 +165,7 @@ module.exports = {
         }
         Action
             .findAll({
-                order : sequelize.col('actionId'),
+                order: [sequelize.literal('action_id DESC')],
                 where: condition
             })
             .then(actions => {

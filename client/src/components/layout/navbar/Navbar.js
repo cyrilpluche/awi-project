@@ -25,6 +25,9 @@ import _action from "../../../actions";
 import Drawer from "@material-ui/core/Drawer/Drawer";
 import Divider from "@material-ui/core/Divider/Divider";
 import Button from "@material-ui/core/Button/Button";
+import FormGroup from "@material-ui/core/FormGroup/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Switch from "@material-ui/core/Switch/Switch";
 
 
 class Navbar extends React.Component {
@@ -34,6 +37,8 @@ class Navbar extends React.Component {
         this.logOff = this.logOff.bind(this);
         this.updateNotification = this.updateNotification.bind(this)
         this.updateNotifications = this.updateNotifications.bind(this)
+        this.handleFilterChange = this.handleFilterChange.bind(this)
+        this.toggleDrawer = this.toggleDrawer.bind(this)
 
         this.state = {
             anchorEl: null,
@@ -57,7 +62,6 @@ class Navbar extends React.Component {
         this.setState({
             anchorEl: null
         });
-        console.log('HERE')
         this.handleMobileMenuClose();
     };
 
@@ -70,6 +74,8 @@ class Navbar extends React.Component {
     };
 
     toggleDrawer = (side, open) => () => {
+        this.setState({showOnlyUnread: this.props.notificationsUnarchived.length > 0})
+
         this.updateNotifications()
         this.setState({
             [side]: open,
@@ -92,6 +98,10 @@ class Navbar extends React.Component {
             this.state.updatedNotifications = []
         }
     }
+
+    handleFilterChange = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
 
     render() {
         const { anchorEl, mobileMoreAnchorEl } = this.state;
@@ -116,7 +126,11 @@ class Navbar extends React.Component {
         );
 
         const renderNotifications = (
-            <Drawer anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
+            <Drawer
+                anchor="right"
+                open={this.state.right}
+                onClose={this.toggleDrawer('right', false)}
+            >
                 <div
                     tabIndex={0}
                     role="button"
@@ -125,7 +139,6 @@ class Navbar extends React.Component {
                     <Button fullWidth color="primary" className={classes.button}>
                         {this.props.notificationsUnread} Notifications
                     </Button>
-
                     <Divider/>
                     <div className={classes.notificationList}>
                         <NotificationList
@@ -134,6 +147,11 @@ class Navbar extends React.Component {
                             updateNotification={this.updateNotification}
                         />
                     </div>
+                    <Divider/>
+
+                    <Button fullWidth color="primary" className={classes.button}>
+                        Filters
+                    </Button>
                 </div>
             </Drawer>
         );
@@ -242,13 +260,16 @@ Navbar.propTypes = {
 
 const mapStateToProps = (state) => ({
     notifications: state.navbar.notifications,
-    notificationsUnread: state.navbar.notificationsUnread
+    notificationsUnread: state.navbar.notificationsUnread,
+    notificationsUnarchived: state.navbar.notificationsUnarchived
+
 })
 
 const mapDispatchToProps = {
     onLogOff: _action.navbarAction.logOff,
     onGetAllNonArchivedNotifications: _action.navbarAction.getAllNonArchivedNotifications,
-    onUpdateNotifications: _action.navbarAction.updateNotifications
+    onUpdateNotifications: _action.navbarAction.updateNotifications,
+    onShowOnlyUnread: _action.notificationAction.showOnlyUnreadAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Navbar));

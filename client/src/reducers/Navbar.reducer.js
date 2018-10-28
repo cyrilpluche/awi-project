@@ -6,6 +6,7 @@ const notificationLabels = notificationAction.labels
 
 const initialState = {
     notifications: [],
+    notificationsUnarchived: [],
     notificationsUnread: 0
 };
 
@@ -15,7 +16,7 @@ export function navbar (state = initialState, action) {
             return {
                 ...state,
                 notifications: action.payload.notifications,
-                notificationsUnread: action.payload.notificationsUnread
+                notificationsUnread: action.payload.notificationsUnread,
             };
 
         case labels.GET_ALL_NOTIFICATIONS_ERROR:
@@ -26,6 +27,20 @@ export function navbar (state = initialState, action) {
                 ...state,
                 notifications: action.payload.notifications,
                 notificationsUnread: action.payload.notificationsUnread
+            };
+
+        case notificationLabels.FILTER_ONLY_UNREAD:
+            return {
+                ...state,
+                notifications: action.payload.notifications,
+                notificationsUnarchived: action.payload.notificationsUnarchived
+            };
+
+        case notificationLabels.DISABLED_FILTER:
+            return {
+                ...state,
+                notifications: action.payload.notifications,
+                notificationsUnarchived: action.payload.notificationsUnarchived
             };
 
         default:

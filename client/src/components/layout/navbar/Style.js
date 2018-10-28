@@ -88,7 +88,10 @@ export const style = theme => ({
         maxHeight: theme.spacing.unit * 50,
     },
     button: {
-        margin: theme.spacing.unit,
+        margin: 0,
+    },
+    filterRow: {
+        marginLeft: theme.spacing.unit * 3
     }
 });
 
