@@ -70,6 +70,19 @@ export const style = theme => ({
             display: 'none',
         },
     },
+    openedMenu: {
+        textDecoration: 'none',
+        marginTop: 55
+    },
+    openedNotifications: {
+        marginTop: 72
+    },
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    }
 });
 
 

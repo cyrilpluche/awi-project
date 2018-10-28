@@ -8,7 +8,6 @@ const url = 'http://localhost:4200/api/action/'
 const Action = {
 
     getAll () {
-        console.log('Go')
         return axios.get(url + 'find_all').then(res => res.data)
     },
 

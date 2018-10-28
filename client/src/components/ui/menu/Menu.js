@@ -49,7 +49,6 @@ class Menu extends React.Component {
     }
 
     render() {
-        this.buildLinks()
         return (
             <Paper>
                 <MenuList>

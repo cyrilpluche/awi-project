@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { style } from './Style'
+import NotificationList from '../../ui/notification/NotificationList'
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -21,6 +22,7 @@ import { Link } from "react-router-dom/";
 import { MuiThemeProvider } from "@material-ui/core/es/styles";
 import { Theme } from "../../ui/palette/Palette";
 import _action from "../../../actions";
+import Drawer from "@material-ui/core/Drawer/Drawer";
 
 
 class Navbar extends React.Component {
@@ -31,19 +33,34 @@ class Navbar extends React.Component {
         this.state = {
             anchorEl: null,
             mobileMoreAnchorEl: null,
+            notificationsEl: null,
+            right: false
         };
     }
 
-    componentWillMount () {
+    componentDidMount () {
         this.props.onGetAllNotifications()
     }
 
     handleProfileMenuOpen = event => {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({
+            anchorEl: event.currentTarget,
+            notificationsEl: null
+        });
+    };
+
+    handleNotificationOpen = event => {
+        this.setState({
+            notificationsEl: event.currentTarget,
+            anchorEl: null
+        });
     };
 
     handleMenuClose = () => {
-        this.setState({ anchorEl: null });
+        this.setState({
+            anchorEl: null,
+            notificationsEl: null
+        });
         this.handleMobileMenuClose();
     };
 
@@ -55,16 +72,24 @@ class Navbar extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+            [side]: open,
+        });
+    };
+
     logOff () {
         this.handleMenuClose()
         this.props.onlogOff()
     }
 
     render() {
-        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const { anchorEl, mobileMoreAnchorEl, notificationsEl } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+        const isNotificationsOpen = Boolean(notificationsEl);
+
 
         const renderMenu = (
             <Menu
@@ -72,13 +97,39 @@ class Navbar extends React.Component {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={isMenuOpen}
-                style={{ textDecoration: 'none' }}
+                className={classes.openedMenu}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleMenuClose}><Link to='/account'>Profile</Link></MenuItem>
+                <Link to='/account'><MenuItem onClick={this.handleMenuClose}>Profile</MenuItem></Link>
                 <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
                 <MenuItem onClick={this.logOff}>Log off</MenuItem>
             </Menu>
+        );
+
+        /*const renderNotifications = (
+            <Menu
+                anchorEl={notificationsEl}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={isNotificationsOpen}
+                className={classes.openedNotifications}
+                onClose={this.handleMenuClose}
+            >
+                <NotificationList notifications={this.props.notifications}/>
+            </Menu>
+        );*/
+
+        const renderNotifications = (
+            <Drawer anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('right', false)}
+                >
+
+                    <NotificationList notifications={this.props.notifications}/>
+                </div>
+            </Drawer>
         );
 
         const renderMobileMenu = (
@@ -144,7 +195,12 @@ class Navbar extends React.Component {
                                         <MailIcon />
                                     </Badge>
                                 </IconButton>
-                                <IconButton color="inherit">
+                                <IconButton
+                                    aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.toggleDrawer('right', true)}
+                                    color="inherit"
+                                >
                                     <Badge badgeContent={this.props.notifications.length} color="secondary">
                                         <NotificationsIcon />
                                     </Badge>
@@ -167,6 +223,7 @@ class Navbar extends React.Component {
                     </AppBar>
                     {renderMenu}
                     {renderMobileMenu}
+                    {renderNotifications}
                 </div>
             </MuiThemeProvider>
         );
