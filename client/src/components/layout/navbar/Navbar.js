@@ -23,6 +23,8 @@ import { MuiThemeProvider } from "@material-ui/core/es/styles";
 import { Theme } from "../../ui/palette/Palette";
 import _action from "../../../actions";
 import Drawer from "@material-ui/core/Drawer/Drawer";
+import Divider from "@material-ui/core/Divider/Divider";
+import Button from "@material-ui/core/Button/Button";
 
 
 class Navbar extends React.Component {
@@ -30,37 +32,32 @@ class Navbar extends React.Component {
     constructor (props) {
         super(props)
         this.logOff = this.logOff.bind(this);
+        this.updateNotification = this.updateNotification.bind(this)
+        this.updateNotifications = this.updateNotifications.bind(this)
+
         this.state = {
             anchorEl: null,
             mobileMoreAnchorEl: null,
-            notificationsEl: null,
-            right: false
+            right: false,
+            updatedNotifications: []
         };
     }
 
     componentDidMount () {
-        this.props.onGetAllNotifications()
+        this.props.onGetAllNonArchivedNotifications()
     }
 
     handleProfileMenuOpen = event => {
         this.setState({
-            anchorEl: event.currentTarget,
-            notificationsEl: null
-        });
-    };
-
-    handleNotificationOpen = event => {
-        this.setState({
-            notificationsEl: event.currentTarget,
-            anchorEl: null
+            anchorEl: event.currentTarget
         });
     };
 
     handleMenuClose = () => {
         this.setState({
-            anchorEl: null,
-            notificationsEl: null
+            anchorEl: null
         });
+        console.log('HERE')
         this.handleMobileMenuClose();
     };
 
@@ -73,6 +70,7 @@ class Navbar extends React.Component {
     };
 
     toggleDrawer = (side, open) => () => {
+        this.updateNotifications()
         this.setState({
             [side]: open,
         });
@@ -80,15 +78,26 @@ class Navbar extends React.Component {
 
     logOff () {
         this.handleMenuClose()
-        this.props.onlogOff()
+        this.props.onLogOff()
+    }
+
+    updateNotification (item) {
+        let index = this.state.updatedNotifications.indexOf(item)
+        if (index === -1) this.state.updatedNotifications.push(item)
+    }
+
+    updateNotifications () {
+        if (this.state.updatedNotifications.length > 0) {
+            this.props.onUpdateNotifications(this.state.updatedNotifications)
+            this.state.updatedNotifications = []
+        }
     }
 
     render() {
-        const { anchorEl, mobileMoreAnchorEl, notificationsEl } = this.state;
+        const { anchorEl, mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-        const isNotificationsOpen = Boolean(notificationsEl);
 
 
         const renderMenu = (
@@ -113,8 +122,18 @@ class Navbar extends React.Component {
                     role="button"
                     onKeyDown={this.toggleDrawer('right', false)}
                 >
+                    <Button fullWidth color="primary" className={classes.button}>
+                        {this.props.notificationsUnread} Notifications
+                    </Button>
 
-                    <NotificationList notifications={this.props.notifications}/>
+                    <Divider/>
+                    <div className={classes.notificationList}>
+                        <NotificationList
+                            notifications={this.props.notifications}
+                            notificationsUnread={this.props.notificationsUnread}
+                            updateNotification={this.updateNotification}
+                        />
+                    </div>
                 </div>
             </Drawer>
         );
@@ -188,7 +207,7 @@ class Navbar extends React.Component {
                                     onClick={this.toggleDrawer('right', true)}
                                     color="inherit"
                                 >
-                                    <Badge badgeContent={this.props.notifications.length} color="secondary">
+                                    <Badge badgeContent={this.props.notificationsUnread} color="secondary">
                                         <NotificationsIcon />
                                     </Badge>
                                 </IconButton>
@@ -222,12 +241,14 @@ Navbar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    notifications: state.navbar.notifications
+    notifications: state.navbar.notifications,
+    notificationsUnread: state.navbar.notificationsUnread
 })
 
 const mapDispatchToProps = {
     onLogOff: _action.navbarAction.logOff,
-    onGetAllNotifications: _action.navbarAction.getAllNotifications
+    onGetAllNonArchivedNotifications: _action.navbarAction.getAllNonArchivedNotifications,
+    onUpdateNotifications: _action.navbarAction.updateNotifications
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Navbar));

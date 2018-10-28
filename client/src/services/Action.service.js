@@ -7,13 +7,25 @@ const url = 'http://localhost:4200/api/action/'
 
 const Action = {
 
-    getAll () {
-        return axios.get(url + 'find_all').then(res => res.data)
+    getAll (object) {
+        var where = helper.Request.urlFromObject(object)
+        return axios.get(url + 'find_all' + where).then(res => res.data)
     },
 
     get (object) {
         var where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
+    },
+
+    getNonArchived () {
+        return axios.get(url + 'find_all_unarchived').then(res => res.data)
+    },
+
+    updateMultiple (array) {
+        let body = {actions: array}
+        return axios.put(url + 'update_multiple', body).then(res => res.data)
+        //return axios.put(url + 'update/' + array[0].actionId, array[0]).then(res => res.data)
+
     }
 
 }

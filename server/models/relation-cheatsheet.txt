@@ -2,38 +2,10 @@
 
 Action
 ------
-has many          actiononcard                             as OncardAction0Fks 
-has many          actiononlist                             as OnlistAction0Fks 
-has many          actiononproject                          as OnprojectAction0Fks 
-has many          actiononteam                             as OnteamAction0Fks 
-belongs to        member                                   as Member 
-belongs to many   card                                     as ActiononcardCards 
-belongs to many   list                                     as ActiononlistLists 
-belongs to many   project                                  as ActiononprojectProjects 
-belongs to many   team                                     as ActiononteamTeams 
-
-
-Actiononcard
-------------
-belongs to        action                                   as Action 
 belongs to        card                                     as Card 
-
-
-Actiononlist
-------------
-belongs to        action                                   as Action 
 belongs to        list                                     as List 
-
-
-Actiononproject
----------------
-belongs to        action                                   as Action 
+belongs to        member                                   as Member 
 belongs to        project                                  as Project 
-
-
-Actiononteam
-------------
-belongs to        action                                   as Action 
 belongs to        team                                     as Team 
 
 
@@ -44,15 +16,15 @@ belongs to        card                                     as Card
 
 Card
 ----
-has many          actiononcard                             as ActiononcardCard1Fks 
-has many          attachment                               as AttachmentCard0Fks 
-has many          card                                     as Card1Fks 
-has many          cardhaslabel                             as HaslabelCard0Fks 
-has many          task                                     as TaskCard0Fks 
-belongs to        card                                     as RelatedCardIdIsthefather 
+has many          action                                   as ActionCardFks 
+has many          attachment                               as AttachmentCardFks 
+has many          cardhaslabel                             as HaslabelCardFks 
+has many          task                                     as TaskCardFks 
 belongs to        list                                     as List 
-belongs to many   action                                   as ActiononcardActions 
-belongs to many   list                                     as CardLists 
+belongs to many   list                                     as ActionLists 
+belongs to many   member                                   as ActionMembers 
+belongs to many   project                                  as ActionProjects 
+belongs to many   team                                     as ActionTeams 
 belongs to many   label                                    as CardhaslabelLabels 
 
 
@@ -64,29 +36,32 @@ belongs to        label                                    as Label
 
 Label
 -----
-has many          cardhaslabel                             as CardhaslabelLabel1Fks 
+has many          cardhaslabel                             as CardhaslabelLabel0Fks 
 belongs to many   card                                     as CardhaslabelCards 
 
 
 List
 ----
-has many          actiononlist                             as ActiononlistList1Fks 
-has many          card                                     as CardList0Fks 
-has many          list                                     as List1Fks 
-belongs to        list                                     as RelatedListIdIsthefather 
+has many          action                                   as ActionList0Fks 
+has many          card                                     as CardListFks 
 belongs to        project                                  as Project 
-belongs to many   action                                   as ActiononlistActions 
-belongs to many   card                                     as CardCardIdIsthefathers 
-belongs to many   project                                  as ListProjects 
+belongs to many   card                                     as ActionCards 
+belongs to many   member                                   as ActionMembers 
+belongs to many   project                                  as ActionProjects 
+belongs to many   team                                     as ActionTeams 
 
 
 Member
 ------
-has many          action                                   as ActionMember0Fks 
-has many          memberhaspermissionproject               as HaspermissionprojectMember2Fks 
-has many          memberhaspermissionteam                  as HaspermissionteamMember2Fks 
-has many          memberhasproject                         as HasprojectMember1Fks 
-has many          teamhasmember                            as TeamhasmemberMember1Fks 
+has many          action                                   as ActionMember2Fks 
+has many          memberhaspermissionproject               as HaspermissionprojectMember1Fks 
+has many          memberhaspermissionteam                  as HaspermissionteamMember1Fks 
+has many          memberhasproject                         as HasprojectMember0Fks 
+has many          teamhasmember                            as TeamhasmemberMember0Fks 
+belongs to many   card                                     as ActionCards 
+belongs to many   list                                     as ActionLists 
+belongs to many   project                                  as ActionProjects 
+belongs to many   team                                     as ActionTeams 
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
 belongs to many   project                                  as MemberhaspermissionprojectProjects 
 belongs to many   permission                               as MemberhaspermissionteamPermissions 
@@ -117,8 +92,8 @@ belongs to        project                                  as Project
 
 Permission
 ----------
-has many          memberhaspermissionproject               as MemberhaspermissionprojectPermission0Fks 
-has many          memberhaspermissionteam                  as MemberhaspermissionteamPermission1Fks 
+has many          memberhaspermissionproject               as MemberhaspermissionprojectPermissionFks 
+has many          memberhaspermissionteam                  as MemberhaspermissionteamPermission0Fks 
 belongs to many   member                                   as MemberhaspermissionprojectMembers 
 belongs to many   project                                  as MemberhaspermissionprojectProjects 
 belongs to many   member                                   as MemberhaspermissionteamMembers 
@@ -127,13 +102,15 @@ belongs to many   team                                     as Memberhaspermissio
 
 Project
 -------
-has many          actiononproject                          as ActiononprojectProject1Fks 
-has many          list                                     as ListProject0Fks 
-has many          memberhaspermissionproject               as MemberhaspermissionprojectProject1Fks 
-has many          memberhasproject                         as MemberhasprojectProject0Fks 
-has many          teamhasproject                           as TeamhasprojectProject0Fks 
-belongs to many   action                                   as ActiononprojectActions 
-belongs to many   list                                     as ListListIdIsthefathers 
+has many          action                                   as ActionProject1Fks 
+has many          list                                     as ListProjectFks 
+has many          memberhaspermissionproject               as MemberhaspermissionprojectProject0Fks 
+has many          memberhasproject                         as MemberhasprojectProjectFks 
+has many          teamhasproject                           as TeamhasprojectProjectFks 
+belongs to many   card                                     as ActionCards 
+belongs to many   list                                     as ActionLists 
+belongs to many   member                                   as ActionMembers 
+belongs to many   team                                     as ActionTeams 
 belongs to many   member                                   as MemberhaspermissionprojectMembers 
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
 belongs to many   member                                   as MemberhasprojectMembers 
@@ -151,11 +128,14 @@ belongs to        card                                     as Card
 
 Team
 ----
-has many          actiononteam                             as ActiononteamTeam1Fks 
-has many          memberhaspermissionteam                  as MemberhaspermissionteamTeam0Fks 
-has many          teamhasmember                            as HasmemberTeam0Fks 
-has many          teamhasproject                           as HasprojectTeam1Fks 
-belongs to many   action                                   as ActiononteamActions 
+has many          action                                   as ActionTeam3Fks 
+has many          memberhaspermissionteam                  as MemberhaspermissionteamTeamFks 
+has many          teamhasmember                            as HasmemberTeamFks 
+has many          teamhasproject                           as HasprojectTeam0Fks 
+belongs to many   card                                     as ActionCards 
+belongs to many   list                                     as ActionLists 
+belongs to many   member                                   as ActionMembers 
+belongs to many   project                                  as ActionProjects 
 belongs to many   member                                   as MemberhaspermissionteamMembers 
 belongs to many   permission                               as MemberhaspermissionteamPermissions 
 belongs to many   member                                   as TeamhasmemberMembers 

@@ -1,16 +1,25 @@
 var Action = require('../config/db_connection').Action;
 var sequelize = require('../config/db_connection').sequelize;
+var Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
-    /* =================
+    /* ================= SEQUELIZE METHODS ================= */
+    /* ================= SEQUELIZE METHODS ================= */
 
     /*  localhost:4200/api/action/create
      *
      *  req.body = {
      *      actionType: Int,
+     *      actionStatus: Int,
      *      actionTitle: String,
      *      actionDescription: String
+     *      memberId: Int,
+     *      actionDateCreation: Date,
+     *      cardId: Int, (optional)
+     *      listId: Int, (optional)
+     *      projectId: Int, (optional)
+     *      teamId: Int (optional)
      *  }
      *
      *  return: New Action object.
@@ -60,9 +69,15 @@ module.exports = {
      *
      *  req.body = {
      *      actionType: Int, (optional)
+     *      actionStatus: Int, (optional)
      *      actionTitle: String, (optional
      *      actionDescription: String (optional),
-     *      memberId: Int (optional)
+     *      actionDateCreation: Int, (optional)
+     *      memberId: Int, (optional)
+     *      teamId: Int, (optional)
+     *      projectId: Int, (optional)
+     *      listId: Int, (optional)
+     *      cardId: Int (optional)
      *  }
      *
      *  return: A boolean. true = Updated, false = Not updated.
@@ -73,11 +88,51 @@ module.exports = {
                 where: { actionId: req.params.id }
             })
             .then(isUpdated => {
+                console.log(isUpdated[0])
+                console.log(isUpdated[0] === 0)
                 req.body.result = isUpdated[0] === 1
                 next()
             })
             .catch(error => next(error));
     },
+
+    /*  localhost:4200/api/action/update_multiple
+     *
+     *  req.body = {
+     *      actionType: Int, (optional)
+     *      actionStatus: Int, (optional)
+     *      actionTitle: String, (optional
+     *      actionDescription: String (optional),
+     *      actionDateCreation: Int, (optional)
+     *      memberId: Int, (optional)
+     *      teamId: Int, (optional)
+     *      projectId: Int, (optional)
+     *      listId: Int, (optional)
+     *      cardId: Int (optional)
+     *  }
+     *
+     *  return: A boolean. true = All updated, false = Not all updated.
+     */
+    updateMultiple(req, res, next) {
+        let loop = 0
+        let isAllUpdated = true
+        for (let action of req.body.actions) {
+            Action
+                .update(action, {
+                    where: { actionId: action.actionId }
+                })
+                .then(isUpdated => {
+                    isAllUpdated = isUpdated[0] === 1
+                    if (loop === req.body.actions.length - 1) {
+                        req.body.result = isAllUpdated
+                        next()
+                    }
+                    else loop += 1
+                })
+                .catch(error => next(error));
+        }
+    },
+
 
     /*  localhost:4200/api/action/delete/:id
      *
@@ -95,5 +150,43 @@ module.exports = {
                 next()
             })
             .catch(error => next(error))
+    },
+
+    /*  localhost:4200/api/action/find_all_unarchived
+     *
+     *  return: Array of  unarchived Action objects with given attributes.
+     */
+    findAllUnarchived(req, res, next) {
+        let Op = Sequelize.Op
+        let condition = {
+            actionStatus: {
+                [Op.or]: [0, 1]
+            }
+        }
+        Action
+            .findAll({
+                order : sequelize.col('actionId'),
+                where: condition
+            })
+            .then(actions => {
+                req.body.result = actions
+                next()
+            })
+            .catch(error => next(error));
+    },
+
+    /* ================= MIDDLEWARE METHODS ================= */
+    /* ================= MIDDLEWARE METHODS ================= */
+
+    countUnreadAction(req, res, next) {
+        var count = 0
+        for (let action of req.body.result) {
+            if (action.actionStatus === 0) count += 1
+        }
+        req.body.result = {
+            notifications: req.body.result,
+            notificationsUnread: count
+        }
+        next()
     }
 }

@@ -8,6 +8,8 @@ const Card = require('./Card');
 const Action = require('./Action');
 
 const End = require('./Endpoint');
+const Graphql = require('../schemas/Resolver');
+
 
 module.exports = {
     Team,

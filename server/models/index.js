@@ -12,10 +12,6 @@ function init(sequelize) {
     initialized = true;
     // Import model files and assign them to `model` object.
     model.Action = sequelize.import('./definition/action.js');
-    model.Actiononcard = sequelize.import('./definition/actiononcard.js');
-    model.Actiononlist = sequelize.import('./definition/actiononlist.js');
-    model.Actiononproject = sequelize.import('./definition/actiononproject.js');
-    model.Actiononteam = sequelize.import('./definition/actiononteam.js');
     model.Attachment = sequelize.import('./definition/attachment.js');
     model.Card = sequelize.import('./definition/card.js');
     model.Cardhaslabel = sequelize.import('./definition/cardhaslabel.js');
@@ -35,10 +31,6 @@ function init(sequelize) {
 
     // All models are initialized. Now connect them with relations.
     require('./definition/action.js').initRelations();
-    require('./definition/actiononcard.js').initRelations();
-    require('./definition/actiononlist.js').initRelations();
-    require('./definition/actiononproject.js').initRelations();
-    require('./definition/actiononteam.js').initRelations();
     require('./definition/attachment.js').initRelations();
     require('./definition/card.js').initRelations();
     require('./definition/cardhaslabel.js').initRelations();
