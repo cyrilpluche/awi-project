@@ -9,10 +9,10 @@ const labels = {
     IS_NOT_LOGGED: "IS_NOT_LOGGED"
 }
 
-const signSuccess = token => ({
+const signSuccess = member => ({
     type: labels.LOGIN,
     payload: {
-        memberToken: token
+        member: member
     }
 })
 
@@ -45,6 +45,7 @@ function isMemberLogged () {
         if (memberToken) {
             _service.Member.isLogged()
                 .then(res => {
+                    console.log(res)
                     dispatch({
                         type: labels.IS_LOGGED,
                         payload: res

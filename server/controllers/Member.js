@@ -123,7 +123,7 @@ module.exports = {
         Member
             .findOne({
                 where: {
-                    memberEmail: req.body.memberEmail,
+                    memberEmail: req.body.memberEmail
                 }
             })
             .then(member => {
@@ -144,7 +144,18 @@ module.exports = {
      *  return: A new token of the user.
      */
     sign(req, res, next) {
-        req.body.result = {memberToken: req.body.memberToken}
+        console.log(req.body.result)
+        next()
+    },
+
+    /*  localhost:4200/api/member/sign_up
+     *
+     *  return: The member decrypted with the token.
+     */
+    signIn(req, res, next) {
+        req.decoded.iat = null
+        req.decoded.exp = null
+        req.body.result = {member: req.decoded}
         next()
     }
 

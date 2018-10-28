@@ -14,7 +14,7 @@ module.exports = {
      *  return: Void function that send an email to the given adress.
      */
     sendEmail(req, res, next) {
-        var validationLink = process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/authentication/account-validation/' + req.body.memberToken
+        var validationLink = process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/authentication/account-validation/' + req.body.result.memberToken
 
         var attachments = [
             {

@@ -25,7 +25,7 @@ export function signin (state = initialState, action){
         case labels.IS_LOGGED:
             return {
                 ...state,
-                member: action.payload.member,
+                member: action.payload,
                 isLogged: action.payload.isLogged,
                 isLoading: false
             }
@@ -33,6 +33,7 @@ export function signin (state = initialState, action){
         case labels.IS_NOT_LOGGED:
             return {
                 ...state,
+                member: {},
                 isLogged: action.payload.isLogged,
                 isLoading: false
             }
@@ -41,6 +42,7 @@ export function signin (state = initialState, action){
             return {
                 ...state,
                 isLogged: false,
+                member: {},
                 isLoading: false
             }
 

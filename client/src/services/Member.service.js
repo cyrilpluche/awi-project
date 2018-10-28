@@ -21,10 +21,9 @@ const Member = {
             // eslint-disable-next-line
             return axios.get(url + 'is_logged' + '?memberToken=' + memberToken)
                 .then(res => {
+                    console.log(res.data)
                     return {
-                        member: {
-                            memberToken: memberToken
-                        },
+                        member: res.data.member,
                         isLogged: true
                     }
                 })

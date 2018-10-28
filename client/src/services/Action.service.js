@@ -18,6 +18,7 @@ const Action = {
     },
 
     getNonArchived () {
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
         return axios.get(url + 'find_all_unarchived').then(res => res.data)
     },
 
