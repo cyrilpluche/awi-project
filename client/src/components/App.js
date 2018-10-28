@@ -3,6 +3,7 @@ import Dashboard from './dashboard/Dashboard'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
+import Cards from "./card/Cards";
 import Profile from './profile/Profile'
 import Navbar from "./layout/navbar/Navbar"
 import _helper from '../helpers'
@@ -41,6 +42,7 @@ class App extends Component {
                 <Route exact path="/login" component={Signin} />
                 <Route exact path="/signup" component={Signup} />
                 <Route path='*' render={() => <Redirect to="/login" />}/>
+                <Route exact path="/card" component={Cards} />
             </Switch>
         </div>
     )
