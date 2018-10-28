@@ -1,6 +1,6 @@
 export const styles = theme => ({
     card: {
-        maxWidth: 300,
+        width: 300,
         margin: 5
     },
     media: {
@@ -57,5 +57,9 @@ export const styles = theme => ({
         width: '70%',
         padding: '10px',
         margin: 5,
-}
+    },
+    button: {
+        margin: 3,
+        width: '23%'
+    }
 });

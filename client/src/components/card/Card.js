@@ -9,11 +9,8 @@ import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
 import Modal from '@material-ui/core/Modal';
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Button from "@material-ui/core/Button/Button";
-import AddIcon from '@material-ui/icons/Add';
-import TextField from "@material-ui/core/TextField/TextField";
-import Paper from "@material-ui/core/Paper/Paper";
-import MenuList from "@material-ui/core/MenuList/MenuList";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import { Scrollbars } from 'react-custom-scrollbars';
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 
 
 class Cardboard extends React.Component {
@@ -24,14 +21,6 @@ class Cardboard extends React.Component {
             open: false,
         };
     }
-
-    getModalStyle = () =>{
-        return {
-            top: `50%`,
-            left: `50%`,
-            transform: `translate(-50%, -50%)`
-        };
-    };
 
     handleOpen = () => {
         this.setState({ open: true });
@@ -47,58 +36,64 @@ class Cardboard extends React.Component {
         return (
             <div>
                 <Modal
-                open={this.state.open}
-                onClose={this.handleClose}
-            >
-                    <div style={this.getModalStyle()} className={classes.paper}>
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                >
+                    <Scrollbars style={
+                        {
+                            width: `54.5%`,
+                            height: `65%`,
+                            top: `50%`,
+                            left: `50%`,
+                            transform: `translate(-50%, -50%)`
+                        }
+                    }>
+                    <div className={classes.paper}>
                         <div className={classes.column} style={{ borderRight: '0.1em solid grey'}}>
                             <Typography variant="h5" id="modal-title">
                                 Clean the github
                             </Typography>
-                            <div>
-                                <h4>Members</h4>
-                                <div className={classes.row}>
+                            <div className={classes.row}>
+                                <h4 >Members : </h4>
                                     <Avatar className={classes.marginCard}>H</Avatar>
-                                    <Button variant="fab" aria-label="Add" className={classes.sizeButtonModal}><AddIcon/></Button>
                                 </div>
-                                </div>
-                            <div>
-                                <h4>Labels</h4>
+                            <div className={classes.row}>
+                                <h4>Labels : </h4>
                             </div>
                             <div>
                                 <h4>Description</h4>
-                                <TextField className={classes.row}
-                                           placeholder="Add your description here ..."
-                                           multiline={true}
-                                           rows={2}
-                                           rowsMax={4}
-                                />
+                                <Typography component="p">
+                                    Add your description ...
+                                </Typography>
                             </div>
                             <div>
-                                <h4>Add comment</h4>
-                                <TextField className={classes.row}
-                                           placeholder="Add your comment here ..."
-                                           multiline={true}
-                                           rows={2}
-                                           rowsMax={4}
-                                />
+                                <h4>Comment</h4>
+                                <Typography component="p">
+                                    Add your comment ...
+                                </Typography>
                             </div>
                         </div>
                         <div>
-                            <MenuList>
-                                <MenuItem>Profile</MenuItem>
-                                <MenuItem>My account</MenuItem>
-                                <MenuItem>Logout</MenuItem>
-                            </MenuList>
+                            <Button variant="contained" className={classes.button}>Members</Button>
+                            <Button variant="contained" className={classes.button}>Labels</Button>
+                            <Button variant="contained" className={classes.button}>Checklist</Button>
+                            <Button variant="contained" className={classes.button}>Description</Button>
+                            <Button variant="contained" className={classes.button}>Comment</Button>
+                            <Button variant="contained" className={classes.button}>Attachment</Button>
+                            <Button variant="contained" className={classes.button}>Copy</Button>
+                            <Button variant="contained" className={classes.button}>Archive</Button>
+                            <Button variant="contained" className={classes.button}>Delete</Button>
                         </div>
                     </div>
+                    </Scrollbars>
             </Modal>
                 <Card className={classes.card} >
                     <CardActionArea onClick={this.handleOpen}>
+                        <CardHeader
+                            title="Clean the github"
+                            subheader="September 14, 2016"
+                        />
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Clean the github
-                            </Typography>
                             <Typography component="p">
                                 By merging all branches update the master branch
                             </Typography>
