@@ -106,19 +106,6 @@ class Navbar extends React.Component {
             </Menu>
         );
 
-        /*const renderNotifications = (
-            <Menu
-                anchorEl={notificationsEl}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={isNotificationsOpen}
-                className={classes.openedNotifications}
-                onClose={this.handleMenuClose}
-            >
-                <NotificationList notifications={this.props.notifications}/>
-            </Menu>
-        );*/
-
         const renderNotifications = (
             <Drawer anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
                 <div
