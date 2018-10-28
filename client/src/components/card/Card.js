@@ -55,10 +55,11 @@ class Cardboard extends React.Component {
                             </Typography>
                             <div className={classes.row}>
                                 <h4 >Members : </h4>
-                                    <Avatar className={classes.marginCard}>H</Avatar>
-                                </div>
+                                <Avatar className={classes.marginCard}>H</Avatar>
+                            </div>
                             <div className={classes.row}>
                                 <h4>Labels : </h4>
+                                <Button variant="outlined" color="secondary" className={classes.marginCard}>Label</Button>
                             </div>
                             <div>
                                 <h4>Description</h4>
@@ -98,7 +99,7 @@ class Cardboard extends React.Component {
                                 By merging all branches update the master branch
                             </Typography>
                             <div className={classes.rowRight}><Avatar className={classes.marginCard}>H</Avatar></div>
-                            <Button variant="outlined" color="secondary" className={classes.marginCard}>10/01</Button>
+                            <Button variant="outlined" color="secondary" className={classes.marginCard}>Label</Button>
                         </CardContent>
                     </CardActionArea>
                 </Card>
