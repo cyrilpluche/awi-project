@@ -119,7 +119,7 @@ class Navbar extends React.Component {
                 className={classes.openedMenu}
                 onClose={this.handleMenuClose}
             >
-                <Link to='/account'><MenuItem onClick={this.handleMenuClose}>Profile</MenuItem></Link>
+                <Link to='/profile/overview'><MenuItem onClick={this.handleMenuClose}>Profile</MenuItem></Link>
                 <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
                 <MenuItem onClick={this.logOff}>Log off</MenuItem>
             </Menu>

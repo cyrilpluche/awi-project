@@ -20,7 +20,7 @@ class Profile extends React.Component {
         ];
 
         return (
-            <Grid container>
+            <Grid container spacing={16}>
                 <Grid item xs={3}>
                     <Menu links={links} history={History}/>
                 </Grid>

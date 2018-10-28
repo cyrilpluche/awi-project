@@ -45,7 +45,6 @@ function isMemberLogged () {
         if (memberToken) {
             _service.Member.isLogged()
                 .then(res => {
-                    console.log(res)
                     dispatch({
                         type: labels.IS_LOGGED,
                         payload: res
