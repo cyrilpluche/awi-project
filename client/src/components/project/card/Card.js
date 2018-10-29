@@ -20,7 +20,7 @@ class Card extends Component{
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}                               
                     >
-                    {this.props.card.cardContent}
+                    {this.props.card.cardTitle}
                 </div>
                 )}
             </Draggable>

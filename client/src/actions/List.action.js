@@ -5,10 +5,7 @@ const labels = {
     CREATE_CARD:"CREATE_CARD"
 }
 
-/**
- * Get all list of a project
- * @param idProject project id to search lists for
- */
+
 function createCard(cardTitle,listId) {
 
     const body = {
@@ -30,8 +27,26 @@ function createCard(cardTitle,listId) {
     }
 }
 
+function findAllCards() {
+
+    return dispatch => {
+        _service.Card.getAll()
+        .then(res => {
+            dispatch({
+                type: labels.GET_ALL_CARDS,
+                payload: res
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
+
 export const listAction = {
     labels,
     createCard,
+    findAllCards
 }
 

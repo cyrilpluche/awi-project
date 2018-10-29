@@ -33,7 +33,6 @@ class Lists extends Component {
         this.setState({
           [name]: event.target.value,
         });
-        console.log(this.state.newListname)
     
     };
 
@@ -42,7 +41,7 @@ class Lists extends Component {
     
     render() {
         const { classes,lists} = this.props;
-        console.log(lists)
+        
         return (
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(

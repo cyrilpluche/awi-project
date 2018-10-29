@@ -10,28 +10,48 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import { styles } from './Style'
+import { connect } from 'react-redux'
+import _action from '../../../actions'
 
 
 class List extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            newCardName:'',
+            open: false,
+            selectedValue: '',
+            cards: []
+        }
+    }
 
 
-      state = {
-        open: false,
-        selectedValue: '',
-      };
-    
-      handleClickOpen = () => {
+
+    createNewCard(){
+        let cardName = this.state.newCardName
+        let listId = this.props.list.listId
+        this.props.createCard(cardName,listId)
+    }
+
+    handleClickOpen = () => {
         this.setState({
           open: true,
         });
-      };
+    };
     
-      handleClose = value => {
+    handleClose = value => {
         this.setState({ selectedValue: value, open: false });
-      };
+    };
+
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+    };
 
     render() {
-        const {classes, list} = this.props
+        const {classes,cards} = this.props
+        console.log(cards)
         return (
             <Draggable draggableId={this.props.list.listId} index={this.props.index}>
                 {(provided) =>(
@@ -41,9 +61,18 @@ class List extends Component{
                         ref={provided.innerRef}
                     >
                         <h4 className={classes.listTitle} {...provided.dragHandleProps}>{this.props.list.listTitle}</h4>
-                        <div><Button className={classes.button}  onClick={this.handleClickOpen} variant="fab" mini  aria-label="Add">
-                            <AddIcon />
-                        </Button></div>
+                            <div>
+                                <Button className={classes.button}  onClick={this.createNewCard.bind(this)} variant="fab" mini  aria-label="Add">
+                                <AddIcon />
+                                </Button>
+                                <TextField
+                                id="standard-name"
+                                label="Name"
+                                className={classes.textField}
+                                onChange={this.handleChange('newCardName')}
+                                margin="normal"
+                                />
+                            </div>
                         <SimpleDialog
                             selectedValue={this.state.selectedValue}
                             open={this.state.open}
@@ -55,7 +84,7 @@ class List extends Component{
                                     ref={provided.innerRef} 
                                     {...provided.droppableProps}
                                     className={classes.dropSpace}>
-                                        
+                                      {cards.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
                                        
                                     {provided.placeholder}
                                     
@@ -71,8 +100,19 @@ class List extends Component{
     }
 }
 //{list.listContent.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+const mapStateToProps = (state) => ({
+    cards: state.project.cards
+})
 
-export default withStyles(styles)(List)
+const mapDispatchToProps ={
+    createCard: _action.listAction.createCard,    
+}
+
+
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(List))
 
 class SimpleDialog extends React.Component {
     handleClose = () => {

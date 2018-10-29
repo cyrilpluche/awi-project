@@ -48,18 +48,14 @@ class Project extends Component {
 
     componentWillMount() {
         this.props.getAllLists()
+        this.props.findAllCards()
     }
 
-    createNewList(listName,idProject){
-        
-        this.props.createList(listName,idProject)
-        
 
-    }
    
 
     onDragEnd = (result) => {
-        console.log(this.state.data)
+       /* console.log(this.state.data)
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
         
@@ -100,7 +96,7 @@ class Project extends Component {
             
             
             this.setState({data:newLists})
-        }
+        }*/
 
 
     };
@@ -112,7 +108,7 @@ class Project extends Component {
             <div className={classes.projectBody}>
                 
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Lists key="1" idProject={match.params.id} listTodos={this.state.data} lists={lists} createListCallback={this.createNewList.bind(this)} ></Lists>
+                    <Lists key="1" idProject={match.params.id} listTodos={this.state.data} lists={lists}  ></Lists>
                 </DragDropContext>
             </div>
         )
@@ -125,7 +121,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps ={
     getAllLists: _action.projectAction.findAllLists,
-    createList: _action.projectAction.createList
+    findAllCards: _action.listAction.findAllCards
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))
