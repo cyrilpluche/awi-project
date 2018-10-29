@@ -16,7 +16,6 @@ const List = {
         return axios.get(url + 'find_one' + where).then(res => res.data)
     },
     create(body){
-        console.log(body)
         return axios.post(url + 'create', body).then(res => res.data)
     }
 
