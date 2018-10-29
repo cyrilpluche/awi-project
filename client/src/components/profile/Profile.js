@@ -17,8 +17,7 @@ class Profile extends React.Component {
 
         const links = [
             {label: 'Overview', route: '/profile/overview', icon: <AccountBoxIcon/>},
-            {label: 'Change Password', route: '/profile/password', icon: <FingerprintIcon/>},
-            {label: 'Profile parameters', route: '/profile/parameters', icon: this.AccountBox}
+            {label: 'Change Password', route: '/profile/password', icon: <FingerprintIcon/>}
         ];
 
         return (

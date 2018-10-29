@@ -33,8 +33,6 @@ class Signin extends React.Component {
     submit () {
         let memberEmail = this.state.memberEmail
         let memberPassword = this.state.memberPassword
-        console.log(memberEmail)
-        console.log(memberPassword)
         this.props.onLogin(memberEmail, memberPassword)
     }
 

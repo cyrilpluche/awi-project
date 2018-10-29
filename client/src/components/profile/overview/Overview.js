@@ -21,13 +21,13 @@ class Overview extends React.Component {
         this.submit = this.submit.bind(this)
 
         this.state = {
+            labelsForClient: ['First name', 'Last name', 'Pseudo'],
             memberFirstname: this.props.member.memberFirstname,
             memberLastname: this.props.member.memberLastname,
             memberPseudo: this.props.member.memberPseudo,
             isEditable: false,
             openSnackbar: false
         }
-
     }
 
     // Update member state with new informations of textfields
@@ -84,7 +84,7 @@ class Overview extends React.Component {
                     disabled={!this.state.isEditable}
                     key={keys[index]}
                     id={keys[index]}
-                    label={keys[index]}
+                    label={this.state.labelsForClient[index]}
                     className={classes.textField}
                     value={item}
                     onChange={this.handleChange(keys[index])}
@@ -134,7 +134,7 @@ class Overview extends React.Component {
                         </Button>
                     </MuiThemeProvider>
                 </Grid>
-                <Grid container justify="center" xs={12}>
+                <Grid container justify="center">
                     <form className={classes.container} noValidate autoComplete="off">
                         {this.generateTextfields()}
                     </form>

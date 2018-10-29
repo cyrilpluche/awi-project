@@ -12,7 +12,7 @@ export function signin (state = initialState, action){
         case labels.LOGIN:
             return {
                 ...state,
-                member: action.payload,
+                member: action.payload.member,
                 isLogged: true,
                 isLoading: false
             };

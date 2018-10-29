@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import connect from "react-redux/es/connect/connect";
 
 const styles = theme => ({
@@ -43,7 +42,6 @@ class Menu extends React.Component {
         let menuList = []
 
         for (let link of this.props.links) {
-            console.log(link)
             menuList.push(
                 <MenuItem id={link.route} className={classes.menuItem} key={link.label} onClick={this.displayComponent}>
                     <ListItemIcon className={classes.icon}>
