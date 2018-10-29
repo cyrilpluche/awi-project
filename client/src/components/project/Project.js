@@ -106,6 +106,5 @@ class Project extends Component {
 }
 
 
-
-
 export default withStyles(styles)(Project)
+

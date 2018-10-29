@@ -36,5 +36,12 @@ export const styles = theme => ({
     },
     dropSpace:{
         minHeight:`100px`
+    },
+    textField:{
+        marginLeft:theme.spacing.unit,
+        marginRight:theme.spacing.unit,
+    },
+    dialogBox:{
+        marginLeft:theme.spacing.unit,
     }
 });
