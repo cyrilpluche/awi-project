@@ -13,6 +13,12 @@ export function project (state = initialState, action) {
                 ...state,
                 lists: action.payload,
             };
+        case projectLabels.CREATE_LIST: 
+            let lists = [...state.lists,action.payload]
+            return {
+                ...state,
+                lists 
+            };
         default:
             return state
     }

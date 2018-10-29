@@ -5,6 +5,7 @@ import { DragDropContext} from 'react-beautiful-dnd';
 import Lists from './list/Lists'
 import { withStyles } from '@material-ui/core/styles';
 import {findWhere} from 'underscore'
+import { Button } from '@material-ui/core';
 
 
 
@@ -41,17 +42,24 @@ class Project extends Component {
     constructor(props){
         super(props)
         this.state = {
-            lists : []
+            data : []
         }
     }
 
     componentWillMount() {
         this.props.getAllLists()
     }
+
+    createNewList(listName,idProject){
+        
+        this.props.createList(listName,idProject)
+        
+
+    }
    
 
     onDragEnd = (result) => {
-        console.log(this.state.lists)
+        console.log(this.state.data)
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
         
@@ -98,13 +106,13 @@ class Project extends Component {
     };
     
     render() {  
-        const {classes, lists} = this.props
-    
+        const {classes, lists, match} = this.props
+        
         return (
             <div className={classes.projectBody}>
                 
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Lists key="1" listTodos={this.state.data} lists={lists} ></Lists>
+                    <Lists key="1" idProject={match.params.id} listTodos={this.state.data} lists={lists} createListCallback={this.createNewList.bind(this)} ></Lists>
                 </DragDropContext>
             </div>
         )
@@ -115,8 +123,9 @@ const mapStateToProps = (state) => ({
     lists: state.project.lists
 })
 
-const mapDispatchToProps = {
-    getAllLists: _action.projectAction.findAllLists
+const mapDispatchToProps ={
+    getAllLists: _action.projectAction.findAllLists,
+    createList: _action.projectAction.createList
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

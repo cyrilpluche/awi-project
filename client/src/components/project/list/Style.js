@@ -11,7 +11,8 @@ export const styles = theme => ({
         border:`1px solid lightgrey`,
         borderRadius : `8px`,
         backgroundColor:`white`,
-        width: `250px`,
+        width: `200px`,
+        minWidth : `200px`,
         justifyContent: `center`,
         textAlign: `center`,
         
