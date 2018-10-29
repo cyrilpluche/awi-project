@@ -82,6 +82,16 @@ export const style = theme => ({
     },
     fullList: {
         width: 'auto',
+    },
+    notificationList: {
+        overflowY: 'scroll',
+        maxHeight: theme.spacing.unit * 50,
+    },
+    button: {
+        margin: 0,
+    },
+    filterRow: {
+        marginLeft: theme.spacing.unit * 3
     }
 });
 

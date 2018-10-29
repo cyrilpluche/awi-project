@@ -22,12 +22,15 @@ module.exports = {
      *  return: Token generated with member informations. Stored in req.body.memberToken.
      */
     generateToken(req, res, next) {
-        // We copy the object because we don't want to encrypt the token with the user's password.
+        req.body.result.dataValues.password = null
+
+        // We copy the object because dataValues don't have memberToken field.
         var payload = Object.assign({}, req.body.result.dataValues)
-        payload.memberPassword = null
-        req.body.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
+
+        payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 // expires in 24 hours
         });
+        req.body.result = payload
         next()
     },
 
@@ -37,8 +40,8 @@ module.exports = {
      */
     verifyToken(req, res, next) {
         // We can activate or disable token checking for development purposes.
-        if (false) {
-            var token = req.body.memberToken || req.query.memberToken || req.headers['x-access-token'];
+        if (true) {
+            var token = req.headers['authorization'] || req.body.memberToken || req.query.memberToken;
             if (token) {
                 jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
                     if (err) {

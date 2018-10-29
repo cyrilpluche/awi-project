@@ -9,10 +9,10 @@ const labels = {
     IS_NOT_LOGGED: "IS_NOT_LOGGED"
 }
 
-const signSuccess = token => ({
+const signSuccess = member => ({
     type: labels.LOGIN,
     payload: {
-        memberToken: token
+        member: member
     }
 })
 

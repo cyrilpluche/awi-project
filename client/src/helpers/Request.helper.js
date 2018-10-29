@@ -13,6 +13,7 @@ const Request = {
             }
             return url
         }
+        else return ''
     }
 
 }

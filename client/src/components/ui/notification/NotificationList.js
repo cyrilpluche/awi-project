@@ -5,16 +5,13 @@ import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import Notification from "./Notification"
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import CardContent from "@material-ui/core/CardContent/CardContent";
-import Typography from "@material-ui/core/Typography/Typography";
-import Card from "@material-ui/core/Card/Card";
 
 const styles = theme => ({
     menuItem: {},
     primary: {},
     icon: {},
     list: {
-        width: 250,
+        width: 300,
     },
     fullList: {
         width: 'auto',
@@ -32,20 +29,20 @@ class NotificationList extends React.Component {
      *  }
      */
 
-    notificationItem = (n) => (
-        <Notification notification={n} />
-    );
-
     /* Build the notification list of the menu */
     buildNotifications = () => {
         let list = []
-        const {classes} = this.props;
 
         if (this.props.notifications.length > 0) {
             for (let item of this.props.notifications) {
                 list.push(
                     <ListItem key={this.props.notifications.indexOf(item)}>
-                        {this.notificationItem(item)}
+                        <Notification
+                            notification={item}
+                            notifications={this.props.notifications}
+                            notificationsUnread={this.props.notificationsUnread}
+                            updateNotification={this.props.updateNotification}
+                        />
                     </ListItem>
                 )
             }

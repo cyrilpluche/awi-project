@@ -28,6 +28,16 @@ class Menu extends React.Component {
      * object = {label: String, route: String}
      */
 
+    constructor (props) {
+        super(props)
+        this.displayComponent = this.displayComponent.bind(this);
+    }
+
+    displayComponent = (event) => {
+        let route = event.currentTarget.id
+        this.props.history.push(route)
+    }
+
     /* Build the item list of the menu */
     buildLinks = () => {
         const {classes} = this.props;
@@ -35,14 +45,12 @@ class Menu extends React.Component {
 
         for (let link of this.props.links) {
             menuList.push(
-                <Link to={link.route} key={link.label}>
-                    <MenuItem className={classes.menuItem}>
-                        <ListItemIcon className={classes.icon}>
-                            <SendIcon/>
-                        </ListItemIcon>
-                        <ListItemText classes={{primary: classes.primary}} inset primary={link.label}/>
-                    </MenuItem>
-                </Link>
+                <MenuItem id={link.route} className={classes.menuItem} key={link.label} onClick={this.displayComponent}>
+                    <ListItemIcon className={classes.icon}>
+                        <SendIcon/>
+                    </ListItemIcon>
+                    <ListItemText classes={{primary: classes.primary}} inset primary={link.label}/>
+                </MenuItem>
             )
         }
         return menuList

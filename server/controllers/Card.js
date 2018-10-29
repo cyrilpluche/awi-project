@@ -15,7 +15,7 @@ module.exports = {
      *      cardDateEnd: Date, (optional),
      *      listId: Int,
      *      cardIdIsTheFather: Int, (optional)
-     *      cardIdIsTheChild: Int (optional) 
+     *      cardIdIsTheChild: Int (optional)
      *  }
      *
      *  return: New Card object.

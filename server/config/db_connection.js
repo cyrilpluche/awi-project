@@ -18,10 +18,12 @@ var models = require('../models/index.js').init(sequelize)
 
 module.exports = {
     sequelize,
+    Sequelize,
     Team: models.Team,
     Member: models.Member,
     Project: models.Project,
     List: models.List,
-    Card: models.Card
+    Card: models.Card,
+    Action: models.Action
 
 };

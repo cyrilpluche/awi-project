@@ -2,6 +2,7 @@ import axios from 'axios';
 import helper from "../helpers";
 
 const url = 'http://localhost:4200/api/member/'
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
 
 const Member = {
 
@@ -22,9 +23,7 @@ const Member = {
             return axios.get(url + 'is_logged' + '?memberToken=' + memberToken)
                 .then(res => {
                     return {
-                        member: {
-                            memberToken: memberToken
-                        },
+                        member: res.data.member,
                         isLogged: true
                     }
                 })

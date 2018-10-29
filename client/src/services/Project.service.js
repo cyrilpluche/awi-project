@@ -1,5 +1,7 @@
 import axios from 'axios';
 import helper from '../helpers'
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
+
 
 const url = 'http://localhost:4200/api/project/'
 
