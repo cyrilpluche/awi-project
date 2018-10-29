@@ -81,7 +81,7 @@ module.exports = {
     update(req, res, next) {
         Member
             .update(req.body, {
-                where: { memberId: req.body.memberId }
+                where: req.query
             })
             .then(isUpdated => {
                 req.body.result = isUpdated[0] === 1
@@ -144,7 +144,6 @@ module.exports = {
      *  return: A new token of the user.
      */
     sign(req, res, next) {
-        console.log(req.body.result)
         next()
     },
 
@@ -157,6 +156,19 @@ module.exports = {
         req.decoded.exp = null
         req.body.result = {member: req.decoded}
         next()
+    },
+
+    /*  localhost:4200/api/member/sign_up
+     *
+     *  return: The member decrypted with the token.
+     */
+    isFound(req, res, next) {
+        if (req.body.result !== null) {
+            req.body = {memberPassword: req.body.memberPassword}
+            delete req.query['memberPassword']
+            next()
+        }
+        else next('Wrong password')
     }
 
 }
