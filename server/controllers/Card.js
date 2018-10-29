@@ -46,6 +46,24 @@ module.exports = {
             })
             .catch(error => next(error));
     },
+    
+    /*  localhost:4200/api/card/find_all/:id
+     *  
+     *  return: Array of Card objects for a given list.
+     */
+    findAllOfList(req, res, next) {
+        Card
+            .findAll({
+                order : sequelize.col('cardId'),
+                where: {listId: req.params.id }
+            })
+            .then(cards => {
+                req.body.result = cards
+                next()
+            })
+            .catch(error => next(error));
+    },
+
 
     /*  localhost:4200/api/card/find_one --- ?cardTitle=title... (optional)
      *

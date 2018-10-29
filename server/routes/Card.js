@@ -5,6 +5,7 @@ var mw = require('../middlewares')
 var cardController = require('../controllers').Card;
 
 router.get('/find_all', mw.Token.verifyToken, cardController.findAll);
+router.get('/find_all/:id', mw.Token.verifyToken, cardController.findAllOfList);
 router.get('/find_one', mw.Token.verifyToken, cardController.findOne);
 
 router.post('/create', mw.Token.verifyToken, cardController.create);
