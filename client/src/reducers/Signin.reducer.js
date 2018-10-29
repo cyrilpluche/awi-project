@@ -2,6 +2,8 @@ import _action from '../actions';
 
 const labels = _action.signinAction.labels
 const labelsNavbar = _action.navbarAction.labels
+const labelsProfile = _action.profileAction.labels
+
 
 const initialState = { isLoading: true }
 
@@ -44,6 +46,12 @@ export function signin (state = initialState, action){
                 isLogged: false,
                 member: {},
                 isLoading: false
+            }
+
+        case labelsProfile.UPDATE_MEMBER:
+            return {
+                ...state,
+                member: action.payload.member,
             }
 
         default:

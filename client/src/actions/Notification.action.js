@@ -6,15 +6,6 @@ const labels = {
     DISABLED_FILTER: 'DISABLED_FILTER'
 }
 
-function handleReadCheckbox (notificationlist) {
-    return (dispatch) => {
-        dispatch({
-            type: labels.CHANGE_NOTIFICATION_READ_STATE,
-            payload: notificationlist
-        });
-    };
-}
-
 // WARNING : Don't work, problem with object copy I guess
 function showOnlyUnreadAction (notifications, notificationsUnarchived, onlyUnread) {
     if (onlyUnread) {
