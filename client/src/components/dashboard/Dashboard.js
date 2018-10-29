@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _action from '../../actions'
+import List from "../list/List";
 
 class Dashboard extends React.Component {
     constructor (props) {
@@ -19,6 +20,7 @@ class Dashboard extends React.Component {
             <div onClick={this.onClick}>
                 <p>Hello</p>
                 <p>{this.props.project.projectTitle}</p>
+                <List content = {{id:1}}/>
             </div>
         )
     }
