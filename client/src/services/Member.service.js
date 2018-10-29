@@ -39,7 +39,12 @@ const Member = {
     get (object) {
         var where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
-    }
+    },
+
+    update (body) {
+        var where = helper.Request.urlFromObject({memberId: body.memberId})
+        return axios.put(url + 'update' + where, body).then(res => res.data)
+    },
 }
 
 export default Member

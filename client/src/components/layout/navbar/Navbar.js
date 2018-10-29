@@ -25,10 +25,6 @@ import _action from "../../../actions";
 import Drawer from "@material-ui/core/Drawer/Drawer";
 import Divider from "@material-ui/core/Divider/Divider";
 import Button from "@material-ui/core/Button/Button";
-import FormGroup from "@material-ui/core/FormGroup/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Switch from "@material-ui/core/Switch/Switch";
-
 
 class Navbar extends React.Component {
 
@@ -95,7 +91,7 @@ class Navbar extends React.Component {
     updateNotifications () {
         if (this.state.updatedNotifications.length > 0) {
             this.props.onUpdateNotifications(this.state.updatedNotifications)
-            this.state.updatedNotifications = []
+            this.setState({updatedNotifications: []})
         }
     }
 

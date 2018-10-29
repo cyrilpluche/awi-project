@@ -81,7 +81,7 @@ module.exports = {
     update(req, res, next) {
         Member
             .update(req.body, {
-                where: { memberId: req.params.id }
+                where: { memberId: req.body.memberId }
             })
             .then(isUpdated => {
                 req.body.result = isUpdated[0] === 1
