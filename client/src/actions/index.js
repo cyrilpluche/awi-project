@@ -4,6 +4,7 @@ import { signupAction } from './Signup.action';
 import { navbarAction } from './Navbar.action';
 import { notificationAction } from './Notification.action';
 import { profileAction } from './Profile.action';
+import {projectAction} from './Project.action'
 
 
 
@@ -13,7 +14,8 @@ const _action = {
     signupAction,
     navbarAction,
     notificationAction,
-    profileAction
+    profileAction,
+    projectAction
 }
 
 export default _action

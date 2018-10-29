@@ -49,13 +49,14 @@ class List extends Component{
                             open={this.state.open}
                             onClose={this.handleClose}
                         />
-                        <Droppable droppableId={this.props.list.listId} type="CARD">
+                        <Droppable droppableId={this.props.list.listTitle} type="CARD">
                             {(provided) =>(
                                     <div 
                                     ref={provided.innerRef} 
                                     {...provided.droppableProps}
                                     className={classes.dropSpace}>
-                                        {list.listContent.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                        
+                                       
                                     {provided.placeholder}
                                     
                                     </div>
@@ -69,6 +70,7 @@ class List extends Component{
         )
     }
 }
+//{list.listContent.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
 
 export default withStyles(styles)(List)
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import _action from '../../actions'
 import { DragDropContext} from 'react-beautiful-dnd';
 import Lists from './list/Lists'
-
 import { withStyles } from '@material-ui/core/styles';
 import {findWhere} from 'underscore'
 
@@ -40,13 +41,17 @@ class Project extends Component {
     constructor(props){
         super(props)
         this.state = {
-            data : liststodos
+            lists : []
         }
+    }
+
+    componentWillMount() {
+        this.props.getAllLists()
     }
    
 
     onDragEnd = (result) => {
-
+        console.log(this.state.lists)
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
         
@@ -93,18 +98,26 @@ class Project extends Component {
     };
     
     render() {  
-        const {classes} = this.props
+        const {classes, lists} = this.props
+    
         return (
             <div className={classes.projectBody}>
                 
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Lists key="1" listTodos={this.state.data} ></Lists>
+                    <Lists key="1" listTodos={this.state.data} lists={lists} ></Lists>
                 </DragDropContext>
             </div>
         )
     }
 }
 
+const mapStateToProps = (state) => ({
+    lists: state.project.lists
+})
 
-export default withStyles(styles)(Project)
+const mapDispatchToProps = {
+    getAllLists: _action.projectAction.findAllLists
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))
 
