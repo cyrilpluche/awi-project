@@ -44,6 +44,24 @@ module.exports = {
             .catch(error => next(error))
     },
 
+     /*  localhost:4200/api/list/find_all/:id
+     *
+     *  return: Array of List objects with given attributes.
+     */
+    findAllOfProject(req, res, next) {
+        List
+            .findAll({
+                order : sequelize.col('listId'),
+                where: { projectId: req.params.id }
+            })
+            .then(lists => {
+                req.body.result = lists
+                next()
+            })
+            .catch(error => next(error))
+    },
+
+
     /*  localhost:4200/api/list/find_one --- ?listTitle=title... (optional)
      *
      *  return: List object with given attributes.

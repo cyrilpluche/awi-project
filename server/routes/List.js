@@ -7,6 +7,7 @@ var end = require('../controllers').End;
 
 router.get('/find_all', mw.Token.verifyToken, listController.findAll);
 router.get('/find_one/:id', mw.Token.verifyToken, listController.findOne);
+router.get('/find_all/:id', mw.Token.verifyToken, listController.findAllOfProject);
 
 router.post('/create', mw.Token.verifyToken, listController.create);
 
