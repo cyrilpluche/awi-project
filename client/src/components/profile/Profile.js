@@ -5,11 +5,9 @@ import { Grid } from "@material-ui/core";
 import {Redirect, Route, Router, Switch} from "react-router-dom";
 import Password from './password/Password'
 import Overview from "./overview/Overview";
-import {createBrowserHistory} from "history";
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import FingerprintIcon from '@material-ui/icons/Fingerprint'
-
-const History = createBrowserHistory();
+import _helper from '../../helpers'
 
 class Profile extends React.Component {
 
@@ -23,11 +21,11 @@ class Profile extends React.Component {
         return (
             <Grid container spacing={16}>
                 <Grid item xs={3}>
-                    <Menu links={links} history={History}/>
+                    <Menu links={links} history={_helper.History}/>
                 </Grid>
 
                 <Grid item xs={9}>
-                    <Router history={History}>
+                    <Router history={_helper.History}>
                         <Switch>
                             <Route component={Overview} exact path='/profile/overview'/>
                             <Route component={Password} exact path='/profile/password'/>

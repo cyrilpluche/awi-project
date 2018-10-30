@@ -40,7 +40,6 @@ module.exports = {
     verifyToken(req, res, next) {
         // We can activate or disable token checking for development purposes.
         if (true) {
-            console.log(req.body)
             var token = req.headers['authorization'] || req.body.memberToken || req.query.memberToken;
             if (token) {
                 jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {

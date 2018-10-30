@@ -11,11 +11,17 @@ import connect from "react-redux/es/connect/connect";
 import _action from "../actions";
 import LoaderPage from "./loaderPage/LoaderPage";
 import Project from './project/Project'
+import { style } from './Style'
+import {withStyles} from "@material-ui/core";
 
 class App extends Component {
     constructor (props) {
         super(props)
         this.routesAuthorization = this.routesAuthorization.bind(this);
+        this.LoginContainer = this.LoginContainer.bind(this)
+        this.LoaderPageContainer = this.LoaderPageContainer.bind(this)
+        this.DefaultContainer = this.DefaultContainer.bind(this)
+
     }
 
     componentWillMount () {
@@ -34,37 +40,48 @@ class App extends Component {
         } else {
             return this.LoginContainer
         } */
-        return this.DefaultContainer
+        return this.LoginContainer
     }
 
-    LoginContainer = () => (
-        <div className="container">
-            <Switch>
-                <Route exact path="/login" component={Signin} />
-                <Route exact path="/signup" component={Signup} />
-                <Route path='*' render={() => <Redirect to="/login" />}/>
-                <Route exact path="/card" component={Cards} />
-            </Switch>
-        </div>
-    )
+    LoginContainer = () => {
+        const { classes } = this.props;
 
-    LoaderPageContainer = () => (
-        <div className="container">
-            <Route component={LoaderPage} />
-        </div>
-    )
+        return(
+            <div className={classes.layout}>
+                <Switch>
+                    <Route exact path="/login" component={Signin} />
+                    <Route exact path="/signup" component={Signup} />
+                    <Route path='*' render={() => <Redirect to="/login" />}/>
+                </Switch>
+            </div>
+        )
+    }
 
-    DefaultContainer = () => (
-        <div className="container">
-            <Navbar/>
-            <Switch>
-                <Route path="/home" component={Dashboard}/>
-                <Route path="/profile/overview" component={Profile}/>
-                <Route path="/project/:id" component={Project}/>
-                <Route path='*' render={() => <Redirect to="/home" />}/>
-            </Switch>
-        </div>
-    )
+    LoaderPageContainer = () => {
+        const { classes } = this.props;
+
+        return(
+            <div className={classes.layout}>
+                <Route component={LoaderPage} />
+            </div>
+        )
+    }
+
+    DefaultContainer = () => {
+        const { classes } = this.props;
+        return(
+            <div className={classes.layout}>
+                <Navbar/>
+                <Switch>
+                    <Route path="/home" component={Dashboard}/>
+                    <Route path="/profile" component={Profile}/>
+                    <Route path="/project/:id" component={Project}/>
+                    <Route path="/card" component={Cards} />
+                    <Route path='*' render={() => <Redirect to="/home" />}/>
+                </Switch>
+            </div>
+        )
+    }
     // <Route path="/" render={() => <Redirect to="/home" />} />
 
     render() {
@@ -87,4 +104,4 @@ const mapDispatchToProps = {
     onIsMemberLogged: _action.signinAction.isMemberLogged
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(App));

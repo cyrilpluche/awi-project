@@ -1,14 +1,10 @@
 export const style = theme => ({
     layout: {
-        width: 'auto',
-        display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
+        height: '100%',
+        margin: 0
+    },
+    textfield: {
+        marginTop: 0
     },
     paper: {
         marginTop: theme.spacing.unit * 8,
@@ -21,15 +17,53 @@ export const style = theme => ({
         margin: theme.spacing.unit,
         backgroundColor: theme.palette.secondary.main,
     },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
+    rightLayout: {
+        height: '100%',
+        padding: theme.spacing.unit * 2,
     },
-    submit: {
-        marginTop: theme.spacing.unit * 3,
-
+    leftLayout: {
+        height: '100%',
+        backgroundColor: '#2c387e',
+        padding: theme.spacing.unit * 2,
     },
-    errorLabel:{
+    errorLabel: {
         marginTop: theme.spacing.unit * 2,
+    },
+    cardPresentation: {
+        marginTop: 200
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    card: {
+        minWidth: 275,
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginBottom: 12,
+    },
+    typography: {
+        useNextVariants: true,
+    },
+    paddingSide: {
+        paddingLeft: theme.spacing.unit * 23,
+        paddingRight: theme.spacing.unit * 23,
+    },
+    xsMarginBottom: {
+        marginBottom: theme.spacing.unit * 5
+    },
+    logo: {
+        marginRight: 'auto',
+        marginLeft:'auto'
     }
 });
