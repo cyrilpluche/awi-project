@@ -16,22 +16,18 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="UTF-8" />
+      <charset value="windows-1252" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="54d426d1-a3a2-4454-a135-5963c37a8b61">
-        <schema name="public" object-types="table" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="54d426d1-a3a2-4454-a135-5963c37a8b61">
-      <console name="Connection" type="STANDARD" />
+      <console name="Prello" type="STANDARD" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
@@ -105,7 +101,6 @@
           <restore-workspace-deep value="true" />
           <environment-type value="default" />
           <idle-time-to-disconnect value="30" />
-          <idle-time-to-disconnect-pool value="5" />
           <password-expiry-time value="10" />
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />

@@ -8,12 +8,12 @@ const url = 'http://localhost:4200/api/action/'
 const Action = {
 
     getAll (object) {
-        var where = helper.Request.urlFromObject(object)
+        let where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_all' + where).then(res => res.data)
     },
 
     get (object) {
-        var where = helper.Request.urlFromObject(object)
+        let where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
     },
 

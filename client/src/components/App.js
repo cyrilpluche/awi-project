@@ -29,11 +29,12 @@ class App extends Component {
         if (this.props.isLoading) {
             return this.LoaderPageContainer
         }
-        if (this.props.isLogged) {
+        /*if (this.props.isLogged) {
             return this.DefaultContainer
         } else {
             return this.LoginContainer
-        }
+        } */
+        return this.DefaultContainer
     }
 
     LoginContainer = () => (
