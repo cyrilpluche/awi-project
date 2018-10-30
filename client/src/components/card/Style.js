@@ -1,7 +1,11 @@
+import Modal from "@material-ui/core/Modal/Modal";
+import React from "react";
+
 export const styles = theme => ({
     card: {
         width: 300,
-        margin: 5
+        margin: 5,
+        backgroundColor: '#FFFAF0'
     },
     media: {
         height: 0,
@@ -26,14 +30,16 @@ export const styles = theme => ({
     paper: {
         position: 'absolute',
         width: theme.spacing.unit * 80,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: '#FFFAF0',
+        //backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
         display: 'table',
         clear: 'both'
     },
     marginCard: {
-        margin: 5
+        marginTop: 10,
+        marginLeft: 10
     },
     row: {
         display: 'flex',
@@ -60,6 +66,40 @@ export const styles = theme => ({
     },
     button: {
         margin: 3,
+        width: '23%'
+    },
+    divider:{
+        margin: 15
+    },
+    buttonIcon:{
+        width: 43,
+        height: 43,
+        marginTop: 5,
+        display: 'block',
+        marginLeft:  'auto',
+        marginRight: 0
+    },
+    buttonLabel:{
+        height: '5%',
+        margin: 10,
+        backgroundColor: 'yellow',
+        fontWeight: 'bolt'
+    },
+    editButton:{
+        height: '5%',
+        display: 'block',
+        marginTop: 15,
+        marginLeft:  'auto',
+        marginRight: 0,
+        backgroundColor: 'Transparent',
+        border: 'none'
+    },
+    textArea:{
+        width: '90%'
+    },
+    buttonModal:{
+        marginLeft: 12,
+        marginBottom: 10,
         width: '23%'
     }
 });
