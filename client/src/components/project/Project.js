@@ -9,24 +9,6 @@ import { Button } from '@material-ui/core';
 
 
 
-let liststodos = [
-    {   listId:"list1", 
-        listTitle: "To do",
-        listContent:[
-            {cardId : 1, cardContent:"Contenu de la card1 dans lalist1"},
-            {cardId : 2, cardContent:"Contenu de la card2 dans lalist1zaezaeaeaeaeze"},
-            {cardId : 3, cardContent:"Contenu de la card2 dans lalist1"},
-        
-        ]
-    },
-    {   listId:"list3", 
-        listTitle: "In Progress",
-        listContent:[
-            {cardId : 4, cardContent:"Contenu de la card1 dans lalist1"},
-            {cardId : 5, cardContent:"Contenu de la card2 dans lalist1"}
-        ]
-    },
-]
 
 const styles = theme => ({
     projectBody: {
@@ -42,24 +24,60 @@ class Project extends Component {
     constructor(props){
         super(props)
         this.state = {
-            data : []
+            lists : []
         }
     }
 
     componentWillMount() {
-        this.props.getAllLists()
+        this.props.getAllLists(this.props.match.params.id)
         this.props.findAllCards()
+        
+    }
+    
+
+
+    orderList(lists){
+       
+        if(lists.length !== 0){
+            const headList = findWhere(lists,{listFather: null})
+            const indexHead = lists.indexOf(headList)
+            lists.splice(indexHead,1)
+            this.recursiveOrdering(lists,headList,[headList])
+            
+            return this.state.lists
+        }
+        else{
+            return lists
+        }
+        
     }
 
 
-   
+    recursiveOrdering(oldList,current, newList){
+        if(oldList.length === 0) return newList
+        else{
+
+            let nextList = findWhere(oldList,{listId:current.listChild})
+            let indexNextList = oldList.indexOf(nextList)
+
+            if(oldList.length === 1){
+                newList.push(nextList)
+                this.setState({lists:newList})
+            }else{
+                oldList.splice(indexNextList,1)
+                newList.push(nextList) 
+                this.recursiveOrdering(oldList,nextList, newList) 
+            }
+               
+        }
+    }
 
     onDragEnd = (result) => {
-       /* console.log(this.state.data)
+        console.log(this.state.data)
         //retrieve source and destination data (given by dnd)
-        const { source, destination,draggableId } = result;
-        
-
+        //const { source, destination,draggableId } = result;
+        //console.log(result)
+        /*
         // dropped outside the list
         if (!destination) {
             return;
@@ -108,7 +126,7 @@ class Project extends Component {
             <div className={classes.projectBody}>
                 
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Lists key="1" idProject={match.params.id} listTodos={this.state.data} lists={lists}  ></Lists>
+                    <Lists key="1" idProject={match.params.id} lists={this.orderList(lists)}  ></Lists>
                 </DragDropContext>
             </div>
         )

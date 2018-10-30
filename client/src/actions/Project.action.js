@@ -11,7 +11,7 @@ const labels = {
  */
 function findAllLists (idProject) {
     return dispatch => {
-        _service.List.getAll()
+        _service.List.getAll(idProject)
         .then(res => {
             dispatch({
                 type: labels.GET_ALL_LISTS,

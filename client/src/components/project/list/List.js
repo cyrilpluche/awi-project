@@ -25,9 +25,13 @@ class List extends Component{
         }
     }
 
+    componentDidUpdate(){
+        const {list,cards} = this.props
 
+    }
 
     createNewCard(){
+       
         let cardName = this.state.newCardName
         let listId = this.props.list.listId
         this.props.createCard(cardName,listId)
@@ -50,8 +54,8 @@ class List extends Component{
     };
 
     render() {
-        const {classes,cards} = this.props
-        console.log(cards)
+        const {classes,cards, list} = this.props
+        
         return (
             <Draggable draggableId={this.props.list.listId} index={this.props.index}>
                 {(provided) =>(
@@ -84,7 +88,7 @@ class List extends Component{
                                     ref={provided.innerRef} 
                                     {...provided.droppableProps}
                                     className={classes.dropSpace}>
-                                      {cards.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                      {cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
                                        
                                     {provided.placeholder}
                                     

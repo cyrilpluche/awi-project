@@ -7,8 +7,9 @@ const url = 'http://localhost:4200/api/list/'
 
 const List = {
 
-    getAll () {
-        return axios.get(url + 'find_all').then(res => res.data)
+    getAll (idProject) {
+        
+        return axios.get(url + 'find_all/'+ idProject).then(res => res.data)
     },
 
     get (object) {
