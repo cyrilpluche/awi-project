@@ -32,9 +32,29 @@ class Cardboard extends React.Component {
         this.setState({ open: true });
     };
 
+    sendToStore = (typeField, valueField) => {
+        const object = {
+            id: this.props.card.id,
+            title: this.props.card.title,
+            deadline: this.props.card.deadline,
+            description: this.props.card.description,
+            labels: this.props.card.labels,
+            members: this.props.card.members,
+            comments: this.props.card.comments
+        };
+        switch (typeField) {
+            case 'title': object.title = valueField; break;
+            case 'deadline': object.deadline = valueField; break;
+            case 'description': object.description = valueField; break;
+            case 'labels': object.labels = valueField; break;
+            case 'members': object.members = valueField; break;
+            case 'comments': object.comments = valueField; break;
+        }
+        this.props.onUpdateCard(object)
+    };
+
     handleClose = () => {
         this.setState({ open: false });
-        this.props.onUpdateCard("testSendAmin")
     };
 
     render() {
