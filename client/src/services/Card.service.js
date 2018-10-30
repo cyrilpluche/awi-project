@@ -17,6 +17,9 @@ const Card = {
     },
     create(body){
         return axios.post(url + 'create', body).then(res => res.data)
+    },
+    update(cardId,body){
+        return axios.put(url + 'update/'+cardId, body).then(res => res.data)
     }
 
 }

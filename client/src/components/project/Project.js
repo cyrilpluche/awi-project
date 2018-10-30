@@ -99,7 +99,7 @@ class Project extends Component {
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        const { source, destination,draggableId } = result;
+        const { source,destination,draggableId } = result;
         const {lists} = this.state
         
         
@@ -110,6 +110,7 @@ class Project extends Component {
 
         if(result.type === 'LIST'){
             
+            console.log(result)
            let findList = findWhere(lists,{listId: draggableId})
            let indexOfList = lists.indexOf(findList)
 
@@ -143,25 +144,12 @@ class Project extends Component {
             
         }
 
-        /*if (result.type === 'CARD') {
-            
-            let originalList = findWhere(liststodos, {listId: source.droppableId})
-            
-            let originalListIndex = liststodos.indexOf(originalList)
-            
-            let newList = findWhere(liststodos,{listId: destination.droppableId}) 
-             
-            let newListIndex = liststodos.indexOf(newList)
-             
-
-            let newLists = liststodos.slice()
-            let card = liststodos[originalListIndex].listContent[source.index]
-            newLists[originalListIndex].listContent.splice(result.source.index, 1)
-            newLists[newListIndex].listContent.splice(result.destination.index, 0, card)
-            
-            
-            this.setState({data:newLists})
-        }*/
+        if (result.type === 'CARD') {
+            console.log(result)
+            let cardId = draggableId
+            let findListId = findWhere(lists, {listTitle:destination.droppableId})
+            this.props.updateCard(cardId,findListId.listId)
+        }
 
 
     };
@@ -180,14 +168,15 @@ class Project extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    lists: state.project.lists
+    lists: state.project.lists,
 })
 
 const mapDispatchToProps ={
     getAllLists: _action.projectAction.findAllLists,
     findAllCards: _action.listAction.findAllCards,
     createList: _action.projectAction.createList,
-    moveList: _action.projectAction.updateLists
+    moveList: _action.projectAction.updateLists,
+    updateCard: _action.listAction.updateCard
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

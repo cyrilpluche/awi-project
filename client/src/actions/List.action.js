@@ -43,10 +43,37 @@ function findAllCards() {
     }
 }
 
+function updateCard(cardId, listId){
+    const body={
+        listId : listId
+    }
+    console.log(cardId)
+    console.log(listId)
+    return dispatch => {
+        _service.Card.update(cardId,body)
+        .then(res => {
+            _service.Card.getAll()
+            .then(resFinal => {
+                dispatch({
+                    type: labels.GET_ALL_CARDS,
+                    payload: resFinal
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
 
 export const listAction = {
     labels,
     createCard,
-    findAllCards
+    findAllCards,
+    updateCard
 }
 

@@ -25,10 +25,6 @@ class List extends Component{
         }
     }
 
-    componentDidUpdate(){
-        const {list,cards} = this.props
-
-    }
 
     createNewCard(){
        
