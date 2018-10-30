@@ -12,7 +12,7 @@ const Project = {
     },
 
     get (object) {
-        var where = helper.Request.urlFromObject(object)
+        let where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
     }
 

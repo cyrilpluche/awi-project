@@ -1,6 +1,7 @@
-var Member = require('../config/db_connection').Member;
-var sequelize = require('../config/db_connection').sequelize;
-var mw = require('../middlewares')
+const Member = require('../config/db_connection').Member;
+const sequelize = require('../config/db_connection').sequelize;
+const mw = require('../middlewares')
+const bcrypt = require('bcrypt');
 
 module.exports = {
 

@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var mw = require('../middlewares')
+const express = require('express');
+const router = express.Router();
+const mw = require('../middlewares')
 
-var projectController = require('../controllers').Project;
+const projectController = require('../controllers').Project;
 
 router.get('/find_all', mw.Token.verifyToken, projectController.findAll);
 router.get('/find_one', mw.Token.verifyToken, projectController.findOne);
