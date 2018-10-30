@@ -15,6 +15,8 @@ import AddIcon from '@material-ui/icons/Add';
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Divider from "@material-ui/core/Divider/Divider";
 import TextField from "@material-ui/core/TextField/TextField";
+import _action from "../../actions";
+import connect from "react-redux/es/connect/connect";
 
 
 class Cardboard extends React.Component {
@@ -32,6 +34,7 @@ class Cardboard extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+        this.props.onUpdateCard("testSendAmin")
     };
 
     render() {
@@ -135,5 +138,9 @@ Cardboard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-// We need an intermediary variable for handling the recursive nesting.
-export default withStyles(styles)(Cardboard);
+
+const mapDispatchToProps = {
+    onUpdateCard : _action.updateCardAction.updatecard
+};
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Cardboard));

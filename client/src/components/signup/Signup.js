@@ -42,7 +42,7 @@ class Signup extends React.Component {
         if(memberCheckPassword === memberPassword){
             this.props.onAdd(memberFirstname, memberLastname, memberPseudo, memberEmail, memberPassword)
         }else{
-            console.log("Mot de passe different")
+            console.log("Different password") // ToDo Display error
         }
     }
 
