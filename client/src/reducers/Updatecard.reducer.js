@@ -4,7 +4,13 @@ const labels = updateCardAction.labels
 
 const initialState = {
     card: {
-        cardInfo: 'Initial state test'
+        id: "123456789",
+        title: 'Clean the github',
+        deadline: 'January 10, 2018',
+        description: 'By merging all branches update the master branch',
+        labels: 'BACKEND',
+        members: 'H',
+        comments: 'Without comments'
     }
 };
 
