@@ -18,6 +18,9 @@ const List = {
     },
     create(body){
         return axios.post(url + 'create', body).then(res => res.data)
+    },
+    update(listId,body){
+        return axios.put(url + 'update/'+listId, body).then(res => res.data)
     }
 
 }
