@@ -47,11 +47,12 @@ module.exports = {
                         res.status(400).send('Failed to authenticate token.');
                     } else {
                         req.decoded = decoded;
-
                         next();
                     }
                 })
             } else {
+                console.log('no auto')
+
                 res.status(400).send('No token provided.');
             }
         } else {

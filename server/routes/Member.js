@@ -14,6 +14,7 @@ router.post('/sign_in', memberController.findOneSignIn, mw.Token.generateToken);
 
 router.put('/update', mw.Token.verifyToken, memberController.update, memberController.findOne, mw.Token.generateToken);
 router.put('/update_password', mw.Token.verifyToken, memberController.findOne, memberController.isFound, memberController.update, memberController.findOne, mw.Token.generateToken);
+router.put('/validate_account', mw.Token.verifyToken, memberController.validateAccount, memberController.update)
 
 router.delete('/delete/:id', mw.Token.verifyToken, memberController.delete);
 

@@ -14,6 +14,11 @@ const Member = {
         return axios.post(url + 'sign_up', body).then(res => res.data)
     },
 
+    validateAccount (memberToken) {
+        axios.defaults.headers.common['Authorization'] = memberToken
+        return axios.put(url + 'validate_account').then(res => res.data)
+    },
+
     /* Retrieve member's token and check if he is connected are not */
     isLogged () {
         const memberToken = localStorage.getItem('memberToken')

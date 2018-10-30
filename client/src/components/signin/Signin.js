@@ -43,7 +43,7 @@ class Signin extends React.Component {
     render() {
         const { classes, errorMsg } = this.props;
         return (
-            <Grid container alignItems='center' className={classes.layout}>
+            <Grid container alignItems='flex-start' className={classes.layout}>
 
                 <Grid xs={5} item className={classes.leftLayout}>
 
@@ -54,7 +54,7 @@ class Signin extends React.Component {
 
                         <Grid xs={12} item className={classes.xsMarginBottom}>
                             <form>
-                                <Grid spacing={16} alignItems='top' container>
+                                <Grid spacing={16} alignItems='flex-start' container>
                                     <Grid xs={4} item>
                                         <TextField
                                             error={!!errorMsg}

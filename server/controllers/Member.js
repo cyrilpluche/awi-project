@@ -170,6 +170,23 @@ module.exports = {
             next()
         }
         else next('Wrong password')
+    },
+
+    validateAccount (req, res, next) {
+        if (req.decoded) {
+            req.query = {
+                memberId: req.decoded.memberId,
+                memberEmail: req.decoded.memberEmail
+            }
+            req.body = {
+                memberStatus: 1
+            }
+            next()
+        }
+        else {
+            res.status(400).send('Failed to decrypt the token')
+        }
+
     }
 
 }

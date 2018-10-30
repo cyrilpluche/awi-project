@@ -13,6 +13,8 @@ import LoaderPage from "./loaderPage/LoaderPage";
 import Project from './project/Project'
 import { style } from './Style'
 import {withStyles} from "@material-ui/core";
+import AccountConfirmation from "./signup/accountConfirmation/AccountConfirmation"
+import TokenVerification from "./signup/accountConfirmation/TokenVerification"
 
 class App extends Component {
     constructor (props) {
@@ -35,12 +37,12 @@ class App extends Component {
         if (this.props.isLoading) {
             return this.LoaderPageContainer
         }
-        /*if (this.props.isLogged) {
+        if (this.props.isLogged) {
             return this.DefaultContainer
         } else {
             return this.LoginContainer
-        } */
-        return this.DefaultContainer
+        }
+        //return this.LoginContainer
     }
 
     LoginContainer = () => {
@@ -51,6 +53,8 @@ class App extends Component {
                 <Switch>
                     <Route exact path="/login" component={Signin} />
                     <Route exact path="/signup" component={Signup} />
+                    <Route exact path="/account-confirmation" component={AccountConfirmation} />
+                    <Route path="/account-confirmation/:token" component={TokenVerification} />
                     <Route path='*' render={() => <Redirect to="/login" />}/>
                 </Switch>
             </div>
