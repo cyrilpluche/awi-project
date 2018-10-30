@@ -4,8 +4,7 @@ import _action from '../../actions'
 import { DragDropContext} from 'react-beautiful-dnd';
 import Lists from './list/Lists'
 import { withStyles } from '@material-ui/core/styles';
-import {findWhere} from 'underscore'
-import { Button } from '@material-ui/core';
+import {findWhere} from 'underscore';
 
 
 
@@ -24,37 +23,50 @@ class Project extends Component {
     constructor(props){
         super(props)
         this.state = {
-            lists : []
+            lists : [],
+            updateLists : false
         }
     }
 
     componentWillMount() {
         this.props.getAllLists(this.props.match.params.id)
         this.props.findAllCards()
-        
+        this.setState({lists : this.props.lists})
     }
-    
+
+   componentWillReceiveProps(){
+
+        this.setState({updateLists : false})
+    }
+
+    componentDidUpdate(){
+
+        if(!this.state.updateLists){
+            this.orderList(this.props.lists)      
+        } 
+    }
 
 
-    orderList(lists){
-       
+   orderList(lists){
         if(lists.length !== 0){
             const headList = findWhere(lists,{listFather: null})
             const indexHead = lists.indexOf(headList)
             lists.splice(indexHead,1)
-            this.recursiveOrdering(lists,headList,[headList])
-            
-            return this.state.lists
+            this.recursiveOrdering(lists,headList,[headList])   
+        }else{
+            this.setState({lists:[]})
+            this.setState({updateLists : true})
         }
-        else{
-            return lists
-        }
-        
+  
     }
 
 
-    recursiveOrdering(oldList,current, newList){
-        if(oldList.length === 0) return newList
+     recursiveOrdering(oldList,current, newList){
+
+        if(oldList.length === 0) {
+            this.setState({lists:newList}); 
+            this.setState({updateLists : true})
+        }
         else{
 
             let nextList = findWhere(oldList,{listId:current.listChild})
@@ -63,6 +75,7 @@ class Project extends Component {
             if(oldList.length === 1){
                 newList.push(nextList)
                 this.setState({lists:newList})
+                this.setState({updateLists : true})
             }else{
                 oldList.splice(indexNextList,1)
                 newList.push(nextList) 
@@ -72,8 +85,19 @@ class Project extends Component {
         }
     }
 
+    createNewList(listName,idProject){
+        const {lists} = this.state
+ 
+        if(lists.length === 0 ){
+            this.props.createList(listName,idProject,null)
+        }else{           
+            let parentList = findWhere(lists,{listChild:null})
+            this.props.createList(listName,idProject,parentList.listId)
+        } 
+    }
+
     onDragEnd = (result) => {
-        console.log(this.state.data)
+        
         //retrieve source and destination data (given by dnd)
         //const { source, destination,draggableId } = result;
         //console.log(result)
@@ -120,13 +144,12 @@ class Project extends Component {
     };
     
     render() {  
-        const {classes, lists, match} = this.props
-        
+        const {classes, match} = this.props
         return (
             <div className={classes.projectBody}>
                 
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Lists key="1" idProject={match.params.id} lists={this.orderList(lists)}  ></Lists>
+                    <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
                 </DragDropContext>
             </div>
         )
@@ -139,7 +162,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps ={
     getAllLists: _action.projectAction.findAllLists,
-    findAllCards: _action.listAction.findAllCards
+    findAllCards: _action.listAction.findAllCards,
+    createList: _action.projectAction.createList
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

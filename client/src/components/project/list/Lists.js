@@ -25,7 +25,7 @@ class Lists extends Component {
     createNewList(){
         let listName = this.state.newListname
         let idProject = this.props.idProject
-        this.props.createList(listName,idProject)
+        this.props.createListCallback(listName,idProject)
     }
 
 
@@ -41,16 +41,16 @@ class Lists extends Component {
     
     render() {
         const { classes,lists} = this.props;
-        
+        console.log(lists.length)
         return (
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
                     <div className={classes.listArea}
                         ref={provided.innerRef} 
                         {...provided.droppableProps}>
-                        {lists.map((list, index) => 
-                                        <List key={list.listTitle} list={list} index={index}></List>
-                                    )}
+                        {lists.length === 0 ? '' :lists.map((list, index) => 
+                            <List key={list.listTitle} list={list} index={index}></List>
+                            )}
                         {provided.placeholder}
                         <div><TextField
                         id="standard-name"
@@ -71,8 +71,6 @@ class Lists extends Component {
 }
 
 
-const mapDispatchToProps ={
-createList: _action.projectAction.createList
-}
+/**/
 
-export default connect(null,mapDispatchToProps)(withStyles(styles)(Lists))
+export default withStyles(styles)(Lists)

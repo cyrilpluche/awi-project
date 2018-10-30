@@ -24,25 +24,68 @@ function findAllLists (idProject) {
     }
 }
 
-function createList (listTitle, projectId) {
+function createList (listTitle, projectId, listFather) {
+    
     const body = {
         listTitle: listTitle,
         listStatus : 0,
-        projectId: projectId
+        projectId: projectId,
+        listFather:listFather
     }
-    return dispatch => {
-        _service.List.create(body)
-        .then(res => {
-            dispatch({
-                type: labels.CREATE_LIST,
-                payload: res
+    if(listFather !== null)
+    {
+        return dispatch => {
+            _service.List.create(body)
+            .then(res => { 
+                const fatherBody = {
+                    listId: listFather, 
+                    listChild: res.listId 
+                }
+                _service.List.update(listFather,fatherBody)
+                .then(res => { 
+    
+                    _service.List.getAll(projectId)
+                    .then(resFinal => {
+                        dispatch({
+                            type: labels.GET_ALL_LISTS,
+                            payload: resFinal
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch(err)
+                    });
+                }) 
+                .catch((err) => {
+                    dispatch(err)
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
+        }
+    }else{
+        return dispatch => {
+            _service.List.create(body)
+                .then(res => { 
+                    _service.List.getAll(projectId)
+                    .then(resFinal => {
+                        dispatch({
+                            type: labels.GET_ALL_LISTS,
+                            payload: resFinal
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch(err)
+                    });
+                })
+                .catch((err) => {
+                    dispatch(err)
+                });
+        }
     }
+   
 }
+
 
 
 export const projectAction = {
