@@ -15,6 +15,7 @@ import { style } from './Style'
 import {withStyles} from "@material-ui/core";
 import AccountConfirmation from "./signup/accountConfirmation/AccountConfirmation"
 import TokenVerification from "./signup/accountConfirmation/TokenVerification"
+import PasswordForgotten from "./signin/passwordForgotten/PasswordForgotten"
 
 class App extends Component {
     constructor (props) {
@@ -53,6 +54,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path="/login" component={Signin} />
                     <Route exact path="/signup" component={Signup} />
+                    <Route exact path="/password-forgotten" component={PasswordForgotten} />
                     <Route exact path="/account-confirmation" component={AccountConfirmation} />
                     <Route path="/account-confirmation/:token" component={TokenVerification} />
                     <Route path='*' render={() => <Redirect to="/login" />}/>

@@ -58,6 +58,13 @@ const Member = {
         }
         return axios.put(url + 'update_password' + where, body).then(res => res.data)
     },
+
+    sendNewPassword (memberEmail) {
+        let body = {
+            memberEmail: memberEmail
+        }
+        return axios.post(url + 'password_forgotten', body).then(res => res.data)
+    }
 }
 
 export default Member

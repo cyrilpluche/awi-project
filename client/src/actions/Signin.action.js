@@ -6,7 +6,9 @@ const labels = {
     ERROR : "ERROR",
     CREATE_USER : "CREATE_USER",
     IS_LOGGED: "IS_LOGGED",
-    IS_NOT_LOGGED: "IS_NOT_LOGGED"
+    IS_NOT_LOGGED: "IS_NOT_LOGGED",
+    NEW_PASSWORD_SENT: "NEW_PASSWORD_SENT",
+    NEW_PASSWORD_FAILED: "NEW_PASSWORD_FAILED"
 }
 
 const signSuccess = member => ({
@@ -59,8 +61,25 @@ function isMemberLogged () {
     }
 }
 
+function sendNewPassword (memberEmail) {
+    return dispatch => {
+        _service.Member.sendNewPassword(memberEmail)
+            .then(res => {
+                dispatch({
+                    type: labels.NEW_PASSWORD_SENT
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.NEW_PASSWORD_FAILED
+                })
+            });
+    }
+}
+
 export const signinAction = {
     labels,
     signin,
-    isMemberLogged
+    isMemberLogged,
+    sendNewPassword
 }

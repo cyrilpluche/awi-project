@@ -26,7 +26,6 @@ class TokenVerification extends React.Component {
         const {classes} = this.props;
         return (
             <div>
-
                 <LoaderPage/>
             </div>
         )

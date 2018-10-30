@@ -58,6 +58,18 @@ module.exports = {
         } else {
             next()
         }
+    },
 
-    }
+    /*
+     *  return: Generate a random token for new password.
+     */
+    generateRandomToken(req, res, next) {
+        let s = '';
+        let r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (var i=0; i < 15; i++) {
+            s += r.charAt(Math.floor(Math.random()*r.length));
+        }
+        req.body.memberPassword = s
+        next()
+    },
 }

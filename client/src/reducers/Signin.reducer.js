@@ -5,7 +5,10 @@ const labelsNavbar = _action.navbarAction.labels
 const labelsProfile = _action.profileAction.labels
 
 
-const initialState = { isLoading: true }
+const initialState = {
+    isLoading: true,
+    isPasswordReset: false
+}
 
 export function signin (state = initialState, action){
     switch (action.type) {
@@ -52,6 +55,20 @@ export function signin (state = initialState, action){
             return {
                 ...state,
                 member: action.payload.member,
+            }
+
+        case labels.NEW_PASSWORD_SENT:
+            return {
+                ...state,
+                isPasswordReset: true,
+                resetPasswordMsg: 'New password sent.'
+            }
+
+        case labels.NEW_PASSWORD_FAILED:
+            return {
+                ...state,
+                isPasswordReset: true,
+                resetPasswordMsg: 'No email adress found.'
             }
 
         default:

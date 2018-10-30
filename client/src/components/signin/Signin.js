@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid/Grid";
 import CloudIcon from '@material-ui/icons/Cloud'
 import Typography from "@material-ui/core/Typography/Typography";
+import _helper from "../../helpers";
 
 
 class Signin extends React.Component {
@@ -33,6 +34,10 @@ class Signin extends React.Component {
         let memberEmail = this.state.memberEmail
         let memberPassword = this.state.memberPassword
         this.props.onLogin(memberEmail, memberPassword)
+    }
+
+    goToForgottenPassword () {
+        _helper.History.push('/password-forgotten')
     }
 
     handleChange (event) {
@@ -86,6 +91,7 @@ class Signin extends React.Component {
                                         />
                                         <Button
                                             size="small"
+                                            onClick={this.goToForgottenPassword}
                                         >
                                             Forgot password
                                         </Button>
