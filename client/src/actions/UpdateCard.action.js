@@ -8,7 +8,7 @@ function updatecard(attributes) {
     return (dispatch) => {
         dispatch({
             type : labels.UPDATE_CARD,
-            payload : attributes
+            payload : {cardInfo : "nouveau"}
         })
     };
 }

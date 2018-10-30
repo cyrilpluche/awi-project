@@ -117,7 +117,7 @@ class Cardboard extends React.Component {
                 <Card className={classes.card} >
                     <CardActionArea onClick={this.handleOpen}>
                         <CardHeader
-                            title="Clean the github"
+                            title={this.props.card.cardInfo}
                             subheader="September 14, 2016"
                         />
                         <CardContent>
@@ -138,9 +138,11 @@ Cardboard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-
+const mapStateToProps = (state) => ({
+    card: state.updatecard.card
+})
 const mapDispatchToProps = {
     onUpdateCard : _action.updateCardAction.updatecard
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Cardboard));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));

@@ -4,7 +4,7 @@ const labels = updateCardAction.labels
 
 const initialState = {
     card: {
-        cardTest: 'Initial state test'
+        cardInfo: 'Initial state test'
     }
 };
 
