@@ -60,7 +60,7 @@ class App extends Component {
             <Switch>
                 <Route path="/home" component={Dashboard}/>
                 <Route path="/profile/overview" component={Profile}/>
-                <Route path="/project" component={Project}/>
+                <Route path="/project/:id" component={Project}/>
                 <Route path='*' render={() => <Redirect to="/home" />}/>
             </Switch>
         </div>
