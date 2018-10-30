@@ -8,6 +8,15 @@ const  classic = createMuiTheme({
     },
 });
 
+const  successWarningError = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#4caf50'
+        }
+    },
+});
+
 export const Theme = {
-    classic
+    classic,
+    successWarningError
 }

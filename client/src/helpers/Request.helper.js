@@ -10,6 +10,7 @@ const Request = {
             let url = '?'
             for (let i = 0; i < keys.length; i++) {
                 url += keys[i] + '=' + values[i]
+                if (i < keys.length - 1) url += '&'
             }
             return url
         }

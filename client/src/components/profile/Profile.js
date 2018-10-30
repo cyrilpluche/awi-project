@@ -4,19 +4,20 @@ import Menu from '../ui/menu/Menu'
 import { Grid } from "@material-ui/core";
 import {Redirect, Route, Router, Switch} from "react-router-dom";
 import Password from './password/Password'
-import Signin from "../signin/Signin";
 import Overview from "./overview/Overview";
-
 import {createBrowserHistory} from "history";
+import AccountBoxIcon from '@material-ui/icons/AccountBox'
+import FingerprintIcon from '@material-ui/icons/Fingerprint'
+
 const History = createBrowserHistory();
+
 class Profile extends React.Component {
 
     render() {
 
         const links = [
-            {label: 'Overview', route: '/profile/overview'},
-            {label: 'Change Password', route: '/profile/password'},
-            {label: 'Profile parameters', route: '/profile/parameters'}
+            {label: 'Overview', route: '/profile/overview', icon: <AccountBoxIcon/>},
+            {label: 'Change Password', route: '/profile/password', icon: <FingerprintIcon/>}
         ];
 
         return (

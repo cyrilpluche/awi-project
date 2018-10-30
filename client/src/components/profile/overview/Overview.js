@@ -1,54 +1,93 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import _action from '../../../actions'
 import { style } from './Style'
 import TextField from "@material-ui/core/TextField/TextField";
 import {withStyles} from "@material-ui/core";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Switch from "@material-ui/core/Switch/Switch";
+import Button from "@material-ui/core/Button/Button";
+import SaveIcon from '@material-ui/icons/Save';
+import { Theme } from "../../ui/palette/Palette";
+import {MuiThemeProvider} from "@material-ui/core/es";
+import Grid from "@material-ui/core/Grid/Grid";
+import _action from "../../../actions";
+import Snackbar from "../../ui/snackbar/Snackbar"
 
 class Overview extends React.Component {
     constructor (props) {
         super(props)
         this.generateTextfields = this.generateTextfields.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.state = {
-            member: [
-                this.props.member.memberFirstname,
-                this.props.member.memberLastname,
-                this.props.member.memberPseudo
-            ],
-            labels: [
-                'memberFirstname',
-                'memberLastname',
-                'memberPseudo'
-            ]
-        }
+        this.submit = this.submit.bind(this)
 
+        this.state = {
+            labelsForClient: ['First name', 'Last name', 'Pseudo'],
+            memberFirstname: this.props.member.memberFirstname,
+            memberLastname: this.props.member.memberLastname,
+            memberPseudo: this.props.member.memberPseudo,
+            isEditable: false,
+            openSnackbar: false
+        }
     }
 
+    // Update member state with new informations of textfields
     handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
+        this.setState({ [name]: event.target.value });
     };
 
+    // Make textfields editable
+    handleIsEditable = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
+
+    // Submit the member form to update db and store
+    submit () {
+        let body = {
+            memberId: this.props.member.memberId,
+            memberFirstname: this.state.memberFirstname,
+            memberLastname: this.state.memberLastname,
+            memberPseudo: this.state.memberPseudo
+        }
+        this.props.onUpdateMember(body)
+        this.setState({
+            openSnackbar: true,
+            isEditable: false
+        })
+    }
+
+    // Handle the snackbar state
+    handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({ openSnackbar: false });
+    };
+
+    // Loop that reate textfields
     generateTextfields = () => {
-        var textfields = [];
-        let index = 0
         const { classes } = this.props;
 
-        console.log(this.state)
+        let attributes = {
+            memberFirstname: this.state.memberFirstname,
+            memberLastname: this.state.memberLastname,
+            memberPseudo: this.state.memberPseudo
+        }
 
-        for (let item of this.state.member) {
-            console.log(item)
+        let values = Object.values(attributes)
+        let keys = Object.keys(attributes)
+        var textfields = [];
+        let index = 0
+
+        for (let item of values) {
             textfields.push(
                 <TextField
-                    disabled={true}
-                    key={this.state.labels[index]}
-                    id={this.state.labels[index]}
-                    label={this.state.labels[index]}
+                    disabled={!this.state.isEditable}
+                    key={keys[index]}
+                    id={keys[index]}
+                    label={this.state.labelsForClient[index]}
                     className={classes.textField}
                     value={item}
-                    onChange={this.handleChange(this.state.labels[index])}
+                    onChange={this.handleChange(keys[index])}
                     margin="normal"
                     variant="outlined"
                 />
@@ -62,9 +101,50 @@ class Overview extends React.Component {
         const { classes } = this.props;
 
         return (
-            <form className={classes.container} noValidate autoComplete="off">
-                {this.generateTextfields()}
-            </form>
+            <Grid
+                container
+                alignItems="center"
+                justify="center"
+            >
+                <Grid item>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={this.state.isEditable}
+                                onChange={this.handleIsEditable('isEditable')}
+                                value="isEditable"
+                                color="primary"
+                            />
+                        }
+                        label="Edit informations"
+                    />
+                </Grid>
+                <Grid item>
+                    <MuiThemeProvider theme={Theme.successWarningError}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            size="small"
+                            className={classes.button}
+                            disabled={!this.state.isEditable}
+                            onClick={this.submit}
+                        >
+                            <SaveIcon className={(classes.leftIcon, classes.iconSmall)} />
+                            Save
+                        </Button>
+                    </MuiThemeProvider>
+                </Grid>
+                <Grid container justify="center">
+                    <form className={classes.container} noValidate autoComplete="off">
+                        {this.generateTextfields()}
+                    </form>
+                </Grid>
+                <Snackbar
+                    handleSnackbarClose={this.handleSnackbarClose}
+                    open={this.state.openSnackbar}
+                    message="Informations updated."
+                />
+            </Grid>
         )
     }
 }
@@ -74,6 +154,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+    onUpdateMember: _action.profileAction.updateMember
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(Overview));

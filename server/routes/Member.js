@@ -12,7 +12,8 @@ router.post('/create', mw.Token.verifyToken, memberController.create);
 router.post('/sign_up', memberController.create, mw.Token.generateToken, mw.Email.sendEmail);
 router.post('/sign_in', memberController.findOneSignIn, mw.Token.generateToken);
 
-router.put('/update/:id', mw.Token.verifyToken, memberController.update);
+router.put('/update', mw.Token.verifyToken, memberController.update, memberController.findOne, mw.Token.generateToken);
+router.put('/update_password', mw.Token.verifyToken, memberController.findOne, memberController.isFound, memberController.update, memberController.findOne, mw.Token.generateToken);
 
 router.delete('/delete/:id', mw.Token.verifyToken, memberController.delete);
 
