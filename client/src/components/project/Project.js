@@ -69,7 +69,7 @@ class Project extends Component {
         }
         else{
 
-            let nextList = findWhere(oldList,{listId:current.listChild})
+            let nextList = findWhere(oldList,{listFather:current.listId})
             let indexNextList = oldList.indexOf(nextList)
 
             if(oldList.length === 1){
@@ -91,27 +91,30 @@ class Project extends Component {
         if(lists.length === 0 ){
             this.props.createList(listName,idProject,null)
         }else{           
-            let parentList = findWhere(lists,{listChild:null})
-            this.props.createList(listName,idProject,parentList.listId)
+            let lastElement = lists[lists.length -1]
+            this.props.createList(listName,idProject,lastElement.listId)
         } 
     }
 
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        //const { source, destination,draggableId } = result;
-        //console.log(result)
-        /*
+        const { source, destination,draggableId } = result;
+        const {lists} = this.state
+        
+        
         // dropped outside the list
         if (!destination) {
             return;
         }
+
         if(result.type === 'LIST'){
             
-            let findList = findWhere(liststodos,{listId: draggableId})
-            
-            let indexOfList = liststodos.indexOf(findList)
-            let newLists = liststodos
+           let findList = findWhere(lists,{listId: draggableId})
+           let indexOfList = lists.indexOf(findList)
+
+           
+           let newLists = lists
 
             //remove list from list of list
             newLists.splice(indexOfList,1,)
@@ -119,8 +122,28 @@ class Project extends Component {
             newLists.splice(destination.index,0,findList)
             
             this.setState({data:newLists})
+
+            let updateList = findWhere(lists,{listId: draggableId})
+            let fatherOfUpdatedList = updateList.listFather === undefined ? null : updateList.listFather
+
+            let childThatHadMeAsFather = findWhere(lists,{listFather: updateList.listId})
+            
+            if(childThatHadMeAsFather !== undefined && childThatHadMeAsFather !== null ) this.props.moveList(childThatHadMeAsFather.listId,fatherOfUpdatedList)
+
+
+            let indexOfUpdateList = lists.indexOf(updateList)
+            
+            let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
+            let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
+            
+            // action
+            if(updateList !== undefined && updateList !== null)  this.props.moveList(updateList.listId,listFather)
+            if(listChild !== undefined  && listChild !== null) this.props.moveList(listChild,updateList.listId)
+            
+            
         }
-        if (result.type === 'CARD') {
+
+        /*if (result.type === 'CARD') {
             
             let originalList = findWhere(liststodos, {listId: source.droppableId})
             
@@ -163,7 +186,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps ={
     getAllLists: _action.projectAction.findAllLists,
     findAllCards: _action.listAction.findAllCards,
-    createList: _action.projectAction.createList
+    createList: _action.projectAction.createList,
+    moveList: _action.projectAction.updateLists
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

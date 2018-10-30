@@ -2,7 +2,8 @@ import _service from '../services'
 
 const labels = {
     GET_ALL_LISTS :"GET_ALL_LISTS",
-    CREATE_LIST : "CREATE_LIST"
+    CREATE_LIST : "CREATE_LIST",
+    UPDATE_LIST : "UPDATE_LIST"
 }
 
 /**
@@ -32,19 +33,10 @@ function createList (listTitle, projectId, listFather) {
         projectId: projectId,
         listFather:listFather
     }
-    if(listFather !== null)
-    {
         return dispatch => {
             _service.List.create(body)
             .then(res => { 
-                const fatherBody = {
-                    listId: listFather, 
-                    listChild: res.listId 
-                }
-                _service.List.update(listFather,fatherBody)
-                .then(res => { 
-    
-                    _service.List.getAll(projectId)
+                     _service.List.getAll(projectId)
                     .then(resFinal => {
                         dispatch({
                             type: labels.GET_ALL_LISTS,
@@ -54,36 +46,33 @@ function createList (listTitle, projectId, listFather) {
                     .catch((err) => {
                         dispatch(err)
                     });
-                }) 
-                .catch((err) => {
-                    dispatch(err)
-                });
             })
             .catch((err) => {
                 dispatch(err)
             });
-        }
-    }else{
-        return dispatch => {
-            _service.List.create(body)
-                .then(res => { 
-                    _service.List.getAll(projectId)
-                    .then(resFinal => {
-                        dispatch({
-                            type: labels.GET_ALL_LISTS,
-                            payload: resFinal
-                        });
-                    })
-                    .catch((err) => {
-                        dispatch(err)
-                    });
-                })
-                .catch((err) => {
-                    dispatch(err)
-                });
-        }
+        }  
+}
+
+
+function updateLists (listId,fatherListId) {
+    let body = {
+        listFather : fatherListId
     }
-   
+    
+    
+    return dispatch => {
+        //Update list dragged
+        _service.List.update(listId,body)
+            .then(res => { 
+                dispatch({
+                    type: labels.UPDATE_LIST,
+                    payload: res
+                });
+            })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
 }
 
 
@@ -91,5 +80,6 @@ function createList (listTitle, projectId, listFather) {
 export const projectAction = {
     labels,
     findAllLists,
-    createList
+    createList,
+    updateLists
 }
