@@ -23,7 +23,7 @@ const styles = theme => ({
 
 class Menu extends React.Component {
     /* Need to get a property links which is an array of objects
-     * object = {label: String, route: String}
+     * object = {label: String, route: String, icon: <Icon/>}
      */
 
     constructor (props) {

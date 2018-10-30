@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import { style } from './Style'
 import NotificationList from '../../ui/notification/NotificationList'
+import _helper from '../../../helpers'
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -35,6 +36,7 @@ class Navbar extends React.Component {
         this.updateNotifications = this.updateNotifications.bind(this)
         this.handleFilterChange = this.handleFilterChange.bind(this)
         this.toggleDrawer = this.toggleDrawer.bind(this)
+        this.displayComponent = this.displayComponent.bind(this)
 
         this.state = {
             anchorEl: null,
@@ -54,10 +56,11 @@ class Navbar extends React.Component {
         });
     };
 
-    handleMenuClose = () => {
+    handleMenuClose = (event) => {
         this.setState({
             anchorEl: null
         });
+        this.displayComponent(event)
         this.handleMobileMenuClose();
     };
 
@@ -69,6 +72,13 @@ class Navbar extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
+    displayComponent = (event) => {
+        let route = event.currentTarget.id
+        if (route !== '/login') {
+            _helper.History.push(route)
+        }
+    }
+
     toggleDrawer = (side, open) => () => {
         this.setState({showOnlyUnread: this.props.notificationsUnarchived.length > 0})
 
@@ -78,8 +88,8 @@ class Navbar extends React.Component {
         });
     };
 
-    logOff () {
-        this.handleMenuClose()
+    logOff (event) {
+        this.handleMenuClose(event)
         this.props.onLogOff()
     }
 
@@ -115,9 +125,8 @@ class Navbar extends React.Component {
                 className={classes.openedMenu}
                 onClose={this.handleMenuClose}
             >
-                <Link to='/profile/overview'><MenuItem onClick={this.handleMenuClose}>Profile</MenuItem></Link>
-                <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-                <MenuItem onClick={this.logOff}>Log off</MenuItem>
+                <MenuItem id='/profile/overview' onClick={this.handleMenuClose}>Profile</MenuItem>
+                <MenuItem id='/login' onClick={this.logOff}>Log off</MenuItem>
             </Menu>
         );
 

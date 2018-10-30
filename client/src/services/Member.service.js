@@ -14,6 +14,11 @@ const Member = {
         return axios.post(url + 'sign_up', body).then(res => res.data)
     },
 
+    validateAccount (memberToken) {
+        axios.defaults.headers.common['Authorization'] = memberToken
+        return axios.put(url + 'validate_account').then(res => res.data)
+    },
+
     /* Retrieve member's token and check if he is connected are not */
     isLogged () {
         const memberToken = localStorage.getItem('memberToken')
@@ -53,6 +58,13 @@ const Member = {
         }
         return axios.put(url + 'update_password' + where, body).then(res => res.data)
     },
+
+    sendNewPassword (memberEmail) {
+        let body = {
+            memberEmail: memberEmail
+        }
+        return axios.post(url + 'password_forgotten', body).then(res => res.data)
+    }
 }
 
 export default Member

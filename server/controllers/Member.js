@@ -170,6 +170,36 @@ module.exports = {
             next()
         }
         else next('Wrong password')
-    }
+    },
 
+    validateAccount (req, res, next) {
+        if (req.decoded) {
+            req.query = {
+                memberId: req.decoded.memberId,
+                memberEmail: req.decoded.memberEmail
+            }
+            req.body = {
+                memberStatus: 1
+            }
+            next()
+        }
+        else {
+            res.status(400).send('Failed to decrypt the token')
+        }
+    },
+
+    /*
+     *  return: A boolean. true = Updated, false = Not updated.
+     */
+    resetPassword(req, res, next) {
+        Member
+            .update({ memberPassword: req.body.memberPassword}, {
+                where: {memberEmail: req.body.memberEmail}
+            })
+            .then(isUpdated => {
+                if (isUpdated[0] === 1) next()
+                else res.status(400).send('No email found.')
+            })
+            .catch(error => next(error));
+    }
 }

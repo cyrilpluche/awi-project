@@ -5,6 +5,7 @@ import { signup } from './Signup.reducer';
 import { navbar } from './Navbar.reducer';
 import { profile } from './Profile.reducer';
 import { project } from './Project.reducer';
+import {updatecard} from "./Updatecard.reducer";
 
 const rootReducer = combineReducers({
     dashboard,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     signup,
     navbar,
     profile,
-    project
+    project,
+    updatecard
 });
 
 export default rootReducer;

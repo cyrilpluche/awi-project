@@ -40,7 +40,6 @@ module.exports = {
     verifyToken(req, res, next) {
         // We can activate or disable token checking for development purposes.
         if (true) {
-            console.log(req.body)
             var token = req.headers['authorization'] || req.body.memberToken || req.query.memberToken;
             if (token) {
                 jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
@@ -48,16 +47,29 @@ module.exports = {
                         res.status(400).send('Failed to authenticate token.');
                     } else {
                         req.decoded = decoded;
-
                         next();
                     }
                 })
             } else {
+                console.log('no auto')
+
                 res.status(400).send('No token provided.');
             }
         } else {
             next()
         }
+    },
 
-    }
+    /*
+     *  return: Generate a random token for new password.
+     */
+    generateRandomToken(req, res, next) {
+        let s = '';
+        let r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (var i=0; i < 15; i++) {
+            s += r.charAt(Math.floor(Math.random()*r.length));
+        }
+        req.body.memberPassword = s
+        next()
+    },
 }
