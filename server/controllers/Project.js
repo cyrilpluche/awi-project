@@ -1,5 +1,6 @@
 var Project = require('../config/db_connection').Project;
 var sequelize = require('../config/db_connection').sequelize;
+var Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
@@ -95,5 +96,28 @@ module.exports = {
                 next()
             })
             .catch(error => next(error));
+    },
+
+    /* ================ CUSTOM METHODS =============== */
+
+    /*  localhost:4200/api/project/find_all_searchbar?str=customStr. (optional)
+     *
+     *  return: Array of Project objects with given attributes.
+     */
+    findAllSearchbar(req, res, next) {
+        Project
+            .findAll({
+                attributes: [['project_id', 'id'], ['project_title', 'label']],
+                order : sequelize.col('project_id'),
+                where: {
+                    projectTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                }
+            })
+            .then(projects => {
+                req.body.result = projects
+                next()
+            })
+            .catch(error => res.status(400).send(error));
     }
+
 }

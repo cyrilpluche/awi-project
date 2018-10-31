@@ -1,47 +1,22 @@
-import { fade } from '@material-ui/core/styles/colorManipulator';
-
-
 export const style = theme => ({
     root: {
-        width: '100%',
-        marginBottom: theme.spacing.unit * 4
-    },
-    grow: {
         flexGrow: 1,
+        //height: 250,
     },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
-    title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    search: {
+    container: {
+        flexGrow: 1,
         position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing.unit * 2,
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing.unit * 3,
-            width: 'auto',
-        },
     },
-    searchIcon: {
-        width: theme.spacing.unit * 9,
-        height: '100%',
+    paper: {
         position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        zIndex: 2,
+        opacity: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+    },
+    chip: {
+        margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
     },
     inputRoot: {
         color: 'inherit',
@@ -53,45 +28,23 @@ export const style = theme => ({
         paddingBottom: theme.spacing.unit,
         paddingLeft: theme.spacing.unit * 10,
         transition: theme.transitions.create('width'),
+
         width: '100%',
         [theme.breakpoints.up('md')]: {
             width: 200,
         },
     },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
+    divider: {
+        height: theme.spacing.unit * 2,
+    },
+    labelSearchTitle: {
+        paddingLeft: theme.spacing.unit * 2
+    },
+    highlight: {
+        '&:hover:not($disabled):not($error):not($focused):before': {
+            //backgroundColor: '#e72b34',
+            borderBottomColor: '#cdcde7',
         },
-    },
-    sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
-    },
-    openedMenu: {
-        textDecoration: 'none',
-        marginTop: 55
-    },
-    openedNotifications: {
-        marginTop: 72
-    },
-    list: {
-        width: 250,
-    },
-    fullList: {
-        width: 'auto',
-    },
-    notificationList: {
-        overflowY: 'scroll',
-        maxHeight: theme.spacing.unit * 50,
-    },
-    button: {
-        margin: 0,
-    },
-    filterRow: {
-        marginLeft: theme.spacing.unit * 3
     }
 });
 

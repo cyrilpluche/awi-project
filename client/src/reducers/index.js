@@ -6,6 +6,7 @@ import { navbar } from './Navbar.reducer';
 import { profile } from './Profile.reducer';
 import { project } from './Project.reducer';
 import {updatecard} from "./Updatecard.reducer";
+import {searchbar} from "./Searchbar.reducer";
 
 const rootReducer = combineReducers({
     dashboard,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     navbar,
     profile,
     project,
-    updatecard
+    updatecard,
+    searchbar
 });
 
 export default rootReducer;

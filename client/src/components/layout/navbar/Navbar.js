@@ -1,48 +1,62 @@
-import { connect } from 'react-redux'
-import { style } from './Style'
-import NotificationList from '../../ui/notification/NotificationList'
-import _helper from '../../../helpers'
-
 import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import { Link } from "react-router-dom/";
+
+import _helper from '../../../helpers'
+import _action from "../../../actions";
+
+// Components
+import NotificationList from '../../ui/notification/NotificationList'
+import SearchResults from "./searchResults/SearchResults"
+
+// Material UI
+import Menu from '@material-ui/core/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { withStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Link } from "react-router-dom/";
-import { MuiThemeProvider } from "@material-ui/core/es/styles";
-import { Theme } from "../../ui/palette/Palette";
-import _action from "../../../actions";
 import Drawer from "@material-ui/core/Drawer/Drawer";
 import Divider from "@material-ui/core/Divider/Divider";
 import Button from "@material-ui/core/Button/Button";
+
+// Material UI style
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { style } from './Style'
+import { Theme } from "../../ui/palette/Palette";
+import { MuiThemeProvider } from "@material-ui/core/es/styles";
 
 class Navbar extends React.Component {
 
     constructor (props) {
         super(props)
+
         this.logOff = this.logOff.bind(this);
+
+        // Notifications
         this.updateNotification = this.updateNotification.bind(this)
         this.updateNotifications = this.updateNotifications.bind(this)
         this.handleFilterChange = this.handleFilterChange.bind(this)
         this.toggleDrawer = this.toggleDrawer.bind(this)
+
+        // Profile
         this.displayComponent = this.displayComponent.bind(this)
 
         this.state = {
             anchorEl: null,
             mobileMoreAnchorEl: null,
+            resultsAnchorEl: null,
             right: false,
-            updatedNotifications: []
+            updatedNotifications: [],
+            showSearchResults: false
         };
     }
 
@@ -50,12 +64,12 @@ class Navbar extends React.Component {
         this.props.onGetAllNonArchivedNotifications()
     }
 
+    /* ================= Profile regular ================= */
     handleProfileMenuOpen = event => {
         this.setState({
             anchorEl: event.currentTarget
         });
     };
-
     handleMenuClose = (event) => {
         this.setState({
             anchorEl: null
@@ -64,21 +78,15 @@ class Navbar extends React.Component {
         this.handleMobileMenuClose();
     };
 
+    /* ================= Profile mobile ================= */
     handleMobileMenuOpen = event => {
         this.setState({ mobileMoreAnchorEl: event.currentTarget });
     };
-
     handleMobileMenuClose = () => {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
-    displayComponent = (event) => {
-        let route = event.currentTarget.id
-        if (route !== '/login') {
-            _helper.History.push(route)
-        }
-    }
-
+    /* ================= Notifications ================= */
     toggleDrawer = (side, open) => () => {
         this.setState({showOnlyUnread: this.props.notificationsUnarchived.length > 0})
 
@@ -87,35 +95,49 @@ class Navbar extends React.Component {
             [side]: open,
         });
     };
-
-    logOff (event) {
-        this.handleMenuClose(event)
-        this.props.onLogOff()
-    }
-
     updateNotification (item) {
         let index = this.state.updatedNotifications.indexOf(item)
         if (index === -1) this.state.updatedNotifications.push(item)
     }
-
     updateNotifications () {
         if (this.state.updatedNotifications.length > 0) {
             this.props.onUpdateNotifications(this.state.updatedNotifications)
             this.setState({updatedNotifications: []})
         }
     }
-
     handleFilterChange = name => event => {
         this.setState({ [name]: event.target.checked });
     };
 
+    /* ================= Search results ================= */
+    handleSearchResultsOpen = event => {
+        console.log(event.target)
+        this.setState({showSearchResults: event.target.id === "searchbar" });
+    };
+    handleSearchResultsClose = () => {
+        this.setState({ showSearchResults: false });
+    };
+
+    /* ================= Other methods ================= */
+    displayComponent = (event) => {
+        let route = event.currentTarget.id
+        if (route !== '/login') {
+            _helper.History.push(route)
+        }
+    }
+    logOff (event) {
+        this.handleMenuClose(event)
+        this.props.onLogOff()
+    }
+
     render() {
-        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const { anchorEl, mobileMoreAnchorEl, resultsAnchorEl } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+        const isSearchResultsOpen = Boolean(resultsAnchorEl);
 
-
+        /* ================= Profile regular ================= */
         const renderMenu = (
             <Menu
                 anchorEl={anchorEl}
@@ -130,6 +152,7 @@ class Navbar extends React.Component {
             </Menu>
         );
 
+        /* ================= Notifications ================= */
         const renderNotifications = (
             <Drawer
                 anchor="right"
@@ -161,6 +184,7 @@ class Navbar extends React.Component {
             </Drawer>
         );
 
+        /* ================= Profile mobile ================= */
         const renderMobileMenu = (
             <Menu
                 anchorEl={mobileMoreAnchorEl}
@@ -194,28 +218,41 @@ class Navbar extends React.Component {
             </Menu>
         );
 
+        /* ================= Search results ================= */
+        const renderSearchResults = (
+            <Menu
+                anchorEl={resultsAnchorEl}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                open={isSearchResultsOpen}
+                onClose={this.handleSearchResultsClose}
+            >
+                <SearchResults/>
+            </Menu>
+        );
+
+        /* ================= TOOL BAR ================= */
+        /* ================= TOOL BAR ================= */
         return (
             <MuiThemeProvider theme={Theme.classic}>
                 <div className={classes.root}>
                     <AppBar position="static">
-                        <Toolbar>
+                        <Toolbar variant="dense">
                             <Link to='/home'>
                                 <IconButton className={classes.menuButton} color="inherit">
                                     <HomeIcon color="secondary" />
                                 </IconButton>
                             </Link>
 
-                            <div className={classes.search}>
+                            <div
+                                className={classes.search}
+                            >
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
                                 </div>
-                                <InputBase
-                                    placeholder="Search"
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                />
+
+                                <SearchResults/>
+
                             </div>
                             <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
@@ -251,8 +288,10 @@ class Navbar extends React.Component {
                         </Toolbar>
                     </AppBar>
                     {renderMenu}
+                    {renderSearchResults}
                     {renderMobileMenu}
                     {renderNotifications}
+                    { this.state.showSearchResults ? <SearchResults/> : null }
                 </div>
             </MuiThemeProvider>
         );

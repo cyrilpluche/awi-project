@@ -14,6 +14,11 @@ const Project = {
     get (object) {
         let where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
+    },
+
+    searchbarProjects (str) {
+        var where = helper.Request.urlFromObject(str)
+        return axios.get(url + 'find_all_searchbar' + where).then(res => res.data)
     }
 
 }

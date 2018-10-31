@@ -16,12 +16,19 @@ const List = {
         var where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
     },
+
     create(body){
         return axios.post(url + 'create', body).then(res => res.data)
     },
+
     update(listId,body){
         return axios.put(url + 'update/'+listId, body).then(res => res.data)
-    }
+    },
+
+    searchbarLists (str) {
+    var where = helper.Request.urlFromObject(str)
+    return axios.get(url + 'find_all_searchbar' + where).then(res => res.data)
+}
 
 }
 

@@ -16,6 +16,7 @@ import {withStyles} from "@material-ui/core";
 import AccountConfirmation from "./signup/accountConfirmation/AccountConfirmation"
 import TokenVerification from "./signup/accountConfirmation/TokenVerification"
 import PasswordForgotten from "./signin/passwordForgotten/PasswordForgotten"
+import SearchResults from "./layout/navbar/searchResults/SearchResults"
 
 class App extends Component {
     constructor (props) {
@@ -81,6 +82,8 @@ class App extends Component {
                 <Switch>
                     <Route path="/home" component={Dashboard}/>
                     <Route path="/profile" component={Profile}/>
+                    <Route path="/results" component={SearchResults}/>
+
                     <Route path="/project/:id" component={Project}/>
                     <Route path="/card" component={Cards} />
                     <Route path='*' render={() => <Redirect to="/home" />}/>
