@@ -35,16 +35,15 @@ class Project extends Component {
         this.setState({lists : this.props.lists})
     }
 
-   componentWillReceiveProps(){
-        
-        this.setState({updateLists : false})
-        
+
+    componentWillReceiveProps(){
+        this.setState({updateLists : false, lists : this.props.lists})
     }
 
     componentDidUpdate(){
 
         if(!this.state.updateLists){
-            this.orderList(this.props.lists)      
+          this.orderList(this.props.lists)      
         } 
     }
 
