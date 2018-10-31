@@ -177,7 +177,9 @@ class Project extends Component {
         const {classes, match} = this.props
         return (
             <div className={classes.projectBody}>
-                
+                <div>
+
+                </div>
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
                 </DragDropContext>
@@ -195,7 +197,8 @@ const mapDispatchToProps ={
     findAllCards: _action.listAction.findAllCards,
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
-    updateCard: _action.listAction.updateCard
+    updateCard: _action.listAction.updateCard,
+    getProject: _action.projectAction.getProjectInfo
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

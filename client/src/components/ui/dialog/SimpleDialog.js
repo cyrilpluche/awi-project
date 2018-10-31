@@ -63,7 +63,7 @@ class SimpleDialog extends Component {
             </DialogContent>
             <DialogActions>
                     <Button variant="contained" disabled={this.state.newTitle ? false : true} onClick={this.handleSubmit.bind(this)} color="primary" fullWidth size="small">
-                        Add card
+                        Add {this.props.type}
                     </Button>
             </DialogActions>
         </Dialog>
