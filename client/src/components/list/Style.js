@@ -11,7 +11,9 @@ export const styles = theme => ({
     },
     button: {
         minWidth: 32,
-        minHeight: 32
+        minHeight: 32,
+        width: 45,
+        height: 45
     },
 
     rowRight: {
