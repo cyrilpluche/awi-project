@@ -5,10 +5,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
+import SimpleDialog from '../../ui/dialog/SimpleDialog'
 import { styles } from './Style'
 import { connect } from 'react-redux'
 import _action from '../../../actions'
@@ -18,19 +15,21 @@ class List extends Component{
     constructor(props){
         super(props)
         this.state = {
-            newCardName:'',
+            newCardTitle:'',
             open: false,
-            selectedValue: '',
             cards: []
         }
     }
 
 
     createNewCard(){
-       
-        let cardName = this.state.newCardName
+       console.log("JE RENTRE DANS CREATE CARD")
+        let cardName = this.state.newCardTitle
+        console.log(cardName)
         let listId = this.props.list.listId
-        this.props.createCard(cardName,listId)
+        console.log(listId)
+        if(cardName) this.props.createCard(cardName,listId)
+        
     }
 
     handleClickOpen = () => {
@@ -39,15 +38,10 @@ class List extends Component{
         });
     };
     
-    handleClose = value => {
-        this.setState({ selectedValue: value, open: false });
+    handleClose = (value) => {
+        this.setState({ newCardTitle: value, open: false }, function(){  this.createNewCard()});       
     };
 
-    handleChange = name => event => {
-        this.setState({
-          [name]: event.target.value,
-        });
-    };
 
     render() {
         const {classes,cards, list} = this.props
@@ -62,19 +56,13 @@ class List extends Component{
                     >
                         <h4 className={classes.listTitle} {...provided.dragHandleProps}>{this.props.list.listTitle}</h4>
                             <div>
-                                <Button className={classes.button}  onClick={this.createNewCard.bind(this)} variant="fab" mini  aria-label="Add">
-                                <AddIcon />
+                                <Button className={classes.button}  onClick={this.handleClickOpen} variant="fab" mini  aria-label="Add">
+                                    <AddIcon />
                                 </Button>
-                                <TextField
-                                id="standard-name"
-                                label="Name"
-                                className={classes.textField}
-                                onChange={this.handleChange('newCardName')}
-                                margin="normal"
-                                />
                             </div>
+
                         <SimpleDialog
-                            selectedValue={this.state.selectedValue}
+                            type="card"
                             open={this.state.open}
                             onClose={this.handleClose}
                         />
@@ -109,47 +97,5 @@ const mapDispatchToProps ={
 }
 
 
-
-
-
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(List))
 
-class SimpleDialog extends React.Component {
-    handleClose = () => {
-      this.props.onClose(this.props.selectedValue);
-      console.log(this.state)
-    };
-  
-    handleListItemClick = value => {
-      this.props.onClose(value);
-      console.log(this.state)
-    };
-  
-    render() {
-      const { classes, onClose, selectedValue, ...other } = this.props;
-      
-      return (
-        <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
-            <DialogTitle id="simple-dialog-title">Add a new card </DialogTitle>
-            <DialogContent>
-                <TextField
-                        id="outlined-multiline-static"
-                        label="Card name"
-                        name="selectedValue"
-                        multiline
-                        rows="3"         
-                        margin="normal"
-                        variant="outlined"
-                        />
-            </DialogContent>
-            <DialogActions>
-                    <Button variant="contained" color="primary" fullWidth size="small">
-                        Add card
-                    </Button>
-            </DialogActions>
-        </Dialog>
-      );
-    }
-  }
-
-withStyles(styles)(SimpleDialog)

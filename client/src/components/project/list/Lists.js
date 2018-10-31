@@ -5,9 +5,9 @@ import { Droppable } from 'react-beautiful-dnd';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { styles } from './Style'
-import TextField from '@material-ui/core/TextField';
-import { connect } from 'react-redux'
-import _action from '../../../actions'
+
+import SimpleDialog from '../../ui/dialog/SimpleDialog'
+
 
 
 
@@ -17,7 +17,8 @@ class Lists extends Component {
     constructor(props){
         super(props)
         this.state = {
-            newListname:''
+            newListname:'',
+            open: false,
         }
     }
 
@@ -25,7 +26,7 @@ class Lists extends Component {
     createNewList(){
         let listName = this.state.newListname
         let idProject = this.props.idProject
-        this.props.createListCallback(listName,idProject)
+        if(listName) this.props.createListCallback(listName,idProject)
     }
 
 
@@ -36,7 +37,15 @@ class Lists extends Component {
     
     };
 
+    handleClickOpen = () => {
+        this.setState({
+          open: true,
+        });
+    };
 
+    handleClose = (value) => {
+        this.setState({ newListname: value, open: false }, function(){  this.createNewList()});       
+    };
 
     
     render() {
@@ -51,15 +60,16 @@ class Lists extends Component {
                             <List key={list.listTitle} list={list} index={index}></List>
                             )}
                         {provided.placeholder}
-                        <div><TextField
-                        id="standard-name"
-                        label="Name"
-                        className={classes.textField}
-                        onChange={this.handleChange('newListname')}
-                        margin="normal"
-                        /><Button onClick={this.createNewList.bind(this)} variant="fab"  aria-label="Add" className={classes.buttonList}>
-                            <AddIcon />
-                        </Button></div>
+                        <div>
+                            <Button onClick={this.handleClickOpen} variant="fab"  aria-label="Add" className={classes.buttonList}>
+                                <AddIcon />
+                            </Button>
+                        </div>
+                        <SimpleDialog
+                            type="list"
+                            open={this.state.open}
+                            onClose={this.handleClose}
+                        />
                         
                     </div>
                 )}

@@ -3,7 +3,11 @@ export const styles = theme => ({
         margin: theme.spacing.unit * 2,
         display: 'flex',
         padding:theme.spacing.unit * 2,           
-        whiteSpace: `nowrap`
+        //whiteSpace: `nowrap`,
+        overflowY: `auto`,
+        //position: `fixed`,
+        left: `0`, 
+        right: `0`
              
     },
     list: {
