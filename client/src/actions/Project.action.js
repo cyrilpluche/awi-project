@@ -3,7 +3,8 @@ import _service from '../services'
 const labels = {
     GET_ALL_LISTS :"GET_ALL_LISTS",
     CREATE_LIST : "CREATE_LIST",
-    UPDATE_LIST : "UPDATE_LIST"
+    UPDATE_LIST : "UPDATE_LIST",
+    GET_PROJECT_INFO : "GET_PROJECT_INFO"
 }
 
 /**
@@ -58,10 +59,8 @@ function updateLists (listId,fatherListId) {
     let body = {
         listFather : fatherListId
     }
-    
-    
+       
     return dispatch => {
-        //Update list dragged
         _service.List.update(listId,body)
             .then(res => { 
                 dispatch({
@@ -75,11 +74,27 @@ function updateLists (listId,fatherListId) {
     }
 }
 
+function getProjectInfo(projectId){
+    return dispatch => {
+        _service.Project.getOne(projectId)
+        .then(res => {
+            dispatch({
+                type: labels.GET_PROJECT_INFO,
+                payload: res
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
 
 
 export const projectAction = {
     labels,
     findAllLists,
     createList,
-    updateLists
+    updateLists,
+    getProjectInfo
 }

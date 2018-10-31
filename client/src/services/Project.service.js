@@ -14,6 +14,10 @@ const Project = {
     get (object) {
         let where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
+    },
+
+    getOne (idProject) {
+        return axios.get(url + 'find_one/' +idProject).then(res => res.data)
     }
 
 }

@@ -27,7 +27,7 @@ class List extends Component{
         let cardName = this.state.newCardTitle
         console.log(cardName)
         let listId = this.props.list.listId
-        console.log(listId)
+        console.log()
         if(cardName) this.props.createCard(cardName,listId)
         
     }
@@ -39,13 +39,14 @@ class List extends Component{
     };
     
     handleClose = (value) => {
-        this.setState({ newCardTitle: value, open: false }, function(){  this.createNewCard()});       
+        this.setState({ newCardTitle: value, open: false }, function(){  this.createNewCard()});
+       
     };
 
 
     render() {
         const {classes,cards, list} = this.props
-
+        
         return (
             <Draggable draggableId={this.props.list.listId} index={this.props.index}>
                 {(provided) =>(

@@ -3,17 +3,15 @@ import { connect } from 'react-redux'
 import _action from '../../actions'
 import { DragDropContext} from 'react-beautiful-dnd';
 import Lists from './list/Lists'
-import { withStyles } from '@material-ui/core/styles';
-import {findWhere, where} from 'underscore';
+import {findWhere} from 'underscore';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import {withStyles } from '@material-ui/core/styles';
+import { styles } from './Style'
+import { Button } from '@material-ui/core';
+import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done, Cancel} from '@material-ui/icons';
+import TextField from '@material-ui/core/TextField';
 
-
-
-
-const styles = theme => ({
-    projectBody: {
-        fontFamily : `"Roboto", "Helvetica", "Arial", sans-serif`
-    },
-});
 
 
 
@@ -24,19 +22,23 @@ class Project extends Component {
         super(props)
         this.state = {
             lists : [],
-            updateLists : false
+            updateLists : false,
+            editProjectTitle : false,
+            newProjectTitle : ''
         }
     }
 
     componentWillMount() {
+        this.props.getProjectInfo(this.props.match.params.id)
         this.props.getAllLists(this.props.match.params.id)
         this.props.findAllCards()
         this.setState({lists : this.props.lists})
     }
 
    componentWillReceiveProps(){
-
+        
         this.setState({updateLists : false})
+        
     }
 
     componentDidUpdate(){
@@ -50,12 +52,14 @@ class Project extends Component {
 
 
    orderList(lists){
+        
         if(lists.length !== 0){
             const headList = findWhere(lists,{listFather: null})
             const indexHead = lists.indexOf(headList)
             if(headList){
                 lists.splice(indexHead,1)
                 this.recursiveOrdering(lists,headList,[headList])
+                
             }else{
                 this.setState({lists:this.props.lists,updateLists : true})
             }               
@@ -113,6 +117,7 @@ class Project extends Component {
             let lastElement = lists[lists.length -1]
             this.props.createList(listName,idProject,lastElement.listId)
         } 
+
     }
 
     onDragEnd = (result) => {
@@ -172,17 +177,68 @@ class Project extends Component {
 
 
     };
+
+    handleEditTitle(){
+        this.setState({editProjectTitle:true})
+    }
+
+    handleValidationEditTitle(){
+        this.setState({editProjectTitle:false})
+        const {newProjectTitle} = this.state
+        // update Project title if(newProjectTitle) this.props.updateTitle(newProjectTitle, this.props.match.params.id)
+    }
+
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });   
+    };
     
     render() {  
-        const {classes, match} = this.props
+        const {classes, match, projectInfo } = this.props
         return (
             <div className={classes.projectBody}>
-                <div>
-
-                </div>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
-                </DragDropContext>
+                    <Grid container spacing={16} className={classes.projectHeader}>
+                        <Typography variant="h5" gutterBottom className={classes.projectTitle}>
+                            {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
+                                <Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />
+                            </div>:
+                            <div>
+                                <TextField
+                                id="standard-name"
+                                label="Project title"
+                                defaultValue={projectInfo.projectTitle}
+                                onChange={this.handleChange('newProjectTitle')}
+                                className={classes.textField}
+                                margin="normal"
+                                />
+                                <Button color="primary" className={classes.button}>
+                                    <Done className={classes.validIcon} onClick={this.handleValidationEditTitle.bind(this)} />
+                                </Button>
+                            </div>}
+                        </Typography>
+                        <Grid container spacing={24} >
+                       < Button color="primary" className={classes.button}>
+                            <SupervisorAccount className={classes.leftIcon} />
+                            0 Members
+                        </Button>
+                        < Button color="primary" className={classes.button}>
+                            <RemoveRedEye className={classes.leftIcon} />
+                            Visibility
+                        </Button>
+                        < Button color="primary" className={classes.button}>
+                            <FilterList className={classes.leftIcon} />
+                            Activities
+                        </Button>
+                        < Button color="primary" className={classes.button}>
+                            <Description className={classes.leftIcon} />
+                            Filter
+                        </Button>
+                        </Grid>
+                    </Grid>
+                    <DragDropContext onDragEnd={this.onDragEnd}>
+                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
+                    </DragDropContext>
             </div>
         )
     }
@@ -190,6 +246,7 @@ class Project extends Component {
 
 const mapStateToProps = (state) => ({
     lists: state.project.lists,
+    projectInfo : state.project.projectInfo
 })
 
 const mapDispatchToProps ={
@@ -198,7 +255,8 @@ const mapDispatchToProps ={
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
     updateCard: _action.listAction.updateCard,
-    getProject: _action.projectAction.getProjectInfo
+    getProjectInfo: _action.projectAction.getProjectInfo,
+    updateTitle: _action.projectAction.updateProjectTitle
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))
