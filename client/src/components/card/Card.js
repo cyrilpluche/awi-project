@@ -49,6 +49,7 @@ class Cardboard extends React.Component {
             case 'labels': object.labels = valueField; break;
             case 'members': object.members = valueField; break;
             case 'comments': object.comments = valueField; break;
+            default: break;
         }
         this.props.onUpdateCard(object)
     };

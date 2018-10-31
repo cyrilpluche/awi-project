@@ -135,7 +135,7 @@ module.exports = {
                     }
                     else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).send('Email or password is incorrect.')
+                else res.status(400).sendd('Email or password is incorrect.')
             })
             .catch(error => next(error));
     },
@@ -153,10 +153,14 @@ module.exports = {
      *  return: The member decrypted with the token.
      */
     signIn(req, res, next) {
-        req.decoded.iat = null
-        req.decoded.exp = null
-        req.body.result = {member: req.decoded}
-        next()
+        try {
+            req.decoded.iat = null
+            req.decoded.exp = null
+            req.body.result = {member: req.decoded}
+            next()
+        } catch (err) {
+            res.status(500).send(err)
+        }
     },
 
     /*  localhost:4200/api/member/sign_up

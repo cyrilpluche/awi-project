@@ -1,5 +1,6 @@
 var List = require('../config/db_connection').List;
 var sequelize = require('../config/db_connection').sequelize;
+var Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
@@ -42,6 +43,26 @@ module.exports = {
                 next()
             })
             .catch(error => next(error))
+    },
+
+    /*  localhost:4200/api/card/find_all_searchbar?str=customStr. (optional)
+     *
+     *  return: Array of Cards objects with given attributes.
+     */
+    findAllSearchbar(req, res, next) {
+        List
+            .findAll({
+                attributes: [['list_id', 'id'], ['list_title', 'label']],
+                order : sequelize.col('list_id'),
+                where: {
+                    listTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                }
+            })
+            .then(lists => {
+                req.body.result = lists
+                next()
+            })
+            .catch(error => res.status(400).send(error));
     },
 
      /*  localhost:4200/api/list/find_all/:id

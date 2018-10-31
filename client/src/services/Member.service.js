@@ -14,6 +14,7 @@ const Member = {
         return axios.post(url + 'sign_up', body).then(res => res.data)
     },
 
+    /* Set the status of a member to 1 if the token is valid */
     validateAccount (memberToken) {
         axios.defaults.headers.common['Authorization'] = memberToken
         return axios.put(url + 'validate_account').then(res => res.data)
@@ -59,6 +60,7 @@ const Member = {
         return axios.put(url + 'update_password' + where, body).then(res => res.data)
     },
 
+    /* Send a random new password when a member forgot his password */
     sendNewPassword (memberEmail) {
         let body = {
             memberEmail: memberEmail

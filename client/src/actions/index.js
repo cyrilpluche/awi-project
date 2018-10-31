@@ -7,6 +7,7 @@ import { profileAction } from './Profile.action';
 import {projectAction} from './Project.action';
 import {listAction} from './List.action';
 import {updateCardAction} from "./UpdateCard.action";
+import { searchbarAction } from "./Searchbar.action";
 
 
 const _action = {
@@ -18,7 +19,8 @@ const _action = {
     profileAction,
     projectAction,
     listAction,
-    updateCardAction
+    updateCardAction,
+    searchbarAction
 }
 
 export default _action

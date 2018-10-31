@@ -56,7 +56,7 @@ class PasswordForgotten extends React.Component {
             <Grid container justify="center">
                 <Grid justify='center' container className={classes.logo}>
                     <Grid item>
-                        <img src={logo} width="100"/>
+                        <img src={logo} width="100" alt="logo of prello"/>
                     </Grid>
                 </Grid>
 

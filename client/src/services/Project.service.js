@@ -22,6 +22,10 @@ const Project = {
 
     update(projectId,body){
         return axios.put(url + 'update/' +projectId, body).then(res => res.data)
+    },
+    searchbarProjects (str) {
+        var where = helper.Request.urlFromObject(str)
+        return axios.get(url + 'find_all_searchbar' + where).then(res => res.data)
     }
 
 }

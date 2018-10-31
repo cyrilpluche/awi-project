@@ -115,7 +115,7 @@ class Signin extends React.Component {
 
                             <Grid justify='center' container className={classes.xsMarginBottom}>
                                 <Grid item>
-                                    <img src={logo} width="100"/>
+                                    <img src={logo} width="100" alt="prello logo"/>
                                 </Grid>
                             </Grid>
 

@@ -15,11 +15,18 @@ const Card = {
         var where = helper.Request.urlFromObject(object)
         return axios.get(url + 'find_one' + where).then(res => res.data)
     },
+
     create(body){
         return axios.post(url + 'create', body).then(res => res.data)
     },
+
     update(cardId,body){
         return axios.put(url + 'update/'+cardId, body).then(res => res.data)
+    },
+
+    searchbarCards (str) {
+        var where = helper.Request.urlFromObject(str)
+        return axios.get(url + 'find_all_searchbar' + where).then(res => res.data)
     }
 
 }

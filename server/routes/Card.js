@@ -3,15 +3,18 @@ const router = express.Router();
 const mw = require('../middlewares')
 
 const cardController = require('../controllers').Card;
+router.use(mw.Token.verifyToken)
 
-router.get('/find_all', mw.Token.verifyToken, cardController.findAll);
-router.get('/find_all/:id', mw.Token.verifyToken, cardController.findAllOfList);
-router.get('/find_one', mw.Token.verifyToken, cardController.findOne);
+router.get('/find_all', cardController.findAll);
+router.get('/find_all/:id', cardController.findAllOfList);
+router.get('/find_all_searchbar', cardController.findAllSearchbar);
 
-router.post('/create', mw.Token.verifyToken, cardController.create);
+router.get('/find_one', cardController.findOne);
 
-router.put('/update/:id', mw.Token.verifyToken, cardController.update);
+router.post('/create', cardController.create);
 
-router.delete('/delete/:id', mw.Token.verifyToken, cardController.delete);
+router.put('/update/:id', cardController.update);
+
+router.delete('/delete/:id', cardController.delete);
 
 module.exports = router;

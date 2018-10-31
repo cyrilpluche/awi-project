@@ -4,15 +4,10 @@ import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import LoaderPage from "../../loaderPage/LoaderPage";
-import _helper from "../../../helpers"
 import _action from "../../../actions"
 
 
 class TokenVerification extends React.Component {
-    constructor (props) {
-        super(props)
-
-    }
 
     componentDidMount () {
         let params = this.props.location.pathname.split('/')
@@ -23,7 +18,6 @@ class TokenVerification extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
         return (
             <div>
                 <LoaderPage/>

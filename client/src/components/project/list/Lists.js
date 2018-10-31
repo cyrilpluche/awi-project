@@ -5,11 +5,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { styles } from './Style'
-
 import SimpleDialog from '../../ui/dialog/SimpleDialog'
-
-
-
 
 
 

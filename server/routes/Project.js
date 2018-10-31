@@ -4,14 +4,18 @@ const mw = require('../middlewares')
 
 const projectController = require('../controllers').Project;
 
-router.get('/find_all', mw.Token.verifyToken, projectController.findAll);
-router.get('/find_one', mw.Token.verifyToken, projectController.findOne);
+router.use(mw.Token.verifyToken)
+
+router.get('/find_all', projectController.findAll);
+router.get('/find_all_searchbar', projectController.findAllSearchbar);
+
+router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', mw.Token.verifyToken, projectController.findProjectInfo);
 
-router.post('/create', mw.Token.verifyToken, projectController.create);
+router.post('/create', projectController.create);
 
-router.put('/update/:id', mw.Token.verifyToken, projectController.update);
+router.put('/update/:id', projectController.update);
 
-router.delete('/delete/:id', mw.Token.verifyToken, projectController.delete);
+router.delete('/delete/:id', projectController.delete);
 
 module.exports = router;

@@ -4,14 +4,17 @@ var mw = require('../middlewares')
 
 var listController = require('../controllers').List;
 
-router.get('/find_all', mw.Token.verifyToken, listController.findAll);
-router.get('/find_one/:id', mw.Token.verifyToken, listController.findOne);
-router.get('/find_all/:id', mw.Token.verifyToken, listController.findAllOfProject);
+router.use(mw.Token.verifyToken)
 
-router.post('/create', mw.Token.verifyToken, listController.create);
+router.get('/find_all', listController.findAll);
+router.get('/find_one/:id', listController.findOne);
+router.get('/find_all_searchbar', listController.findAllSearchbar);
+router.get('/find_all/:id', listController.findAllOfProject);
 
-router.put('/update/:id', mw.Token.verifyToken, listController.update);
+router.post('/create', listController.create);
 
-router.delete('/delete/:id', mw.Token.verifyToken, listController.delete);
+router.put('/update/:id', listController.update);
+
+router.delete('/delete/:id', listController.delete);
 
 module.exports = router;
