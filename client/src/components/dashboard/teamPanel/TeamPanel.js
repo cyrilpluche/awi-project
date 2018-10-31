@@ -41,7 +41,7 @@ class TeamPanel extends React.Component {
                 >
                     <ListItem button onClick={this.handleClick}>
                         <ListItemIcon>
-                            <PeopleIcon fontSize="large" className={classes.iconHover}/>
+                            <PeopleIcon style={{fontSize: '30px'}} className={classes.iconHover}/>
                         </ListItemIcon>
                         <ListItemText inset primary="My teams" />
                         {this.state.open ? <ExpandLess /> : <ExpandMore />}
@@ -52,7 +52,7 @@ class TeamPanel extends React.Component {
                             {this.props.teams.map((team, i) =>
                                     <ListItem button className={classes.nested} key={i}>
                                         <ListItemIcon>
-                                            <GroupWork />
+                                            <GroupWork style={{fontSize: '20px'}} />
                                         </ListItemIcon>
                                         <ListItemText inset secondary={team.teamName} />
                                     </ListItem>
@@ -65,7 +65,7 @@ class TeamPanel extends React.Component {
                 <List component="nav">
                     <ListItem button>
                         <ListItemIcon>
-                            <AddIcon fontSize="large" className={classes.iconHover}/>
+                            <AddIcon style={{fontSize: '30px'}} className={classes.iconHover}/>
                         </ListItemIcon>
                         <ListItemText primary="Add a new team" />
                     </ListItem>

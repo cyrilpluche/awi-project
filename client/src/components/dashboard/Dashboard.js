@@ -15,9 +15,32 @@ class Dashboard extends React.Component {
         this.onClick = this.onClick.bind(this);
 
         this.state = { // will be load at start
-            favoriteProjects: [],
-            temaProjects: [],
-            allProjects: [],
+            favoriteProjects: [
+                {
+                    name: 'Project 1',
+                    favorite: true
+                },
+            ],
+            teamProjects: [
+                {
+                    name: 'Project 1',
+                    favorite: true
+                },
+                {
+                    name: 'Project 2',
+                    favorite: false
+                }
+            ],
+            allProjects: [
+                {
+                    name: 'Project 1',
+                    favorite: true
+                },
+                {
+                    name: 'Project 2',
+                    favorite: false
+                }
+            ],
             teams: [
                 {
                     teamName: 'Test'
@@ -36,25 +59,28 @@ class Dashboard extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className={classes.root}>
-                <Grid container spacing={24}  direction="row"  justify="center" alignItems="center">
-                    <Grid item xs={3} container>
+            <Grid container alignItems='flex-start' className={classes.layout}>
+                <Grid item xs={2} className={classes.leftLayout}/>
+                <Grid item container spacing={24} xs={9} direction="row"
+                      justify="center" alignItems="flex-start">
+                    <Grid item xs={4} container>
                         <TeamPanel teams={this.state.teams}/>
                     </Grid>
-                    <Grid item xs={9} container justify="center"
+                    <Grid item xs={8} container justify="center"
                           alignItems="center"> {/* Project List Container */}
                         <Grid item xs={12}>
-                            <ProjectList title={"Projets equipe"}/>
+                            <ProjectList title={"Team project"} projects={this.state.teamProjects} canCreateProject/>
                         </Grid>
                         <Grid item xs={12}>
-                            <ProjectList title={'Projets favoris '}/>
+                            <ProjectList title={'Favorite projects '} projects={this.state.favoriteProjects}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <ProjectList title={"Tous les projets"}/>
+                            <ProjectList title={"Personal projects"}
+                                         projects={this.state.allProjects} canCreateProject/>
                         </Grid>
                     </Grid>
                 </Grid>
-            </div>
+            </Grid>
 
 
 
