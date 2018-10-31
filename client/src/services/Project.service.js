@@ -16,8 +16,12 @@ const Project = {
         return axios.get(url + 'find_one' + where).then(res => res.data)
     },
 
-    getOne (idProject) {
-        return axios.get(url + 'find_one/' +idProject).then(res => res.data)
+    getOne (projectId) {
+        return axios.get(url + 'find_one/' +projectId).then(res => res.data)
+    },
+
+    update(projectId,body){
+        return axios.put(url + 'update/' +projectId, body).then(res => res.data)
     }
 
 }

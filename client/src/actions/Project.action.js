@@ -89,6 +89,30 @@ function getProjectInfo(projectId){
     }
 }
 
+function updateProjectTitle(newProjectTitle, projectId){
+    const body = {
+        projectTitle : newProjectTitle
+    }
+    return dispatch => {
+        _service.Project.update(projectId,body)
+        .then(res => {
+            _service.Project.getOne(projectId)
+            .then(res => {
+                dispatch({
+                    type: labels.GET_PROJECT_INFO,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
 
 
 export const projectAction = {
@@ -96,5 +120,6 @@ export const projectAction = {
     findAllLists,
     createList,
     updateLists,
-    getProjectInfo
+    getProjectInfo,
+    updateProjectTitle
 }

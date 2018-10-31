@@ -185,7 +185,8 @@ class Project extends Component {
     handleValidationEditTitle(){
         this.setState({editProjectTitle:false})
         const {newProjectTitle} = this.state
-        // update Project title if(newProjectTitle) this.props.updateTitle(newProjectTitle, this.props.match.params.id)
+        // update Project title 
+        if(newProjectTitle) this.props.updateTitle(newProjectTitle, this.props.match.params.id)
     }
 
     handleChange = name => event => {
