@@ -4,7 +4,7 @@ import _action from '../../actions'
 import { DragDropContext} from 'react-beautiful-dnd';
 import Lists from './list/Lists'
 import { withStyles } from '@material-ui/core/styles';
-import {findWhere} from 'underscore';
+import {findWhere, where} from 'underscore';
 
 
 
@@ -47,41 +47,60 @@ class Project extends Component {
     }
 
 
+
+
    orderList(lists){
         if(lists.length !== 0){
             const headList = findWhere(lists,{listFather: null})
             const indexHead = lists.indexOf(headList)
-            lists.splice(indexHead,1)
-            this.recursiveOrdering(lists,headList,[headList])   
+            if(headList){
+                lists.splice(indexHead,1)
+                this.recursiveOrdering(lists,headList,[headList])
+            }else{
+                this.setState({lists:this.props.lists,updateLists : true})
+            }               
         }else{
-            this.setState({lists:[]})
-            this.setState({updateLists : true})
+            this.setState({lists:[],updateLists : true})
         }
   
     }
 
 
      recursiveOrdering(oldList,current, newList){
-
+        
+     
         if(oldList.length === 0) {
-            this.setState({lists:newList}); 
-            this.setState({updateLists : true})
+            this.setState({lists:newList,updateLists : true}); 
         }
         else{
+            if(current){
+                let nextList = findWhere(oldList,{listFather:current.listId})
+                let indexNextList = oldList.indexOf(nextList)
+                if(nextList){
+                    if(oldList.length === 1){
+                        newList.push(nextList)
+                        this.setState({lists:newList,updateLists : true})
+                    }else{
+                        oldList.splice(indexNextList,1)
+                        newList.push(nextList) 
+                        this.recursiveOrdering(oldList,nextList, newList) 
+                    }
+                }else{
+                    let nextList = oldList[0]
 
-            let nextList = findWhere(oldList,{listFather:current.listId})
-            let indexNextList = oldList.indexOf(nextList)
-
-            if(oldList.length === 1){
-                newList.push(nextList)
-                this.setState({lists:newList})
-                this.setState({updateLists : true})
+                    if(oldList.length === 1){
+                        newList.push(nextList)
+                        this.setState({lists:newList,updateLists : true})
+                    }else{
+                        oldList.splice(0,1)
+                        newList.push(nextList) 
+                        this.recursiveOrdering(oldList,nextList, newList) 
+                    }
+                }
+                
             }else{
-                oldList.splice(indexNextList,1)
-                newList.push(nextList) 
-                this.recursiveOrdering(oldList,nextList, newList) 
-            }
-               
+                this.setState({lists:this.props.lists,updateLists : true})
+            }        
         }
     }
 
@@ -110,7 +129,7 @@ class Project extends Component {
 
         if(result.type === 'LIST'){
             
-            console.log(result)
+           
            let findList = findWhere(lists,{listId: draggableId})
            let indexOfList = lists.indexOf(findList)
 
@@ -124,13 +143,12 @@ class Project extends Component {
             
             this.setState({data:newLists})
 
-            let updateList = findWhere(lists,{listId: draggableId})
+            let updateList = findWhere(lists,{projectId: 1})
+            
             let fatherOfUpdatedList = updateList.listFather === undefined ? null : updateList.listFather
 
             let childThatHadMeAsFather = findWhere(lists,{listFather: updateList.listId})
             
-            if(childThatHadMeAsFather !== undefined && childThatHadMeAsFather !== null ) this.props.moveList(childThatHadMeAsFather.listId,fatherOfUpdatedList)
-
 
             let indexOfUpdateList = lists.indexOf(updateList)
             
@@ -138,8 +156,9 @@ class Project extends Component {
             let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
             
             // action
-            if(updateList !== undefined && updateList !== null)  this.props.moveList(updateList.listId,listFather)
-            if(listChild !== undefined  && listChild !== null) this.props.moveList(listChild,updateList.listId)
+            if(childThatHadMeAsFather) this.props.moveList(childThatHadMeAsFather.listId,fatherOfUpdatedList)
+            if(updateList)  this.props.moveList(updateList.listId,listFather)
+            if(listChild) this.props.moveList(listChild,updateList.listId)
             
             
         }

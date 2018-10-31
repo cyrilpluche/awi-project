@@ -45,7 +45,7 @@ class List extends Component{
 
     render() {
         const {classes,cards, list} = this.props
-        
+
         return (
             <Draggable draggableId={this.props.list.listId} index={this.props.index}>
                 {(provided) =>(
