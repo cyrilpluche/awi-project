@@ -71,6 +71,13 @@ export function signin (state = initialState, action){
                 resetPasswordMsg: 'No email adress found.'
             }
 
+        case labels.RESET_FIELD:
+            return {
+                ...state,
+                isPasswordReset: false,
+                resetPasswordMsg: ''
+            }
+
         default:
             return state
     }

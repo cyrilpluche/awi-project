@@ -8,6 +8,19 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+var smtpTransport = nodemailer.createTransport({
+    service: process.env.USER_MAIL_SERVICE,
+    auth: {
+        user: process.env.USER_MAIL_ADDRESS,
+        pass: process.env.USER_MAIL_PWD,
+        XOAuth2: {
+            clientId: process.env.MAIL_ID_CLIENT,
+            clientSecret: process.env.MAIL_SECRET,
+            refreshToken: process.env.MAIL_TOKEN
+        }
+    }
+});
+
 module.exports = {
     /*  before create a user
      *
@@ -40,7 +53,7 @@ module.exports = {
             attachments: attachments
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
+        smtpTransport.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error)
                 res.status(400).send('Failed to send email.');
@@ -81,7 +94,7 @@ module.exports = {
             attachments: attachments
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
+        smtpTransport.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error)
                 res.status(400).send('Failed to send email.');
@@ -89,6 +102,7 @@ module.exports = {
                 console.log('Email sent.')
                 next()
             }
+            smtpTransport.close();
         });
     }
 }

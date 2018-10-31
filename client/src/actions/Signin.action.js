@@ -8,7 +8,8 @@ const labels = {
     IS_LOGGED: "IS_LOGGED",
     IS_NOT_LOGGED: "IS_NOT_LOGGED",
     NEW_PASSWORD_SENT: "NEW_PASSWORD_SENT",
-    NEW_PASSWORD_FAILED: "NEW_PASSWORD_FAILED"
+    NEW_PASSWORD_FAILED: "NEW_PASSWORD_FAILED",
+    RESET_FIELD: "RESET_FIELD"
 }
 
 const signSuccess = member => ({
@@ -77,9 +78,19 @@ function sendNewPassword (memberEmail) {
     }
 }
 
+function resetField () {
+    return dispatch => {
+        dispatch({
+            type: labels.RESET_FIELD
+
+        })
+    }
+}
+
 export const signinAction = {
     labels,
     signin,
     isMemberLogged,
-    sendNewPassword
+    sendNewPassword,
+    resetField
 }

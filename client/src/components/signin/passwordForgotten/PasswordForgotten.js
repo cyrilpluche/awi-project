@@ -17,6 +17,7 @@ class PasswordForgotten extends React.Component {
     constructor (props) {
         super(props)
         this.submit = this.submit.bind(this)
+        this.goToLogin = this.goToLogin.bind(this)
         this.state = {
             memberEmail: '',
             openSnackbar: this.props.isPasswordReset
@@ -24,6 +25,7 @@ class PasswordForgotten extends React.Component {
     }
 
     goToLogin () {
+        this.props.onResetField()
         _helper.History.push('/login')
     }
 
@@ -122,7 +124,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    onSendNewPassword: _action.signinAction.sendNewPassword
+    onSendNewPassword: _action.signinAction.sendNewPassword,
+    onResetField: _action.signinAction.resetField
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(PasswordForgotten));
