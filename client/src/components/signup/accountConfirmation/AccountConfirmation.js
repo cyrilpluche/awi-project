@@ -11,9 +11,6 @@ import Button from "@material-ui/core/Button/Button";
 import _helper from "../../../helpers"
 
 class accountConfirmation extends React.Component {
-    constructor (props) {
-        super(props)
-    }
 
     componentWillMount () {
         if (!this.props.isAccountValidNow) {
@@ -32,7 +29,7 @@ class accountConfirmation extends React.Component {
            <Grid container justify="center">
                <Grid justify='center' container className={classes.logo}>
                    <Grid item>
-                       <img src={logo} width="100"/>
+                       <img src={logo} width="100" alt="prello logo"/>
                    </Grid>
                </Grid>
 

@@ -6,12 +6,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { styles } from './Style'
 import TextField from '@material-ui/core/TextField';
-import { connect } from 'react-redux'
-import _action from '../../../actions'
-
-
-
-
 
 class Lists extends Component {
     constructor(props){

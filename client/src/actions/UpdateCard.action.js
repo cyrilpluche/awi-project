@@ -1,5 +1,3 @@
-import _service from '../services'
-
 const labels = {
     UPDATE_CARD: 'UPDATE_CARD'
 }

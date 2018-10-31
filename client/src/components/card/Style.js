@@ -1,5 +1,3 @@
-import React from "react";
-
 export const styles = theme => ({
     card: {
         width: 300,

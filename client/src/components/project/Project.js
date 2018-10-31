@@ -99,7 +99,7 @@ class Project extends Component {
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        const { source,destination,draggableId } = result;
+        const { destination, draggableId } = result;
         const {lists} = this.state
         
         
