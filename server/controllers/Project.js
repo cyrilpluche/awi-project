@@ -57,6 +57,22 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    /*  localhost:4200/api/project/find_one/:id 
+     *
+     *  return: Project object with given attributes.
+     */
+    findProjectInfo(req, res, next) {
+        Project
+            .findAll({
+                where :{ projectId: req.params.id }
+            })
+            .then(project => {
+                req.body.result = project
+                next()
+            })
+            .catch(error => next(error));
+    },
+
     /*  localhost:4200/api/project/update/2
      *
      *  req.body = {
