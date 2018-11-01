@@ -2,7 +2,9 @@ import _service from '../services'
 
 const labels = {
     GET_ALL_CARDS :"GET_ALL_CARDS",
-    CREATE_CARD:"CREATE_CARD"
+    CREATE_CARD:"CREATE_CARD",
+    UPDATE_LIST:"UPDATE_LIST",
+    DELETE_LIST:"DELETE_LIST"
 }
 
 
@@ -69,11 +71,60 @@ function updateCard(cardId, listId){
     }
 }
 
+function updateListTitle(newListTitle, listId){
+    const body = {
+        listTitle : newListTitle
+    }
+    return dispatch => {
+        _service.List.update(listId,body)
+            .then(res => {
+                _service.List.get({listId: listId})
+                    .then(res => {
+                        console.log("res: ",res)
+                        dispatch({
+                            type: labels.UPDATE_LIST,
+                            payload: res
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch(err)
+                    });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+    }
+}
+function deleteList(listId, projectId) {
+
+
+    return dispatch => {
+        _service.List.delete(listId)
+            .then(res => {
+                _service.List.getAll(projectId)
+                    .then(res => {
+                        dispatch({
+                            type: labels.DELETE_LIST,
+                            payload: res
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch(err)
+                    });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+    }
+}
+
 
 export const listAction = {
     labels,
     createCard,
     findAllCards,
-    updateCard
+    updateCard,
+    updateListTitle,
+    deleteList,
 }
 

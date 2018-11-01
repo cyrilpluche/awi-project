@@ -6,7 +6,8 @@ const listLabels = listAction.labels
 
 const initialState = {
     lists: [],
-    cards: []
+    cards: [],
+    list: null,
 };
 
 export function project (state = initialState, action) {
@@ -33,9 +34,15 @@ export function project (state = initialState, action) {
                 ...state,
                 cards: action.payload,
             }; 
-        case projectLabels.UPDATE_LIST:
+        case listLabels.UPDATE_LIST:
             return {
                 ...state,
+                list: action.payload,
+            };
+        case listLabels.DELETE_LIST:
+            return {
+                ...state,
+                lists: action.payload,
             };
         case projectLabels.GET_PROJECT_INFO:
             return {
