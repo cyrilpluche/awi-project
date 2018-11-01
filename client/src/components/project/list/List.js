@@ -23,11 +23,8 @@ class List extends Component{
 
 
     createNewCard(){
-       console.log("JE RENTRE DANS CREATE CARD")
         let cardName = this.state.newCardTitle
-        console.log(cardName)
         let listId = this.props.list.listId
-        console.log()
         if(cardName) this.props.createCard(cardName,listId)
         
     }

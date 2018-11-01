@@ -9,8 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles } from '@material-ui/core/styles';
 import { styles } from './Style'
 import { Button } from '@material-ui/core';
-import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done, Cancel} from '@material-ui/icons';
+import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
+import MemberDialog from '../ui/dialog/MemberDialog'
 
 
 
@@ -24,13 +25,15 @@ class Project extends Component {
             lists : [],
             updateLists : false,
             editProjectTitle : false,
-            newProjectTitle : ''
+            newProjectTitle : '',
+            openMemberDialog:false
         }
     }
 
     componentWillMount() {
         this.props.getProjectInfo(this.props.match.params.id)
         this.props.getAllLists(this.props.match.params.id)
+        // this.props.getAllMembers(this.props.match.params.id)
         this.props.findAllCards()
         this.setState({lists : this.props.lists})
     }
@@ -193,6 +196,17 @@ class Project extends Component {
           [name]: event.target.value,
         });   
     };
+
+    handleClickOpen = () => {
+        this.setState({
+            openMemberDialog: true,
+        });
+    };
+
+    handleClose (){
+        this.setState({ openMemberDialog: false });
+       
+    };
     
     render() {  
         const {classes, match, projectInfo } = this.props
@@ -218,10 +232,11 @@ class Project extends Component {
                             </div>}
                         </Typography>
                         <Grid container spacing={24} >
-                       < Button color="primary" className={classes.button}>
+                       < Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
                             <SupervisorAccount className={classes.leftIcon} />
                             0 Members
                         </Button>
+                        <MemberDialog type="card" open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)}/>
                         < Button color="primary" className={classes.button}>
                             <RemoveRedEye className={classes.leftIcon} />
                             Visibility

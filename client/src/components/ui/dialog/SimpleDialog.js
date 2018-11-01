@@ -3,9 +3,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {withStyles } from '@material-ui/core/styles';
+import { styles } from './Style'
 
 class SimpleDialog extends Component {
   constructor(props){
@@ -48,7 +49,7 @@ class SimpleDialog extends Component {
       
       return (
         <Dialog onClose={this.close} aria-labelledby="simple-dialog-title" {...other}>
-            <DialogTitle id="simple-dialog-title">Add a new {this.props.type} </DialogTitle>
+            <DialogTitle id="simple-dialog-title" className={classes.dialogTitle}>Add a new {this.props.type} </DialogTitle>
             <DialogContent>
                 <TextField
                         id="outlined-multiline-static"
@@ -71,4 +72,4 @@ class SimpleDialog extends Component {
     }
   }
 
-export default SimpleDialog
+  export default withStyles(styles)(SimpleDialog)
