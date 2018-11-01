@@ -12,13 +12,13 @@ const Member = {
     },
 
     signUp (body) {
-        return Api.post(url + 'sign_up', body).then(res => res.data)
+
+        return Api.post(url + 'sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)
     },
 
     /* Set the status of a member to 1 if the token is valid */
     validateAccount (memberToken) {
-        Api.defaults.headers.common['Authorization'] = memberToken
-        return Api.put(url + 'validate_account', memberToken).then(res => res.data)
+        return Api.put(url + 'validate_account',null , memberToken).then(res => res.data)
     },
 
     /* Retrieve member's token and check if he is connected are not */

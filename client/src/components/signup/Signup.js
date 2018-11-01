@@ -16,6 +16,7 @@ class Signup extends React.Component {
     constructor (props) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
+        this.generateTextfields = this.generateTextfields.bind(this)
         this.submit = this.submit.bind(this);
 
         this.state = {
@@ -30,11 +31,7 @@ class Signup extends React.Component {
 
 
     submit () {
-        if(this.state.memberCheckPassword === this.state.memberPassword){
-            this.props.onAdd(this.state)
-        }else{
-            console.log("Mot de passe different")
-        }
+        this.props.onAdd(this.state)
     }
 
     goBackToLogin () {
@@ -74,6 +71,10 @@ class Signup extends React.Component {
         for (let item of values) {
             textfields.push(
                 <TextField
+                    error={
+                        this.props.errorMsg[1] === keys[index] ||
+                        this.props.errorMsg[1] === 'all' && item === ''
+                    }
                     required
                     key={keys[index]}
                     name={keys[index]}
@@ -111,6 +112,11 @@ class Signup extends React.Component {
                         </form>
 
                         <Grid container>
+                            <Grid container justify="center" className={ classes.marginBottom }>
+                                <Typography variant="overline">
+                                    {this.props.errorMsg[0]}
+                                </Typography>
+                            </Grid>
                             <Grid xs={6} className={ classes.paddingRight } item>
                                 <Button
                                     variant="outlined"
@@ -151,4 +157,4 @@ const mapDispatchToProps = {
     onAdd : _action.signupAction.signup
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(style)(Signup));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Signup));

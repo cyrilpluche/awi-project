@@ -3,7 +3,8 @@ import _action from '../actions';
 const labels = _action.signupAction.labels
 
 const initialState = {
-    isAccountValidNow: false
+    isAccountValidNow: false,
+    msgError: ['', '']
 }
 
 export function signup (state = initialState, action){
