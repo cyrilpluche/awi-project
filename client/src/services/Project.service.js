@@ -29,10 +29,11 @@ const Project = {
     },
     sendInvitation(object){
         let where = helper.Request.urlFromObject(object)
-        //return axios.post(url + 'find_one' + where).then(res => res.data)
+        //TODO ROUTES
     },  
     createAndSendInvitation(object){
         let where = helper.Request.urlFromObject(object)
+        //TODO ROUTES
     }
 
 }

@@ -232,9 +232,11 @@ class Project extends Component {
     
     render() {  
         const {classes, match, projectInfo } = this.props
-            
+    
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
+
+                {/*===================  TITLE EDIT  ========================================= */}
                 <Typography variant="h5" gutterBottom className={classes.projectTitle}>
                     {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
                         <Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />
@@ -254,16 +256,22 @@ class Project extends Component {
                     </div>}
                 </Typography>
                 <Grid container spacing={24} >
+
+                {/*===================  MEMBERS BUTTON  ========================================= */}
                <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
                     <SupervisorAccount className={classes.leftIcon} />
                     {this.props.members? this.props.members.length : 0} Members
                 </Button>
-                <MemberDialog members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                <MemberDialog  members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                
+                {/*===================  VISIBILITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                     <RemoveRedEye className={classes.leftIcon} />
                     Visibility
                 </Button>
                 <VisibilityDialog projectInfo={projectInfo? projectInfo : null} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                
+                {/*===================  ACTIVITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
                     <Description className={classes.leftIcon} />
                     Activity
@@ -282,6 +290,8 @@ class Project extends Component {
                         </List>                    
                     </div>
                 </Drawer>
+
+                 {/*===================  FILTER BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
                     <FilterList className={classes.leftIcon} />
                     Filter
@@ -300,6 +310,8 @@ class Project extends Component {
                         </List>                    
                     </div>
                 </Drawer>
+
+
                 </Grid>
             </Grid>
             );

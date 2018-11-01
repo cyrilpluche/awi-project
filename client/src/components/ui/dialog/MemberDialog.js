@@ -4,7 +4,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {Send} from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import {Send,Cancel} from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { connect } from 'react-redux'
 import _action from '../../../actions'
+import Checkbox from '@material-ui/core/Checkbox';
 
 import { styles } from './Style'
 
@@ -73,7 +75,15 @@ class MemberDialog extends Component {
                   Members already in the project
                 </DialogContentText>
                 <List>
-                  {this.props.members? this.props.members.map(member => <ListItem key={member.memberId}><ListItemText primary={member.memberFirstname+" "+member.memberLastname}></ListItemText></ListItem>):''}
+                  {this.props.members? this.props.members.map(member => 
+                          <ListItem key={member.memberId}>
+                              <ListItemText primary={member.memberFirstname+" "+member.memberLastname}>
+                              </ListItemText>
+                              <IconButton color="secondary" >
+                                <Cancel />
+                              </IconButton>
+                              <Checkbox value="checkedC" />
+                          </ListItem>):''}
                 </List>
             </DialogContent>
             <DialogActions>
