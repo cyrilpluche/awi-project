@@ -56,17 +56,17 @@ class PasswordForgotten extends React.Component {
             <Grid container justify="center">
                 <Grid justify='center' container className={classes.logo}>
                     <Grid item>
-                        <img src={logo} width="100" alt="logo of prello"/>
+                        <img src={logo} width="70" alt="logo of prello"/>
                     </Grid>
                 </Grid>
 
                 <Grid justify='center' container >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h6" gutterBottom className={ classes.paddingText }>
                         Please, provide the email linked to your account. You will receive a new password.
                     </Typography>
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={8} sm={5} md={3}>
                     <Grid container justify="center">
                         <TextField
                             required

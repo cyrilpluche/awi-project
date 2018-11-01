@@ -9,7 +9,7 @@ router.get('/find_one/:id', mw.Token.verifyToken, memberController.findOne);
 router.get('/is_logged', mw.Token.verifyToken, memberController.signIn);
 
 router.post('/create', mw.Token.verifyToken, memberController.create);
-router.post('/sign_up', memberController.create, mw.Token.generateToken, mw.Email.sendEmail);
+router.post('/sign_up', memberController.findOne, memberController.create, mw.Token.generateToken, mw.Email.sendEmail);
 router.post('/sign_in', memberController.findOneSignIn, mw.Token.generateToken);
 router.post('/password_forgotten',mw.Token.generateRandomToken, memberController.resetPassword, mw.Email.sendNewPassword);
 

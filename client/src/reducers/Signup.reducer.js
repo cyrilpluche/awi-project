@@ -8,14 +8,15 @@ const initialState = {
 
 export function signup (state = initialState, action){
     switch (action.type) {
-        case labels.ADD:
+        case labels.SIGN_UP:
             return {
                 ...state,
                 member: action.payload,
-                isLogged: true
+                isLogged: true,
+                msgError: null
             };
 
-        case labels.ERROR:
+        case labels.SIGN_UP_ERROR:
             return {
                 ...state,
                 isLogged: false,
