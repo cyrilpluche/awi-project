@@ -12,6 +12,7 @@ import { Button } from '@material-ui/core';
 import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
+import VisibilityDialog from '../ui/dialog/VisibilityDialog'
 
 
 
@@ -26,7 +27,8 @@ class Project extends Component {
             updateLists : false,
             editProjectTitle : false,
             newProjectTitle : '',
-            openMemberDialog:false
+            openMemberDialog:false,
+            openVisibilityDialog:false
         }
     }
 
@@ -203,10 +205,17 @@ class Project extends Component {
         });
     };
 
-    handleClose (){
-        this.setState({ openMemberDialog: false });
-       
+    handleClickOpenVisibility= () => {
+        this.setState({
+            openVisibilityDialog: true,
+        });
     };
+
+    handleClose (){
+        this.setState({ openMemberDialog: false,openVisibilityDialog:false });     
+    };
+
+
     
     render() {  
         const {classes, match, projectInfo } = this.props
@@ -232,21 +241,22 @@ class Project extends Component {
                             </div>}
                         </Typography>
                         <Grid container spacing={24} >
-                       < Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
+                       <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
                             <SupervisorAccount className={classes.leftIcon} />
                             0 Members
                         </Button>
-                        <MemberDialog type="card" open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)}/>
-                        < Button color="primary" className={classes.button}>
+                        <MemberDialog open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                        < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                             <RemoveRedEye className={classes.leftIcon} />
                             Visibility
                         </Button>
+                        <VisibilityDialog projectInfo={projectInfo? projectInfo : null} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
                         < Button color="primary" className={classes.button}>
-                            <FilterList className={classes.leftIcon} />
+                            <Description className={classes.leftIcon} />
                             Activities
                         </Button>
                         < Button color="primary" className={classes.button}>
-                            <Description className={classes.leftIcon} />
+                            <FilterList className={classes.leftIcon} />
                             Filter
                         </Button>
                         </Grid>

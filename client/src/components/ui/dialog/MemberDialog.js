@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {Done} from '@material-ui/icons';
+import {Send} from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
@@ -59,7 +59,7 @@ class MemberDialog extends Component {
                             onChange={this.handleChange('newTitle')}
                             />
                     <Button color="primary" className={classes.button}>
-                        <Done className={classes.validIcon} />
+                        <Send className={classes.validIcon} />
                     </Button>
                 </div>
                 <Divider/>

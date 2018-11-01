@@ -129,6 +129,30 @@ function updateProjectTitle(newProjectTitle, projectId){
     }
 }
 
+function updateProjectVisibility(visibilityValue, projectId){
+    const body = {
+        projectVisibility : visibilityValue
+    }
+    return dispatch => {
+        _service.Project.update(projectId,body)
+        .then(res => {
+            _service.Project.getOne(projectId)
+            .then(res => {
+                dispatch({
+                    type: labels.GET_PROJECT_INFO,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
 
 
 export const projectAction = {
@@ -138,5 +162,6 @@ export const projectAction = {
     updateLists,
     getProjectInfo,
     updateProjectTitle,
-    findAllMembers
+    findAllMembers,
+    updateProjectVisibility
 }
