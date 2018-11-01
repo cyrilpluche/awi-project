@@ -21,6 +21,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ConfirmationDialog from'./ArchiveConfirmationDialog'
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -140,10 +141,10 @@ class Cardboard extends React.Component {
                                 <Button variant="contained" className={classes.buttonModal}>Members</Button>
                                 <Button variant="contained" className={classes.buttonModal}>Labels</Button>
                                 <Checklist/>
+                                <ConfirmationDialog content = {{type:'archive'}}/>
+                                <ConfirmationDialog content = {{type:'delete'}}/>
                                 <Button variant="contained" className={classes.buttonModal}>Attachment</Button>
                                 <Button variant="contained" className={classes.buttonModal}>Copy</Button>
-                                <Button variant="contained" className={classes.buttonModal}>Archive</Button>
-                                <Button variant="contained" className={classes.buttonModal}>Delete</Button>
                             </div>
                         </div>
                     </Scrollbars>
