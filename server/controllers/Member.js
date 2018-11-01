@@ -1,5 +1,6 @@
 const Member = require('../config/db_connection').Member;
 const sequelize = require('../config/db_connection').sequelize;
+const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
 const bcrypt = require('bcrypt');
 
@@ -33,7 +34,7 @@ module.exports = {
                 })
                 .catch(error => next(error));
         } else {
-            res.status(400).send('This email adress is already taken.')
+            res.status(400).send(['This email adress is already taken.', 'memberEmail'])
         }
 
     },
@@ -129,7 +130,10 @@ module.exports = {
         Member
             .findOne({
                 where: {
-                    memberEmail: req.body.memberEmail
+                    memberEmail: req.body.memberEmail,
+                    memberStatus: {
+                        [Sequelize.Op.ne]: 0
+                    }
                 }
             })
             .then(member => {
@@ -159,10 +163,15 @@ module.exports = {
      */
     signIn(req, res, next) {
         try {
-            req.decoded.iat = null
-            req.decoded.exp = null
-            req.body.result = {member: req.decoded}
-            next()
+            if (req.decoded.memberStatus !== 0) {
+                req.decoded.iat = null
+                req.decoded.exp = null
+                req.body.result = {member: req.decoded}
+                next()
+            } else {
+                res.status(400).send('This account is not confirmed.')
+            }
+
         } catch (err) {
             res.status(500).send(err)
         }

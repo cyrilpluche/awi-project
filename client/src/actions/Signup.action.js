@@ -18,20 +18,44 @@ const signSuccess = token => ({
 
 const signError = msg => ({
     type: labels.SIGN_UP_ERROR,
-    payload: msg || 'Failed to create the account.',
+    payload: msg || ['Failed to create the account.', ''],
 })
 
 function signup (body) {
-    let finalBody = Object.assign({ memberStatus: 0}, body)
-    return dispatch => {
-        _service.Member.signUp(finalBody)
-            .then(res => {
-                _helper.History.push('/home');
-                dispatch(signSuccess(res));
-            })
-            .catch((err) => {
-                dispatch(signError(err.response.data))
-            });
+    let checking = checkSignupFields(body)
+    if (checking.isFieldsOk) {
+        let finalBody = Object.assign({memberStatus: 0}, body)
+        return dispatch => {
+            _service.Member.signUp(finalBody)
+                .then(res => {
+                    _helper.History.push('/home');
+                    dispatch(signSuccess(res));
+                })
+                .catch((err) => {
+                    dispatch(signError(err.response.data))
+                });
+        }
+    } else {
+        return dispatch => {
+            dispatch(signError(checking.payload))
+        }
+    }
+}
+
+function checkSignupFields (fields) {
+    let isEmpty = false
+    for (let field of Object.values(fields)) {
+        if (field === '') isEmpty = true
+    }
+    if (isEmpty) {
+        return { isFieldsOk: false, payload: ["Some required fields are empty.", "all"] }
+    }
+    else if (fields.memberPassword.length < 6) {
+        return { isFieldsOk: false, payload: ["Password should be at least 6 characters.", "memberPassword"] }
+    } else if (fields.memberPassword !== fields.memberCheckPassword) {
+        return {isFieldsOk: false, payload: ["Password confirmation failed.", "memberCheckPassword"]}
+    } else {
+        return { isFieldsOk: true }
     }
 }
 
