@@ -26,6 +26,9 @@ const Project = {
     searchbarProjects (str) {
         var where = helper.Request.urlFromObject(str)
         return axios.get(url + 'find_all_searchbar' + where).then(res => res.data)
+    },
+    getAllMembers(projectId){
+        // TODO routes find all members for a specific project
     }
 
 }

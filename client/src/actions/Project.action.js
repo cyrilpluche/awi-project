@@ -4,7 +4,8 @@ const labels = {
     GET_ALL_LISTS :"GET_ALL_LISTS",
     CREATE_LIST : "CREATE_LIST",
     UPDATE_LIST : "UPDATE_LIST",
-    GET_PROJECT_INFO : "GET_PROJECT_INFO"
+    GET_PROJECT_INFO : "GET_PROJECT_INFO",
+    GET_ALL_MEMBERS:"GET_ALL_MEMBERS"
 }
 
 /**
@@ -17,6 +18,21 @@ function findAllLists (idProject) {
         .then(res => {
             dispatch({
                 type: labels.GET_ALL_LISTS,
+                payload: res
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
+function findAllMembers (idProject) {
+    return dispatch => {
+        _service.Project.getAllMembers(idProject)
+        .then(res => {
+            dispatch({
+                type: labels.GET_ALL_MEMBERS,
                 payload: res
             });
         })
@@ -121,5 +137,6 @@ export const projectAction = {
     createList,
     updateLists,
     getProjectInfo,
-    updateProjectTitle
+    updateProjectTitle,
+    findAllMembers
 }

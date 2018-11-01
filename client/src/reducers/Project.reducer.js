@@ -42,6 +42,11 @@ export function project (state = initialState, action) {
                 ...state,
                 projectInfo: action.payload[0]
             };
+        case projectLabels.GET_ALL_MEMBERS:
+            return {
+                ...state,
+                members: action.payload
+            };
         default:
             return state
     }

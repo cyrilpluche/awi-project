@@ -271,7 +271,8 @@ const mapDispatchToProps ={
     moveList: _action.projectAction.updateLists,
     updateCard: _action.listAction.updateCard,
     getProjectInfo: _action.projectAction.getProjectInfo,
-    updateTitle: _action.projectAction.updateProjectTitle
+    updateTitle: _action.projectAction.updateProjectTitle,
+    getAllMembers : _action.projectAction.findAllMembers,
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))
