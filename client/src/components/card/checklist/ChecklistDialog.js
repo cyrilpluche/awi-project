@@ -24,27 +24,33 @@ class ChecklistDialog extends React.Component {
         const { classes, onClose, selectedValue, ...other } = this.props;
 
         return (
-            <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
+            <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set checklist</DialogTitle>
-                <div className={classes.root}>
-                    <FormControl component="fieldset" className={classes.formControl}>
+                <div className={classes.form}>
+                    <FormControl component="fieldset" >
                         <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox onChange={this.handleChange('gilad')} value="gilad" />
-                                }
-                                label="Gilad Gray"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox  onChange={this.handleChange('jason')} value="jason" />
-                                }
-                                label="Jason Killian"
-                            />
+                            <div>
+                                <SvgIcon className={classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
+                                <FormControlLabel className={classes.formLabel}
+                                    control={
+                                        <Checkbox onChange={this.handleChange('gilad')} value="gilad" />
+                                    }
+                                    label="******************************************"
+                                />
+                                </div>
+                            <div>
+                                <SvgIcon className={classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
+                                <FormControlLabel className={classes.formLabel}
+                                    control={
+                                        <Checkbox  onChange={this.handleChange('jason')} value="jason" />
+                                    }
+                                    label="*****************************************"
+                                />
+                            </div>
                         </FormGroup>
                     </FormControl>
                 </div>
-                <SvgIcon >{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
+                <SvgIcon className={classes.addIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
             </Dialog>
         );
     }

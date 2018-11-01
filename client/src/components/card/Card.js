@@ -139,9 +139,7 @@ class Cardboard extends React.Component {
                             <div>
                                 <Button variant="contained" className={classes.buttonModal}>Members</Button>
                                 <Button variant="contained" className={classes.buttonModal}>Labels</Button>
-                                <Checklist />
-                                <Button variant="contained" className={classes.buttonModal}>Description</Button>
-                                <Button variant="contained" className={classes.buttonModal}>Comment</Button>
+                                <Checklist/>
                                 <Button variant="contained" className={classes.buttonModal}>Attachment</Button>
                                 <Button variant="contained" className={classes.buttonModal}>Copy</Button>
                                 <Button variant="contained" className={classes.buttonModal}>Archive</Button>
