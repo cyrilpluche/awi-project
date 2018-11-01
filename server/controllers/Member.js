@@ -1,4 +1,5 @@
 const Member = require('../config/db_connection').Member;
+var Project = require('../config/db_connection').Project;
 const sequelize = require('../config/db_connection').sequelize;
 const mw = require('../middlewares')
 const bcrypt = require('bcrypt');
@@ -33,7 +34,32 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)
+
+    /*  localhost:4200/api/member/find_all/:idProject
+     *
+     *  return: Array of member objects with given attributes.
+     */
+    findAllMember(req, res, next) {
+        Member
+            .findAll({
+                as:'MemberhasprojectProjects',
+                include:[{
+                    model: Project, as:'MemberhasprojectProjects',
+                    through:{
+                        where:{projectId : req.params.id}
+                    },
+                    required:true
+                }],
+                
+            })
+            .then(members => {
+                req.body.result = members
+                next()
+            })
+            .catch(error => next(error));
+    },
+
+     /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)
      *
      *  return: Array of member objects with given attributes.
      */

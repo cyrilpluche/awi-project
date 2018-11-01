@@ -5,6 +5,7 @@ var mw = require('../middlewares');
 var memberController = require('../controllers').Member;
 
 router.get('/find_all', mw.Token.verifyToken, memberController.findAll);
+router.get('/find_all_members/:id',memberController.findAllMember);
 router.get('/find_one/:id', mw.Token.verifyToken, memberController.findOne);
 router.get('/is_logged', mw.Token.verifyToken, memberController.signIn);
 
