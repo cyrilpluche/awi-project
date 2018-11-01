@@ -1,18 +1,20 @@
-var express = require('express');
-var router = express.Router();
-var mw = require('../middlewares')
+const express = require('express');
+const router = express.Router();
+const mw = require('../middlewares')
 
-var cardController = require('../controllers').Card;
+const cardController = require('../controllers').Card;
+router.use(mw.Token.verifyToken)
 
-router.get('/find_all', mw.Token.verifyToken, cardController.findAll);
-router.get('/find_one', mw.Token.verifyToken, cardController.findOne);
+router.get('/find_all', cardController.findAll);
+router.get('/find_all/:id', cardController.findAllOfList);
+router.get('/find_all_searchbar', cardController.findAllSearchbar);
 
-router.post('/create', mw.Token.verifyToken, cardController.create);
+router.get('/find_one', cardController.findOne);
 
-router.put('/update/:id', mw.Token.verifyToken, cardController.update);
+router.post('/create', cardController.create);
 
-router.delete('/delete/:id', mw.Token.verifyToken, cardController.delete);
+router.put('/update/:id', cardController.update);
 
-console.log('crotte')
+router.delete('/delete/:id', cardController.delete);
 
 module.exports = router;

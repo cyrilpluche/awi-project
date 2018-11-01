@@ -22,12 +22,14 @@ module.exports = {
      *  return: Token generated with member informations. Stored in req.body.memberToken.
      */
     generateToken(req, res, next) {
-        // We copy the object because we don't want to encrypt the token with the user's password.
+        req.body.result.dataValues.memberPassword = null
+
+        // We copy the object because dataValues don't have memberToken field.
         var payload = Object.assign({}, req.body.result.dataValues)
-        payload.memberPassword = null
-        req.body.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
+        payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 // expires in 24 hours
         });
+        req.body.result = payload
         next()
     },
 
@@ -37,8 +39,8 @@ module.exports = {
      */
     verifyToken(req, res, next) {
         // We can activate or disable token checking for development purposes.
-        if (false) {
-            var token = req.body.memberToken || req.query.memberToken || req.headers['x-access-token'];
+        if (true) {
+            var token = req.headers['authorization'] || req.body.memberToken || req.query.memberToken;
             if (token) {
                 jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
                     if (err) {
@@ -49,11 +51,25 @@ module.exports = {
                     }
                 })
             } else {
+                console.log('no auto')
+
                 res.status(400).send('No token provided.');
             }
         } else {
             next()
         }
+    },
 
-    }
+    /*
+     *  return: Generate a random token for new password.
+     */
+    generateRandomToken(req, res, next) {
+        let s = '';
+        let r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (var i=0; i < 15; i++) {
+            s += r.charAt(Math.floor(Math.random()*r.length));
+        }
+        req.body.memberPassword = s
+        next()
+    },
 }

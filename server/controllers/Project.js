@@ -1,5 +1,6 @@
 var Project = require('../config/db_connection').Project;
 var sequelize = require('../config/db_connection').sequelize;
+var Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
@@ -57,6 +58,22 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    /*  localhost:4200/api/project/find_one/:id 
+     *
+     *  return: Project object with given attributes.
+     */
+    findProjectInfo(req, res, next) {
+        Project
+            .findAll({
+                where :{ projectId: req.params.id }
+            })
+            .then(project => {
+                req.body.result = project
+                next()
+            })
+            .catch(error => next(error));
+    },
+
     /*  localhost:4200/api/project/update/2
      *
      *  req.body = {
@@ -95,5 +112,28 @@ module.exports = {
                 next()
             })
             .catch(error => next(error));
+    },
+
+    /* ================ CUSTOM METHODS =============== */
+
+    /*  localhost:4200/api/project/find_all_searchbar?str=customStr. (optional)
+     *
+     *  return: Array of Project objects with given attributes.
+     */
+    findAllSearchbar(req, res, next) {
+        Project
+            .findAll({
+                attributes: [['project_id', 'id'], ['project_title', 'label']],
+                order : sequelize.col('project_id'),
+                where: {
+                    projectTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                }
+            })
+            .then(projects => {
+                req.body.result = projects
+                next()
+            })
+            .catch(error => res.status(400).send(error));
     }
+
 }

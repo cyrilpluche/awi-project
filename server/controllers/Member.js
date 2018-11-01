@@ -1,6 +1,7 @@
-var Member = require('../config/db_connection').Member;
-var sequelize = require('../config/db_connection').sequelize;
-var mw = require('../middlewares')
+const Member = require('../config/db_connection').Member;
+const sequelize = require('../config/db_connection').sequelize;
+const mw = require('../middlewares')
+const bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -81,7 +82,7 @@ module.exports = {
     update(req, res, next) {
         Member
             .update(req.body, {
-                where: { memberId: req.params.id }
+                where: req.query
             })
             .then(isUpdated => {
                 req.body.result = isUpdated[0] === 1
@@ -123,7 +124,7 @@ module.exports = {
         Member
             .findOne({
                 where: {
-                    memberEmail: req.body.memberEmail,
+                    memberEmail: req.body.memberEmail
                 }
             })
             .then(member => {
@@ -144,8 +145,65 @@ module.exports = {
      *  return: A new token of the user.
      */
     sign(req, res, next) {
-        req.body.result = {memberToken: req.body.memberToken}
         next()
-    }
+    },
 
+    /*  localhost:4200/api/member/sign_up
+     *
+     *  return: The member decrypted with the token.
+     */
+    signIn(req, res, next) {
+        try {
+            req.decoded.iat = null
+            req.decoded.exp = null
+            req.body.result = {member: req.decoded}
+            next()
+        } catch (err) {
+            res.status(500).send(err)
+        }
+    },
+
+    /*  localhost:4200/api/member/sign_up
+     *
+     *  return: The member decrypted with the token.
+     */
+    isFound(req, res, next) {
+        if (req.body.result !== null) {
+            req.body = {memberPassword: req.body.memberPassword}
+            delete req.query['memberPassword']
+            next()
+        }
+        else next('Wrong password')
+    },
+
+    validateAccount (req, res, next) {
+        if (req.decoded) {
+            req.query = {
+                memberId: req.decoded.memberId,
+                memberEmail: req.decoded.memberEmail
+            }
+            req.body = {
+                memberStatus: 1
+            }
+            next()
+        }
+        else {
+            res.status(400).send('Failed to decrypt the token')
+        }
+    },
+
+    /*
+     *  return: A boolean. true = Updated, false = Not updated.
+     */
+    resetPassword(req, res, next) {
+        Member
+            .update({ memberPassword: req.body.memberPassword}, {
+                where: {memberEmail: req.body.memberEmail}
+            })
+            .then(isUpdated => {
+                if (isUpdated[0] === 1) next()
+                else res.status(400).send('No email found.')
+            })
+            .catch(error => next(error));
+    }
 }

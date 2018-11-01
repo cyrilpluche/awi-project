@@ -3,7 +3,8 @@ import _service from '../services'
 const labels = {
     SELECT_PROJECT: 'project:select_one',
     FIND_ONE_PROJECT: 'project:find_one',
-    RECEIVE_PROJECT: 'project:received'
+    RECEIVE_PROJECT: 'project:received',
+    SELECT_ALL_PROJECT: 'project:select_all' // at the begin
 }
 
 const findOneProject = () => ({

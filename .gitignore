@@ -11,3 +11,5 @@ server/models/
 \.idea/codeStyles/Project\.xml
 
 \.idea/workspace\.xml
+
+client/node_modules/

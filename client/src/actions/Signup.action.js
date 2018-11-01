@@ -6,7 +6,9 @@ const labels = {
     ADD : "ADD",
     ERROR : "ERROR",
     CREATE_USER : "CREATE_USER",
-    IS_LOGGED: "IS_LOGGED"
+    LOADING: "LOADING",
+    VALIDATE_ACCOUNT_TOKEN: "VALIDATE_ACCOUNT_TOKEN",
+    VALIDATE_ACCOUNT_TOKEN_ERROR: "VALIDATE_ACCOUNT_TOKEN_ERROR"
 }
 
 const signSuccess = token => ({
@@ -40,27 +42,26 @@ function signup (memberFirstname, memberLastname, memberPseudo, memberEmail, mem
     }
 }
 
-function isMemberLogged () {
-    return (dispatch) => {
-        if (localStorage.getItem('memberToken')) {
-            _service.Member.isLogged()
-                .then(res => {
-                    dispatch({
-                        type: labels.IS_LOGGED,
-                        payload: res
-                    })
-                })
-        } else {
-            dispatch({
-                type: labels.IS_LOGGED,
-                payload: false
+function validateAccountWithToken (memberToken) {
+    return dispatch => {
+        _service.Member.validateAccount(memberToken)
+            .then(res => {
+                dispatch({
+                    type: labels.VALIDATE_ACCOUNT_TOKEN
+                });
+                _helper.History.push('/account-confirmation');
             })
-        }
+            .catch((err) => {
+                _helper.History.push('/login');
+                dispatch({
+                    type: labels.VALIDATE_ACCOUNT_TOKEN_ERROR
+                })
+            });
     }
 }
 
 export const signupAction = {
     labels,
     signup,
-    isMemberLogged
+    validateAccountWithToken
 }

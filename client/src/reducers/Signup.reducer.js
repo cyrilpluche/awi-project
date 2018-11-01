@@ -2,7 +2,9 @@ import _action from '../actions';
 
 const labels = _action.signupAction.labels
 
-const initialState = ""
+const initialState = {
+    isAccountValidNow: false
+}
 
 export function signup (state = initialState, action){
     switch (action.type) {
@@ -20,10 +22,16 @@ export function signup (state = initialState, action){
                 msgError: action.payload
             }
 
-        case labels.IS_LOGGED:
+        case labels.VALIDATE_ACCOUNT_TOKEN:
             return {
                 ...state,
-                isLogged: action.payload
+                isAccountValidNow: true
+            }
+
+        case labels.VALIDATE_ACCOUNT_TOKEN_ERROR:
+            return {
+                ...state,
+                isAccountValidNow: false
             }
 
         default:
