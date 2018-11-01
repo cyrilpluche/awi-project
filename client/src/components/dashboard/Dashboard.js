@@ -90,8 +90,7 @@ class Dashboard extends React.Component {
                 <p>Hello</p>
                 <p>{this.props.project.projectTitle}</p>
             </div> */
-                <List content = {{id:1}}/>
-            </div>
+            //</div>
         )
     }
 }
