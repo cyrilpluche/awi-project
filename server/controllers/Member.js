@@ -135,7 +135,7 @@ module.exports = {
                     }
                     else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).sendd('Email or password is incorrect.')
+                else res.status(400).send('Email or password is incorrect.')
             })
             .catch(error => next(error));
     },
