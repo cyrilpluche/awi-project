@@ -3,8 +3,8 @@ import _helper from '../helpers';
 
 const labels = {
     //LOGIN : "LOGIN",
-    ADD : "ADD",
-    ERROR : "ERROR",
+    SIGN_UP : "SIGN_UP",
+    SIGN_UP_ERROR : "SIGN_UP_ERROR",
     CREATE_USER : "CREATE_USER",
     LOADING: "LOADING",
     VALIDATE_ACCOUNT_TOKEN: "VALIDATE_ACCOUNT_TOKEN",
@@ -12,32 +12,25 @@ const labels = {
 }
 
 const signSuccess = token => ({
-    type: labels.ADD,
+    type: labels.SIGN_UP,
     payload: token,
 })
 
-const signError = {
-    type: labels.ERROR,
-    payload: "Sign up process failed.",
-}
+const signError = msg => ({
+    type: labels.SIGN_UP_ERROR,
+    payload: msg || 'Failed to create the account.',
+})
 
-function signup (memberFirstname, memberLastname, memberPseudo, memberEmail, memberPassword) {
-    const body = {
-        memberFirstname: memberFirstname,
-        memberLastname: memberLastname,
-        memberPseudo: memberEmail,
-        memberEmail: memberEmail,
-        memberPassword: memberPassword,
-        memberStatus: 0
-    }
+function signup (body) {
+    let finalBody = Object.assign({ memberStatus: 0}, body)
     return dispatch => {
-        _service.Member.signUp(body)
+        _service.Member.signUp(finalBody)
             .then(res => {
                 _helper.History.push('/home');
                 dispatch(signSuccess(res));
             })
             .catch((err) => {
-                dispatch(signError)
+                dispatch(signError(err.response.data))
             });
     }
 }

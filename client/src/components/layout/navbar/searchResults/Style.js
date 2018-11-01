@@ -41,6 +41,7 @@ export const style = theme => ({
         paddingLeft: theme.spacing.unit * 2
     },
     highlight: {
+        // WARNING : Trigger a warning in the console. Need to find another way to hover result's list.
         '&:hover:not($disabled):not($error):not($focused):before': {
             //backgroundColor: '#e72b34',
             borderBottomColor: '#cdcde7',

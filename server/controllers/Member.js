@@ -23,14 +23,19 @@ module.exports = {
      *  return: A new token specific for the member created.
      */
     create(req, res, next) {
-        Member
-            .create(req.body)
-            .then(member => {
-                member.memberPassword = null
-                req.body.result = member
-                next()
-            })
-            .catch(error => next(error));
+        if (!req.body.result) {
+            Member
+                .create(req.body)
+                .then(member => {
+                    member.memberPassword = null
+                    req.body.result = member
+                    next()
+                })
+                .catch(error => next(error));
+        } else {
+            res.status(400).send('This email adress is already taken.')
+        }
+
     },
 
     /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)

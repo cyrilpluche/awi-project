@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import helper from '../helpers'
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
 import Api from './Api'

@@ -1,23 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _action from '../../actions'
+import _helper from '../../helpers'
 import { style } from './Style'
+import logo from '../../public/images/prello-logo-2.png'
 
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
-import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid/Grid";
 
 class Signup extends React.Component {
     constructor (props) {
         super(props)
-
+        this.handleChange = this.handleChange.bind(this)
         this.submit = this.submit.bind(this);
 
         this.state = {
@@ -32,18 +30,15 @@ class Signup extends React.Component {
 
 
     submit () {
-        //this.props.onLogin(memberEmail, memberPassword)
-        let memberFirstname = this.state.memberFirstname
-        let memberLastname = this.state.memberLastname
-        let memberPseudo = this.state.memberPseudo
-        let memberEmail = this.state.memberEmail
-        let memberPassword = this.state.memberPassword
-        let memberCheckPassword = this.state.memberCheckPassword
-        if(memberCheckPassword === memberPassword){
-            this.props.onAdd(memberFirstname, memberLastname, memberPseudo, memberEmail, memberPassword)
+        if(this.state.memberCheckPassword === this.state.memberPassword){
+            this.props.onAdd(this.state)
         }else{
             console.log("Mot de passe different")
         }
+    }
+
+    goBackToLogin () {
+        _helper.History.push('/login')
     }
 
     handleChange (event) {
@@ -51,97 +46,81 @@ class Signup extends React.Component {
         this.setState({ [name]: value });
     }
 
+    // Loop that create textfields
+    generateTextfields = () => {
+        const { errorMsg } = this.props;
+        const labelsForClient = [
+            'First name',
+            'Last name',
+            'Pseudo',
+            'Email',
+            'Password',
+            'Password confirmation'
+        ]
+        const type = [
+            'text',
+            'text',
+            'text',
+            'email',
+            'password',
+            'password'
+        ]
+
+        let values = Object.values(this.state)
+        let keys = Object.keys(this.state)
+        var textfields = [];
+        let index = 0
+
+        for (let item of values) {
+            textfields.push(
+                <TextField
+                    required
+                    key={keys[index]}
+                    name={keys[index]}
+                    label={labelsForClient[index]}
+                    value={item}
+                    fullWidth
+                    type={type[index]}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    variant="outlined"
+                />
+            )
+            index += 1
+        }
+        return textfields
+    }
+
     render() {
         const {classes} = this.props;
         return (
-            <React.Fragment>
-                <CssBaseline />
-                <main className={classes.layout}>
-                    <Paper className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <Icon className={classNames(classes.icon, 'fa fa-plus-circle')} />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign up
-                        </Typography>
+            <Grid justify='center' className={classes.layout} container>
+                <Grid justify='center' container className={classes.logo}>
+                    <Grid item>
+                        <img src={logo} width="60" alt="prello logo"/>
+                    </Grid>
+                </Grid>
+                <Typography component="h1" variant="h5">
+                    Create your account
+                </Typography>
 
+                <Grid justify='center' container className={ classes.marginBottom }>
+                    <Grid xs={10} sm={6} md={4} item>
                         <form className={classes.form}>
-                            <div>
-                                <TextField
-                                    required
-                                    name="memberFirstname"
-                                    id="firstname"
-                                    label="First Name"
-                                    margin="normal"
+                            {this.generateTextfields()}
+                        </form>
+
+                        <Grid container>
+                            <Grid xs={6} className={ classes.paddingRight } item>
+                                <Button
                                     variant="outlined"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    name="memberLastname"
-                                    id="lastname"
-                                    label="Last Name"
-                                    margin="normal"
-                                    variant="outlined"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    name="memberPseudo"
-                                    id="pseudo"
-                                    label="Pseudo"
-                                    margin="normal"
-                                    variant="outlined"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    name="memberEmail"
-                                    id="email"
-                                    label="Email"
-                                    margin="normal"
-                                    variant="outlined"
-                                    type="email"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    id="password"
-                                    name="memberPassword"
-                                    label="Password"
-                                    margin="normal"
-                                    variant="outlined"
-                                    type="password"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    id="checkPassword"
-                                    name="memberCheckPassword"
-                                    label="Check Password"
-                                    margin="normal"
-                                    variant="outlined"
-                                    type="password"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
-                            <div>
+                                    fullWidth color="primary"
+                                    onClick={this.goBackToLogin}
+                                >
+                                    Back
+                                </Button>
+                            </Grid>
+                            <Grid xs={6} className={ classes.paddingLeft } item>
                                 <Button
                                     variant="contained"
                                     fullWidth color="primary"
@@ -149,11 +128,13 @@ class Signup extends React.Component {
                                 >
                                     Sign Up
                                 </Button>
-                            </div>
-                        </form>
-                    </Paper>
-                </main>
-            </React.Fragment>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+
+            </Grid>
         )
     }
 }
@@ -161,6 +142,10 @@ class Signup extends React.Component {
 Signup.propTypes = {
     classes: PropTypes.object.isRequired
 }
+
+const mapStateToProps = (state) => ({
+    errorMsg: state.signup.msgError
+})
 
 const mapDispatchToProps = {
     onAdd : _action.signupAction.signup

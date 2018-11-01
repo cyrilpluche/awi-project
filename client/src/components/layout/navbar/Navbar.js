@@ -25,6 +25,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Drawer from "@material-ui/core/Drawer/Drawer";
 import Divider from "@material-ui/core/Divider/Divider";
 import Button from "@material-ui/core/Button/Button";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 // Material UI style
 import PropTypes from 'prop-types';
@@ -32,6 +33,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { style } from './Style'
 import { Theme } from "../../ui/palette/Palette";
 import { MuiThemeProvider } from "@material-ui/core/es/styles";
+import Grid from "@material-ui/core/Grid/Grid";
 
 class Navbar extends React.Component {
 
@@ -76,6 +78,12 @@ class Navbar extends React.Component {
         this.displayComponent(event)
         this.handleMobileMenuClose();
     };
+    displayComponent = (event) => {
+        let route = event.currentTarget.id
+        if (route !== '/login' && route !== '') {
+            _helper.History.push(route)
+        }
+    }
 
     /* ================= Profile mobile ================= */
     handleMobileMenuOpen = event => {
@@ -118,12 +126,6 @@ class Navbar extends React.Component {
     };
 
     /* ================= Other methods ================= */
-    displayComponent = (event) => {
-        let route = event.currentTarget.id
-        if (route !== '/login') {
-            _helper.History.push(route)
-        }
-    }
     logOff (event) {
         this.handleMenuClose(event)
         this.props.onLogOff()
@@ -163,9 +165,23 @@ class Navbar extends React.Component {
                     role="button"
                     onKeyDown={this.toggleDrawer('right', false)}
                 >
-                    <Button fullWidth color="primary" className={classes.button}>
-                        {this.props.notificationsUnread} Notifications
-                    </Button>
+                    <Grid alignItems='center' justify='center' container>
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('right', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.button}>
+                                {this.props.notificationsUnread} Notifications
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                    </Grid>
                     <Divider/>
                     <div className={classes.notificationList}>
                         <NotificationList
@@ -192,24 +208,16 @@ class Navbar extends React.Component {
                 open={isMobileMenuOpen}
                 onClose={this.handleMobileMenuClose}
             >
-                <MenuItem>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary" >
-                            <MailIcon/>
-                        </Badge>
-                    </IconButton>
-                    <p>Messages</p>
-                </MenuItem>
-                <MenuItem>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={11} color="secondary">
+                <MenuItem onClick={this.toggleDrawer('right', true)}>
+                    <IconButton color="primary">
+                        <Badge badgeContent={this.props.notificationsUnread} color="secondary">
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
                     <p>Notifications</p>
                 </MenuItem>
                 <MenuItem onClick={this.handleProfileMenuOpen}>
-                    <IconButton color="inherit">
+                    <IconButton color="primary">
                         <AccountCircle />
                     </IconButton>
                     <p>Profile</p>

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import helper from '../helpers'
 import Api from './Api'
 

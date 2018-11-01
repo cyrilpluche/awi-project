@@ -12,9 +12,6 @@ import AddFavoriteIcon from '@material-ui/icons/StarBorderOutlined'
 import FavoriteIcon from '@material-ui/icons/Star'
 import AddProjectIcon from '@material-ui/icons/Add'
 import Icon from '@material-ui/core/Icon';
-import CardContent from '@material-ui/core/CardContent'
-import CardAction from '@material-ui/core/CardActions'
-
 
 class ProjectList extends React.Component {
     render() {

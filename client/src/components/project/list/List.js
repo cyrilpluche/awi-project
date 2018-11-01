@@ -3,7 +3,6 @@ import Card from '../card/Card'
 import { withStyles } from '@material-ui/core/styles';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import SimpleDialog from '../../ui/dialog/SimpleDialog'
 import { styles } from './Style'

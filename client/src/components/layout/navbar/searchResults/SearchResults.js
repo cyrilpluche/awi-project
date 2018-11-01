@@ -8,7 +8,6 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { style } from './Style'
 import connect from "react-redux/es/connect/connect";
-import _service from "../../../../services";
 import _action from "../../../../actions";
 import Typography from "@material-ui/core/Typography/Typography";
 import Divider from "@material-ui/core/Divider/Divider";
@@ -44,7 +43,6 @@ class SearchResults extends React.Component {
     }
 
     renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem, type }) {
-        const isHighlighted = highlightedIndex === index;
         const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
         const id = type + '/' + suggestion.id
         const { classes } = this.props;

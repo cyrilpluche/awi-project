@@ -8,5 +8,8 @@ export const style = theme => ({
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
+    },
+    paddingText: {
+        padding: 10
     }
 });
