@@ -69,13 +69,14 @@ class Dashboard extends React.Component {
                     <Grid item xs={8} container justify="center"
                           alignItems="center"> {/* Project List Container */}
                         <Grid item xs={12}>
-                            <ProjectList title={"Team project"} projects={this.state.teamProjects} canCreateProject/>
+                            <ProjectList title={"Team project"} iconList={'people_outline'}
+                                         projects={this.state.teamProjects} canCreateProject/>
                         </Grid>
                         <Grid item xs={12}>
                             <ProjectList title={'Favorite projects '} projects={this.state.favoriteProjects}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <ProjectList title={"Personal projects"}
+                            <ProjectList title={"Personal projects"} iconList={'work_outline'}
                                          projects={this.state.allProjects} canCreateProject/>
                         </Grid>
                     </Grid>

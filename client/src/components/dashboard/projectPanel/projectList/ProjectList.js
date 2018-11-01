@@ -11,6 +11,9 @@ import IconButton from "@material-ui/core/IconButton";
 import AddFavoriteIcon from '@material-ui/icons/StarBorderOutlined'
 import FavoriteIcon from '@material-ui/icons/Star'
 import AddProjectIcon from '@material-ui/icons/Add'
+import Icon from '@material-ui/core/Icon';
+import CardContent from '@material-ui/core/CardContent'
+import CardAction from '@material-ui/core/CardActions'
 
 
 class ProjectList extends React.Component {
@@ -18,7 +21,7 @@ class ProjectList extends React.Component {
         const { classes } = this.props;
 
         let projectsList = this.props.projects.map(
-            project => {
+            (project, key) => {
                 let icon = (
                     <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}>
                         <AddFavoriteIcon className={classes.Icon}/>
@@ -32,20 +35,35 @@ class ProjectList extends React.Component {
                     )
                 }
 
+
                 let card = (
                     <Card className={classes.default_card}>
                         <CardActionArea>
-                            <CardMedia  height="140">
-                                <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
-                                    {project.name}
-                                    </h2>
-                                {icon}
-                            </CardMedia>
+                            <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
+                                {project.name}
+                            </h2>
+                            {icon}
                         </CardActionArea>
                     </Card>
                 );
+                if (this.props.backgroundimage !== undefined && this.props.backgroundimage !=='') {
+                    // if the projects has a background image
+                    card = (
+                        <Card className={classes.default_card}>
+                            <CardActionArea>
+                                <CardMedia  height="120" src={this.props.backgroundimage}>
+                                    <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
+                                        {project.name}
+                                    </h2>
+                                    {icon}
+                                </CardMedia>
+                            </CardActionArea>
+                        </Card>
+                    );
 
-                return <Grid item sm={3} xs={12} spacing={24}>
+                }
+
+                return <Grid item sm={3} xs={12} key={key} >
                     {card}
                 </Grid>
 
@@ -56,26 +74,33 @@ class ProjectList extends React.Component {
 
         if (this.props.canCreateProject) { // this means that we can create a new project starting form this list
             createProjectComponent = (
-                <Grid item sm={3} xs={12} spacing={24}>
+                <Grid item sm={3} xs={12}>
                     <Card className={classes.add_project_card}>
                         <CardActionArea  height="140">
-                            <h2>Add new project</h2>
+                            <h3 style={{color: '#999999'}}>Add new project</h3>
                             <IconButton>
-                                <AddProjectIcon className={classes.Icon}/>
+                                <AddProjectIcon className={classes.addIcon}/>
                             </IconButton>
-
                         </CardActionArea>
                     </Card>
                 </Grid>
             )
         }
 
+        let iconList = 'star_border' // icon displayed before the list name
+        if (this.props.iconList !== undefined && this.props.iconList !== '') iconList = this.props.iconList
+
         return (
             <Grid container alignItems='flex-start' className={classes.root}>
-                <Grid item xs={12}>
-                    <h3 className={classes.title}>{this.props.title}</h3>
+                <Grid item container xs={12} alignItems='center'>
+                    <Grid item xs={1}>
+                        <Icon style={{fontSize: '22px'}}>{iconList}</Icon>
+                    </Grid>
+                    <Grid item xs={11}>
+                        <h3 className={classes.title}>{this.props.title}</h3>
+                    </Grid>
                 </Grid>
-                <Grid item container xs={12}>{createProjectComponent} {projectsList} </Grid>
+                <Grid item container xs={12} alignItems='center'>{createProjectComponent} {projectsList} </Grid>
             </Grid>
         )
     }
