@@ -17,7 +17,7 @@ const Member = {
 
     /* Set the status of a member to 1 if the token is valid */
     validateAccount (memberToken) {
-        // axios.defaults.headers.common['Authorization'] = memberToken
+        Api.defaults.headers.common['Authorization'] = memberToken
         return Api.put(url + 'validate_account', memberToken).then(res => res.data)
     },
 
