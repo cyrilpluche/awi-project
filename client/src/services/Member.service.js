@@ -66,6 +66,9 @@ const Member = {
             memberEmail: memberEmail
         }
         return axios.post(url + 'password_forgotten', body).then(res => res.data)
+    },
+    getAllMembers(projectId){
+        return axios.get(url + 'find_all_members/'+projectId,).then(res => res.data)
     }
 }
 

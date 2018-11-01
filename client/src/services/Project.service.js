@@ -27,8 +27,12 @@ const Project = {
         var where = helper.Request.urlFromObject(str)
         return axios.get(url + 'find_all_searchbar' + where).then(res => res.data)
     },
-    getAllMembers(projectId){
-        // TODO routes find all members for a specific project
+    sendInvitation(object){
+        let where = helper.Request.urlFromObject(object)
+        //return axios.post(url + 'find_one' + where).then(res => res.data)
+    },  
+    createAndSendInvitation(object){
+        let where = helper.Request.urlFromObject(object)
     }
 
 }

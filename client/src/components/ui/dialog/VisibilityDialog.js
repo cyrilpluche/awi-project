@@ -27,8 +27,6 @@ class VisibilityDialog extends Component {
   }
 
     componentWillReceiveProps(){
-      console.log("DIALOG WILL RECEIVE PROPS")
-      
       if (this.props.projectInfo) this.setState({visibility: this.props.projectInfo.projectVisibility})
     }
 
@@ -57,7 +55,7 @@ class VisibilityDialog extends Component {
 
     render() {
       const { projectInfo, classes, onClose, selectedValue, ...other } = this.props;
-      console.log(this.props)
+
       return (
         <Dialog onClose={this.close.bind(this)} aria-labelledby="simple-dialog-title" {...other}>
             <DialogTitle id="simple-dialog-title" className={classes.dialogTitle}>Project visibility</DialogTitle>

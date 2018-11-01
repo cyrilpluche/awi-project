@@ -12,6 +12,8 @@ import {withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { connect } from 'react-redux'
+import _action from '../../../actions'
 
 import { styles } from './Style'
 
@@ -21,7 +23,7 @@ class MemberDialog extends Component {
   constructor(props){
     super(props)
     this.state = {
-      newTitle:'',
+      invitationEmail:'',
       submitted:false
     }
   }
@@ -39,6 +41,10 @@ class MemberDialog extends Component {
         });
     };
 
+    submitInvitation(){
+      this.props.sendInvitation(this.state.invitationEmail, this.props.projectInfo.projectId)
+    }
+
     render() {
       const { classes, onClose, selectedValue, ...other } = this.props;
       
@@ -51,25 +57,23 @@ class MemberDialog extends Component {
                 </DialogContentText>
                 <div className={classes.divider}>
                     <TextField
-                            id="outlined-multiline-static"
+                            id="invitationEmail"
                             label="Email"
-                            name="selectedValue"       
+                            name="invitationEmail"       
                             margin="normal"
                             variant="outlined"
-                            onChange={this.handleChange('newTitle')}
+                            onChange={this.handleChange('invitationEmail')}
                             />
-                    <Button color="primary" className={classes.button}>
+                    <Button color="primary" className={classes.button} onClick={this.submitInvitation.bind(this)}>
                         <Send className={classes.validIcon} />
                     </Button>
                 </div>
                 <Divider/>
                 <DialogContentText>
-                Members already in the project
+                  Members already in the project
                 </DialogContentText>
                 <List>
-                    <ListItem><ListItemText primary="Mehdi Delvaux"></ListItemText></ListItem>
-                    <ListItem><ListItemText primary="Cyril Pluche"></ListItemText></ListItem>
-                    <ListItem><ListItemText primary="Enzo Fabre"></ListItemText></ListItem> 
+                  {this.props.members? this.props.members.map(member => <ListItem key={member.memberId}><ListItemText primary={member.memberFirstname+" "+member.memberLastname}></ListItemText></ListItem>):''}
                 </List>
             </DialogContent>
             <DialogActions>
@@ -79,4 +83,11 @@ class MemberDialog extends Component {
     }
   }
 
-export default withStyles(styles)(MemberDialog)
+  const mapStateToProps = (state) => ({
+    projectInfo : state.project.projectInfo || [],
+})
+const mapDispatchToProps ={
+    sendInvitation: _action.projectAction.sendInvitationProject,
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(MemberDialog))

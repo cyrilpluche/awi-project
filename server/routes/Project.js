@@ -9,6 +9,7 @@ router.use(mw.Token.verifyToken)
 router.get('/find_all', projectController.findAll);
 router.get('/find_all_searchbar', projectController.findAllSearchbar);
 
+
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', mw.Token.verifyToken, projectController.findProjectInfo);
 

@@ -47,6 +47,10 @@ export function project (state = initialState, action) {
                 ...state,
                 members: action.payload
             };
+        case projectLabels.SEND_INVITATION:
+            return {
+                ...state
+            };
         default:
             return state
     }

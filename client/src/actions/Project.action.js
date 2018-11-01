@@ -5,7 +5,8 @@ const labels = {
     CREATE_LIST : "CREATE_LIST",
     UPDATE_LIST : "UPDATE_LIST",
     GET_PROJECT_INFO : "GET_PROJECT_INFO",
-    GET_ALL_MEMBERS:"GET_ALL_MEMBERS"
+    GET_ALL_MEMBERS:"GET_ALL_MEMBERS",
+    SEND_INVITATION:"SEND_INVITATION"
 }
 
 /**
@@ -29,8 +30,8 @@ function findAllLists (idProject) {
 
 function findAllMembers (idProject) {
     return dispatch => {
-        _service.Project.getAllMembers(idProject)
-        .then(res => {
+        _service.Member.getAllMembers(idProject)
+        .then(res => {     
             dispatch({
                 type: labels.GET_ALL_MEMBERS,
                 payload: res
@@ -153,6 +154,58 @@ function updateProjectVisibility(visibilityValue, projectId){
     }
 }
 
+function sendInvitationProject(email,projectId){
+    const body = {
+        memberEmail : email
+    }
+    return dispatch => {
+        _service.Member.get(body)
+        .then(res => {
+            if(res){
+                console.log(res)
+                const body = {
+                    memberId : res.memberId,
+                    memberEmail : res.memberEmail,
+                    projectId: projectId
+                }
+                /*_service.Project.sendInvitation(body)
+                .then(res => {*/
+                    dispatch({
+                        type: labels.SEND_INVITATION,
+                        payload: res
+                    });
+               /* })
+                .catch((err) => {
+                    dispatch(err)
+                });*/
+            }else{
+                console.log("EXISTE PAS")
+                const body = {
+                    memberEmail : email,
+                    projectId: projectId
+                }
+               /* _service.Project.createAndSendInvitation(body)
+                .then(res => {*/
+                    dispatch({
+                        type: labels.SEND_INVITATION,
+                        payload: res
+                    });
+                /*})
+                .catch((err) => {
+                    dispatch(err)
+                });*/
+            }
+               
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+
+    }
+}
+
+
+
 
 
 export const projectAction = {
@@ -163,5 +216,6 @@ export const projectAction = {
     getProjectInfo,
     updateProjectTitle,
     findAllMembers,
-    updateProjectVisibility
+    updateProjectVisibility,
+    sendInvitationProject
 }

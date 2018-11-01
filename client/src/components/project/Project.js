@@ -13,6 +13,10 @@ import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from 
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 
 
@@ -28,32 +32,41 @@ class Project extends Component {
             editProjectTitle : false,
             newProjectTitle : '',
             openMemberDialog:false,
-            openVisibilityDialog:false
+            openVisibilityDialog:false,
+            members:[],
+            openActivity:false,
+            openFilter:false
         }
     }
 
     componentWillMount() {
         this.props.getProjectInfo(this.props.match.params.id)
         this.props.getAllLists(this.props.match.params.id)
-        // this.props.getAllMembers(this.props.match.params.id)
+        this.props.getAllMembers(this.props.match.params.id)
         this.props.findAllCards()
         this.setState({lists : this.props.lists})
     }
 
 
     componentWillReceiveProps(){
-        this.setState({updateLists : false, lists : this.props.lists})
+        this.setState({ updateLists : false, 
+                        lists : this.props.lists,
+                        members : this.props.members
+                    })
     }
 
     componentDidUpdate(){
-
         if(!this.state.updateLists){
           this.orderList(this.props.lists)      
         } 
     }
 
 
-
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+          [side]: open,
+        });
+      };
 
    orderList(lists){
         
@@ -219,51 +232,88 @@ class Project extends Component {
     
     render() {  
         const {classes, match, projectInfo } = this.props
+            
+        const header =(
+            <Grid container spacing={16} className={classes.projectHeader}>
+                <Typography variant="h5" gutterBottom className={classes.projectTitle}>
+                    {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
+                        <Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />
+                    </div>:
+                    <div>
+                        <TextField
+                        id="standard-name"
+                        label="Project title"
+                        defaultValue={projectInfo.projectTitle}
+                        onChange={this.handleChange('newProjectTitle')}
+                        className={classes.textField}
+                        margin="normal"
+                        />
+                        <Button color="primary" className={classes.button}>
+                            <Done className={classes.validIcon} onClick={this.handleValidationEditTitle.bind(this)} />
+                        </Button>
+                    </div>}
+                </Typography>
+                <Grid container spacing={24} >
+               <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
+                    <SupervisorAccount className={classes.leftIcon} />
+                    {this.props.members? this.props.members.length : 0} Members
+                </Button>
+                <MemberDialog members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
+                    <RemoveRedEye className={classes.leftIcon} />
+                    Visibility
+                </Button>
+                <VisibilityDialog projectInfo={projectInfo? projectInfo : null} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
+                    <Description className={classes.leftIcon} />
+                    Activity
+                </Button>
+                <Drawer anchor="right" open={this.state.openActivity} onClose={this.toggleDrawer('openActivity', false)}>
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        onClick={this.toggleDrawer('openActivity', false)}
+                        onKeyDown={this.toggleDrawer('openActivity', false)}
+                    >
+                        <List>
+                            <ListItem>
+                                <ListItemText primary="Activity"></ListItemText>
+                            </ListItem>
+                        </List>                    
+                    </div>
+                </Drawer>
+                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
+                    <FilterList className={classes.leftIcon} />
+                    Filter
+                </Button>
+                <Drawer anchor="right" open={this.state.openFilter} onClose={this.toggleDrawer('openFilter', false)}>
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        onClick={this.toggleDrawer('openFilter', false)}
+                        onKeyDown={this.toggleDrawer('openFilter', false)}
+                    >
+                        <List>
+                            <ListItem>
+                                <ListItemText primary="Filter"></ListItemText>
+                            </ListItem>
+                        </List>                    
+                    </div>
+                </Drawer>
+                </Grid>
+            </Grid>
+            );
+
+        const dndArea = (
+            <DragDropContext onDragEnd={this.onDragEnd}>
+                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
+            </DragDropContext>
+        )
+
         return (
             <div className={classes.projectBody}>
-                    <Grid container spacing={16} className={classes.projectHeader}>
-                        <Typography variant="h5" gutterBottom className={classes.projectTitle}>
-                            {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
-                                <Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />
-                            </div>:
-                            <div>
-                                <TextField
-                                id="standard-name"
-                                label="Project title"
-                                defaultValue={projectInfo.projectTitle}
-                                onChange={this.handleChange('newProjectTitle')}
-                                className={classes.textField}
-                                margin="normal"
-                                />
-                                <Button color="primary" className={classes.button}>
-                                    <Done className={classes.validIcon} onClick={this.handleValidationEditTitle.bind(this)} />
-                                </Button>
-                            </div>}
-                        </Typography>
-                        <Grid container spacing={24} >
-                       <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
-                            <SupervisorAccount className={classes.leftIcon} />
-                            0 Members
-                        </Button>
-                        <MemberDialog open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
-                        < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
-                            <RemoveRedEye className={classes.leftIcon} />
-                            Visibility
-                        </Button>
-                        <VisibilityDialog projectInfo={projectInfo? projectInfo : null} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
-                        < Button color="primary" className={classes.button}>
-                            <Description className={classes.leftIcon} />
-                            Activities
-                        </Button>
-                        < Button color="primary" className={classes.button}>
-                            <FilterList className={classes.leftIcon} />
-                            Filter
-                        </Button>
-                        </Grid>
-                    </Grid>
-                    <DragDropContext onDragEnd={this.onDragEnd}>
-                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
-                    </DragDropContext>
+                    {header}
+                    {dndArea}
             </div>
         )
     }
@@ -271,7 +321,8 @@ class Project extends Component {
 
 const mapStateToProps = (state) => ({
     lists: state.project.lists,
-    projectInfo : state.project.projectInfo
+    projectInfo : state.project.projectInfo,
+    members : state.project.members || []
 })
 
 const mapDispatchToProps ={
