@@ -2,6 +2,7 @@ export const style = theme => ({
     root: {
         flexGrow: 1,
         marginLeft: '2%',
+        marginBottom: '3%',
         paddingLeft: '4%',
         textAlign: 'center'
     },
@@ -12,15 +13,16 @@ export const style = theme => ({
     default_card: {
         maxWidth: 400,
         marginRight: '1.5%',
+        marginBottom: '3%',
         borderRadius: '5px',
         background: '#b3e0ff' // default color will be replaced by image
 
     },
     add_project_card: {
         maxWidth: 400,
-        marginRight: '1.5%',
+        marginRight: '2.5%',
         borderRadius: '5px',
-        background: '#a6a6a6',
+        background: '#d9d9d9',
         opacity: 0.8
     },
     media: {
@@ -48,6 +50,14 @@ export const style = theme => ({
         fontSize: '22px',
         '&:hover': {
             fontSize: '24px'
+        }
+    },
+
+    addIcon: {
+        color: '#808080',
+        fontSize: '28px',
+        '&:hover': {
+            fontSize: '36px'
         }
     }
 });

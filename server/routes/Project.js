@@ -11,7 +11,7 @@ router.get('/find_all_searchbar', projectController.findAllSearchbar);
 
 
 router.get('/find_one', projectController.findOne);
-router.get('/find_one/:id', mw.Token.verifyToken, projectController.findProjectInfo);
+router.get('/find_one/:id', projectController.findProjectInfo);
 
 router.post('/create', projectController.create);
 

@@ -1,6 +1,7 @@
 const Member = require('../config/db_connection').Member;
 var Project = require('../config/db_connection').Project;
 const sequelize = require('../config/db_connection').sequelize;
+const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
 const bcrypt = require('bcrypt');
 
@@ -24,14 +25,19 @@ module.exports = {
      *  return: A new token specific for the member created.
      */
     create(req, res, next) {
-        Member
-            .create(req.body)
-            .then(member => {
-                member.memberPassword = null
-                req.body.result = member
-                next()
-            })
-            .catch(error => next(error));
+        if (!req.body.result) {
+            Member
+                .create(req.body)
+                .then(member => {
+                    member.memberPassword = null
+                    req.body.result = member
+                    next()
+                })
+                .catch(error => next(error));
+        } else {
+            res.status(400).send(['This email adress is already taken.', 'memberEmail'])
+        }
+
     },
 
 
@@ -150,7 +156,10 @@ module.exports = {
         Member
             .findOne({
                 where: {
-                    memberEmail: req.body.memberEmail
+                    memberEmail: req.body.memberEmail,
+                    memberStatus: {
+                        [Sequelize.Op.ne]: 0
+                    }
                 }
             })
             .then(member => {
@@ -161,7 +170,7 @@ module.exports = {
                     }
                     else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).sendd('Email or password is incorrect.')
+                else res.status(400).send('Email or password is incorrect.')
             })
             .catch(error => next(error));
     },
@@ -180,10 +189,15 @@ module.exports = {
      */
     signIn(req, res, next) {
         try {
-            req.decoded.iat = null
-            req.decoded.exp = null
-            req.body.result = {member: req.decoded}
-            next()
+            if (req.decoded.memberStatus !== 0) {
+                req.decoded.iat = null
+                req.decoded.exp = null
+                req.body.result = {member: req.decoded}
+                next()
+            } else {
+                res.status(400).send('This account is not confirmed.')
+            }
+
         } catch (err) {
             res.status(500).send(err)
         }
@@ -231,5 +245,55 @@ module.exports = {
                 else res.status(400).send('No email found.')
             })
             .catch(error => next(error));
-    }
+    },
+
+    /*  localhost:4200/api/member/invitation_token?memberToken=token
+     *
+     *  return: Decrypt the token of an invitation and put it in the query.
+     */
+    tokenToQuery(req, res, next) {
+        try {
+            req.decoded.memberToken = req.body.result
+            req.query = {memberEmail: req.decoded.memberEmail}
+            next()
+        } catch (err) {
+            res.status(500).send('Informations missing from the token')
+        }
+    },
+
+    /*  localhost:4200/api/member/invitation_token?memberToken=token
+     *
+     *  return: Check if the user exist for an invitation.
+     */
+    isInvitated(req, res, next) {
+        try {
+            if (req.body.result) {
+                // The user exist
+                req.body.result = {
+                    isExist: true,
+                    memberId: req.body.result.memberId,
+                    membePseudo: req.body.result.memberPseudo,
+                    memberEmail: req.body.result.memberEmail,
+                    memberStatus: req.body.result.memberStatus,
+                    //projectId: req.decoded.projectId,
+                    //projectTitle: req.decoded.projectTitle
+                    projectId: 1,
+                    projectTitle: 'Tu le sais gros'
+                }
+                next()
+            } else {
+                // The user don't exist
+                req.body.result = {
+                    isExist: false,
+                    memberToken: req.decoded.memberToken,
+                    memberEmail: req.decoded.memberEmail,
+                    projectId: req.decoded.projectId,
+                    projectTitle: req.decoded.projectTitle
+                }
+                next()
+            }
+        } catch (err) {
+            res.status(500).send('Failed to check if the user exist')
+        }
+    },
 }

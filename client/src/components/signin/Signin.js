@@ -14,6 +14,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import CloudIcon from '@material-ui/icons/Cloud'
 import Typography from "@material-ui/core/Typography/Typography";
 import _helper from "../../helpers";
+import HowToRegIcon from "@material-ui/icons/HowToReg"
 
 
 class Signin extends React.Component {
@@ -40,6 +41,10 @@ class Signin extends React.Component {
         _helper.History.push('/password-forgotten')
     }
 
+    goToSignUp () {
+        _helper.History.push('/signup')
+    }
+
     handleChange (event) {
         var { name, value } = event.target; 
         this.setState({ [name]: value });
@@ -50,17 +55,17 @@ class Signin extends React.Component {
         return (
             <Grid container alignItems='flex-start' className={classes.layout}>
 
-                <Grid xs={5} item className={classes.leftLayout}>
+                <Grid xs={1} sm={3} md={5} item className={classes.leftLayout}>
 
                 </Grid>
 
-                <Grid xs={7} item className={classes.rightLayout}>
+                <Grid xs={10} sm={9} md={7} item className={classes.rightLayout}>
                     <Grid container justify="center">
 
                         <Grid xs={12} item className={classes.xsMarginBottom}>
                             <form>
                                 <Grid spacing={16} alignItems='flex-start' container>
-                                    <Grid xs={4} item>
+                                    <Grid xs={6} sm={4} item>
                                         <TextField
                                             error={!!errorMsg}
                                             required
@@ -75,7 +80,7 @@ class Signin extends React.Component {
                                             onChange={this.handleChange.bind(this)}
                                         />
                                     </Grid>
-                                    <Grid xs={4} item>
+                                    <Grid xs={6} sm={4} item>
                                         <TextField
                                             required
                                             className={classes.textfield}
@@ -96,7 +101,7 @@ class Signin extends React.Component {
                                             Forgot password
                                         </Button>
                                     </Grid>
-                                    <Grid xs={4} item>
+                                    <Grid xs={12} sm={4} item>
                                         <Button
                                             variant="contained"
                                             fullWidth
@@ -111,32 +116,47 @@ class Signin extends React.Component {
                             </form>
                         </Grid>
 
-                        <Grid xs={12} item className={classes.paddingSide}>
+                        <Grid xs={12} item>
+                            <Grid container>
+                                <Grid xs={1} sm={2} lg={3} item>
+                                </Grid>
+                                <Grid xs={11} sm={8} lg={6} item>
+                                    <Grid justify='center' container className={classes.xsMarginBottom}>
+                                        <Grid item>
+                                            <img src={logo} width="70" alt="prello logo"/>
+                                        </Grid>
+                                    </Grid>
 
-                            <Grid justify='center' container className={classes.xsMarginBottom}>
-                                <Grid item>
-                                    <img src={logo} width="100" alt="prello logo"/>
+                                    <Typography variant="h4" gutterBottom className={classes.xsMarginBottom}>
+                                        Start managing your projects and share them
+                                    </Typography>
+
+                                    <Typography variant="h6" gutterBottom>
+                                        Join Prello today
+                                    </Typography>
+
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        fullWidth
+                                        className={classes.button}
+                                        onClick={this.goToSignUp}
+                                    >
+                                        Create your account
+                                        <HowToRegIcon className={classes.rightIcon} />
+                                    </Button>
+
+                                    <Button
+                                        variant="outlined"
+                                        color="inherit"
+                                        fullWidth
+                                        className={classes.button}
+                                    >
+                                        Sign In with Github
+                                        <CloudIcon className={classes.rightIcon} />
+                                    </Button>
                                 </Grid>
                             </Grid>
-
-                            <Typography variant="h4" gutterBottom className={classes.xsMarginBottom}>
-                                Start managing your projects and share them
-                            </Typography>
-
-                            <Typography variant="h6" gutterBottom>
-                                Join Prello today
-                            </Typography>
-
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                fullWidth
-                                className={classes.button}
-                            >
-                                Sign In with Github
-                                <CloudIcon className={classes.rightIcon} />
-                            </Button>
-
                         </Grid>
 
 

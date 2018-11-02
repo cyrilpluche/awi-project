@@ -92,11 +92,20 @@ export const styles = theme => ({
         border: 'none'
     },
     textArea:{
-        width: '90%'
+        width: '100%'
     },
     buttonModal:{
         marginLeft: 12,
         marginBottom: 10,
         width: '23%'
+    },
+    comments:{
+        display: 'flex',
+        width:'100%'
+    },
+    iconComments:{
+        marginLeft:  15,
+        marginRight: 0,
+        display: 'block'
     }
 });

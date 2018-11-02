@@ -27,7 +27,6 @@ class Password extends React.Component {
             openSnackbar: false,
             updatePasswordMsg: this.props.updatePasswordMsg
         }
-        console.log(this.state)
     }
 
     // Submit the member form to update db and store

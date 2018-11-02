@@ -9,7 +9,9 @@ export const style = theme => ({
     rightIcon: {
         marginLeft: theme.spacing.unit,
     },
-    paddingText: {
-        padding: 10
-    }
+    button: {
+        margin: theme.spacing.unit,
+    },
 });
+
+

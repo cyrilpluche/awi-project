@@ -63,7 +63,7 @@ class Overview extends React.Component {
         this.setState({ openSnackbar: false });
     };
 
-    // Loop that reate textfields
+    // Loop that create textfields
     generateTextfields = () => {
         const { classes } = this.props;
 

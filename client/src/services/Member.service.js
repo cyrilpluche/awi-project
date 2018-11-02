@@ -1,23 +1,24 @@
-import axios from 'axios';
+// import axios from 'axios';
 import helper from "../helpers";
+import Api from './Api'
 
-const url = 'http://localhost:4200/api/member/'
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
+const url = 'member/'
+// axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
 
 const Member = {
 
     signIn (body) {
-        return axios.post(url + 'sign_in', body).then(res => res.data)
+        return Api.post(url + 'sign_in', body).then(res => res.data)
     },
 
     signUp (body) {
-        return axios.post(url + 'sign_up', body).then(res => res.data)
+
+        return Api.post(url + 'sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)
     },
 
     /* Set the status of a member to 1 if the token is valid */
     validateAccount (memberToken) {
-        axios.defaults.headers.common['Authorization'] = memberToken
-        return axios.put(url + 'validate_account').then(res => res.data)
+        return Api.put(url + 'validate_account',null , memberToken).then(res => res.data)
     },
 
     /* Retrieve member's token and check if he is connected are not */
@@ -26,7 +27,7 @@ const Member = {
 
         if (memberToken) {
             // eslint-disable-next-line
-            return axios.get(url + 'is_logged' + '?memberToken=' + memberToken)
+            return Api.get(url + 'is_logged' + '?memberToken=' + memberToken)
                 .then(res => {
                     return {
                         member: res.data.member,
@@ -43,21 +44,21 @@ const Member = {
     },
 
     get (object) {
-        var where = helper.Request.urlFromObject(object)
-        return axios.get(url + 'find_one' + where).then(res => res.data)
+        let where = helper.Request.urlFromObject(object)
+        return Api.get(url + 'find_one' + where).then(res => res.data)
     },
 
     update (body) {
-        var where = helper.Request.urlFromObject({memberId: body.memberId})
-        return axios.put(url + 'update' + where, body).then(res => res.data)
+        let where = helper.Request.urlFromObject({memberId: body.memberId})
+        return Api.put(url + 'update' + where, body).then(res => res.data)
     },
 
     updatePassword (attributes) {
-        var where = helper.Request.urlFromObject({memberId: attributes.memberId, memberPassword: attributes.memberPassword})
+        let where = helper.Request.urlFromObject({memberId: attributes.memberId, memberPassword: attributes.memberPassword})
         let body = {
             memberPassword: attributes.newMemberPassword
         }
-        return axios.put(url + 'update_password' + where, body).then(res => res.data)
+        return Api.put(url + 'update_password' + where, body).then(res => res.data)
     },
 
     /* Send a random new password when a member forgot his password */
@@ -65,10 +66,15 @@ const Member = {
         let body = {
             memberEmail: memberEmail
         }
-        return axios.post(url + 'password_forgotten', body).then(res => res.data)
+        return Api.post(url + 'password_forgotten', body).then(res => res.data)
     },
     getAllMembers(projectId){
-        return axios.get(url + 'find_all_members/'+projectId,).then(res => res.data)
+        return Api.get(url + 'find_all_members/'+projectId,).then(res => res.data)
+    },
+
+    /* Check if the token contains a member that exist */
+    decrpytInvitation (memberToken) {
+        return Api.get(url + 'invitation_token', memberToken).then(res => res.data)
     }
 }
 
