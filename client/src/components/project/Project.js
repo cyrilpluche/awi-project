@@ -35,7 +35,8 @@ class Project extends Component {
             openVisibilityDialog:false,
             members:[],
             openActivity:false,
-            openFilter:false
+            openFilter:false,
+            projectInfo:''
         }
     }
 
@@ -44,21 +45,28 @@ class Project extends Component {
         this.props.getAllLists(this.props.match.params.id)
         this.props.getAllMembers(this.props.match.params.id)
         this.props.findAllCards()
-        this.setState({lists : this.props.lists})
     }
+    
 
-
+    
+    
     componentWillReceiveProps(){
-        this.setState({ updateLists : false, 
-                        lists : this.props.lists,
-                        members : this.props.members
-                    })
+            this.setState({ updateLists : false, 
+                lists : this.props.lists,
+                members : this.props.members
+            })
     }
 
-    componentDidUpdate(){
-        if(!this.state.updateLists){
-          this.orderList(this.props.lists)      
-        } 
+    componentDidUpdate(prevProps){
+
+        if(this.props.lists !== prevProps.lists ){
+            this.setState( {lists : this.props.lists})
+           // this.orderList(this.props.lists)      
+        }
+        
+        if(this.props.projectInfo !== prevProps.projectInfo ){
+            this.setState( {projectInfo : this.props.projectInfo})
+        }
     }
 
 
@@ -68,7 +76,7 @@ class Project extends Component {
         });
       };
 
-   orderList(lists){
+   /*orderList(lists){
         
         if(lists.length !== 0){
             const headList = findWhere(lists,{listFather: null})
@@ -84,10 +92,10 @@ class Project extends Component {
             this.setState({lists:[],updateLists : true})
         }
   
-    }
+    }*/
 
 
-     recursiveOrdering(oldList,current, newList){
+    /* recursiveOrdering(oldList,current, newList){
         
      
         if(oldList.length === 0) {
@@ -123,18 +131,19 @@ class Project extends Component {
                 this.setState({lists:this.props.lists,updateLists : true})
             }        
         }
-    }
+     }*/
 
     createNewList(listName,idProject){
         const {lists} = this.state
- 
-        if(lists.length === 0 ){
-            this.props.createList(listName,idProject,null)
-        }else{           
-            let lastElement = lists[lists.length -1]
-            this.props.createList(listName,idProject,lastElement.listId)
-        } 
-
+        const exist = findWhere(lists,{listTitle:listName})
+        if(!exist){
+            if(lists.length === 0 ){
+                this.props.createList(listName,idProject,null)
+            }else{           
+                let lastElement = lists[lists.length -1]
+                this.props.createList(listName,idProject,lastElement.listId)
+            } 
+        }
     }
 
     onDragEnd = (result) => {
@@ -144,45 +153,48 @@ class Project extends Component {
         const {lists} = this.state
         
         
-        // dropped outside the list
+        // dropped outside the droppagble area
         if (!destination) {
             return;
         }
 
+
+        //When a list has been dragged and dropped
         if(result.type === 'LIST'){
             
-           
-           let findList = findWhere(lists,{listId: draggableId})
-           let indexOfList = lists.indexOf(findList)
 
-           
+           let findList = findWhere(lists,{listId: draggableId})
+           let indexOfList = lists.indexOf(findList)           
            let newLists = lists
 
             //remove list from list of list
             newLists.splice(indexOfList,1,)
 
+            //Insert list in new index
             newLists.splice(destination.index,0,findList)
-            
-            this.setState({data:newLists})
+           
+            //set state with the new list
+            this.setState({lists:newLists},function(){
 
-            let updateList = findWhere(lists,{projectId: 1})
-            
-            let fatherOfUpdatedList = updateList.listFather === undefined ? null : updateList.listFather
 
-            let childThatHadMeAsFather = findWhere(lists,{listFather: updateList.listId})
-            
+                let updateList = findWhere(lists,{listId: draggableId})
 
-            let indexOfUpdateList = lists.indexOf(updateList)
-            
-            let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
-            let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
-            
-            // action
-            if(childThatHadMeAsFather) this.props.moveList(childThatHadMeAsFather.listId,fatherOfUpdatedList)
-            if(updateList)  this.props.moveList(updateList.listId,listFather)
-            if(listChild) this.props.moveList(listChild,updateList.listId)
-            
-            
+                let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
+
+                let childUpdatedList = findWhere(lists,{listFather: findList.listId})
+                
+
+                let indexOfUpdateList = lists.indexOf(findList)
+                
+                //New father and child of dragged list
+                let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
+                let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
+                
+                // Change fathers of list in DB
+                if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
+                if(findList)  this.props.moveList(updateList.listId,listFather)
+                if(listChild) this.props.moveList(listChild,updateList.listId)
+            })
         }
 
         if (result.type === 'CARD') {
@@ -269,7 +281,7 @@ class Project extends Component {
                     <RemoveRedEye className={classes.leftIcon} />
                     Visibility
                 </Button>
-                <VisibilityDialog projectInfo={projectInfo? projectInfo : null} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                <VisibilityDialog open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
                 
                 {/*===================  ACTIVITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>

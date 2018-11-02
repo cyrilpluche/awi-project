@@ -26,6 +26,13 @@ class VisibilityDialog extends Component {
     }
   }
 
+  componentDidUpdate(prevProps){
+    
+    if(this.props.projectInfo !== prevProps.projectInfo ){
+        this.setState( {visibility : this.props.projectInfo.visibility})
+    }
+}
+
     componentWillReceiveProps(){
       if (this.props.projectInfo) this.setState({visibility: this.props.projectInfo.projectVisibility})
     }
@@ -71,7 +78,12 @@ class VisibilityDialog extends Component {
       );
     }
   }
+
+  const mapStateToProps = (state) => ({ 
+    projectInfo : state.project.projectInfo || ''
+})
+
   const mapDispatchToProps ={
     updateProjectVisibility: _action.projectAction.updateProjectVisibility,
   }
-export default connect(null,mapDispatchToProps)(withStyles(styles)(VisibilityDialog))
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(VisibilityDialog))
