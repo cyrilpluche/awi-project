@@ -12,8 +12,7 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {Edit, Done} from '@material-ui/icons';
-import AddIcon from '@material-ui/icons/Add';
+import {Done} from '@material-ui/icons';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -48,7 +47,6 @@ class Listboard extends Component{
         this.handleConfirmDeleteList = this.handleConfirmDeleteList.bind(this)
 
     }
-
 
     createNewCard(){
         let cardName = this.state.newCardTitle
@@ -93,7 +91,7 @@ class Listboard extends Component{
         this.setState({editListTitle:false})
         const {newListTitle} = this.state
         // update List title
-        if(newListTitle) this.props.updateTitle(newListTitle, this.props.list.listId)
+        if(newListTitle) this.props.updateTitle(newListTitle, this.props.list.listId, this.props.list.projectId)
     }
 
     handleChange = name => event => {
@@ -116,7 +114,6 @@ class Listboard extends Component{
         const confirmDeleteDialog = (
             <Dialog
                 open={isOpenDeleteDialog}
-                //TransitionComponent={Transition}
                 keepMounted
                 onClose={this.handleCloseDeleteListDialog}
                 aria-labelledby="alert-dialog-slide-title"

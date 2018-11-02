@@ -71,16 +71,40 @@ function updateCard(cardId, listId){
     }
 }
 
-function updateListTitle(newListTitle, listId){
+// function updateListTitle(newListTitle, listId){
+//     const body = {
+//         listTitle : newListTitle
+//     }
+//     return dispatch => {
+//         _service.List.update(listId,body)
+//             .then(res => {
+//                 _service.List.get({listId: listId})
+//                     .then(res => {
+//                         console.log("res: ",res)
+//                         dispatch({
+//                             type: labels.UPDATE_LIST,
+//                             payload: res.listTitle
+//                         });
+//                     })
+//                     .catch((err) => {
+//                         dispatch(err)
+//                     });
+//             })
+//             .catch((err) => {
+//                 dispatch(err)
+//             });
+//     }
+// }
+
+function updateListTitle(newListTitle, listId, projectId){
     const body = {
         listTitle : newListTitle
     }
     return dispatch => {
         _service.List.update(listId,body)
             .then(res => {
-                _service.List.get({listId: listId})
+                _service.List.getAll(projectId)
                     .then(res => {
-                        console.log("res: ",res)
                         dispatch({
                             type: labels.UPDATE_LIST,
                             payload: res
@@ -95,6 +119,7 @@ function updateListTitle(newListTitle, listId){
             });
     }
 }
+
 function deleteList(listId, projectId) {
 
 
