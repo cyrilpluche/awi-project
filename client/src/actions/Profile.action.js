@@ -13,8 +13,6 @@ function updateMember(attributes) {
             .then(res => {
                 if (res) {
                     localStorage.setItem('memberToken', res.memberToken)
-                    console.log(res)
-
                     dispatch({
                         type: labels.UPDATE_MEMBER,
                         payload: {

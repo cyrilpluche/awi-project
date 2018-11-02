@@ -3,6 +3,7 @@ import Dashboard from './dashboard/Dashboard'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
+import Invitation from "./invitation/Invitation";
 import Cards from "./card/Cards";
 import Profile from './profile/Profile'
 import Navbar from "./layout/navbar/Navbar"
@@ -55,6 +56,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path="/login" component={Signin} />
                     <Route exact path="/signup" component={Signup} />
+                    <Route path="/invitation/:token" component={Invitation} />
                     <Route exact path="/password-forgotten" component={PasswordForgotten} />
                     <Route exact path="/account-confirmation" component={AccountConfirmation} />
                     <Route path="/account-confirmation/:token" component={TokenVerification} />

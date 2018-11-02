@@ -7,6 +7,7 @@ var memberController = require('../controllers').Member;
 router.get('/find_all', mw.Token.verifyToken, memberController.findAll);
 router.get('/find_one/:id', mw.Token.verifyToken, memberController.findOne);
 router.get('/is_logged', mw.Token.verifyToken, memberController.signIn);
+router.get('/invitation_token', mw.Token.verifyToken, memberController.tokenToQuery, memberController.findOne, memberController.isInvitated)
 
 router.post('/create', mw.Token.verifyToken, memberController.create);
 router.post('/sign_up', memberController.findOne, memberController.create, mw.Token.generateToken, mw.Email.sendEmail);

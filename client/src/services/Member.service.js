@@ -67,6 +67,11 @@ const Member = {
             memberEmail: memberEmail
         }
         return Api.post(url + 'password_forgotten', body).then(res => res.data)
+    },
+
+    /* Check if the token contains a member that exist */
+    decrpytInvitation (memberToken) {
+        return Api.get(url + 'invitation_token', memberToken).then(res => res.data)
     }
 }
 

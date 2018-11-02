@@ -29,7 +29,6 @@ class Signup extends React.Component {
         };
     }
 
-
     submit () {
         this.props.onAdd(this.state)
     }
