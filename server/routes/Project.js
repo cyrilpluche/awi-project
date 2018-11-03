@@ -10,6 +10,8 @@ router.get('/find_all', projectController.findAll);
 router.get('/find_all_searchbar', projectController.findAllSearchbar);
 
 
+router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.findAllMember);
+
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);
 
