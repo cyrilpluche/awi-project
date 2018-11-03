@@ -11,6 +11,9 @@ const Project = {
         return Api.get(url + 'find_all').then(res => res.data)
     },
 
+    getAllProjectsMember (member_id) { // get all member that member is involved in
+        return Api.get(`${url}find_all_member/${member_id}`).then(res => res.data).catch(e => e.error)
+    },
     get (object) {
         let where = helper.Request.urlFromObject(object)
         return Api.get(url + 'find_one' + where).then(res => res.data)

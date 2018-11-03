@@ -11,7 +11,7 @@ export const style = theme => ({
     layout: {
         height: '100%',
         margin: 0,
-        backgroundColor: '#f0f0f5',
+        //backgroundColor: '#f0f0f5',
         borderRadius: '5px'
     },
     rightLayout: {

@@ -182,6 +182,7 @@ CREATE TABLE public.MemberHasProject(
 	project_id                INT  NOT NULL ,
 	member_id                 INT  NOT NULL ,
 	memberHasProject_status   INT  NOT NULL  ,
+	project_is_favorite       BOOL,
 	CONSTRAINT MemberHasProject_PK PRIMARY KEY (project_id,member_id)
 
 	,CONSTRAINT MemberHasProject_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)

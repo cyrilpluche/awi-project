@@ -1,6 +1,9 @@
-var Project = require('../config/db_connection').Project;
-var sequelize = require('../config/db_connection').sequelize;
-var Sequelize = require('../config/db_connection').Sequelize;
+import Member from "../../client/src/services/Member.service";
+
+const Project = require('../config/db_connection').Project;
+const Member = require('../config/db_connection').Member
+const sequelize = require('../config/db_connection').sequelize;
+const Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
@@ -134,6 +137,25 @@ module.exports = {
                 next()
             })
             .catch(error => res.status(400).send(error));
+    },
+
+
+    /**
+     * find all project that the member participate
+     * @param req
+     * @param res
+     * @param next
+     */
+    findAllMember (req, res, next) {
+        Project.findAll({
+            include: [
+                {
+                    model: Member,
+                    where: {member_id: req.params.member}
+                }
+            ]
+        }).then(res.send)
+            .catch(e => res.status(400).send(e))
     }
 
 }

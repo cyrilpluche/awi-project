@@ -13,6 +13,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import PeopleIcon from '@material-ui/icons/People'
+import ClearIon from '@material-ui/icons/Clear'
+import IconButton from "@material-ui/core/IconButton";
 import GroupWork from '@material-ui/icons/SupervisedUserCircle'
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -36,6 +38,7 @@ class TeamPanel extends React.Component {
             buttonCreateTeamDisabled: true
         };
     }
+
 
     handleDrawerClick = () => {
         this.setState(state => ({ drawerOpen: !state.drawerOpen }));
@@ -70,12 +73,17 @@ class TeamPanel extends React.Component {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
-                    <Grid container style={{textAlign: 'center'}}>
-                        <Grid item xs={3}>
+                    <Grid container style={{textAlign: 'center'}}  alignItems='center'>
+                        <Grid item xs={2} sm={3}>
                             <PeopleIcon style={{fontSize: '32px', color :'#d6d6c2'}}/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} sm={7}>
                             <span style={{marginLeft: '5%'}}>Create a new team</span>
+                        </Grid>
+                        <Grid item xs={2} sm={2}>
+                            <IconButton onClick={this.handleCloseDialog}>
+                                <ClearIon/>
+                            </IconButton>
                         </Grid>
                     </Grid>
                 </DialogTitle>
@@ -116,9 +124,7 @@ class TeamPanel extends React.Component {
                                 fullWidth rows={4} multiline
                             />
                         </Grid>
-                        <Grid item xs={3}>
-
-                        </Grid>
+                        <Grid item xs={3}/>
                         <Grid item xs={6}>
                             <Divider />
                         </Grid>
@@ -192,6 +198,7 @@ TeamPanel.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
+//    teams: state.team.teams
 })
 
 const mapDispatchToProps = {

@@ -3,69 +3,243 @@ import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
+import _action from '../../../../actions'
+
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from "@material-ui/core/IconButton";
 import AddFavoriteIcon from '@material-ui/icons/StarBorderOutlined'
+import ClearIon from '@material-ui/icons/Clear'
 import FavoriteIcon from '@material-ui/icons/Star'
 import AddProjectIcon from '@material-ui/icons/Add'
+import LockerIcon from '@material-ui/icons/Lock'
+import OpenLockerIcon from '@material-ui/icons/NoEncryption'
+import ProjectIcon from '@material-ui/icons/SchoolRounded'
 import Icon from '@material-ui/core/Icon';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputBase from '@material-ui/core/InputBase';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import {dashboardAction} from "../../../../actions/Dashboard.action";
+
 
 class ProjectList extends React.Component {
+
+    constructor (props) {
+        super(props)
+
+        this.state = {
+            dialogDisplayed: false,
+            buttonCreateProjectDisabled: true,
+            newProjectisPublic: true // project visibility
+        }
+    }
+
+    handleClickOpenDialog = () => {
+        this.setState({ dialogDisplayed: true });
+    };
+
+    handleCloseDialog = () => {
+        this.setState({
+            dialogDisplayed: false,
+            buttonCreateProjectDisabled: true,
+            newProjectisPublic: true});
+        // close the dialog and disable the button
+    };
+
+    handleChangeProjectTitle = (event) => { // when the title of the project change
+        let e = event.target.value
+        //document.querySelector('#projectTitle').value
+        if (e === undefined ||e === '')
+            this.setState({buttonCreateProjectDisabled: true });
+        else {
+            this.setState({buttonCreateProjectDisabled: false });
+        }
+    };
+
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
+
+    projectVisiblity = () =>  {
+        if (this.state.newProjectisPublic) return 'Public'
+        else return 'Private'
+    }
+
+    locker = () => {
+        if (this.state.newProjectisPublic) return (<LockerIcon style={{fontSize: '32px', color: '#d9d9d9'}}/>)
+        else return (<LockerIcon style={{fontSize: '32px', color: '#ff8566'}}/>)
+    }
+
+
     render() {
         const { classes } = this.props;
 
-        let projectsList = this.props.projects.map(
-            (project, key) => {
-                let icon = (
-                    <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}>
-                        <AddFavoriteIcon className={classes.Icon}/>
-                    </IconButton>
-                )
-                if (project.favorite) { // the project is already favorite
-                    icon =  (
-                        <IconButton aria-label="remove to favorites" className={classes.favoriteButtonIcon}>
-                            <FavoriteIcon className={classes.Icon}/>
+        let dialog = (
+            <Dialog
+                open={this.state.dialogDisplayed}
+                onClose={this.handleCloseDialog}
+                aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">
+                    <Grid container style={{textAlign: 'center'}} alignItems='center'>
+                        <Grid item xs={2} sm={2}>
+                            <ProjectIcon style={{fontSize: '32px', color :'#d6d6c2'}}/>
+                        </Grid>
+                        <Grid item xs={9} sm={8}>
+                            <span style={{marginLeft: '5%'}}>Create a new project</span>
+                        </Grid>
+                        <Grid item xs={1} sm={1}>
+                            <IconButton onClick={this.handleCloseDialog}>
+                                <ClearIon/>
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                </DialogTitle>
+                <DialogContent>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <InputLabel shrink htmlFor="teamName-input" required>
+                                <span style={{fontSize: '15px'}}>Title</span>
+                            </InputLabel>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputBase
+                                id="projectTitle"
+                                style={{marginBottom: '2%', marginTop: '1%'}}
+                                classes={{
+                                    root: classes.bootstrapRoot,
+                                    input: classes.bootstrapInput,
+                                }}
+                                placeholder="title"
+                                fullWidth required autoFocus
+                                onChange={this.handleChangeProjectTitle}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputLabel shrink htmlFor="teamDescription-input">
+                                <span style={{fontSize: '15px'}}>Visibility</span>
+                            </InputLabel>
+                        </Grid>
+                        <Grid item xs={12} container style={{textAlign: 'center'}} alignItems='center'>
+                            <Grid item xs={2}>
+                                {this.locker()}
+                            </Grid>
+                            <Grid item xs={8}>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={this.state.newProjectisPublic}
+                                            onChange={this.handleChange('newProjectisPublic')}
+                                            value="newProjectVisibility"
+                                            color="primary"
+                                        />
+                                    }
+                                    label={this.projectVisiblity()}
+                                />
+
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputLabel shrink htmlFor="teamName-input">
+                                <span style={{fontSize: '15px'}}>Target Date</span>
+                            </InputLabel>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputBase
+                                id="projectTargetDate"
+                                style={{marginBottom: '2%', marginTop: '1%'}}
+                                classes={{
+                                    root: classes.bootstrapRoot,
+                                    input: classes.bootstrapInput,
+                                }}
+                                placeholder="title"
+                                defaultValue={new Date() /* TODO format tade*/}
+                                type="date"
+                                fullWidth
+
+                            />
+                        </Grid>
+                        <Grid item xs={3}/>
+                        <Grid item xs={6}>
+                            <Divider />
+                        </Grid>
+                    </Grid>
+                    <DialogActions>
+                        <Button color="primary" fullWidth variant="outlined"
+                                disabled={this.state.buttonCreateProjectDisabled}>
+                            Create
+                        </Button>
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
+        )
+
+        let projectsList = ''
+
+        if (this.props.projects !== undefined) {
+            projectsList = this.props.projects.map(
+                (project, key) => {
+                    let icon = (
+                        <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}>
+                            <AddFavoriteIcon className={classes.Icon}/>
                         </IconButton>
                     )
-                }
+                    if (project.favorite) { // the project is already favorite
+                        icon =  (
+                            <IconButton aria-label="remove to favorites" className={classes.favoriteButtonIcon}>
+                                <FavoriteIcon className={classes.Icon}/>
+                            </IconButton>
+                        )
+                    }
 
 
-                let card = (
-                    <Card className={classes.default_card}>
-                        <CardActionArea>
-                            <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
-                                {project.name}
-                            </h2>
-                            {icon}
-                        </CardActionArea>
-                    </Card>
-                );
-                if (this.props.backgroundimage !== undefined && this.props.backgroundimage !=='') {
-                    // if the projects has a background image
-                    card = (
+                    let card = (
                         <Card className={classes.default_card}>
                             <CardActionArea>
-                                <CardMedia  height="120" src={this.props.backgroundimage}>
-                                    <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
-                                        {project.name}
-                                    </h2>
-                                    {icon}
-                                </CardMedia>
+                                <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
+                                    {project.name}
+                                </h2>
+                                {icon}
                             </CardActionArea>
                         </Card>
                     );
+                    if (this.props.backgroundimage !== undefined && this.props.backgroundimage !=='') {
+                        // if the projects has a background image
+                        card = (
+                            <Card className={classes.default_card}>
+                                <CardActionArea>
+                                    <CardMedia  height="120" src={this.props.backgroundimage}>
+                                        <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
+                                            {project.name}
+                                        </h2>
+                                        {icon}
+                                    </CardMedia>
+                                </CardActionArea>
+                            </Card>
+                        );
+
+                    }
+
+                    return <Grid item sm={3} xs={12} key={key} >
+                        {card}
+                    </Grid>
 
                 }
+            )
+        }
 
-                return <Grid item sm={3} xs={12} key={key} >
-                    {card}
-                </Grid>
-
-            }
-        )
 
         let createProjectComponent = ''
 
@@ -73,11 +247,9 @@ class ProjectList extends React.Component {
             createProjectComponent = (
                 <Grid item sm={3} xs={12}>
                     <Card className={classes.add_project_card}>
-                        <CardActionArea  height="140">
+                        <CardActionArea  height="140" onClick={this.handleClickOpenDialog}>
                             <h3 style={{color: '#999999'}}>Add new project</h3>
-                            <IconButton>
-                                <AddProjectIcon className={classes.addIcon}/>
-                            </IconButton>
+                            <AddProjectIcon className={classes.addIcon}/>
                         </CardActionArea>
                     </Card>
                 </Grid>
@@ -87,13 +259,16 @@ class ProjectList extends React.Component {
         let iconList = 'star_border' // icon displayed before the list name
         if (this.props.iconList !== undefined && this.props.iconList !== '') iconList = this.props.iconList
 
+
+
         return (
             <Grid container alignItems='flex-start' className={classes.root}>
+                {dialog}
                 <Grid item container xs={12} alignItems='center'>
-                    <Grid item xs={1}>
+                    <Grid item xs={2}>
                         <Icon style={{fontSize: '22px'}}>{iconList}</Icon>
                     </Grid>
-                    <Grid item xs={11}>
+                    <Grid item xs={10}>
                         <h3 className={classes.title}>{this.props.title}</h3>
                     </Grid>
                 </Grid>
@@ -111,6 +286,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+    createProject: _action.dashboardAction.createProject, // create un new project
+    searchMember: _action.memberAction.searchMember
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(ProjectList));
