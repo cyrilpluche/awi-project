@@ -19,7 +19,31 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 
+    /**
+ * Moves an item from one list to another list.
+ */
+const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
 
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+
+    return result;
+};
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+};
 
 
 class Project extends Component {
@@ -41,35 +65,48 @@ class Project extends Component {
     }
 
     componentWillMount() {
+        // Get project information
         this.props.getProjectInfo(this.props.match.params.id)
-        this.props.getAllLists(this.props.match.params.id)
+
+        // Get all lists of this project with associated cards
+        this.props.getAllListsWithCards(this.props.match.params.id)
+
+        // Get all project members 
         this.props.getAllMembers(this.props.match.params.id)
+
+        // Verify if it's a project administrator
+        this.props.getMemberStatus(this.props.match.params.id,/*memberLoggedId*/)
+
+        //Not needed 
         this.props.findAllCards()
     }
     
 
     
-    
+    //Will set the state with props
     componentWillReceiveProps(){
             this.setState({ updateLists : false, 
                 lists : this.props.lists,
-                members : this.props.members
+                members : this.props.members,
             })
     }
 
+    // When a change occurs on our props, we verify to change the state (re rendering) if necessary
     componentDidUpdate(prevProps){
 
+        // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
             this.setState( {lists : this.props.lists})
            // this.orderList(this.props.lists)      
         }
         
+        //If a change occurs on projectInfo
         if(this.props.projectInfo !== prevProps.projectInfo ){
             this.setState( {projectInfo : this.props.projectInfo})
         }
     }
 
-
+    // Open/Close the left side drawer (for filter and activity)
     toggleDrawer = (side, open) => () => {
         this.setState({
           [side]: open,
@@ -133,12 +170,24 @@ class Project extends Component {
         }
      }*/
 
+
+    /**
+     * Create a new List by calling the action "createList"
+     * @param listName title of the new list
+     * @param idProject project id associated to the new list
+     */
     createNewList(listName,idProject){
         const {lists} = this.state
         const exist = findWhere(lists,{listTitle:listName})
+
+        // We can't create 2 list with the same name
         if(!exist){
+
+            // if its the first list created for this project, the list has no father
             if(lists.length === 0 ){
                 this.props.createList(listName,idProject,null)
+
+            // we call creatList action specifying the title, project id and father list id.
             }else{           
                 let lastElement = lists[lists.length -1]
                 this.props.createList(listName,idProject,lastElement.listId)
@@ -146,10 +195,18 @@ class Project extends Component {
         }
     }
 
+
+
+
+    /**
+     * Will occurs when something has been dragged 
+     */
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        const { destination,draggableId } = result;
+        const { source, destination,draggableId } = result;
+
+        //retrieve lists
         const {lists} = this.state
         
         
@@ -162,7 +219,7 @@ class Project extends Component {
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
             
-
+           console.log(draggableId) 
            let findList = findWhere(lists,{listId: draggableId})
            let indexOfList = lists.indexOf(findList)           
            let newLists = lists
@@ -197,11 +254,54 @@ class Project extends Component {
             })
         }
 
+        // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-            console.log(result)
-            let cardId = draggableId
-            let findListId = findWhere(lists, {listTitle:destination.droppableId})
-            this.props.updateCard(cardId,findListId.listId)
+           console.log(source)
+           console.log(destination)
+           let updatedList = lists
+           
+            if(source.droppableId === destination.droppableId){
+                const newLists = reorder(
+                    findWhere(lists, {listTitle : source.droppableId}).cards,
+                    source.index,
+                    destination.index
+                );
+                console.log(newLists)
+                let sourceList = findWhere(updatedList, {listTitle:source.droppableId})
+                let sourceListIndex = updatedList.indexOf(sourceList)
+                console.log(sourceListIndex)
+                console.log(updatedList)
+                updatedList[sourceListIndex].cards = newLists
+                console.log(updatedList)
+                this.setState({lists: updatedList})
+
+            }/*else{
+                const newLists = move(
+                    findWhere(lists, {listTitle : source.droppableId}).cards,
+                    findWhere(lists, {listTitle : destination.droppableId}).cards,
+                    source,
+                    destination
+                );
+
+                let sourceList = findWhere(updatedList, {listTitle:source.droppableId})
+                let sourceListIndex = updatedList.indexOf(sourceList)
+
+                let destinationList = findWhere(updatedList, {listTitle:destination.droppableId})
+                let destinationListIndex = updatedList.indexOf(destinationList)
+                
+                console.log(newLists)
+                console.log(newLists[source.droppableId])
+                updatedList[destinationListIndex].cards = newLists[destination.droppableId]
+                this.setState({lists : updatedList})
+                updatedList[sourceListIndex].cards = newLists[source.droppableId]
+                
+
+                console.log(updatedList)
+                
+                
+            }*/
+
+           // this.props.updateCard(cardId,findListId.listId)*/
         }
 
 
@@ -244,14 +344,14 @@ class Project extends Component {
     
     render() {  
         const {classes, match, projectInfo } = this.props
-    
+        
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
 
                 {/*===================  TITLE EDIT  ========================================= */}
                 <Typography variant="h5" gutterBottom className={classes.projectTitle}>
                     {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
-                        <Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />
+                        {this.props.isAdmin === true ?<Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />:''}
                     </div>:
                     <div>
                         <TextField
@@ -274,14 +374,14 @@ class Project extends Component {
                     <SupervisorAccount className={classes.leftIcon} />
                     {this.props.members? this.props.members.length : 0} Members
                 </Button>
-                <MemberDialog  members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                <MemberDialog  isAdmin={this.props.isAdmin} members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
                 
                 {/*===================  VISIBILITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                     <RemoveRedEye className={classes.leftIcon} />
                     Visibility
                 </Button>
-                <VisibilityDialog open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
                 
                 {/*===================  ACTIVITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
@@ -346,11 +446,12 @@ class Project extends Component {
 const mapStateToProps = (state) => ({
     lists: state.project.lists,
     projectInfo : state.project.projectInfo,
-    members : state.project.members || []
+    members : state.project.members || [],
+    isAdmin: state.project.isAdmin || false,
 })
 
 const mapDispatchToProps ={
-    getAllLists: _action.projectAction.findAllLists,
+    getAllListsWithCards: _action.projectAction.findAllLists,
     findAllCards: _action.listAction.findAllCards,
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
@@ -358,6 +459,7 @@ const mapDispatchToProps ={
     getProjectInfo: _action.projectAction.getProjectInfo,
     updateTitle: _action.projectAction.updateProjectTitle,
     getAllMembers : _action.projectAction.findAllMembers,
+    getMemberStatus:  _action.projectAction.getMemberStatus,
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

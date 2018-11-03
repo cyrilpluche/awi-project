@@ -61,15 +61,15 @@ class VisibilityDialog extends Component {
     }
 
     render() {
-      const { projectInfo, classes, onClose, selectedValue, ...other } = this.props;
+      const { isAdmin, updateProjectVisibility,projectInfo, classes, onClose, selectedValue, ...other } = this.props;
 
       return (
         <Dialog onClose={this.close.bind(this)} aria-labelledby="simple-dialog-title" {...other}>
             <DialogTitle id="simple-dialog-title" className={classes.dialogTitle}>Project visibility</DialogTitle>
             <DialogContent>
                 <List>
-                    <ListItem><Button disabled={this.state.visibility === 0 ?true : false} onClick={this.updateVisibility.bind(this)} value={0}><ListItemText primary="Public" secondary="This project is visible by everyone. Read Only"></ListItemText>{this.state.visibility === 0? <Done/>:''}</Button></ListItem>
-                    <ListItem><Button disabled={this.state.visibility === 1 ?true : false} onClick={this.updateVisibility.bind(this)} value={1}><ListItemText primary="Private" secondary="This project is only visible by project members"></ListItemText>{this.state.visibility === 1? <Done/>:''}</Button></ListItem>
+                    <ListItem><Button disabled={this.state.visibility === 0 || !this.props.isAdmin ?true : false} onClick={this.updateVisibility.bind(this)} value={0}><ListItemText primary="Public" secondary="This project is visible by everyone. Read Only"></ListItemText>{this.state.visibility === 0? <Done/>:''}</Button></ListItem>
+                    <ListItem><Button disabled={this.state.visibility === 1 || !this.props.isAdmin ?true : false} onClick={this.updateVisibility.bind(this)} value={1}><ListItemText primary="Private" secondary="This project is only visible by project members"></ListItemText>{this.state.visibility === 1? <Done/>:''}</Button></ListItem>
                 </List>
             </DialogContent>
             <DialogActions>

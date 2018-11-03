@@ -69,7 +69,7 @@ class List extends Component{
                                     ref={provided.innerRef} 
                                     {...provided.droppableProps}
                                     className={classes.dropSpace}>
-                                      {cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                      {list.cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
                                        
                                     {provided.placeholder}
                                     
@@ -84,7 +84,7 @@ class List extends Component{
         )
     }
 }
-//{list.listContent.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+
 const mapStateToProps = (state) => ({
     cards: state.project.cards
 })
