@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+
 import _action from '../../actions'
+
+// Drag and drop 
 import { DragDropContext} from 'react-beautiful-dnd';
-import Lists from './list/Lists'
 import {findWhere} from 'underscore';
+
+//Components
+import Lists from './list/Lists'
+import ActivityList from '../ui/activity/ActivityList'
+
+//Material Ui
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {withStyles } from '@material-ui/core/styles';
-import { styles } from './Style'
 import { Button } from '@material-ui/core';
-import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
+import {SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
@@ -17,24 +23,15 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import IconButton from '@material-ui/core/IconButton';
+
+//Styles
+import {withStyles } from '@material-ui/core/styles';
+import { styles } from './Style'
 
 
-    /**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
 
-    destClone.splice(droppableDestination.index, 0, removed);
-
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-
-    return result;
-};
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -65,7 +62,7 @@ class Project extends Component {
     }
 
     componentWillMount() {
-        // Get project information
+        // Get project informations
         this.props.getProjectInfo(this.props.match.params.id)
 
         // Get all lists of this project with associated cards
@@ -106,12 +103,7 @@ class Project extends Component {
         }
     }
 
-    // Open/Close the left side drawer (for filter and activity)
-    toggleDrawer = (side, open) => () => {
-        this.setState({
-          [side]: open,
-        });
-      };
+
 
    /*orderList(lists){
         
@@ -340,11 +332,52 @@ class Project extends Component {
         this.setState({ openMemberDialog: false,openVisibilityDialog:false });     
     };
 
-
+    // Open/Close the left side drawer (for filter and activity)
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+            [side]: open,
+        });
+    };
     
     render() {  
         const {classes, match, projectInfo } = this.props
-        
+
+        /* ================= ACTIVITY DRAWER================= */
+        const renderActivity = (
+            <Drawer
+                anchor="right"
+                open={this.state.openActivity} 
+                onClose={this.toggleDrawer('openActivity', false)}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('openActivity', false)}
+                >
+                    <Grid alignItems='center' justify='center' container >
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('openActivity', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.drawer}>
+                                Activity
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                    </Grid>
+                    <div>
+                        <ActivityList activities={null}></ActivityList>
+                    </div>
+                </div>
+            </Drawer>
+        );
+
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
 
@@ -388,20 +421,7 @@ class Project extends Component {
                     <Description className={classes.leftIcon} />
                     Activity
                 </Button>
-                <Drawer anchor="right" open={this.state.openActivity} onClose={this.toggleDrawer('openActivity', false)}>
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        onClick={this.toggleDrawer('openActivity', false)}
-                        onKeyDown={this.toggleDrawer('openActivity', false)}
-                    >
-                        <List>
-                            <ListItem>
-                                <ListItemText primary="Activity"></ListItemText>
-                            </ListItem>
-                        </List>                    
-                    </div>
-                </Drawer>
+                {renderActivity}
 
                  {/*===================  FILTER BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
@@ -460,6 +480,7 @@ const mapDispatchToProps ={
     updateTitle: _action.projectAction.updateProjectTitle,
     getAllMembers : _action.projectAction.findAllMembers,
     getMemberStatus:  _action.projectAction.getMemberStatus,
+    getActivity: _action.projectAction.getActivity,
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

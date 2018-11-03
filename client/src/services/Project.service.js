@@ -30,13 +30,84 @@ const Project = {
         let where = helper.Request.urlFromObject(str)
         return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
     },
+
     sendInvitation(object){
-        let where = helper.Request.urlFromObject(object)
-        //TODO ROUTES
+        //let where = helper.Request.urlFromObject(object)
+       /**
+        * object = {
+            * memberId :..
+            * memberEmail:...
+            * projectId: ...
+        * }
+        */
+
+        /**
+        * send an invitation to user to join the project (user exist in DB)
+        * -> we create a row in the table memberhasproject with status = 0 (in validation) 
+        * -> we send an email with a link to update his status = 1 (accepted to join) 
+        */
+
     },  
     createAndSendInvitation(object){
-        let where = helper.Request.urlFromObject(object)
-        //TODO ROUTES
+        //let where = helper.Request.urlFromObject(object)
+        /**
+        * object = {
+            * memberEmail:...
+            * projectId: ...
+        * }
+        */
+
+        /** email doesnt exist in DB so we have to :
+         * Create an account with the specified email and send an email invitation to user to join the project
+         * -> we create an account 
+         * -> we create a row in the table memberhasproject with status = 0 (in validation)
+         * -> we send an email with a link to update his password and information and update his status = 1 (accepted to join)
+         */
+       
+    },
+    getMemberStatus(object){
+        /**
+         * object = {
+            * memberId: ..
+            * projectId: ...
+         * } 
+         */
+
+        /***Return the status for a member of a specific project:
+         * True if he is admin of this project, else false
+         */ 
+        
+    },
+    removeFromProject(object){
+        /**
+         * object = {
+         * memberId: ..
+         * projectId: ...
+         * }
+         */
+
+         /**
+          * Remove a member from a project
+          */
+    },
+    setAsAdmin(object){
+         /**
+         * object = {
+         * memberId: ..
+         * projectId: ...
+         * }
+         */
+
+         /**
+          * Set the member as administrator of the project given as parameter
+          *  in the DB -> Table memberhaspermissionproject, attribute : mhpp_state = true
+          */
+    },
+    getActivity(projectId){
+        /**
+         * Return all activities related to this project 
+         * in the DB -> Table "action"
+         */
     }
 
 }

@@ -67,6 +67,11 @@ export function project (state = initialState, action) {
             return {
                 ...state,
             };
+        //TODO
+        case projectLabels.GET_PROJECT_ACTIVITY:
+                return {
+                    ...state,
+                };
         default:
             return state
     }

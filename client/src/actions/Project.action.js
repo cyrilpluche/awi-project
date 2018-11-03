@@ -9,7 +9,8 @@ const labels = {
     SEND_INVITATION:"SEND_INVITATION",
     GET_MEMBER_STATUS:"GET_MEMBER_STATUS",
     REMOVE_MEMBER_FROM_PROJECT:"REMOVE_MEMBER_FROM_PROJECT",
-    SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN"
+    SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
+    GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY"
 }
 
 /** TODO SERVICE
@@ -308,6 +309,25 @@ function setMemberAsAdmin(projectId, memberId){
 
 }
 
+/**TODO SERVICE
+ * get all activities related to a project (Limit 15)
+ */
+function getActivity(projectId){
+    return dispatch => {
+
+        /*_service.Project.getActivity(projectId)
+        .then(res => {*/
+            dispatch({
+                type: labels.GET_PROJECT_ACTIVITY,
+                payload: false
+            });
+        /*})
+        .catch((err) => {
+            dispatch(err)
+        });*/
+    }
+}
+
 
 
 
@@ -323,5 +343,6 @@ export const projectAction = {
     sendInvitationProject,
     getMemberStatus,
     removeMemberFromProject,
-    setMemberAsAdmin
+    setMemberAsAdmin,
+    getActivity
 }
