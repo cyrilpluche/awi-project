@@ -28,13 +28,17 @@ class Signin extends React.Component {
             memberPassword: '',
         };
 
-        
+        this.signinWithGithub = this.signinWithGithub.bind(this);
     }
 
     submit () {
         let memberEmail = this.state.memberEmail
         let memberPassword = this.state.memberPassword
         this.props.onLogin(memberEmail, memberPassword)
+    }
+
+    signinWithGithub () {
+        this.props.onSigninWithGithub()
     }
 
     goToForgottenPassword () {
@@ -151,6 +155,7 @@ class Signin extends React.Component {
                                         color="inherit"
                                         fullWidth
                                         className={classes.button}
+                                        onClick={this.signinWithGithub}
                                     >
                                         Sign In with Github
                                         <CloudIcon className={classes.rightIcon} />
@@ -184,7 +189,9 @@ const mapStateToProps = (state) => ({
     errorMsg: state.signin.msgError
 })
 const mapDispatchToProps = {
-    onLogin : _action.signinAction.signin
+    onLogin : _action.signinAction.signin,
+    onSigninWithGithub: _action.signinAction.signinWithGithub
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Signin));

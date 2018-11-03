@@ -11,6 +11,10 @@ const Member = {
         return Api.post(url + 'sign_in', body).then(res => res.data)
     },
 
+    signInWithGithub () {
+        return Api.get(url + 'sign_in_with_github').then(res => res.data)
+    },
+
     signUp (body) {
 
         return Api.post(url + 'sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)

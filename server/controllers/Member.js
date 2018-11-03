@@ -4,6 +4,8 @@ const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
 const bcrypt = require('bcrypt');
+const qs = require('querystring');
+const request = require('superagent');
 
 module.exports = {
 
@@ -295,5 +297,124 @@ module.exports = {
         } catch (err) {
             res.status(500).send('Failed to check if the user exist')
         }
+    },
+
+    // -----------------------
+    // -------------------------- GITHUB ----------------------------
+    // -----------------------
+
+    /**  localhost:4200/api/member/sign_in_with_github
+     *
+     *  return: a string, the github url authentification
+     */
+    sign_in_with_github(req, res, next) {
+
+        // generate  "state" parameter
+        const state = require('crypto').randomBytes(16).toString('base64')
+        res.locals.github_state = state
+
+        const githubAuthUrl =
+            'https://github.com/login/oauth/authorize?' +
+            qs.stringify({
+                client_id: process.env.GITHUB_CLIENT_ID,
+                redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT  + "/api/member/github_callback",
+                state: state,
+                scope: 'user:email'
+            });
+
+
+        const redirect = JSON.stringify(githubAuthUrl)
+
+        req.body.result = redirect
+        next()
+    },
+
+    /**  localhost:4200/api/member/github_callback
+     *
+     *  this route is called after the success authentification of an user on github website.
+     */
+    github_callback(req, res, next) {
+        console.log(req.query);
+        // ?code = 1823109312093
+        const returnedState = req.query.state;
+        const  code  = req.query.code;
+        console.log("code ? " + code)
+
+        if (!code) {
+            return res.send({
+                success: false,
+                message: 'Error, no code'
+
+            });
+        }
+
+        //console.log("First ? " + Db.state)
+        //console.log("second ? " +     returnedState)
+        // POST request
+        //if (Db.state === returnedState) {
+            // Remember from step 5 that we initialized
+            // If state matches up, send request to get access token
+            // the request module is used here to send the post request
+            request
+                .post('https://github.com/login/oauth/access_token')
+                .send({
+                    client_id: process.env.GITHUB_CLIENT_ID,
+                    client_secret: process.env.GITHUB_CLIENT_SECRET,
+                    code: code,
+                    redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT  + "/api/member/github_callback",
+                    state: returnedState
+                })
+                .set('Accept', 'application/json')
+                .then(result => {
+                    //const data = result.body;
+                    //res.send(data)
+                    console.log('Your Access Token: ');
+                    console.log(result.body.access_token);
+                    req.access_token = result.body.access_token;
+                    console.log("body: \n", result.body)
+                    request
+                        .get('https://api.github.com/user/public_emails')
+                        .set('Authorization', 'token ' + req.access_token)
+                        .then( result => {
+                            console.log("result: \n", result.body)
+
+                            Member
+                                .findOne({
+                                    where: {
+                                        memberEmail: result.body[0].email,
+                                        // memberStatus: {
+                                        //     [Sequelize.Op.ne]: 0
+                                        // }
+                                    }
+                                })
+                                .then(member => {
+                                    if (member && member.memberEmail === result.body[0].email) {
+                                            req.body.result = member
+                                            next()
+                                    }
+                                    else res.status(400).send('Email incorrect, the user dosn\'t exist.')
+                                })
+                                .catch(error => next(error));
+                            // result.send(
+                            //     "<p>You're logged in! Here's all your emails on GitHub: </p>" +
+                            //     result.body +
+                            //     '<p>Go back to <a href="/">log in page</a>.</p>'
+                            // )
+                        })
+                        .catch(error => next(error));
+
+                    // Redirects user to /user page so we can use
+                    // the token to get some data.
+                    //res.redirect('http://localhost:3000/home');
+                });
+
+
+
+        // }
+        // else {
+        //     // if state doesn't match up, something is wrong
+        //     // just redirect to homepage
+        //     res.redirect('/');
+        // }
     },
 }

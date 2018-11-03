@@ -13,6 +13,8 @@ router.get('/invitation_token', mw.Token.verifyToken, memberController.tokenToQu
 router.post('/create', mw.Token.verifyToken, memberController.create);
 router.post('/sign_up', memberController.findOne, memberController.create, mw.Token.generateToken, mw.Email.sendEmail);
 router.post('/sign_in', memberController.findOneSignIn, mw.Token.generateToken);
+router.get('/sign_in_with_github', memberController.sign_in_with_github);
+router.all('/github_callback', memberController.github_callback, mw.Token.generateToken);
 router.post('/password_forgotten',mw.Token.generateRandomToken, memberController.resetPassword, mw.Email.sendNewPassword);
 
 router.put('/update', mw.Token.verifyToken, memberController.update, memberController.findOne, mw.Token.generateToken);

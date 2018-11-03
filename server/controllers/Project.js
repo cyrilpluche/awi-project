@@ -1,5 +1,3 @@
-import Member from "../../client/src/services/Member.service";
-
 const Project = require('../config/db_connection').Project;
 const Member = require('../config/db_connection').Member
 const sequelize = require('../config/db_connection').sequelize;

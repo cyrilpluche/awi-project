@@ -87,9 +87,28 @@ function resetField () {
     }
 }
 
+function signinWithGithub () {
+
+
+    return dispatch => {
+
+        _service.Member.signInWithGithub()
+            .then(res => {
+                //localStorage.setItem('token', res.token)
+                //_helper.History.push('/home');
+                window.location.assign(res)
+            })
+            .catch((err) => {
+                dispatch(signError)
+            });
+
+    }
+}
+
 export const signinAction = {
     labels,
     signin,
+    signinWithGithub,
     isMemberLogged,
     sendNewPassword,
     resetField
