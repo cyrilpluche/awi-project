@@ -21,6 +21,28 @@ app.set('port', port);
 const server = http.createServer(app);
 
 /**
+ * socket io config
+ */
+const io = require('socket.io').listen(server)
+app.set('socketio', io)
+
+// IO functions
+io.on('connection', (client) => {
+  console.log("Connected to Socket!!")
+
+  // ----- Add list ----- //
+  client.on('addList', (msg) => {
+      client.broadcast.emit('addList', msg)
+  })
+
+  // ----- move list ----- //
+  client.on('moveList', (lists) => {
+    client.broadcast.emit('moveList', lists)
+})
+
+})
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 
