@@ -31,6 +31,12 @@ const Project = {
         return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
     },
 
+    getLabels(){
+        /**
+         * return all labels for a specific project
+         */
+    },
+
     sendInvitation(object){
         //let where = helper.Request.urlFromObject(object)
        /**
@@ -108,7 +114,8 @@ const Project = {
          * Return all activities related to this project 
          * in the DB -> Table "action"
          */
-    }
+    },
+
 
 }
 

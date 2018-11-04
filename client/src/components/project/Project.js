@@ -10,6 +10,7 @@ import {findWhere} from 'underscore';
 //Components
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
+import Filter from '../ui/filter/Filter'
 
 //Material Ui
 import Grid from '@material-ui/core/Grid';
@@ -20,9 +21,6 @@ import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -38,6 +36,23 @@ const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
+
+    return result;
+};
+
+/**
+ * Moves an item from one list to another list.
+ */
+const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
 
     return result;
 };
@@ -73,6 +88,11 @@ class Project extends Component {
 
         // Verify if it's a project administrator
         this.props.getMemberStatus(this.props.match.params.id,/*memberLoggedId*/)
+
+        //Get all activity related to this project
+        this.props.getActivity(this.props.match.params.id)
+
+        //this.props.getLabels()
 
         //Not needed 
         this.props.findAllCards()
@@ -214,7 +234,7 @@ class Project extends Component {
            console.log(draggableId) 
            let findList = findWhere(lists,{listId: draggableId})
            let indexOfList = lists.indexOf(findList)           
-           let newLists = lists
+           let newLists = Array.from(lists)
 
             //remove list from list of list
             newLists.splice(indexOfList,1,)
@@ -250,7 +270,7 @@ class Project extends Component {
         if (result.type === 'CARD') {
            console.log(source)
            console.log(destination)
-           let updatedList = lists
+           let updatedList = Array.from(lists)
            
             if(source.droppableId === destination.droppableId){
                 const newLists = reorder(
@@ -267,10 +287,12 @@ class Project extends Component {
                 console.log(updatedList)
                 this.setState({lists: updatedList})
 
-            }/*else{
+            }/*
+            else{
+
                 const newLists = move(
-                    findWhere(lists, {listTitle : source.droppableId}).cards,
-                    findWhere(lists, {listTitle : destination.droppableId}).cards,
+                    findWhere(updatedList, {listTitle : source.droppableId}).cards,
+                    findWhere(updatedList, {listTitle : destination.droppableId}).cards,
                     source,
                     destination
                 );
@@ -378,6 +400,42 @@ class Project extends Component {
             </Drawer>
         );
 
+         /* ================= FILTER DRAWER================= */
+         const renderFilter = (
+            <Drawer
+                anchor="right"
+                open={this.state.openFilter} 
+                onClose={this.toggleDrawer('openFilter', false)}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('openFilter', false)}
+                >
+                    <Grid alignItems='center' justify='center' container >
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('openFilter', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.drawer}>
+                                Filter
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                    </Grid>
+                    <div>
+                        <Filter projectInfo={projectInfo}></Filter>
+                    </div>
+                </div>
+            </Drawer>
+        );
+
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
 
@@ -428,20 +486,8 @@ class Project extends Component {
                     <FilterList className={classes.leftIcon} />
                     Filter
                 </Button>
-                <Drawer anchor="right" open={this.state.openFilter} onClose={this.toggleDrawer('openFilter', false)}>
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        onClick={this.toggleDrawer('openFilter', false)}
-                        onKeyDown={this.toggleDrawer('openFilter', false)}
-                    >
-                        <List>
-                            <ListItem>
-                                <ListItemText primary="Filter"></ListItemText>
-                            </ListItem>
-                        </List>                    
-                    </div>
-                </Drawer>
+                {renderFilter}
+               
 
 
                 </Grid>
@@ -468,6 +514,7 @@ const mapStateToProps = (state) => ({
     projectInfo : state.project.projectInfo,
     members : state.project.members || [],
     isAdmin: state.project.isAdmin || false,
+    //labels : state.project.labels || []
 })
 
 const mapDispatchToProps ={
@@ -481,6 +528,7 @@ const mapDispatchToProps ={
     getAllMembers : _action.projectAction.findAllMembers,
     getMemberStatus:  _action.projectAction.getMemberStatus,
     getActivity: _action.projectAction.getActivity,
+    //getLabels :  _action.projectAction.getLabels,
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

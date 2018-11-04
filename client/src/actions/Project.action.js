@@ -41,7 +41,6 @@ function findAllLists (idProject) {
             project_id: 1,
             cards:[
                 {cardId: 80,cardTitle: "card3", cardDescription: null,cardStatus: 0,cardDateTarget: null,cardDateEnd: null,cardFather: null, cardChild: null,listId: 148,list_id: 148},
-                {cardId: 81,cardTitle: "card4", cardDescription: null,cardStatus: 0,cardDateTarget: null,cardDateEnd: null,cardFather: null, cardChild: null,listId: 148,list_id: 148},
             ]
         },
     ]
@@ -328,6 +327,25 @@ function getActivity(projectId){
     }
 }
 
+/**TODO SERVICE
+ * get all labels related to a project
+ */
+function getLabels(){
+    return dispatch => {
+
+        _service.Project.getLabels()
+        .then(res => {
+            dispatch({
+                type: labels.GET_ALL_LABELS,
+                payload: res
+            });
+        })
+        .catch((err) => {
+            dispatch(err)
+        });
+    }
+}
+
 
 
 
@@ -344,5 +362,6 @@ export const projectAction = {
     getMemberStatus,
     removeMemberFromProject,
     setMemberAsAdmin,
-    getActivity
+    getActivity,
+    getLabels
 }
