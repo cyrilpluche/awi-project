@@ -1,25 +1,61 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+
 import _action from '../../actions'
+
+// Drag and drop 
 import { DragDropContext} from 'react-beautiful-dnd';
-import Lists from './list/Lists'
 import {findWhere} from 'underscore';
+
+//Components
+import Lists from './list/Lists'
+import ActivityList from '../ui/activity/ActivityList'
+import Filter from '../ui/filter/Filter'
+
+//Material Ui
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {withStyles } from '@material-ui/core/styles';
-import { styles } from './Style'
 import { Button } from '@material-ui/core';
-import { SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
+import {SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import IconButton from '@material-ui/core/IconButton';
+
+//Styles
+import {withStyles } from '@material-ui/core/styles';
+import { styles } from './Style'
 
 
 
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+};
+
+/**
+ * Moves an item from one list to another list.
+ */
+const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+
+    return result;
+};
 
 
 class Project extends Component {
@@ -35,40 +71,61 @@ class Project extends Component {
             openVisibilityDialog:false,
             members:[],
             openActivity:false,
-            openFilter:false
+            openFilter:false,
+            projectInfo:''
         }
     }
 
     componentWillMount() {
+        // Get project informations
         this.props.getProjectInfo(this.props.match.params.id)
-        this.props.getAllLists(this.props.match.params.id)
+
+        // Get all lists of this project with associated cards
+        this.props.getAllListsWithCards(this.props.match.params.id)
+
+        // Get all project members 
         this.props.getAllMembers(this.props.match.params.id)
+
+        // Verify if it's a project administrator
+        this.props.getMemberStatus(this.props.match.params.id,/*memberLoggedId*/)
+
+        //Get all activity related to this project
+        this.props.getActivity(this.props.match.params.id)
+
+        //this.props.getLabels()
+
+        //Not needed 
         this.props.findAllCards()
-        this.setState({lists : this.props.lists})
     }
+    
 
-
+    
+    //Will set the state with props
     componentWillReceiveProps(){
-        this.setState({ updateLists : false, 
-                        lists : this.props.lists,
-                        members : this.props.members
-                    })
+            this.setState({ updateLists : false, 
+                lists : this.props.lists,
+                members : this.props.members,
+            })
     }
 
-    componentDidUpdate(){
-        if(!this.state.updateLists){
-          this.orderList(this.props.lists)      
-        } 
+    // When a change occurs on our props, we verify to change the state (re rendering) if necessary
+    componentDidUpdate(prevProps){
+
+        // If a change occurs on lists props
+        if(this.props.lists !== prevProps.lists ){
+            this.setState( {lists : this.props.lists})
+           // this.orderList(this.props.lists)      
+        }
+        
+        //If a change occurs on projectInfo
+        if(this.props.projectInfo !== prevProps.projectInfo ){
+            this.setState( {projectInfo : this.props.projectInfo})
+        }
     }
 
 
-    toggleDrawer = (side, open) => () => {
-        this.setState({
-          [side]: open,
-        });
-      };
 
-   orderList(lists){
+   /*orderList(lists){
         
         if(lists.length !== 0){
             const headList = findWhere(lists,{listFather: null})
@@ -84,10 +141,10 @@ class Project extends Component {
             this.setState({lists:[],updateLists : true})
         }
   
-    }
+    }*/
 
 
-     recursiveOrdering(oldList,current, newList){
+    /* recursiveOrdering(oldList,current, newList){
         
      
         if(oldList.length === 0) {
@@ -123,73 +180,142 @@ class Project extends Component {
                 this.setState({lists:this.props.lists,updateLists : true})
             }        
         }
-    }
+     }*/
 
+
+    /**
+     * Create a new List by calling the action "createList"
+     * @param listName title of the new list
+     * @param idProject project id associated to the new list
+     */
     createNewList(listName,idProject){
         const {lists} = this.state
- 
-        if(lists.length === 0 ){
-            this.props.createList(listName,idProject,null)
-        }else{           
-            let lastElement = lists[lists.length -1]
-            this.props.createList(listName,idProject,lastElement.listId)
-        } 
+        const exist = findWhere(lists,{listTitle:listName})
 
+        // We can't create 2 list with the same name
+        if(!exist){
+
+            // if its the first list created for this project, the list has no father
+            if(lists.length === 0 ){
+                this.props.createList(listName,idProject,null)
+
+            // we call creatList action specifying the title, project id and father list id.
+            }else{           
+                let lastElement = lists[lists.length -1]
+                this.props.createList(listName,idProject,lastElement.listId)
+            } 
+        }
     }
 
+
+
+
+    /**
+     * Will occurs when something has been dragged 
+     */
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        const { destination,draggableId } = result;
+        const { source, destination,draggableId } = result;
+
+        //retrieve lists
         const {lists} = this.state
         
         
-        // dropped outside the list
+        // dropped outside the droppagble area
         if (!destination) {
             return;
         }
 
+
+        //When a list has been dragged and dropped
         if(result.type === 'LIST'){
             
-           
+           console.log(draggableId) 
            let findList = findWhere(lists,{listId: draggableId})
-           let indexOfList = lists.indexOf(findList)
-
-           
-           let newLists = lists
+           let indexOfList = lists.indexOf(findList)           
+           let newLists = Array.from(lists)
 
             //remove list from list of list
             newLists.splice(indexOfList,1,)
 
+            //Insert list in new index
             newLists.splice(destination.index,0,findList)
-            
-            this.setState({data:newLists})
+           
+            //set state with the new list
+            this.setState({lists:newLists},function(){
 
-            let updateList = findWhere(lists,{projectId: 1})
-            
-            let fatherOfUpdatedList = updateList.listFather === undefined ? null : updateList.listFather
 
-            let childThatHadMeAsFather = findWhere(lists,{listFather: updateList.listId})
-            
+                let updateList = findWhere(lists,{listId: draggableId})
 
-            let indexOfUpdateList = lists.indexOf(updateList)
-            
-            let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
-            let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
-            
-            // action
-            if(childThatHadMeAsFather) this.props.moveList(childThatHadMeAsFather.listId,fatherOfUpdatedList)
-            if(updateList)  this.props.moveList(updateList.listId,listFather)
-            if(listChild) this.props.moveList(listChild,updateList.listId)
-            
-            
+                let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
+
+                let childUpdatedList = findWhere(lists,{listFather: findList.listId})
+                
+
+                let indexOfUpdateList = lists.indexOf(findList)
+                
+                //New father and child of dragged list
+                let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
+                let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
+                
+                // Change fathers of list in DB
+                if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
+                if(findList)  this.props.moveList(updateList.listId,listFather)
+                if(listChild) this.props.moveList(listChild,updateList.listId)
+            })
         }
 
+        // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-            console.log(result)
-            let cardId = draggableId
-            let findListId = findWhere(lists, {listTitle:destination.droppableId})
-            this.props.updateCard(cardId,findListId.listId)
+           console.log(source)
+           console.log(destination)
+           let updatedList = Array.from(lists)
+           
+            if(source.droppableId === destination.droppableId){
+                const newLists = reorder(
+                    findWhere(lists, {listTitle : source.droppableId}).cards,
+                    source.index,
+                    destination.index
+                );
+                console.log(newLists)
+                let sourceList = findWhere(updatedList, {listTitle:source.droppableId})
+                let sourceListIndex = updatedList.indexOf(sourceList)
+                console.log(sourceListIndex)
+                console.log(updatedList)
+                updatedList[sourceListIndex].cards = newLists
+                console.log(updatedList)
+                this.setState({lists: updatedList})
+
+            }/*
+            else{
+
+                const newLists = move(
+                    findWhere(updatedList, {listTitle : source.droppableId}).cards,
+                    findWhere(updatedList, {listTitle : destination.droppableId}).cards,
+                    source,
+                    destination
+                );
+
+                let sourceList = findWhere(updatedList, {listTitle:source.droppableId})
+                let sourceListIndex = updatedList.indexOf(sourceList)
+
+                let destinationList = findWhere(updatedList, {listTitle:destination.droppableId})
+                let destinationListIndex = updatedList.indexOf(destinationList)
+                
+                console.log(newLists)
+                console.log(newLists[source.droppableId])
+                updatedList[destinationListIndex].cards = newLists[destination.droppableId]
+                this.setState({lists : updatedList})
+                updatedList[sourceListIndex].cards = newLists[source.droppableId]
+                
+
+                console.log(updatedList)
+                
+                
+            }*/
+
+           // this.props.updateCard(cardId,findListId.listId)*/
         }
 
 
@@ -228,18 +354,95 @@ class Project extends Component {
         this.setState({ openMemberDialog: false,openVisibilityDialog:false });     
     };
 
-
+    // Open/Close the left side drawer (for filter and activity)
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+            [side]: open,
+        });
+    };
     
     render() {  
         const {classes, match, projectInfo } = this.props
-    
+
+        /* ================= ACTIVITY DRAWER================= */
+        const renderActivity = (
+            <Drawer
+                anchor="right"
+                open={this.state.openActivity} 
+                onClose={this.toggleDrawer('openActivity', false)}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('openActivity', false)}
+                >
+                    <Grid alignItems='center' justify='center' container >
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('openActivity', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.drawer}>
+                                Activity
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                    </Grid>
+                    <div>
+                        <ActivityList activities={null}></ActivityList>
+                    </div>
+                </div>
+            </Drawer>
+        );
+
+         /* ================= FILTER DRAWER================= */
+         const renderFilter = (
+            <Drawer
+                anchor="right"
+                open={this.state.openFilter} 
+                onClose={this.toggleDrawer('openFilter', false)}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('openFilter', false)}
+                >
+                    <Grid alignItems='center' justify='center' container >
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('openFilter', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.drawer}>
+                                Filter
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                    </Grid>
+                    <div>
+                        <Filter projectInfo={projectInfo}></Filter>
+                    </div>
+                </div>
+            </Drawer>
+        );
+
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
 
                 {/*===================  TITLE EDIT  ========================================= */}
                 <Typography variant="h5" gutterBottom className={classes.projectTitle}>
                     {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
-                        <Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />
+                        {this.props.isAdmin === true ?<Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />:''}
                     </div>:
                     <div>
                         <TextField
@@ -262,54 +465,29 @@ class Project extends Component {
                     <SupervisorAccount className={classes.leftIcon} />
                     {this.props.members? this.props.members.length : 0} Members
                 </Button>
-                <MemberDialog  members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                <MemberDialog  isAdmin={this.props.isAdmin} members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
                 
                 {/*===================  VISIBILITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                     <RemoveRedEye className={classes.leftIcon} />
                     Visibility
                 </Button>
-                <VisibilityDialog projectInfo={projectInfo? projectInfo : null} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
                 
                 {/*===================  ACTIVITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
                     <Description className={classes.leftIcon} />
                     Activity
                 </Button>
-                <Drawer anchor="right" open={this.state.openActivity} onClose={this.toggleDrawer('openActivity', false)}>
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        onClick={this.toggleDrawer('openActivity', false)}
-                        onKeyDown={this.toggleDrawer('openActivity', false)}
-                    >
-                        <List>
-                            <ListItem>
-                                <ListItemText primary="Activity"></ListItemText>
-                            </ListItem>
-                        </List>                    
-                    </div>
-                </Drawer>
+                {renderActivity}
 
                  {/*===================  FILTER BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
                     <FilterList className={classes.leftIcon} />
                     Filter
                 </Button>
-                <Drawer anchor="right" open={this.state.openFilter} onClose={this.toggleDrawer('openFilter', false)}>
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        onClick={this.toggleDrawer('openFilter', false)}
-                        onKeyDown={this.toggleDrawer('openFilter', false)}
-                    >
-                        <List>
-                            <ListItem>
-                                <ListItemText primary="Filter"></ListItemText>
-                            </ListItem>
-                        </List>                    
-                    </div>
-                </Drawer>
+                {renderFilter}
+               
 
 
                 </Grid>
@@ -334,11 +512,13 @@ class Project extends Component {
 const mapStateToProps = (state) => ({
     lists: state.project.lists,
     projectInfo : state.project.projectInfo,
-    members : state.project.members || []
+    members : state.project.members || [],
+    isAdmin: state.project.isAdmin || false,
+    //labels : state.project.labels || []
 })
 
 const mapDispatchToProps ={
-    getAllLists: _action.projectAction.findAllLists,
+    getAllListsWithCards: _action.projectAction.findAllLists,
     findAllCards: _action.listAction.findAllCards,
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
@@ -346,6 +526,9 @@ const mapDispatchToProps ={
     getProjectInfo: _action.projectAction.getProjectInfo,
     updateTitle: _action.projectAction.updateProjectTitle,
     getAllMembers : _action.projectAction.findAllMembers,
+    getMemberStatus:  _action.projectAction.getMemberStatus,
+    getActivity: _action.projectAction.getActivity,
+    //getLabels :  _action.projectAction.getLabels,
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

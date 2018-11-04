@@ -47,9 +47,18 @@ class MemberDialog extends Component {
       this.props.sendInvitation(this.state.invitationEmail, this.props.projectInfo.projectId)
     }
 
+    handleRemoveFromProject(memberId){
+      this.props.removeMemberFromProject(this.props.projectInfo.projectId,memberId)
+    }
+
+    handleSetAsAdmin(memberId){
+      this.props.removeMemberFromProject(this.props.projectInfo.projectId,memberId)
+    }
+
     render() {
-      const { classes, onClose, selectedValue, ...other } = this.props;
-      
+      const { isAdmin, setAsAdministrator,removeMemberFromProject, sendInvitation, projectInfo, classes, onClose, selectedValue, ...other } = this.props;
+
+
       return (
         <Dialog onClose={this.close.bind(this)} aria-labelledby="simple-dialog-title" {...other}>
             <DialogTitle id="simple-dialog-title" className={classes.dialogTitle}>Members</DialogTitle>
@@ -79,11 +88,15 @@ class MemberDialog extends Component {
                           <ListItem key={member.memberId}>
                               <ListItemText primary={member.memberFirstname+" "+member.memberLastname}>
                               </ListItemText>
-                              <IconButton color="secondary" >
-                                <Cancel />
-                              </IconButton>
-                              <Checkbox value="checkedC" />
-                          </ListItem>):''}
+                              <div>
+                                {this.props.isAdmin === true ?
+                                <div>
+                                <IconButton color="secondary"  onClick={this.handleRemoveFromProject(member.memberId)}>
+                                  <Cancel />
+                                </IconButton>
+                                <Checkbox onClick={this.handleSetAsAdmin(member.memberId)}/></div> :''}
+                              </div>
+                           </ListItem>):''}
                 </List>
             </DialogContent>
             <DialogActions>
@@ -98,6 +111,8 @@ class MemberDialog extends Component {
 })
 const mapDispatchToProps ={
     sendInvitation: _action.projectAction.sendInvitationProject,
+    removeMemberFromProject : _action.projectAction.removeMemberFromProject,
+    setAsAdministrator : _action.projectAction.setMemberAsAdmin
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(MemberDialog))

@@ -13,10 +13,11 @@ export const styles = theme => ({
     list: {
         margin: theme.spacing.unit * 2,
         border:`1px solid lightgrey`,
-        borderRadius : `8px`,
+        borderRadius : `4px`,
         backgroundColor:`white`,
         width: `200px`,
         minWidth : `200px`,
+        //minHeight : `200px`,
         justifyContent: `center`,
         textAlign: `center`,
         
@@ -24,11 +25,10 @@ export const styles = theme => ({
     },
     listTitle: {
         textAlign:`center`,
-        border:`1px solid lightgrey`,
-        color : `#007bff`,
+        color : `black`,
+        backgroundColor:'#e4e4e4',
         padding:theme.spacing.unit * 2,
         margin:`0px`,
-        borderRadius : `8px 8px 0 0 `,
         fontWeight: `lighter`,
         wordBreak: `break-all`
     },
@@ -40,6 +40,7 @@ export const styles = theme => ({
         marginTop:`5px`
     },
     dropSpace:{
+        padding:'10px',
         minHeight:`100px`
     },
     textField:{
