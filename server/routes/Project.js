@@ -10,7 +10,7 @@ router.get('/find_all', projectController.findAll);
 router.get('/find_all_searchbar', projectController.findAllSearchbar);
 
 
-router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.findAllMember);
+router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.findAllProjectMember);
 
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);
@@ -18,6 +18,8 @@ router.get('/find_one/:id', projectController.findProjectInfo);
 router.post('/create', projectController.create);
 
 router.put('/update/:id', projectController.update);
+
+router.put('/update_memberHasProject', projectController.updateMemberHasProject);
 
 router.delete('/delete/:id', projectController.delete);
 

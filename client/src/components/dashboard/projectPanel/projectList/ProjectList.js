@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
+import Helper from '../../../../helpers'
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -39,6 +40,7 @@ class ProjectList extends React.Component {
     constructor (props) {
         super(props)
 
+        this.setProjectHasFavorite = this.setProjectHasFavorite.bind(this)
         this.state = {
             dialogDisplayed: false,
             buttonCreateProjectDisabled: true,
@@ -81,6 +83,21 @@ class ProjectList extends React.Component {
         if (this.state.newProjectisPublic) return (<LockerIcon style={{fontSize: '32px', color: '#d9d9d9'}}/>)
         else return (<LockerIcon style={{fontSize: '32px', color: '#ff8566'}}/>)
     }
+
+    setProjectHasFavorite (projectId) {
+        let projectFound = false
+        let favoriteSate = true // will be sent to server to update the projects
+        for (let i = 0; i < this.props.projects.length && !projectFound ; i++) {
+            if (this.props.projects[i].projectId === projectId) {
+                favoriteSate =  !this.props.projects[i].projectIsFavorite
+                projectFound = true
+            }
+        }
+
+        this.props.updateProject(projectId, this.props.memberId, favoriteSate, null)
+    }
+
+
 
 
     render() {
@@ -192,13 +209,15 @@ class ProjectList extends React.Component {
             projectsList = this.props.projects.map(
                 (project, key) => {
                     let icon = (
-                        <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}>
+                        <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}
+                                    onClick={() => this.setProjectHasFavorite(project.projectId)}>
                             <AddFavoriteIcon className={classes.Icon}/>
                         </IconButton>
                     )
-                    if (project.favorite) { // the project is already favorite
+                    if (project.projectIsFavorite) { // the project is already favorite
                         icon =  (
-                            <IconButton aria-label="remove to favorites" className={classes.favoriteButtonIcon}>
+                            <IconButton aria-label="remove to favorites" className={classes.favoriteButtonIcon}
+                                        onClick={() => this.setProjectHasFavorite(project.projectId)}>
                                 <FavoriteIcon className={classes.Icon}/>
                             </IconButton>
                         )
@@ -209,7 +228,7 @@ class ProjectList extends React.Component {
                         <Card className={classes.default_card}>
                             <CardActionArea>
                                 <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
-                                    {project.name}
+                                    {project.projectTitle}
                                 </h2>
                                 {icon}
                             </CardActionArea>
@@ -222,7 +241,7 @@ class ProjectList extends React.Component {
                                 <CardActionArea>
                                     <CardMedia  height="120" src={this.props.backgroundimage}>
                                         <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
-                                            {project.name}
+                                            {project.projectTitle}
                                         </h2>
                                         {icon}
                                     </CardMedia>
@@ -283,11 +302,13 @@ ProjectList.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+    memberId: state.signin.member.memberId
 })
 
 const mapDispatchToProps = {
     createProject: _action.dashboardAction.createProject, // create un new project
-    searchMember: _action.memberAction.searchMember
+    searchMember: _action.memberAction.searchMember,
+    updateProject: _action.dashboardAction.updateMemberHasProject
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(ProjectList));

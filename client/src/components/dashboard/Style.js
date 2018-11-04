@@ -21,6 +21,10 @@ export const style = theme => ({
     xsMarginBottom: {
         marginBottom: theme.spacing.unit * 5
     },
+    errorMsg: {
+        backgroundColor: '#ffb3b3',
+        border: 'solid 5px #ff0000'
+    }
 });
 
 

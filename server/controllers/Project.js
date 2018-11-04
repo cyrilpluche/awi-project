@@ -1,7 +1,8 @@
-import Member from "../../client/src/services/Member.service";
-
+// import Member from "../../client/src/services/Member.service";
+const helper = require('../helpers/helpersMethod');
 const Project = require('../config/db_connection').Project;
-const Member = require('../config/db_connection').Member
+const Member = require('../config/db_connection').Member;
+const MemberHasProject = require('../config/db_connection').Memberhasproject
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 
@@ -99,6 +100,38 @@ module.exports = {
             })
     },
 
+
+    /**
+     * 127.0.0.1:4200/api/project/update_memberhasProject?memberId=1&projectId=2&projectIsFavorite=false
+     * update a memberhasProject ligne by setting favorite to favorite
+     * @param req
+     * @param res
+     * @param next
+     */
+    updateMemberHasProject(req, res, next) {
+        let updateField = {};
+
+        if (req.query.memberHasProjectStatus !== undefined &&
+                req.query.memberHasProjectStatus != null)
+            updateField.memberhasprojectStatus = req.query.memberHasProjectStatus;
+
+        if (req.query.projectIsFavorite !== undefined && req.query.projectIsFavorite != null)
+            updateField.projectIsFavorite = req.query.projectIsFavorite;
+
+
+        console.log(updateField)
+        MemberHasProject.update(updateField, {
+            where: {
+                projectId: req.query.projectId,
+                memberId: req.query.memberId,
+            }
+        }).then(r => {
+            if (r == null) throw 'Error'
+            else res.send(r)
+        })
+            .catch(e => res.status(400).send(e))
+    },
+
     /*  localhost:4200/api/project/delete/5
      *
      *  return: A boolean. true = deleted, false = no deleted.
@@ -146,16 +179,29 @@ module.exports = {
      * @param res
      * @param next
      */
-    findAllMember (req, res, next) {
-        Project.findAll({
-            include: [
-                {
-                    model: Member,
-                    where: {member_id: req.params.member}
-                }
-            ]
-        }).then(res.send)
-            .catch(e => res.status(400).send(e))
+    findAllProjectMember (req, res, next) {
+        MemberHasProject.findAll(
+            {
+                where: {member_id: req.params.member},
+                include: [
+                    {
+                        model: Project,
+                        as: 'Project'
+                    }
+                ]
+            }
+        ).then(result => {
+            let projects = [];
+
+            for (let i = 0; i < result.length; i++){
+                projects.push(
+                    helper.flatProjects(result[i])
+                )
+            }
+
+            res.send(projects)
+        })
+            .catch(e =>res.status(400).send(e) )
     }
 
 }

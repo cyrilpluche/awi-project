@@ -45,7 +45,7 @@ module.exports = {
      *
      *  return: Array of member objects with given attributes.
      */
-    findAllMember(req, res, next) {
+    findAllProjectMember(req, res, next) {
         Member
             .findAll({
                 as:'MemberhasprojectProjects',

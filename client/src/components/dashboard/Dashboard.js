@@ -8,6 +8,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { style } from './Style'
 import logo from '../../public/images/prello-logo-2.png'
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import ClearIon from '@material-ui/icons/Clear'
+import IconButton from "@material-ui/core/IconButton";
+
 
 class Dashboard extends React.Component {
     constructor (props) {
@@ -16,32 +21,6 @@ class Dashboard extends React.Component {
         this.onClick = this.onClick.bind(this);
 
         this.state = { // will be load at start
-            favoriteProjects: [
-                {
-                    name: 'Project 1',
-                    favorite: true
-                },
-            ],
-            teamProjects: [
-                {
-                    name: 'Project 1',
-                    favorite: true
-                },
-                {
-                    name: 'Project 2',
-                    favorite: false
-                }
-            ],
-            allProjects: [
-                {
-                    name: 'Project 1',
-                    favorite: true
-                },
-                {
-                    name: 'Project 2',
-                    favorite: false
-                }
-            ],
             teams: [
                 {
                     teamName: 'Test'
@@ -49,7 +28,7 @@ class Dashboard extends React.Component {
                 {
                     teamName: 'Test2'
                 }
-            ]
+            ] // todo change
         }
     }
 
@@ -58,15 +37,8 @@ class Dashboard extends React.Component {
     }
 
     componentWillMount () {
-        this.props.loadProjects(5) // TODO replace 5 by the user id
-        // console.log('Props', this.props)
-        /*let list_favorite = [] // tODO
-        for (let i = 0; i < this.props.projects.length; i++) {
-            if (this.props.projects[i].project_is_favorite) list_favorite.push(this.props.projects[i])
-        } // only save the favorite projects of the member
-        this.setState({ favoriteProjects: list_favorite, allProjects: this.props.projects });
+        this.props.loadProjects(this.props.memberId)
 
-        console.log(this.state) */
     }
 
     render() {
@@ -81,6 +53,37 @@ class Dashboard extends React.Component {
                 </Grid>
             )
         }
+
+        let errorMsg = ''
+
+        if (this.props.errorMessage !== undefined && this.props.errorMessage !== '') {
+            errorMsg = (
+                <Grid container style={{textAlign: 'center'}} alignItems='center' xs={12}>
+                    <Grid item xs={2}/>
+                    <Grid item xs={8}>
+                        <Paper className={classes.errorMsg} elevation={1}>
+                            <Typography variant="h5" component="h3" style={{color: '#990000'}}>
+                                <Grid container style={{textAlign: 'center'}} alignItems='center'>
+                                    <Grid item xs={11}>
+                                        Error
+                                    </Grid>
+
+                                    <Grid item xs={1} sm={1}>
+                                        <IconButton onClick={this.props.hideErrorMessage}>
+                                            <ClearIon/>
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
+                            </Typography>
+                            <Typography component="p">
+                                {this.props.errorMessage}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                </Grid>
+
+            )
+        }
         return (
             <Grid container alignItems='flex-start' className={classes.layout}>
                 <Grid item xs={1} sm={2} className={classes.leftLayout}/>
@@ -89,6 +92,7 @@ class Dashboard extends React.Component {
                     <Grid item xs={12}>
                         <img src={logo} width="100" alt="prello logo"/>
                     </Grid>
+                    {errorMsg}
                     <Grid item xs={8} sm={4} container justify="center" style={{textAlign: 'center'}}
                           alignItems="center">
                         <Grid item xs={12}>
@@ -119,18 +123,22 @@ Dashboard.propTypes = {
 
 const mapStateToProps = (state) => {
     let list_favorite = []
+    console.log(state.dashboard.projects)
     for (let i = 0; i < state.dashboard.projects.length; i++) {
-        if (state.dashboard.projects.project_is_favorite) list_favorite.push(state.dashboard.projects[i])
+        if (state.dashboard.projects[i].projectIsFavorite) list_favorite.push(state.dashboard.projects[i])
     } // only save the favorite projects of the member
     return {
+        errorMessage: state.dashboard.errorMsg,
         allProjects: state.dashboard.projects,
         favoriteProjects: list_favorite,
-        teamProjects: [] // todo
+        teamProjects: [], // todo
+        memberId: state.signin.member.memberId
     }
 }
 
 const mapDispatchToProps = {
-    loadProjects: _action.dashboardAction.getAllProjectsMember
+    loadProjects: _action.dashboardAction.getAllProjectsMember,
+    hideErrorMessage: _action.dashboardAction.hideErrorMessage
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(Dashboard));

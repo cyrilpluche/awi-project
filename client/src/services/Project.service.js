@@ -26,6 +26,10 @@ const Project = {
     update(projectId,body){
         return Api.put(url + 'update/' +projectId, body).then(res => res.data)
     },
+
+    updateMemberHasProject (params) {
+      return Api.put(`${url}update_memberhasProject${helper.Request.urlFromObject(params)}`).then(res => res.data)
+    },
     searchbarProjects (str) {
         let where = helper.Request.urlFromObject(str)
         return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
