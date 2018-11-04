@@ -28,7 +28,8 @@ import IconButton from '@material-ui/core/IconButton';
 import {withStyles } from '@material-ui/core/styles';
 import { styles } from './Style'
 
-
+//Socket IO
+import SocketIOClient  from "socket.io-client"
 
 
 // a little function to help us with reordering the result
@@ -74,6 +75,19 @@ class Project extends Component {
             openFilter:false,
             projectInfo:''
         }
+
+        this.socket = SocketIOClient("http://localhost:4200")
+        this.socket.on('addList', this.socketNewList.bind(this))
+        this.socket.on('moveList', this.socketMoveList.bind(this))
+    }
+
+    socketNewList(msg){
+        this.props.getAllListsWithCards(this.props.match.params.id)
+    }
+
+    socketMoveList(newLists){
+        console.log(newLists)
+       this.setState({lists:newLists})
     }
 
     componentWillMount() {
@@ -192,6 +206,7 @@ class Project extends Component {
         const {lists} = this.state
         const exist = findWhere(lists,{listTitle:listName})
 
+        this.socket.emit('addList',"new card")
         // We can't create 2 list with the same name
         if(!exist){
 
@@ -231,10 +246,10 @@ class Project extends Component {
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
             
-           console.log(draggableId) 
+            
            let findList = findWhere(lists,{listId: draggableId})
            let indexOfList = lists.indexOf(findList)           
-           let newLists = Array.from(lists)
+           let newLists = lists
 
             //remove list from list of list
             newLists.splice(indexOfList,1,)
@@ -243,6 +258,7 @@ class Project extends Component {
             newLists.splice(destination.index,0,findList)
            
             //set state with the new list
+            this.socket.emit('moveList', newLists)
             this.setState({lists:newLists},function(){
 
 
@@ -265,7 +281,7 @@ class Project extends Component {
                 if(listChild) this.props.moveList(listChild,updateList.listId)
             })
         }
-
+        /*
         // When a card has been dragged and dropped
         if (result.type === 'CARD') {
            console.log(source)
@@ -313,10 +329,10 @@ class Project extends Component {
                 console.log(updatedList)
                 
                 
-            }*/
+            }
 
-           // this.props.updateCard(cardId,findListId.listId)*/
-        }
+           // this.props.updateCard(cardId,findListId.listId)
+    }*/
 
 
     };

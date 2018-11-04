@@ -80,7 +80,7 @@ class List extends Component{
                                     ref={provided.innerRef} 
                                     {...provided.droppableProps}
                                     className={classes.dropSpace} style={style}>
-                                      {list.cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                      {cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
                                        
                                     {provided.placeholder}
                                     
