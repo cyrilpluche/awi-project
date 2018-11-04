@@ -41,6 +41,7 @@ class ProjectList extends React.Component {
         super(props)
 
         this.setProjectHasFavorite = this.setProjectHasFavorite.bind(this)
+        this.goTo = this.goTo.bind(this)
         this.state = {
             dialogDisplayed: false,
             buttonCreateProjectDisabled: true,
@@ -97,8 +98,10 @@ class ProjectList extends React.Component {
         this.props.updateProject(projectId, this.props.memberId, favoriteSate, null)
     }
 
-
-
+    goTo (projectId) {
+        console.log('Go to')
+        Helper.History.push(`/project/${projectId}`)
+    }
 
     render() {
         const { classes } = this.props;
@@ -210,14 +213,20 @@ class ProjectList extends React.Component {
                 (project, key) => {
                     let icon = (
                         <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}
-                                    onClick={() => this.setProjectHasFavorite(project.projectId)}>
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        this.setProjectHasFavorite(project.projectId)
+                                    }}>
                             <AddFavoriteIcon className={classes.Icon}/>
                         </IconButton>
                     )
                     if (project.projectIsFavorite) { // the project is already favorite
                         icon =  (
                             <IconButton aria-label="remove to favorites" className={classes.favoriteButtonIcon}
-                                        onClick={() => this.setProjectHasFavorite(project.projectId)}>
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            this.setProjectHasFavorite(project.projectId)
+                                        }}>
                                 <FavoriteIcon className={classes.Icon}/>
                             </IconButton>
                         )
@@ -225,8 +234,11 @@ class ProjectList extends React.Component {
 
 
                     let card = (
-                        <Card className={classes.default_card}>
-                            <CardActionArea>
+                        <Card className={classes.default_card} raised>
+                            <CardActionArea  onClick={(e) => {
+
+                                this.goTo(project.projectId)
+                            }}>
                                 <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
                                     {project.projectTitle}
                                 </h2>
@@ -237,8 +249,10 @@ class ProjectList extends React.Component {
                     if (this.props.backgroundimage !== undefined && this.props.backgroundimage !=='') {
                         // if the projects has a background image
                         card = (
-                            <Card className={classes.default_card}>
-                                <CardActionArea>
+                            <Card className={classes.default_card} raised>
+                                <CardActionArea onClick={(e) => {
+                                    this.goTo(project.projectId)
+                                }}>
                                     <CardMedia  height="120" src={this.props.backgroundimage}>
                                         <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
                                             {project.projectTitle}
