@@ -4,10 +4,11 @@ import Helper from '../helpers'
 const labels = dashboardAction.labels
 
 const initialState = {
-    project: {
+    /*project: {
         projectTitle: 'Hello Moto'
-    },
-    projects: []
+    },*/
+    projects: [],
+    teams: []
 };
 
 export function dashboard (state = initialState, action) {
@@ -24,6 +25,9 @@ export function dashboard (state = initialState, action) {
         case labels.SELECT_ALL_PROJECT_MEMBER:
             return { ...state, projects:action.payload, errorMsg: '' };
 
+        case labels.SELECT_ALL_TEAM_MEMBER:
+            return { ...state, teams:action.payload, errorMsg: '' };
+
         case labels.UPDATE_MEMBER_HAS_PROJECT:
             let newProjects = Helper.Method.copy(state.projects)
             let found = false
@@ -34,11 +38,11 @@ export function dashboard (state = initialState, action) {
                     newProjects[i].projectIsFavorite = action.payload.projectIsFavorite
                 }
             }
-
             return { ...state, projects:newProjects, errorMsg:'' };
 
         case labels.CREATE_NEW_PROJECT:
             return state // TODO
+
         case labels.DASHBOARD_ACTION_ERROR:
             return {...state, errorMsg: action.errorMsg}
 

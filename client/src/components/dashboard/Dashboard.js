@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ClearIon from '@material-ui/icons/Clear'
 import IconButton from "@material-ui/core/IconButton";
+import Zoom from '@material-ui/core/Zoom';
 
 
 class Dashboard extends React.Component {
@@ -37,7 +38,8 @@ class Dashboard extends React.Component {
     }
 
     componentWillMount () {
-        this.props.loadProjects(this.props.memberId)
+        this.props.loadProjects(this.props.memberId) // load all the project that the member is involved in
+        this.props.loadTeams(this.props.memberId) // load all the member team
 
     }
 
@@ -61,24 +63,27 @@ class Dashboard extends React.Component {
                 <Grid container style={{textAlign: 'center'}} alignItems='center' xs={12}>
                     <Grid item xs={2}/>
                     <Grid item xs={8}>
-                        <Paper className={classes.errorMsg} elevation={1}>
-                            <Typography variant="h5" component="h3" style={{color: '#990000'}}>
-                                <Grid container style={{textAlign: 'center'}} alignItems='center'>
-                                    <Grid item xs={11}>
-                                        Error
-                                    </Grid>
+                        <Zoom in={true}>
+                            <Paper className={classes.errorMsg} elevation={1}>
+                                <Typography variant="h5" component="h3" style={{color: '#990000'}}>
+                                    <Grid container style={{textAlign: 'center'}} alignItems='center'>
+                                        <Grid item xs={11}>
+                                            Error
+                                        </Grid>
 
-                                    <Grid item xs={1} sm={1}>
-                                        <IconButton onClick={this.props.hideErrorMessage}>
-                                            <ClearIon/>
-                                        </IconButton>
+                                        <Grid item xs={1} sm={1}>
+                                            <IconButton onClick={this.props.hideErrorMessage}>
+                                                <ClearIon/>
+                                            </IconButton>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </Typography>
-                            <Typography component="p">
-                                {this.props.errorMessage}
-                            </Typography>
-                        </Paper>
+                                </Typography>
+                                <Typography component="p">
+                                    {this.props.errorMessage}
+                                </Typography>
+                            </Paper>
+                        </Zoom>
+
                     </Grid>
                 </Grid>
 
@@ -92,11 +97,11 @@ class Dashboard extends React.Component {
                     <Grid item xs={12}>
                         <img src={logo} width="100" alt="prello logo"/>
                     </Grid>
-                    {errorMsg}
+                   {errorMsg}
                     <Grid item xs={8} sm={4} container justify="center" style={{textAlign: 'center'}}
                           alignItems="center">
                         <Grid item xs={12}>
-                            <TeamPanel teams={this.state.teams}/>
+                            <TeamPanel teams={this.props.teams}/>
                         </Grid>
                     </Grid>
                     <Grid item xs={8} container justify="center"
@@ -132,13 +137,15 @@ const mapStateToProps = (state) => {
         allProjects: state.dashboard.projects,
         favoriteProjects: list_favorite,
         teamProjects: [], // todo
-        memberId: state.signin.member.memberId
+        memberId: state.signin.member.memberId,
+        teams: state.dashboard.teams
     }
 }
 
 const mapDispatchToProps = {
     loadProjects: _action.dashboardAction.getAllProjectsMember,
-    hideErrorMessage: _action.dashboardAction.hideErrorMessage
+    hideErrorMessage: _action.dashboardAction.hideErrorMessage,
+    loadTeams: _action.dashboardAction.getAllTeams
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(Dashboard));

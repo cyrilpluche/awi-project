@@ -6,10 +6,11 @@ const labels = {
     RECEIVE_PROJECT: 'project:received',
     SELECT_ALL_PROJECT: 'project:select_all', // at the begin
     SELECT_ALL_PROJECT_MEMBER: 'project:select_all_project_member',
+    SELECT_ALL_TEAM_MEMBER: 'project:select_all_team_member',
     CREATE_NEW_PROJECT: 'project:create_new',
     UPDATE_MEMBER_HAS_PROJECT: 'project:update_member_has_project',
     DASHBOARD_ACTION_ERROR: 'project:dashboard_error',
-    DASHBOARD_HIDE_ERROR_MSG: 'project:hide_error_msg'
+    DASHBOARD_HIDE_ERROR_MSG: 'project:hide_error_msg' // to hide the error message
 }
 
 const findOneProject = () => ({
@@ -47,9 +48,23 @@ function getAllProjectsMember (member_id) {
         .catch (e => {
             dispatch({
                 type: labels.DASHBOARD_ACTION_ERROR,
-                errorMsg: 'An error has occured. We can\'t load your project for the moment, please try later or contact an administrator.'
+                errorMsg: 'We can\'t load your project for the moment, please try later or contact an administrator.'
             })
         })
+}
+
+function getAllTeams(member_id) {
+    return dispatch => {
+        _service.Team.getAll(member_id).then(teams => {
+            dispatch({
+                type: labels.SELECT_ALL_TEAM_MEMBER,
+                payload: teams
+            })
+        }).catch( () => dispatch({
+            type: labels.DASHBOARD_ACTION_ERROR,
+            errorMsg: 'Impossible to load your team for the moment. Please try later or contact an administrator.'
+        }))
+    }
 }
 
 
@@ -70,7 +85,7 @@ function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberh
         .catch (e => {
             dispatch({
                 type: labels.DASHBOARD_ACTION_ERROR,
-                errorMsg: 'An error has occured, impossible to execute this action'
+                errorMsg: 'impossible to execute this action'
             })
         })
 }
@@ -101,5 +116,6 @@ export const dashboardAction = {
     getAllProjectsMember,
     createProject,
     updateMemberHasProject,
-    hideErrorMessage
+    hideErrorMessage,
+    getAllTeams
 }

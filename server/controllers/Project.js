@@ -118,8 +118,6 @@ module.exports = {
         if (req.query.projectIsFavorite !== undefined && req.query.projectIsFavorite != null)
             updateField.projectIsFavorite = req.query.projectIsFavorite;
 
-
-        console.log(updateField)
         MemberHasProject.update(updateField, {
             where: {
                 projectId: req.query.projectId,

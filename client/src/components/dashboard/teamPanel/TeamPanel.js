@@ -145,7 +145,19 @@ class TeamPanel extends React.Component {
             </Dialog>
         )
 
-
+        let teams = ''
+        if (this.props.teams !== undefined) {
+            teams = (
+                this.props.teams.map((team, i) =>
+                    <ListItem button className={classes.nested} key={i}>
+                        <ListItemIcon>
+                            <GroupWork style={{fontSize: '20px'}} />
+                        </ListItemIcon>
+                        <ListItemText inset secondary={team.teamName} />
+                    </ListItem>
+                )
+            )
+        }
 
 
         return (
@@ -165,15 +177,7 @@ class TeamPanel extends React.Component {
 
                         <Collapse in={this.state.drawerOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                {this.props.teams.map((team, i) =>
-                                    <ListItem button className={classes.nested} key={i}>
-                                        <ListItemIcon>
-                                            <GroupWork style={{fontSize: '20px'}} />
-                                        </ListItemIcon>
-                                        <ListItemText inset secondary={team.teamName} />
-                                    </ListItem>
-                                )
-                                }
+                                {teams}
                             </List>
                         </Collapse>
                     </List>

@@ -28,6 +28,16 @@ const methods = {
 
         result.Project = undefined;
         return result
+    },
+
+    flatTeams (queryResult) {
+        let result = copy(queryResult)
+        let team = result.Team
+        result.teamId = team.teamId
+        result.teamName = team.teamName
+        result.Team = undefined
+
+        return result
     }
 };
 
