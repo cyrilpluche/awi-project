@@ -58,7 +58,12 @@ module.exports = {
                 attributes: [['card_id', 'id'], ['card_title', 'label']],
                 order : sequelize.col('card_id'),
                 where: {
-                    cardTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                    cardTitle: {
+                        [Sequelize.Op.or]: {
+                            [Sequelize.Op.like]: '%' + req.query.str + '%',
+                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
+                        },
+                    }
                 }
             })
             .then(cards => {

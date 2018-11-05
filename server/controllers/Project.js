@@ -1,4 +1,11 @@
+// import Member from "../../client/src/services/Member.service";
+const helper = require('../helpers/helpersMethod');
 const Project = require('../config/db_connection').Project;
+const List = require('../config/db_connection').List;
+const Card = require('../config/db_connection').Card;
+const Label = require('../config/db_connection').Label;
+
+const MemberHasProject = require('../config/db_connection').MemberHasProject
 const Member = require('../config/db_connection').Member
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
@@ -26,6 +33,11 @@ module.exports = {
                 next()
             })
             .catch(error => next(error))
+    },
+
+    createMemberHasProject (req, res, next) {
+        MemberHasProject.create(req.body)
+            .then(mhp => res.send(mhp))
     },
 
     /*  localhost:4200/api/project/find_all --- ?projectTitle=title... (optional)
@@ -97,7 +109,37 @@ module.exports = {
             })
     },
 
-    /*  localhost:4200/api/project/delete/5
+
+    /**
+     * 127.0.0.1:4200/api/project/update_memberhasProject?memberId=1&projectId=2&projectIsFavorite=false
+     * update a memberhasProject ligne by setting favorite to favorite
+     * @param req
+     * @param res
+     * @param next
+     */
+    updateMemberHasProject(req, res, next) {
+        let updateField = {};
+
+        if (req.query.memberHasProjectStatus !== undefined &&
+                req.query.memberHasProjectStatus != null)
+            updateField.memberhasprojectStatus = req.query.memberHasProjectStatus;
+
+        if (req.query.projectIsFavorite !== undefined && req.query.projectIsFavorite != null)
+            updateField.projectIsFavorite = req.query.projectIsFavorite;
+
+        MemberHasProject.update(updateField, {
+            where: {
+                projectId: req.query.projectId,
+                memberId: req.query.memberId,
+            }
+        }).then(r => {
+            if (r == null) throw 'Error'
+            else res.send(r)
+        })
+            .catch(e => res.status(400).send(e))
+    },
+
+    /**  localhost:4200/api/project/delete/5
      *
      *  return: A boolean. true = deleted, false = no deleted.
      */
@@ -127,7 +169,12 @@ module.exports = {
                 attributes: [['project_id', 'id'], ['project_title', 'label']],
                 order : sequelize.col('project_id'),
                 where: {
-                    projectTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                    projectTitle: {
+                        [Sequelize.Op.or]: {
+                            [Sequelize.Op.like]: '%' + req.query.str + '%',
+                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
+                        },
+                    }
                 }
             })
             .then(projects => {
@@ -144,16 +191,70 @@ module.exports = {
      * @param res
      * @param next
      */
-    findAllMember (req, res, next) {
-        Project.findAll({
-            include: [
-                {
-                    model: Member,
-                    where: {member_id: req.params.member}
-                }
-            ]
-        }).then(res.send)
-            .catch(e => res.status(400).send(e))
-    }
+    findAllProjectMember (req, res, next) {
+        MemberHasProject.findAll(
+            {
+                where: {member_id: req.params.member},
+                include: [
+                    {
+                        model: Project,
+                        as: 'Project'
+                    }
+                ]
+            }
+        ).then(result => {
+            let projects = [];
 
+            for (let i = 0; i < result.length; i++){
+                projects.push(
+                    helper.flatProjects(result[i])
+                )
+            }
+
+            res.send(projects)
+        })
+            .catch(e =>res.status(400).send(e) )
+    },
+
+    /**Find a member that has a project
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    findMemberHasProject(req, res, next){
+        MemberHasProject.findOne(
+            { 
+                where: req.query 
+            }
+        ).then(result => {
+            if(result) res.send(true)
+            else res.send(false)
+        })
+        .catch(e =>res.status(400).send(e) )
+    },
+
+    /**
+     * find all lists and cards of a project
+     * @param req
+     * @param res
+     * @param next
+     */
+    findAllListsCards (req, res, next) {
+        List.findAll(
+            {
+                where: req.query,
+                include: [
+                    {
+                        model: Card,
+                        as: 'CardListFks' 
+                    }
+                ]
+            }
+        ).then(listsCards => {
+            req.body.result = listsCards
+            next()
+        })
+        .catch(e =>res.status(400).send(e))
+    }
 }

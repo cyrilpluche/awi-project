@@ -45,10 +45,16 @@ class List extends Component{
         
         return (
             <Draggable draggableId={this.props.list.listId} index={this.props.index}>
-                {(provided) =>(
+                {(provided,snapshot) => {
+                    const style = {
+                        backgroundColor: '#eeeeee',
+                        fontSize: 18,
+                        ...provided.draggableProps.style,
+                    };
+                    return (
                     <div className={classes.list} 
                         {...provided.draggableProps}
-                        
+                        style={style}
                         ref={provided.innerRef}
                     >
                         <h4 className={classes.listTitle} {...provided.dragHandleProps}>{this.props.list.listTitle}</h4>
@@ -64,27 +70,32 @@ class List extends Component{
                             onClose={this.handleClose}
                         />
                         <Droppable droppableId={this.props.list.listTitle} type="CARD">
-                            {(provided) =>(
+                            {(provided,snapshot) => {
+                                const style = {
+                                    //backgroundColor: '#e4e4e4',
+                                    ...provided.droppableProps.style,
+                                };
+                                return (
                                     <div 
                                     ref={provided.innerRef} 
                                     {...provided.droppableProps}
-                                    className={classes.dropSpace}>
+                                    className={classes.dropSpace} style={style}>
                                       {cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
                                        
                                     {provided.placeholder}
                                     
                                     </div>
-                            )}
+                            )}}
                         </Droppable>
                         
                         
                     </div>
-                )}           
+                )}}           
             </Draggable>   
         )
     }
 }
-//{list.listContent.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+
 const mapStateToProps = (state) => ({
     cards: state.project.cards
 })

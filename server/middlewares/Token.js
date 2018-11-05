@@ -6,7 +6,7 @@ module.exports = {
 
     /* ================= METHODS ================= */
 
-    /*  into route : localhost:4200/api/member/create
+    /**  into route : localhost:4200/api/member/create
      *
      *  req.body = {
      *      memberFirstname = firstname,
@@ -72,4 +72,19 @@ module.exports = {
         req.body.memberPassword = s
         next()
     },
+
+    /**
+     *  return: Create a token for invitation link of a Member on a Project (only if the member don't exist).
+     */
+    generateInvitationToken(req, res, next) {
+    var payload = {
+        memberEmail: req.body.memberEmail,
+        projectId: req.body.projectId,
+    }
+    payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: 60 * 60 * 24 * 365 // expires in 1 year
+    });
+    req.body.result = payload
+    next()
+},
 }

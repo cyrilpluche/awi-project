@@ -55,7 +55,12 @@ module.exports = {
                 attributes: [['list_id', 'id'], ['list_title', 'label']],
                 order : sequelize.col('list_id'),
                 where: {
-                    listTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                    listTitle: {
+                        [Sequelize.Op.or]: {
+                            [Sequelize.Op.like]: '%' + req.query.str + '%',
+                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
+                        },
+                    }
                 }
             })
             .then(lists => {

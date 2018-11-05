@@ -24,11 +24,17 @@ class Signin extends React.Component {
 
         this.submit = this.submit.bind(this);
 
-        this.state = {
-            memberEmail: '',
-            memberPassword: '',
-        };
-
+        if (props.invitation) {
+            this.state = {
+                memberEmail: props.invitation.memberEmail,
+                memberPassword: '',
+            };
+        } else {
+            this.state = {
+                memberEmail: '',
+                memberPassword: '',
+            };
+        }
         this.signinWithGithub = this.signinWithGithub.bind(this);
     }
 
@@ -50,7 +56,12 @@ class Signin extends React.Component {
     submit () {
         let memberEmail = this.state.memberEmail
         let memberPassword = this.state.memberPassword
-        this.props.onLogin(memberEmail, memberPassword)
+
+        if (this.props.invitation) {
+            this.props.onLogin(memberEmail, memberPassword, null)
+        } else {
+            this.props.onLogin(memberEmail, memberPassword, '/home')
+        }
     }
 
     signinWithGithub () {
@@ -89,6 +100,7 @@ class Signin extends React.Component {
                                         <TextField
                                             error={!!errorMsg}
                                             required
+                                            disabled={this.props.invitation}
                                             className={classes.textfield}
                                             name="memberEmail"
                                             id='email'
@@ -96,6 +108,7 @@ class Signin extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             type="email"
+                                            value={this.state.memberEmail}
                                             fullWidth
                                             onChange={this.handleChange.bind(this)}
                                         />
@@ -150,21 +163,34 @@ class Signin extends React.Component {
                                     <Typography variant="h4" gutterBottom className={classes.xsMarginBottom}>
                                         Start managing your projects and share them
                                     </Typography>
+                                    { !this.props.invitation ? (
+                                        <div>
+                                            <Typography variant="h6" gutterBottom>
+                                                Join Prello today
+                                            </Typography>
 
-                                    <Typography variant="h6" gutterBottom>
-                                        Join Prello today
-                                    </Typography>
+                                            <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            fullWidth
+                                            className={classes.button}
+                                            onClick={this.goToSignUp}
+                                            >
+                                                Create your account
+                                                <HowToRegIcon className={classes.rightIcon} />
+                                            </Button>
 
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        fullWidth
-                                        className={classes.button}
-                                        onClick={this.goToSignUp}
-                                    >
-                                        Create your account
-                                        <HowToRegIcon className={classes.rightIcon} />
-                                    </Button>
+                                            <Button
+                                            variant="outlined"
+                                            color="inherit"
+                                            fullWidth
+                                            className={classes.button}
+                                            >
+                                                Sign In with Github
+                                                <CloudIcon className={classes.rightIcon} />
+                                            </Button>
+                                        </div>
+                                    ) : null }
 
                                     <Button
                                         variant="outlined"
@@ -185,8 +211,6 @@ class Signin extends React.Component {
 
                         </Grid>
                     </Grid>
-
-
 
                     <label className={classes.errorLabel}>{errorMsg}</label>
                 </Grid>

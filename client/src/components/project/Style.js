@@ -18,6 +18,7 @@ export const styles = theme => ({
     },
     button: {
         margin: theme.spacing.unit,
+        
       },
     leftIcon:{
         marginRight: theme.spacing.unit,
@@ -34,6 +35,9 @@ export const styles = theme => ({
     cancelIcon:{
         color:`red`,
         paddingTop: `25px`
+    },
+    drawer:{
+        width:`250px`
     }
 
 })

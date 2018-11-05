@@ -1,9 +1,11 @@
 import Request from './Request.helper';
 import History from './History.helper';
+import Method from './Method.helper'
 
 const helper = {
     Request,
-    History
+    History,
+    Method
 }
 
 export default helper

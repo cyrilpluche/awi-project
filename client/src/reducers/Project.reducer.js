@@ -47,9 +47,39 @@ export function project (state = initialState, action) {
                 ...state,
                 members: action.payload
             };
+        //TODO
         case projectLabels.SEND_INVITATION:
             return {
                 ...state
+            };
+        case projectLabels.GET_MEMBER_STATUS:
+            return {
+                ...state,
+                isAdmin : action.payload
+            };
+        //TODO
+        case projectLabels.REMOVE_MEMBER_FROM_PROJECT:
+            return {
+                ...state,
+            };
+        //TODO
+        case projectLabels.SET_MEMBER_ADMIN:
+            return {
+                ...state,
+            };
+        //TODO
+        case projectLabels.GET_PROJECT_ACTIVITY:
+            return {
+                ...state,
+            };
+        case projectLabels.GET_ALL_LABELS:
+            return {
+                 ...state,
+            };
+        case projectLabels.MEMBER_HAS_PROJECT:
+            return {
+                 ...state,
+                 loggedHasProject : action.payload
             };
         default:
             return state
