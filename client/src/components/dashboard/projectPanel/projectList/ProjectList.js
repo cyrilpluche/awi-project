@@ -41,6 +41,8 @@ class ProjectList extends React.Component {
         super(props)
 
         this.setProjectHasFavorite = this.setProjectHasFavorite.bind(this)
+        this.goTo = this.goTo.bind(this)
+        this.createProject = this.createProject.bind(this)
         this.state = {
             dialogDisplayed: false,
             buttonCreateProjectDisabled: true,
@@ -79,6 +81,7 @@ class ProjectList extends React.Component {
         else return 'Private'
     }
 
+    // get the locker associated to the visibility
     locker = () => {
         if (this.state.newProjectisPublic) return (<LockerIcon style={{fontSize: '32px', color: '#d9d9d9'}}/>)
         else return (<LockerIcon style={{fontSize: '32px', color: '#ff8566'}}/>)
@@ -97,8 +100,22 @@ class ProjectList extends React.Component {
         this.props.updateProject(projectId, this.props.memberId, favoriteSate, null)
     }
 
+    goTo (projectId) {
+        Helper.History.push(`/project/${projectId}`)
+    }
 
+    createProject () {
+        let title = document.querySelector('#projectTitle').value;
+        let visibility = 0
+        if (this.state.newProjectisPublic) visibility = 1
 
+        let status = 0
+        let targetDate = new Date(document.querySelector('#projectTargetDate').value)
+
+        this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, 0)
+
+        this.handleCloseDialog()
+    }
 
     render() {
         const { classes } = this.props;
@@ -195,7 +212,9 @@ class ProjectList extends React.Component {
                     </Grid>
                     <DialogActions>
                         <Button color="primary" fullWidth variant="outlined"
-                                disabled={this.state.buttonCreateProjectDisabled}>
+                                disabled={this.state.buttonCreateProjectDisabled}
+                                onClick={this.createProject}
+                        >
                             Create
                         </Button>
                     </DialogActions>
@@ -210,14 +229,20 @@ class ProjectList extends React.Component {
                 (project, key) => {
                     let icon = (
                         <IconButton aria-label="Add to favorites" className={classes.addFavoriteButtonIcon}
-                                    onClick={() => this.setProjectHasFavorite(project.projectId)}>
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        this.setProjectHasFavorite(project.projectId)
+                                    }}>
                             <AddFavoriteIcon className={classes.Icon}/>
                         </IconButton>
                     )
                     if (project.projectIsFavorite) { // the project is already favorite
                         icon =  (
                             <IconButton aria-label="remove to favorites" className={classes.favoriteButtonIcon}
-                                        onClick={() => this.setProjectHasFavorite(project.projectId)}>
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            this.setProjectHasFavorite(project.projectId)
+                                        }}>
                                 <FavoriteIcon className={classes.Icon}/>
                             </IconButton>
                         )
@@ -225,8 +250,11 @@ class ProjectList extends React.Component {
 
 
                     let card = (
-                        <Card className={classes.default_card}>
-                            <CardActionArea>
+                        <Card className={classes.default_card} raised>
+                            <CardActionArea  onClick={(e) => {
+
+                                this.goTo(project.projectId)
+                            }}>
                                 <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '3%'}}>
                                     {project.projectTitle}
                                 </h2>
@@ -237,8 +265,10 @@ class ProjectList extends React.Component {
                     if (this.props.backgroundimage !== undefined && this.props.backgroundimage !=='') {
                         // if the projects has a background image
                         card = (
-                            <Card className={classes.default_card}>
-                                <CardActionArea>
+                            <Card className={classes.default_card} raised>
+                                <CardActionArea onClick={(e) => {
+                                    this.goTo(project.projectId)
+                                }}>
                                     <CardMedia  height="120" src={this.props.backgroundimage}>
                                         <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
                                             {project.projectTitle}
@@ -306,7 +336,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    createProject: _action.dashboardAction.createProject, // create un new project
+    createProjectMember: _action.dashboardAction.createProject, // create un new project
     searchMember: _action.memberAction.searchMember,
     updateProject: _action.dashboardAction.updateMemberHasProject
 }

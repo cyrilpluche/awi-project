@@ -20,8 +20,6 @@ class SimpleDialog extends Component {
 
 
     handleClose = () => {
-      console.log(this.state.newTitle)
-      console.log(this.state.submitted)
       const newTitle = this.state.newTitle
       this.setState({newTitle:''}, function() { 
         if(!this.state.submitted) this.props.onClose('')

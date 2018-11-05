@@ -46,16 +46,16 @@ function findAllLists (idProject) {
     ]
 
     return dispatch => {
-        /*_service.List.getAll(idProject)
-        .then(res => {*/
+        _service.List.getAll(idProject)
+        .then(res => {
             dispatch({
                 type: labels.GET_ALL_LISTS,
-                payload: fakeLists
+                payload: res
             });
-        /*})
+        })
         .catch((err) => {
             dispatch(err)
-        });*/
+        });
     }
 }
 

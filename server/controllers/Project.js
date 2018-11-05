@@ -31,6 +31,11 @@ module.exports = {
             .catch(error => next(error))
     },
 
+    createMemberHasProject (req, res, next) {
+        MemberHasProject.create(req.body)
+            .then(mhp => res.send(mhp))
+    },
+
     /*  localhost:4200/api/project/find_all --- ?projectTitle=title... (optional)
      *
      *  return: Array of Project objects with given attributes.
