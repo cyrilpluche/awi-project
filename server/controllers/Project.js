@@ -1,8 +1,11 @@
 // import Member from "../../client/src/services/Member.service";
 const helper = require('../helpers/helpersMethod');
 const Project = require('../config/db_connection').Project;
-const Member = require('../config/db_connection').Member;
-const MemberHasProject = require('../config/db_connection').Memberhasproject
+const List = require('../config/db_connection').List;
+const Card = require('../config/db_connection').Card;
+const Label = require('../config/db_connection').Label;
+
+const MemberHasProject = require('../config/db_connection').MemberHasProject
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 
@@ -210,6 +213,30 @@ module.exports = {
             res.send(projects)
         })
             .catch(e =>res.status(400).send(e) )
+    },
+
+    /**
+     * find all lists and cards of a project
+     * @param req
+     * @param res
+     * @param next
+     */
+    findAllListsCards (req, res, next) {
+        List.findAll(
+            {
+                where: req.query,
+                include: [
+                    {
+                        model: Card,
+                        as: 'CardListFks' 
+                    }
+                ]
+            }
+        ).then(listsCards => {
+            req.body.result = listsCards
+            next()
+        })
+        .catch(e =>res.status(400).send(e))
     }
 
 }

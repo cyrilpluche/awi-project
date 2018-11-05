@@ -9,9 +9,9 @@ const memberHasProjectController = require('../controllers').MemberHasProject;
 
 router.get('/find_all', projectController.findAll);
 router.get('/find_all_searchbar', projectController.findAllSearchbar);
-
-
 router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.findAllProjectMember);
+router.get('/find_all_lists_cards',mw.Token.verifyToken, projectController.findAllListsCards);
+
 
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);

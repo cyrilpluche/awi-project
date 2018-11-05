@@ -26,6 +26,7 @@ module.exports = {
     Card: models.Card,
     Action: models.Action,
     MemberHasProject: models.Memberhasproject,
-    Teamhasmember: models.Teamhasmember
+    Teamhasmember: models.Teamhasmember,
+    Label: models.Label
 
 };
