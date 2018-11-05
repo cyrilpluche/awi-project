@@ -27,7 +27,7 @@ export const style = theme => ({
     },
     logo: {
         marginTop: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit * 3,
+        marginBottom: theme.spacing.unit * 2,
     },
     paddingLeft: {
         paddingLeft: theme.spacing.unit,

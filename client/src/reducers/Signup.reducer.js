@@ -2,12 +2,15 @@ import _action from '../actions';
 
 const labels = _action.signupAction.labels
 
+
 const initialState = {
     isAccountValidNow: false,
-    msgError: ['', '']
+    msgError: ['', ''],
+    isInvitation: false
 }
 
 export function signup (state = initialState, action){
+
     switch (action.type) {
         case labels.SIGN_UP:
             return {

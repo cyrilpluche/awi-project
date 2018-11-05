@@ -1,4 +1,5 @@
 import _service from '../services'
+import _helper from '../helpers'
 
 const labels = {
     SELECT_PROJECT: 'project:select_one',
@@ -90,18 +91,34 @@ function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberh
         })
 }
 
-function createProject (project_title, project_visibility, project_status, project_date_target) {
-    let o = {
-        project_title, project_visibility, project_status, project_date_target
-        // member to send invitation
-    }
-    return dispatch => _service.Project.createAndSendInvitation(o)
-        .then(d => {
-            dispatch({ // TODO maybe load all the projects of the member
-                type: labels.CREATE_NEW_PROJECT,
+function createProject (projectTitle, projectVisibility, projectStatus, projectDateTarget,
+                        memberId, memberhasprojectStatus = 0) {
 
+    return dispatch => _service.Project.createProject( projectTitle, projectVisibility, projectStatus, projectDateTarget)
+        .then(project => {
+            let projectId = project.projectId
+            return _service.Project.createMemberHasProject(memberId, projectId, memberhasprojectStatus)
+                .then( () => {
+                    let project = {
+                        projectId,
+                        projectTitle,
+                        projectVisibility,
+                        projectStatus,
+                        projectDateTarget
+                    }
+                    dispatch({
+                        type: labels.CREATE_NEW_PROJECT,
+                        payload: project
+                    })
+                    // todo add permission
+                    _helper.History.push('/project/' + projectId)
+                })
+    }).catch (e => {
+            dispatch({
+                type: labels.DASHBOARD_ACTION_ERROR,
+                errorMsg: 'The project wasn`t able to be created. Please try later or contact an administrator.'
             })
-    })
+        })
 }
 
 function hideErrorMessage() {

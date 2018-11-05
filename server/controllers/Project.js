@@ -1,8 +1,11 @@
 // import Member from "../../client/src/services/Member.service";
 const helper = require('../helpers/helpersMethod');
 const Project = require('../config/db_connection').Project;
-const Member = require('../config/db_connection').Member;
-const MemberHasProject = require('../config/db_connection').Memberhasproject
+const List = require('../config/db_connection').List;
+const Card = require('../config/db_connection').Card;
+const Label = require('../config/db_connection').Label;
+
+const MemberHasProject = require('../config/db_connection').MemberHasProject
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 
@@ -29,6 +32,11 @@ module.exports = {
                 next()
             })
             .catch(error => next(error))
+    },
+
+    createMemberHasProject (req, res, next) {
+        MemberHasProject.create(req.body)
+            .then(mhp => res.send(mhp))
     },
 
     /*  localhost:4200/api/project/find_all --- ?projectTitle=title... (optional)
@@ -130,7 +138,7 @@ module.exports = {
             .catch(e => res.status(400).send(e))
     },
 
-    /*  localhost:4200/api/project/delete/5
+    /**  localhost:4200/api/project/delete/5
      *
      *  return: A boolean. true = deleted, false = no deleted.
      */
@@ -160,7 +168,12 @@ module.exports = {
                 attributes: [['project_id', 'id'], ['project_title', 'label']],
                 order : sequelize.col('project_id'),
                 where: {
-                    projectTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                    projectTitle: {
+                        [Sequelize.Op.or]: {
+                            [Sequelize.Op.like]: '%' + req.query.str + '%',
+                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
+                        },
+                    }
                 }
             })
             .then(projects => {
@@ -218,6 +231,29 @@ module.exports = {
             else res.send(false)
         })
         .catch(e =>res.status(400).send(e) )
+    },
+    
+    /**
+     * find all lists and cards of a project
+     * @param req
+     * @param res
+     * @param next
+     */
+    findAllListsCards (req, res, next) {
+        List.findAll(
+            {
+                where: req.query,
+                include: [
+                    {
+                        model: Card,
+                        as: 'CardListFks' 
+                    }
+                ]
+            }
+        ).then(listsCards => {
+            req.body.result = listsCards
+            next()
+        })
+        .catch(e =>res.status(400).send(e))
     }
 
-}

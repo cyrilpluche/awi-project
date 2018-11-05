@@ -24,7 +24,7 @@ const signError = {
     payload: "Email or password is incorrect.",
 }
 
-function signin (memberEmail, memberPassword) {
+function signin (memberEmail, memberPassword, redirection) {
     const body = {
         memberEmail: memberEmail,
         memberPassword: memberPassword
@@ -33,8 +33,8 @@ function signin (memberEmail, memberPassword) {
         _service.Member.signIn(body)
             .then(res => {
                 localStorage.setItem('memberToken', res.memberToken)
-                _helper.History.push('/home');
                 dispatch(signSuccess(res));
+                if (redirection) _helper.History.push(redirection);
             })
             .catch((err) => {
                 dispatch(signError)

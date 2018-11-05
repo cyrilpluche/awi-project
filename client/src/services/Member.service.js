@@ -72,9 +72,26 @@ const Member = {
         return Api.get(url + 'find_all_members/'+projectId,).then(res => res.data)
     },
 
-    /* Check if the token contains a member that exist */
+    /** ==================== INVITATIONS ==================== */
+
+    /** Check if the token contains a member that exist */
     decrpytInvitation (memberToken) {
-        return Api.get(url + 'invitation_token', memberToken).then(res => res.data)
+        return Api.get(url + 'decrypt_invitation', memberToken).then(res => res.data)
+    },
+
+    getInvitation (object) {
+        let where = helper.Request.urlFromObject(object)
+        return Api.get(url + 'find_one_invitation' + where).then(res => res.data)
+    },
+
+    updateInvitation (body, query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.put(url + 'update_invitation' + where, body).then(res => res.data)
+    },
+
+    deleteInvitation (query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.delete(url + 'delete_invitation' + where).then(res => res.data)
     }
 }
 

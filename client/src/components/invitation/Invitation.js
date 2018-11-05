@@ -3,21 +3,25 @@ import { connect } from 'react-redux'
 import { withStyles} from "@material-ui/core";
 import { style } from './Style'
 import _action from "../../actions";
+import _helper from "../../helpers";
+
 import LoaderPage from "../loaderPage/LoaderPage"
 import Grid from "@material-ui/core/Grid/Grid";
 import logo from "../../public/images/prello-logo-2.png";
 import Typography from "@material-ui/core/Typography/Typography";
 import Button from "@material-ui/core/Button/Button";
 import DoneIcon from "@material-ui/icons/Done";
+import CloseIcon from "@material-ui/icons/Close";
 import PropTypes from 'prop-types';
+import Signup from "../signup/Signup";
+import Signin from "../signin/Signin";
 
 class Invitation extends React.Component {
     constructor(props){
         super(props)
         this.componentDidMount = this.componentDidMount.bind(this)
-        this.state= {
-            projectTitle: props.projectTitle
-        }
+        this.acceptInvitation = this.acceptInvitation.bind(this)
+        this.refuseInvitation = this.refuseInvitation.bind(this)
     }
 
     componentDidMount () {
@@ -27,23 +31,37 @@ class Invitation extends React.Component {
 
     }
 
-    test () {
-        console.log(this.props.projectTitle)
-        this.setState({ projectTitle: this.props.projectTitle })
+    acceptInvitation () {
+        let body = {
+            memberhasprojectStatus: 1
+        }
+        let query = {
+            projectId: this.props.project.projectId,
+            memberId: this.props.member.memberId
+        }
+        this.props.onReplyToInvitation(true, body, query)
+    }
+
+    refuseInvitation () {
+        let query = {
+            projectId: this.props.project.projectId,
+            memberId: this.props.member.memberId
+        }
+        this.props.onReplyToInvitation(false, null, query)
     }
 
     render() {
         const {classes} = this.props;
 
         return (
-            <div>
-                {this.props.isLoading ? (
+            <div className={ classes.layout }>
+                {this.props.isLoading || this.props.isLoadingGlobal ? (
                     <LoaderPage/>
-                ) : this.props.isAccountExist ? (
+                ) : this.props.isLogged ? (
                     <div>
                         {this.props.isAccountValid ? (
                             <Grid container justify="center">
-                                <Grid onClick={this.test.bind(this)} justify='center' container className={classes.logo}>
+                                <Grid justify='center' container className={classes.logo}>
                                     <Grid item>
                                         <img src={logo} width="100" alt="prello logo"/>
                                     </Grid>
@@ -56,28 +74,48 @@ class Invitation extends React.Component {
                                 </Grid>
                                 <Grid justify="center" container>
                                     <Typography variant="overline" gutterBottom className={classes.marginBottom}>
-                                        {this.props.projectTitle}
+                                        {this.props.project.projectTitle}
                                     </Typography>
                                 </Grid>
 
+                                <Grid container justify="center">
+                                    <Grid item xs={8} sm={4} md={3}>
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.button}
+                                            onClick={this.acceptInvitation}
+                                        >
+                                            join
+                                            <DoneIcon className={classes.rightIcon} />
+                                        </Button>
+                                    </Grid>
+                                </Grid>
 
                                 <Grid container justify="center">
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        className={classes.button}
-                                    >
-                                        join
-                                        <DoneIcon className={classes.rightIcon} />
-                                    </Button>
+                                    <Grid item xs={8} sm={4} md={3}>
+                                        <Button
+                                            fullWidth
+                                            variant="outlined"
+                                            color="secondary"
+                                            className={classes.button}
+                                            onClick={this.refuseInvitation}
+                                        >
+                                            Refuse
+                                            <CloseIcon className={classes.rightIcon} />
+                                        </Button>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         ) : (
                             <div>NOT VALID NO !</div>
                         )}
                     </div>
+                ) : this.props.isAccountExist ? (
+                    <Signin parent='Invitation' invitation={{memberEmail: this.props.member.memberEmail}} />
                 ) : (
-                    <div>DONT EXIST YES !</div>
+                    <Signup invitation={{memberEmail: this.props.member.memberEmail}} />
                 )}
             </div>
         )
@@ -89,14 +127,18 @@ Invitation.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
+    isLoadingGlobal: state.signin.isLoading,
+    isLoading: state.invitation.isLoading,
     isAccountExist: state.invitation.isAccountExist,
     isAccountValid: state.invitation.isAccountValid,
-    projectTitle: state.invitation.projectTitle,
-    isLoading: state.invitation.isLoading,
+    isLogged: state.signin.isLogged,
+    member: state.invitation.member,
+    project: state.invitation.project
 })
 
 const mapDispatchToProps = {
-    onDecryptInvitation: _action.invitationAction.isMemberExist
+    onDecryptInvitation: _action.invitationAction.isMemberExist,
+    onReplyToInvitation: _action.invitationAction.replyToInvitation
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(Invitation));

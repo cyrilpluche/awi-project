@@ -4,15 +4,14 @@ const labels = invitationAction.labels
 
 const initialState = {
     isLoading: true,
-    projectTitle: 'abracadabra'
 };
 
 export function invitation (state = initialState, action) {
     switch (action.type) {
         case labels.MEMBER_EXIST:
             return { ...state,
-                projectTitle: action.payload.informations.projectTitle,
-                informations: action.payload.informations,
+                project: action.payload.project,
+                member: action.payload.member,
                 isAccountExist: true,
                 isAccountValid: action.payload.isAccountValid,
                 isLoading: false
@@ -27,6 +26,18 @@ export function invitation (state = initialState, action) {
             };
 
         case labels.DECRYPT_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case labels.INVITATION_REPLY:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case labels.INVITATION_REPLY_ERROR:
             return {
                 ...state,
                 isLoading: false

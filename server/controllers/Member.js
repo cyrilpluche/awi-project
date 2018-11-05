@@ -253,8 +253,7 @@ module.exports = {
      */
     tokenToQuery(req, res, next) {
         try {
-            req.decoded.memberToken = req.body.result
-            req.query = {memberEmail: req.decoded.memberEmail}
+            req.query = { memberEmail: req.decoded.memberEmail }
             next()
         } catch (err) {
             res.status(500).send('Informations missing from the token')
@@ -265,30 +264,24 @@ module.exports = {
      *
      *  return: Check if the user exist for an invitation.
      */
-    isInvitated(req, res, next) {
+    decodedToResult (req, res, next) {
         try {
             if (req.body.result) {
                 // The user exist
                 req.body.result = {
                     isExist: true,
+                    projectId: req.decoded.projectId,
                     memberId: req.body.result.memberId,
-                    membePseudo: req.body.result.memberPseudo,
                     memberEmail: req.body.result.memberEmail,
                     memberStatus: req.body.result.memberStatus,
-                    //projectId: req.decoded.projectId,
-                    //projectTitle: req.decoded.projectTitle
-                    projectId: 1,
-                    projectTitle: 'Tu le sais gros'
                 }
                 next()
             } else {
                 // The user don't exist
                 req.body.result = {
                     isExist: false,
-                    memberToken: req.decoded.memberToken,
                     memberEmail: req.decoded.memberEmail,
-                    projectId: req.decoded.projectId,
-                    projectTitle: req.decoded.projectTitle
+                    projectId: req.decoded.projectId
                 }
                 next()
             }

@@ -12,6 +12,9 @@ export const style = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    layout: {
+        height: '100%'
+    }
 });
 
 
