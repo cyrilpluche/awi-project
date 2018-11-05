@@ -3,12 +3,31 @@ export const styles = theme => ({
         textAlign:`center`
     },
     validIcon:{
-        marginLeft: theme.spacing.unit,
         color:`#6bb53f`,
-        paddingTop: `25px`
     },
     divider:{
         paddingBottom:`60px`
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    marginBottom: {
+        marginBottom: 20
+    },
+    marginBottomTop: {
+        marginTop: 15
+    },
+    memberList: {
+        overflowY: 'scroll',
+        height: theme.spacing.unit * 10,
+    },
+    memberItem: {
+        //maxHeight: 10
+    },
+    errorMsg: {
+        color: '#f44336',
+    },
+    memberDialog: {
+        width: '440px'
     }
-
 })

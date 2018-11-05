@@ -6,11 +6,15 @@ const labels = {
     UPDATE_LIST : "UPDATE_LIST",
     GET_PROJECT_INFO : "GET_PROJECT_INFO",
     GET_ALL_MEMBERS:"GET_ALL_MEMBERS",
-    SEND_INVITATION:"SEND_INVITATION",
+    GET_ALL_MEMBERS_ERROR:"GET_ALL_MEMBERS_ERROR",
+    INVITATION_SUCCESS: "INVITATION_SUCCESS",
+    INVITATION_ERROR: "INVITATION_ERROR",
     GET_MEMBER_STATUS:"GET_MEMBER_STATUS",
     REMOVE_MEMBER_FROM_PROJECT:"REMOVE_MEMBER_FROM_PROJECT",
+    REMOVE_MEMBER_FROM_PROJECT_ERROR:"REMOVE_MEMBER_FROM_PROJECT_ERROR",
     SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
-    GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY"
+    GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY",
+    LOAD: "LOAD"
 }
 
 /** TODO SERVICE
@@ -47,45 +51,48 @@ function findAllLists (idProject) {
 
     return dispatch => {
         _service.List.getAll(idProject)
-        .then(res => {
-            dispatch({
-                type: labels.GET_ALL_LISTS,
-                payload: res
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_LISTS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 
-function findAllMembers (idProject) {
+function findAllMembers (projectId) {
     return dispatch => {
-        _service.Member.getAllMembers(idProject)
-        .then(res => {     
-            dispatch({
-                type: labels.GET_ALL_MEMBERS,
-                payload: res
+        _service.Project.getAllMembers({ projectId: projectId })
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_MEMBERS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.GET_ALL_MEMBERS_ERROR,
+                    payload: err
+                });
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 
 function createList (listTitle, projectId, listFather) {
-    
+
     const body = {
         listTitle: listTitle,
         listStatus : 0,
         projectId: projectId,
         listFather:listFather
     }
-        return dispatch => {
-            _service.List.create(body)
-            .then(res => { 
-                     _service.List.getAll(projectId)
+    return dispatch => {
+        _service.List.create(body)
+            .then(res => {
+                _service.List.getAll(projectId)
                     .then(resFinal => {
                         dispatch({
                             type: labels.GET_ALL_LISTS,
@@ -99,41 +106,40 @@ function createList (listTitle, projectId, listFather) {
             .catch((err) => {
                 dispatch(err)
             });
-        }  
+    }
 }
-
 
 function updateLists (listId,fatherListId) {
     let body = {
         listFather : fatherListId
     }
-       
+
     return dispatch => {
         _service.List.update(listId,body)
-            .then(res => { 
+            .then(res => {
                 dispatch({
                     type: labels.UPDATE_LIST,
                     payload: res
                 });
             })
-        .catch((err) => {
-            dispatch(err)
-        });
+            .catch((err) => {
+                dispatch(err)
+            });
     }
 }
 
 function getProjectInfo(projectId){
     return dispatch => {
         _service.Project.getOne(projectId)
-        .then(res => {
-            dispatch({
-                type: labels.GET_PROJECT_INFO,
-                payload: res
+            .then(res => {
+                dispatch({
+                    type: labels.GET_PROJECT_INFO,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 
@@ -143,21 +149,21 @@ function updateProjectTitle(newProjectTitle, projectId){
     }
     return dispatch => {
         _service.Project.update(projectId,body)
-        .then(res => {
-            _service.Project.getOne(projectId)
             .then(res => {
-                dispatch({
-                    type: labels.GET_PROJECT_INFO,
-                    payload: res
-                });
+                _service.Project.getOne(projectId)
+                    .then(res => {
+                        dispatch({
+                            type: labels.GET_PROJECT_INFO,
+                            payload: res
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch(err)
+                    });
             })
             .catch((err) => {
                 dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 
@@ -167,74 +173,76 @@ function updateProjectVisibility(visibilityValue, projectId){
     }
     return dispatch => {
         _service.Project.update(projectId,body)
-        .then(res => {
-            _service.Project.getOne(projectId)
             .then(res => {
-                dispatch({
-                    type: labels.GET_PROJECT_INFO,
-                    payload: res
-                });
+                _service.Project.getOne(projectId)
+                    .then(res => {
+                        dispatch({
+                            type: labels.GET_PROJECT_INFO,
+                            payload: res
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch(err)
+                    });
             })
             .catch((err) => {
                 dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 
 /** TODO SERVICE
  * Send an invitation to a member for a specific project.
- * 
+ *
  */
-function sendInvitationProject(email,projectId){
-    const body = {
-        memberEmail : email
-    }
+function sendInvitationProject(body){
     return dispatch => {
-        _service.Member.get(body)
-        .then(res => {
-            if(res){
-                console.log(res)
-                const body = {
-                    memberId : res.memberId,
-                    memberEmail : res.memberEmail,
-                    projectId: projectId
-                }
-                /*_service.Project.sendInvitation(body)
-                .then(res => {*/
-                    dispatch({
-                        type: labels.SEND_INVITATION,
-                        payload: res
-                    });
-               /* })
-                .catch((err) => {
-                    dispatch(err)
-                });*/
-            }else{
-                console.log("EXISTE PAS")
-                const body = {
-                    memberEmail : email,
-                    projectId: projectId
-                }
-               /* _service.Project.createAndSendInvitation(body)
-                .then(res => {*/
-                    dispatch({
-                        type: labels.SEND_INVITATION,
-                        payload: res
-                    });
-                /*})
-                .catch((err) => {
-                    dispatch(err)
-                });*/
-            }
-               
-        })
-        .catch((err) => {
-            dispatch(err)
+
+        dispatch({
+            type: labels.LOAD
         });
+
+        let newMember = {
+            memberLastname: 'unknow',
+            memberFirstname: 'unknow',
+            memberPseudo: 'unknow',
+            memberStatus: 2,
+            memberEmail: body.memberEmail
+        }
+        _service.Member.createIfNotExist(newMember)
+            .then(member => {
+                body.memberId = member.memberId
+                body.memberhasprojectStatus = 0
+                body.projectIdFavorite = false
+
+                _service.Project.createAndSendInvitation(body)
+                    .then(res => {
+                        _service.Project.getAllMembers({ projectId: body.projectId })
+                            .then(res => {
+                                dispatch({
+                                    type: labels.GET_ALL_MEMBERS,
+                                    payload: res
+                                });
+                            })
+                            .catch((err) => {
+                                dispatch({
+                                    type: labels.GET_ALL_MEMBERS_ERROR,
+                                    payload: err
+                                });
+                            });
+                    })
+                    .catch((err) => {
+                        dispatch({
+                            type: labels.INVITATION_ERROR
+                        })
+                    });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.INVITATION_ERROR
+                })
+            });
+
 
     }
 }
@@ -250,10 +258,10 @@ function getMemberStatus(projectId, memberId){
     return dispatch => {
         /*_service.Project.getMemberStatus(body)
         .then(res => {*/
-            dispatch({
-                type: labels.GET_MEMBER_STATUS,
-                payload: true
-            });
+        dispatch({
+            type: labels.GET_MEMBER_STATUS,
+            payload: true
+        });
         /*})
         .catch((err) => {
             dispatch(err)
@@ -264,23 +272,35 @@ function getMemberStatus(projectId, memberId){
 /** TODO SERVICE
  * Remove a member from a project
  */
-function removeMemberFromProject(projectId,memberId){
-    const body = {
-        memberId : memberId,
-        projectId:projectId
-    }
+function removeMemberFromProject(query){
     return dispatch => {
-
-        /*_service.Project.removeFromProject(body)
-        .then(res => {*/
-            dispatch({
-                type: labels.REMOVE_MEMBER_FROM_PROJECT,
-                payload: false
+        dispatch({
+            type: labels.LOAD
+        });
+        _service.Member.deleteInvitation(query)
+            .then(res => {
+                dispatch({
+                    type: labels.REMOVE_MEMBER_FROM_PROJECT
+                })
+                _service.Project.getAllMembers({ projectId: query.projectId })
+                    .then(res => {
+                        dispatch({
+                            type: labels.GET_ALL_MEMBERS,
+                            payload: res
+                        });
+                    })
+                    .catch((err) => {
+                        dispatch({
+                            type: labels.GET_ALL_MEMBERS_ERROR,
+                            payload: err
+                        });
+                    });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.REMOVE_MEMBER_FROM_PROJECT_ERROR
+                })
             });
-        /*})
-        .catch((err) => {
-            dispatch(err)
-        });*/
     }
 }
 
@@ -296,10 +316,10 @@ function setMemberAsAdmin(projectId, memberId){
 
         /*_service.Project.setAsAdmin(body)
         .then(res => {*/
-            dispatch({
-                type: labels.SET_MEMBER_ADMIN,
-                payload: false
-            });
+        dispatch({
+            type: labels.SET_MEMBER_ADMIN,
+            payload: false
+        });
         /*})
         .catch((err) => {
             dispatch(err)
@@ -316,10 +336,10 @@ function getActivity(projectId){
 
         /*_service.Project.getActivity(projectId)
         .then(res => {*/
-            dispatch({
-                type: labels.GET_PROJECT_ACTIVITY,
-                payload: false
-            });
+        dispatch({
+            type: labels.GET_PROJECT_ACTIVITY,
+            payload: false
+        });
         /*})
         .catch((err) => {
             dispatch(err)
@@ -334,15 +354,15 @@ function getLabels(){
     return dispatch => {
 
         _service.Project.getLabels()
-        .then(res => {
-            dispatch({
-                type: labels.GET_ALL_LABELS,
-                payload: res
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_LABELS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 

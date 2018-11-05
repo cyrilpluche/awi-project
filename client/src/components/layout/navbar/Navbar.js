@@ -125,7 +125,7 @@ class Navbar extends React.Component {
         this.setState({ showSearchResults: false });
     };
 
-    /* ================= Other methods ================= */
+    /** ================= Other methods ================= */
     logOff (event) {
         this.handleMenuClose(event)
         this.props.onLogOff()
@@ -138,7 +138,7 @@ class Navbar extends React.Component {
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
         const isSearchResultsOpen = Boolean(resultsAnchorEl);
 
-        /* ================= Profile regular ================= */
+        /** ================= Profile regular ================= */
         const renderMenu = (
             <Menu
                 anchorEl={anchorEl}
@@ -153,7 +153,7 @@ class Navbar extends React.Component {
             </Menu>
         );
 
-        /* ================= Notifications ================= */
+        /** ================= Notifications ================= */
         const renderNotifications = (
             <Drawer
                 anchor="right"
