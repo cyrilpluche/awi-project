@@ -8,7 +8,7 @@ const labels = {
 }
 
 
-function createCard(cardTitle,listId) {
+function createCard(cardTitle,listId,projectId) {
 
     const body = {
         cardTitle: cardTitle,
@@ -18,14 +18,23 @@ function createCard(cardTitle,listId) {
     return dispatch => {
         _service.Card.create(body)
         .then(res => {
-            dispatch({
-                type: labels.CREATE_CARD,
-                payload: res
-            });
-        })
+            const body ={
+                projectId: projectId
+            }
+            _service.Project.getAllWithCards(body)
+            .then(resF => {
+                dispatch({
+                    type: labels.CREATE_CARD,
+                    payload: resF
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            })
         .catch((err) => {
             dispatch(err)
         });
+    })
     }
 }
 

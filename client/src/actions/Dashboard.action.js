@@ -47,6 +47,7 @@ function getAllProjectsMember (member_id) {
             })
         })
         .catch (e => {
+            console.log(e)
             dispatch({
                 type: labels.DASHBOARD_ACTION_ERROR,
                 errorMsg: 'We can\'t load your project for the moment, please try later or contact an administrator.'

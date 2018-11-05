@@ -4,6 +4,7 @@ const Project = require('../config/db_connection').Project;
 const List = require('../config/db_connection').List;
 const Card = require('../config/db_connection').Card;
 const Label = require('../config/db_connection').Label;
+const Member = require('../config/db_connection').Member;
 
 const MemberHasProject = require('../config/db_connection').MemberHasProject
 const sequelize = require('../config/db_connection').sequelize;
@@ -203,7 +204,6 @@ module.exports = {
             }
         ).then(result => {
             let projects = [];
-
             for (let i = 0; i < result.length; i++){
                 projects.push(
                     helper.flatProjects(result[i])
@@ -246,7 +246,11 @@ module.exports = {
                 include: [
                     {
                         model: Card,
-                        as: 'CardListFks' 
+                        as: 'CardListFks' ,
+                        include: [{
+                            model: Label,
+                            as: 'CardhaslabelLabels' ,
+                        }]
                     }
                 ]
             }

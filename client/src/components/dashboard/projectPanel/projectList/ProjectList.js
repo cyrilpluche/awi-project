@@ -106,13 +106,16 @@ class ProjectList extends React.Component {
 
     createProject () {
         let title = document.querySelector('#projectTitle').value;
-        let visibility = 0
-        if (this.state.newProjectisPublic) visibility = 1
+        let visibility = 1
+        if (this.state.newProjectisPublic) visibility = 0
+            // public visibility = 1, private visibiliy = 0
 
-        let status = 0
+        let status = 0; // TODO handle project status
+        let statusMemberProject = 1 // the member has accepted the invitation
         let targetDate = new Date(document.querySelector('#projectTargetDate').value)
 
-        this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, 0)
+        this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, statusMemberProject)
+            // statusMemberProject = 1, member has accepted the invitation
 
         this.handleCloseDialog()
     }
