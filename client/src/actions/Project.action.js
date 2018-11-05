@@ -13,7 +13,8 @@ const labels = {
     REMOVE_MEMBER_FROM_PROJECT:"REMOVE_MEMBER_FROM_PROJECT",
     REMOVE_MEMBER_FROM_PROJECT_ERROR:"REMOVE_MEMBER_FROM_PROJECT_ERROR",
     SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
-    GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY",
+    GET_ACTIVITY:"GET_ACTIVITY",
+    GET_ACTIVITY_ERROR: "GET_ACTIVITY_ERROR",
     MEMBER_HAS_PROJECT:"MEMBER_HAS_PROJECT",
     LOAD: "LOAD"
 }
@@ -23,33 +24,6 @@ const labels = {
  * @param idProject project id to search lists for
  */
 function findAllLists (idProject) {
-    const fakeLists =[
-
-        {   listId: 147,
-            listTitle: "LIST1",
-            listStatus: 0,
-            listFather: null,
-            listChild: null,
-            projectId: 1,
-            project_id: 1,
-            cards:[
-                {cardId: 78,cardTitle: "card1", cardDescription: null,cardStatus: 0,cardDateTarget: null,cardDateEnd: null,cardFather: null, cardChild: null,listId: 147,list_id: 147},
-                {cardId: 79,cardTitle: "card2", cardDescription: null,cardStatus: 0,cardDateTarget: null,cardDateEnd: null,cardFather: null, cardChild: null,listId: 147,list_id: 147},
-            ]
-        },
-        {   listId: 148,
-            listTitle: "LIST2",
-            listStatus: 0,
-            listFather: 147,
-            listChild: null,
-            projectId: 1,
-            project_id: 1,
-            cards:[
-                {cardId: 80,cardTitle: "card3", cardDescription: null,cardStatus: 0,cardDateTarget: null,cardDateEnd: null,cardFather: null, cardChild: null,listId: 148,list_id: 148},
-            ]
-        },
-    ]
-
     return dispatch => {
         _service.List.getAll(idProject)
             .then(res => {
@@ -274,10 +248,6 @@ function sendInvitationProject(body){
  * Return true if he is admin, else false
  */
 function getMemberStatus(projectId, memberId){
-    const body = {
-        memberId : memberId,
-        projectId:projectId
-    }
     return dispatch => {
         /*_service.Project.getMemberStatus(body)
         .then(res => {*/
@@ -331,22 +301,13 @@ function removeMemberFromProject(query){
  * Update the status of a member for a specific project. Set him as admin
  */
 function setMemberAsAdmin(projectId, memberId){
-    const body = {
-        memberId : memberId,
-        projectId:projectId
-    }
     return dispatch => {
 
-        /*_service.Project.setAsAdmin(body)
-        .then(res => {*/
         dispatch({
             type: labels.SET_MEMBER_ADMIN,
             payload: false
         });
-        /*})
-        .catch((err) => {
-            dispatch(err)
-        });*/
+
     }
 
 }
@@ -356,17 +317,18 @@ function setMemberAsAdmin(projectId, memberId){
  */
 function getActivity(projectId){
     return dispatch => {
-
-        /*_service.Project.getActivity(projectId)
-        .then(res => {*/
-        dispatch({
-            type: labels.GET_PROJECT_ACTIVITY,
-            payload: false
-        });
-        /*})
-        .catch((err) => {
-            dispatch(err)
-        });*/
+        _service.Project.getAllActions({ projectId: projectId })
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ACTIVITY,
+                    payload: res
+                });
+            })
+            .catch(err => {
+                dispatch({
+                    type: labels.GET_ACTIVITY_ERROR
+                });
+            })
     }
 }
 
@@ -388,9 +350,6 @@ function getLabels(){
             });
     }
 }
-
-
-
 
 export const projectAction = {
     labels,

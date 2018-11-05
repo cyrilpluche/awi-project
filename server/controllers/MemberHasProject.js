@@ -34,7 +34,6 @@ module.exports = {
      *  return: Array of mhp objects with given attributes of the query.
      */
     findAll(req, res, next) {
-        console.log(req.query)
         MemberHasProject
             .findAll({
                 order : sequelize.col('memberId'),

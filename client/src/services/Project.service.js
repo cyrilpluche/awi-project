@@ -21,6 +21,12 @@ const Project = {
         return Api.get(url + 'find_all_members' + where).then(res => res.data)
     },
 
+    getAllActions(object){
+        let where = helper.Request.urlFromObject(object)
+
+        return Api.get(url + 'find_all_actions' + where).then(res => res.data)
+    },
+
     get (object) {
         let where = helper.Request.urlFromObject(object)
         return Api.get(url + 'find_one' + where).then(res => res.data)

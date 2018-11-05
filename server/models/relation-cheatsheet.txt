@@ -2,11 +2,12 @@
 
 Action
 ------
+has many          memberhasaction                          as MemberhasactionActionFks 
 belongs to        card                                     as Card 
 belongs to        list                                     as List 
-belongs to        member                                   as Member 
 belongs to        project                                  as Project 
 belongs to        team                                     as Team 
+belongs to many   member                                   as MemberhasactionMembers 
 
 
 Attachment
@@ -22,7 +23,6 @@ has many          cardhaslabel                             as HaslabelCardFks
 has many          task                                     as TaskCardFks 
 belongs to        list                                     as List 
 belongs to many   list                                     as ActionLists 
-belongs to many   member                                   as ActionMembers 
 belongs to many   project                                  as ActionProjects 
 belongs to many   team                                     as ActionTeams 
 belongs to many   label                                    as CardhaslabelLabels 
@@ -46,28 +46,30 @@ has many          action                                   as ActionList0Fks
 has many          card                                     as CardListFks 
 belongs to        project                                  as Project 
 belongs to many   card                                     as ActionCards 
-belongs to many   member                                   as ActionMembers 
 belongs to many   project                                  as ActionProjects 
 belongs to many   team                                     as ActionTeams 
 
 
 Member
 ------
-has many          action                                   as ActionMember2Fks 
+has many          memberhasaction                          as HasactionMember0Fks 
 has many          memberhaspermissionproject               as HaspermissionprojectMember1Fks 
 has many          memberhaspermissionteam                  as HaspermissionteamMember1Fks 
 has many          memberhasproject                         as HasprojectMember0Fks 
 has many          teamhasmember                            as TeamhasmemberMember0Fks 
-belongs to many   card                                     as ActionCards 
-belongs to many   list                                     as ActionLists 
-belongs to many   project                                  as ActionProjects 
-belongs to many   team                                     as ActionTeams 
+belongs to many   action                                   as MemberhasactionActions 
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
 belongs to many   project                                  as MemberhaspermissionprojectProjects 
 belongs to many   permission                               as MemberhaspermissionteamPermissions 
 belongs to many   team                                     as MemberhaspermissionteamTeams 
 belongs to many   project                                  as MemberhasprojectProjects 
 belongs to many   team                                     as TeamhasmemberTeams 
+
+
+Memberhasaction
+---------------
+belongs to        action                                   as Action 
+belongs to        member                                   as Member 
 
 
 Memberhaspermissionproject
@@ -109,7 +111,6 @@ has many          memberhasproject                         as MemberhasprojectPr
 has many          teamhasproject                           as TeamhasprojectProjectFks 
 belongs to many   card                                     as ActionCards 
 belongs to many   list                                     as ActionLists 
-belongs to many   member                                   as ActionMembers 
 belongs to many   team                                     as ActionTeams 
 belongs to many   member                                   as MemberhaspermissionprojectMembers 
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
@@ -128,13 +129,12 @@ belongs to        card                                     as Card
 
 Team
 ----
-has many          action                                   as ActionTeam3Fks 
+has many          action                                   as ActionTeam2Fks 
 has many          memberhaspermissionteam                  as MemberhaspermissionteamTeamFks 
 has many          teamhasmember                            as HasmemberTeamFks 
 has many          teamhasproject                           as HasprojectTeam0Fks 
 belongs to many   card                                     as ActionCards 
 belongs to many   list                                     as ActionLists 
-belongs to many   member                                   as ActionMembers 
 belongs to many   project                                  as ActionProjects 
 belongs to many   member                                   as MemberhaspermissionteamMembers 
 belongs to many   permission                               as MemberhaspermissionteamPermissions 

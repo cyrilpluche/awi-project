@@ -35,18 +35,18 @@ import SocketIOClient  from "socket.io-client"
 
 
 // a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
+/*const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
     return result;
-};
+};*/
 
 /**
  * Moves an item from one list to another list.
  */
-const move = (source, destination, droppableSource, droppableDestination) => {
+/*const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
     const [removed] = sourceClone.splice(droppableSource.index, 1);
@@ -58,7 +58,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     result[droppableDestination.droppableId] = destClone;
 
     return result;
-};
+};*/
 
 
 class Project extends Component {
@@ -92,7 +92,7 @@ class Project extends Component {
     }
 
     componentWillMount() {
-        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getAllMembers,getMemberStatus,getActivity,findAllCards} = this.props
+        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity,findAllCards} = this.props
         
         
         // Get project informations
@@ -104,7 +104,6 @@ class Project extends Component {
         getAllListsWithCards(match.params.id)
 
         // Get all project members
-        console.log(this.props.match.params.id)
         this.props.getAllMembers(this.props.match.params.id)
 
         // Verify if it's a project administrator
@@ -134,8 +133,6 @@ class Project extends Component {
     // When a change occurs on our props, we verify to change the state (re rendering) if necessary
     componentDidUpdate(prevProps){
         const {hasProject,projectInfo} = this.props
-
-        console.log(hasProject)
         // verify if props exist
         if(projectInfo){
             // If Logged user is not a member of the project & project is private
@@ -250,7 +247,7 @@ class Project extends Component {
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        const { source, destination,draggableId } = result;
+        const { destination,draggableId } = result;
 
         //retrieve lists
         const {lists} = this.state
@@ -428,8 +425,8 @@ class Project extends Component {
                         <Grid xs={2} item>
                         </Grid>
                     </Grid>
-                    <div>
-                        <ActivityList activities={null}></ActivityList>
+                    <div className={classes.drawerList}>
+                        <ActivityList activities={this.props.activities}/>
                     </div>
                 </div>
             </Drawer>
@@ -465,7 +462,7 @@ class Project extends Component {
                         </Grid>
                     </Grid>
                     <div>
-                        <Filter projectInfo={projectInfo}></Filter>
+                        <Filter projectInfo={projectInfo}/>
                     </div>
                 </div>
             </Drawer>
@@ -495,21 +492,21 @@ class Project extends Component {
                 </Typography>
                 <Grid container spacing={24} >
 
-                {/*===================  MEMBERS BUTTON  ========================================= */}
+                {/**===================  MEMBERS BUTTON  ========================================= */}
                <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
                     <SupervisorAccount className={classes.leftIcon} />
                     {this.props.members? this.props.members.length : 0} Members
                 </Button>
                 <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
 
-                {/*===================  VISIBILITY BUTTON  ========================================= */}
+                {/**===================  VISIBILITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                     <RemoveRedEye className={classes.leftIcon} />
                     Visibility
                 </Button>
                 <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
                 
-                {/**===================  ACTIVITY BUTTON  ========================================= */}
+                {/*===================  ACTIVITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
                     <Description className={classes.leftIcon} />
                     Activity
@@ -531,7 +528,7 @@ class Project extends Component {
 
         const dndArea = (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
+                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} />
             </DragDropContext>
         )
 
@@ -550,7 +547,8 @@ const mapStateToProps = (state) => ({
     members : state.project.members || [],
     isAdmin: state.project.isAdmin || false,
     logged: state.signin.member,
-    hasProject : state.project.loggedHasProject
+    hasProject : state.project.loggedHasProject,
+    activities: state.project.activities
     //labels : state.project.labels || []
 })
 
