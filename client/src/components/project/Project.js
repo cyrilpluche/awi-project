@@ -304,46 +304,55 @@ class Project extends Component {
         
         // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-            console.log(result)
-            console.log(draggableId)
 
             let sourceListId =  Number.parseInt(source.droppableId.split(':')[0])
             let sourceList = Object.assign({},lists.find(list => list.listId === sourceListId ))
-            console.log(sourceList)
 
             let destinationListId = Number.parseInt(destination.droppableId.split(':')[0])
             let destinationList =  Object.assign({},lists.find(list => list.listId === destinationListId ))
 
+            let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
+
             if(destinationListId !== sourceListId){
-                let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
+                
 
                 let deleteSourceList = Array.from(sourceList.CardListFks)
                 deleteSourceList.splice(source.index,1,)
     
                 let addDestinationList = Array.from(destinationList.CardListFks)
                 addDestinationList.splice(destination.index,0,draggedCard)
-    
-                console.log(addDestinationList)
-                console.log(deleteSourceList)
 
                 sourceList.CardListFks = deleteSourceList
                 destinationList.CardListFks = addDestinationList
 
-                console.log(sourceList)
-                console.log(destinationList)
-
                 let sourceListIndex = lists.findIndex(list => list.listId === sourceList.listId )
                 let destinationListIndex = lists.findIndex(list => list.listId === destinationList.listId )
-                console.log(sourceListIndex)
-                console.log(destinationListIndex)
 
                 let newList = Array.from(lists)
                 newList.splice(sourceListIndex,1,)
                 newList.splice(sourceListIndex,0,sourceList)
                 newList.splice(destinationListIndex,1,)
                 newList.splice(destinationListIndex,0,destinationList)
-                console.log(newList)
+
                 this.setState({lists: newList})
+            }
+            else{
+                
+                let newSourceList = Array.from(sourceList.CardListFks)
+                newSourceList.splice(source.index,1,)
+                newSourceList.splice(destination.index,0,draggedCard)
+
+                sourceList.CardListFks = newSourceList
+
+                let sourceListIndex = lists.findIndex(list => list.listId === sourceList.listId )
+
+                let newList = Array.from(lists)
+
+                newList.splice(sourceListIndex,1,)
+                newList.splice(sourceListIndex,0, sourceList)
+
+                this.setState({lists: newList})
+
             }
             
             
