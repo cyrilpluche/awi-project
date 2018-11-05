@@ -50,6 +50,7 @@ class Cardboard extends React.Component {
     };
 
     changeTitle = () => {
+        this.props.card.title = this.state.cardTitle;
         this.props.onUpdateCard(this.props.card, {cardTitle: this.state.cardTitle})
     };
 
