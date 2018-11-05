@@ -18,7 +18,7 @@ const List = {
 
     get (object) {
         let where = helper.Request.urlFromObject(object)
-        return Api.get(url + 'find_one' + where).then(res => res.data)
+        return Api.get(url + 'find_one/1' + where).then(res => res.data)
     },
 
     create(body){
@@ -27,6 +27,10 @@ const List = {
 
     update(listId,body){
         return Api.put(url + 'update/'+listId, body).then(res => res.data)
+    },
+
+    delete(listId){
+        return Api.delete(url + 'delete/'+listId).then(res => res.data)
     },
 
     searchbarLists (str) {
