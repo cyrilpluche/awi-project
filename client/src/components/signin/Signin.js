@@ -185,23 +185,13 @@ class Signin extends React.Component {
                                             color="inherit"
                                             fullWidth
                                             className={classes.button}
+                                            onClick={this.signinWithGithub}
                                             >
                                                 Sign In with Github
                                                 <CloudIcon className={classes.rightIcon} />
                                             </Button>
                                         </div>
                                     ) : null }
-
-                                    <Button
-                                        variant="outlined"
-                                        color="inherit"
-                                        fullWidth
-                                        className={classes.button}
-                                        onClick={this.signinWithGithub}
-                                    >
-                                        Sign In with Github
-                                        <CloudIcon className={classes.rightIcon} />
-                                    </Button>
                                 </Grid>
                             </Grid>
                         </Grid>
