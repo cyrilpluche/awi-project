@@ -14,6 +14,8 @@ const labels = {
     REMOVE_MEMBER_FROM_PROJECT_ERROR:"REMOVE_MEMBER_FROM_PROJECT_ERROR",
     SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
     GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY",
+    MEMBER_HAS_PROJECT:"MEMBER_HAS_PROJECT"
+    GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY",
     LOAD: "LOAD"
 }
 
@@ -189,6 +191,28 @@ function updateProjectVisibility(visibilityValue, projectId){
                 dispatch(err)
             });
     }
+}
+
+function getMemberHasProject(memberId, projectId){
+    const body = {
+        memberId : memberId,
+        projectId: projectId,
+        memberhasprojectStatus: 1        
+    }
+    return dispatch => {
+        _service.Project.getMemberHasProject(body)
+        .then(res => {
+            dispatch({
+                type: labels.MEMBER_HAS_PROJECT,
+                payload: res
+            });
+        })
+        .catch((err) => {
+                dispatch(err)
+        });
+    }
+
+
 }
 
 /** TODO SERVICE
@@ -383,5 +407,6 @@ export const projectAction = {
     removeMemberFromProject,
     setMemberAsAdmin,
     getActivity,
-    getLabels
+    getLabels,
+    getMemberHasProject
 }

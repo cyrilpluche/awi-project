@@ -22,6 +22,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/Expan
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ConfirmationDialog from'./ArchiveConfirmationDialog'
+import InputBase from "@material-ui/core/InputBase/InputBase";
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -36,30 +37,24 @@ class Cardboard extends React.Component {
         this.setState({ open: true });
     };
 
-    sendToStore = (typeField, valueField) => {
-        const object = {
-            id: this.props.card.id,
-            title: this.props.card.title,
-            deadline: this.props.card.deadline,
-            description: this.props.card.description,
-            labels: this.props.card.labels,
-            members: this.props.card.members,
-            comments: this.props.card.comments
-        };
-        switch (typeField) {
-            case 'title': object.title = valueField; break;
-            case 'deadline': object.deadline = valueField; break;
-            case 'description': object.description = valueField; break;
-            case 'labels': object.labels = valueField; break;
-            case 'members': object.members = valueField; break;
-            case 'comments': object.comments = valueField; break;
-            default: break;
-        }
-        this.props.onUpdateCard(object)
-    };
+    //this.props.onUpdateCard(idCard, body)
 
     handleClose = () => {
         this.setState({ open: false });
+    };
+
+    changeTitle = () => {
+        let dom = document.querySelector('#cardTitle');
+        let value = dom.value;
+        this.props.card.title = value;
+        this.props.onUpdateCard(this.props.card, {cardTitle: value});
+    };
+
+    changeDescription = () => {
+        let dom = document.querySelector('#cardDescription');
+        let value = dom.value;
+        this.props.card.description = value;
+        this.props.onUpdateCard(this.props.card, {cardDescription: value});
     };
 
     render() {
@@ -82,9 +77,15 @@ class Cardboard extends React.Component {
                     }>
                         <div className={classes.paper}>
                             <div className={classes.column} style={{ borderRight: '0.1em solid grey'}}>
-                                <Typography variant="h5" id="modal-title">
-                                    {this.props.card.title}
-                                </Typography>
+                                <div className={classes.row}>
+                                    <InputBase
+                                        id="cardTitle"
+                                        defaultValue={this.props.card.title}
+                                    />
+                                    <button onClick={this.changeTitle}>
+                                        <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
+                                    </button>
+                                </div>
                                 <Divider className={classes.divider}/>
                                 <div className={classes.row}>
                                     <h4 >Members : </h4>
@@ -104,8 +105,16 @@ class Cardboard extends React.Component {
                                             <h4>Description</h4>
                                         </ExpansionPanelSummary>
                                         <ExpansionPanelDetails>
-                                            <Typography>{this.props.card.description}</Typography>
-                                            <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
+                                            <TextField
+                                                id="cardDescription"
+                                                defaultValue={this.props.card.description}
+                                                multiline={true}
+                                                rows={4}
+                                                rowsMax={4}
+                                            />
+                                            <button onClick={this.changeDescription}>
+                                                <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
+                                            </button>
                                         </ExpansionPanelDetails>
                                     </ExpansionPanel>
                                 </div>

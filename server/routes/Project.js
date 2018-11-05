@@ -14,6 +14,8 @@ router.get('/find_all_lists_cards',mw.Token.verifyToken, projectController.findA
 router.get('/find_all_members', mw.Token.verifyToken, memberHasProjectController.findAll)
 
 
+router.get('/member_has_project',mw.Token.verifyToken, projectController.findMemberHasProject);
+
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);
 

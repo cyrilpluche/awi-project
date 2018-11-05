@@ -1,23 +1,25 @@
+import _service from "../services";
+
 const labels = {
-    UPDATE_CARD: 'UPDATE_CARD'
+    UPDATE_CARD: 'UPDATE_CARD',
+    ERROR_UPDATE_CARD : 'ERROR_UPDATE_CARD'
 }
 
-function updatecard(newCard) {
-    return (dispatch) => {
-        dispatch({
-            type : labels.UPDATE_CARD,
-            payload : {
-                id: newCard.id,
-                title : newCard.title,
-                deadline : newCard.deadline,
-                description : newCard.description,
-                labels : newCard.labels,
-                members : newCard.members,
-                comments : newCard.comments,
-            }
+function updatecard(card, body) {
+    console.log(card + " ::::::::::: "+body)
+    return dispatch => _service.Card.update(card.id,body)
+        .then(id => {
+            dispatch({
+                card
+            })
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.ERROR_UPDATE_CARD,
+                errorMsg: 'impossible to execute this action'
+            })
         })
     };
-}
 
 export const updateCardAction = {
     labels,

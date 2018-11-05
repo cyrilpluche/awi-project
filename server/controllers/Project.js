@@ -215,6 +215,24 @@ module.exports = {
             .catch(e =>res.status(400).send(e) )
     },
 
+    /**Find a member that has a project
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    findMemberHasProject(req, res, next){
+        MemberHasProject.findOne(
+            { 
+                where: req.query 
+            }
+        ).then(result => {
+            if(result) res.send(true)
+            else res.send(false)
+        })
+        .catch(e =>res.status(400).send(e) )
+    },
+
     /**
      * find all lists and cards of a project
      * @param req
@@ -238,5 +256,4 @@ module.exports = {
         })
         .catch(e =>res.status(400).send(e))
     }
-
 }
