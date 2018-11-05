@@ -165,7 +165,12 @@ module.exports = {
                 attributes: [['project_id', 'id'], ['project_title', 'label']],
                 order : sequelize.col('project_id'),
                 where: {
-                    projectTitle: { [Sequelize.Op.like]: '%' + req.query.str + '%'}
+                    projectTitle: {
+                        [Sequelize.Op.or]: {
+                            [Sequelize.Op.like]: '%' + req.query.str + '%',
+                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
+                        },
+                    }
                 }
             })
             .then(projects => {

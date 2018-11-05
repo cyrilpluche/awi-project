@@ -93,8 +93,13 @@ class SearchResults extends React.Component {
     }
 
     getSuggestions(value, array) {
-        const inputValue = deburr(value.trim()).toLowerCase();
+        const inputValue = deburr(value.trim());
+        const inputValueLower = inputValue.toLowerCase();
+        const inputValueCapitalize = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+
         const inputLength = inputValue.length;
+
+        console.log(inputValue)
 
         let count = 0;
 
@@ -102,7 +107,10 @@ class SearchResults extends React.Component {
             ? []
             : array.filter(suggestion => {
                 const keep =
-                    count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+                    count < 5 && ( suggestion.label.includes(inputValue) ||
+                    suggestion.label.includes(inputValueLower) ||
+                    suggestion.label.includes(inputValueCapitalize)
+                    );
 
                 if (keep) {
                     count += 1;
