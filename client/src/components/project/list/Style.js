@@ -12,32 +12,24 @@ export const styles = theme => ({
     },
     list: {
         margin: theme.spacing.unit * 2,
-        border:`1px solid lightgrey`,
-        borderRadius : `4px`,
-        backgroundColor:`white`,
-        width: `200px`,
-        minWidth : `200px`,
-        //minHeight : `200px`,
+        borderRadius: 4,
+        backgroundColor: theme.palette.grey[300],
+        width: 280,
+        maxWidth: 280,
+        minWidth : 200,
         justifyContent: `center`,
         textAlign: `center`,
-        
-        
     },
     listTitle: {
+        borderRadius: 4,
         textAlign:`center`,
-        color : `black`,
-        backgroundColor:'#e4e4e4',
-        padding:theme.spacing.unit * 2,
+        fontSize: 18,
         margin:`0px`,
-        fontWeight: `lighter`,
-        wordBreak: `break-all`
+
     },
     buttonList:{
         marginTop:`15px`,
         marginLeft:`30px`
-    },
-    button:{
-        marginTop:`5px`
     },
     dropSpace:{
         padding:'10px',
@@ -49,5 +41,23 @@ export const styles = theme => ({
     },
     dialogBox:{
         marginLeft:theme.spacing.unit,
+    },
+
+    button: {
+        minWidth: 32,
+        minHeight: 32,
+        width: 45,
+        height: 45
+    },
+
+    rowRight: {
+        display: 'flex',
+        justifyContent: 'center',
+        float: 'right',
+    },
+
+    listItem: {
+        paddingRight: 5,
+        paddingLeft: 5,
     }
 });
