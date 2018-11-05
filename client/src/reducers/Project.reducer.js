@@ -28,15 +28,16 @@ export function project (state = initialState, action) {
 
         case projectLabels.CREATE_LIST: 
             let lists = [...state.lists,action.payload]
+            console.log(lists)
             return {
                 ...state,
                 lists 
             };
         case listLabels.CREATE_CARD:
-            let cards = [...state.cards,action.payload]
+    
             return {
                 ...state,
-                cards 
+                lists : action.payload 
             }; 
         case listLabels.GET_ALL_CARDS:
             return {

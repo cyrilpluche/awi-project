@@ -1,10 +1,10 @@
 export const styles = theme => ({
     listArea: {
-        margin: theme.spacing.unit * 2,
+        margin: theme.spacing.unit * 1,
         display: 'flex',
-        padding:theme.spacing.unit * 2,           
+        padding:theme.spacing.unit * 1,           
         //whiteSpace: `nowrap`,
-        overflowY: `auto`,
+        //overflowY: `auto`,
         //position: `fixed`,
         left: `0`, 
         right: `0`
@@ -17,7 +17,7 @@ export const styles = theme => ({
         backgroundColor:`white`,
         width: `200px`,
         minWidth : `200px`,
-        //minHeight : `200px`,
+        minHeight : `200px`,
         justifyContent: `center`,
         textAlign: `center`,
         

@@ -25,16 +25,16 @@ const labels = {
  */
 function findAllLists (idProject) {
     return dispatch => {
-        _service.List.getAll(idProject)
-            .then(res => {
-                dispatch({
-                    type: labels.GET_ALL_LISTS,
-                    payload: res
-                });
-            })
-            .catch((err) => {
-                dispatch(err)
+        const body ={
+            projectId: projectId
+        }
+        _service.Project.getAllWithCards(body)
+        .then(res => {
+            dispatch({
+                type: labels.GET_ALL_LISTS,
+                payload: res
             });
+        })
     }
 }
 
@@ -64,19 +64,13 @@ function createList (listTitle, projectId, listFather) {
         projectId: projectId,
         listFather:listFather
     }
-    return dispatch => {
-        _service.List.create(body)
-            .then(res => {
-                _service.List.getAll(projectId)
-                    .then(resFinal => {
-                        dispatch({
-                            type: labels.GET_ALL_LISTS,
-                            payload: resFinal
-                        });
-                    })
-                    .catch((err) => {
-                        dispatch(err)
-                    });
+        return dispatch => {
+            _service.List.create(body)
+            .then(res => { 
+                dispatch({
+                    type: labels.CREATE_LIST,
+                    payload: res
+                });
             })
             .catch((err) => {
                 dispatch(err)

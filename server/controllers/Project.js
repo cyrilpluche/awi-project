@@ -246,7 +246,11 @@ module.exports = {
                 include: [
                     {
                         model: Card,
-                        as: 'CardListFks'
+                        as: 'CardListFks' ,
+                        include: [{
+                            model: Label,
+                            as: 'CardhaslabelLabels' ,
+                        }]
                     }
                 ]
             }

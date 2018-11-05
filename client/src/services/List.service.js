@@ -7,14 +7,11 @@ const url = 'list/'
 
 const List = {
 
-    //TODO
+
     getAll (idProject) {
-        /**
-         * Expected :  All list with linked cards of a project (example in Project.action) 
-         * Actual : All list of a project
-         */
         return Api.get(url + 'find_all/'+ idProject).then(res => res.data)
     },
+    
 
     get (object) {
         let where = helper.Request.urlFromObject(object)
@@ -22,6 +19,7 @@ const List = {
     },
 
     create(body){
+        
         return Api.post(url + 'create', body).then(res => res.data)
     },
 
