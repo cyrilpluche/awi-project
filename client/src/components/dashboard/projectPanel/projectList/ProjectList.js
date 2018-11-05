@@ -42,6 +42,7 @@ class ProjectList extends React.Component {
 
         this.setProjectHasFavorite = this.setProjectHasFavorite.bind(this)
         this.goTo = this.goTo.bind(this)
+        this.createProject = this.createProject.bind(this)
         this.state = {
             dialogDisplayed: false,
             buttonCreateProjectDisabled: true,
@@ -80,6 +81,7 @@ class ProjectList extends React.Component {
         else return 'Private'
     }
 
+    // get the locker associated to the visibility
     locker = () => {
         if (this.state.newProjectisPublic) return (<LockerIcon style={{fontSize: '32px', color: '#d9d9d9'}}/>)
         else return (<LockerIcon style={{fontSize: '32px', color: '#ff8566'}}/>)
@@ -99,8 +101,20 @@ class ProjectList extends React.Component {
     }
 
     goTo (projectId) {
-        console.log('Go to')
         Helper.History.push(`/project/${projectId}`)
+    }
+
+    createProject () {
+        let title = document.querySelector('#projectTitle').value;
+        let visibility = 0
+        if (this.state.newProjectisPublic) visibility = 1
+
+        let status = 0
+        let targetDate = new Date(document.querySelector('#projectTargetDate').value)
+
+        this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, 0)
+
+        this.handleCloseDialog()
     }
 
     render() {
@@ -198,7 +212,9 @@ class ProjectList extends React.Component {
                     </Grid>
                     <DialogActions>
                         <Button color="primary" fullWidth variant="outlined"
-                                disabled={this.state.buttonCreateProjectDisabled}>
+                                disabled={this.state.buttonCreateProjectDisabled}
+                                onClick={this.createProject}
+                        >
                             Create
                         </Button>
                     </DialogActions>
@@ -320,7 +336,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    createProject: _action.dashboardAction.createProject, // create un new project
+    createProjectMember: _action.dashboardAction.createProject, // create un new project
     searchMember: _action.memberAction.searchMember,
     updateProject: _action.dashboardAction.updateMemberHasProject
 }

@@ -27,6 +27,21 @@ const Project = {
         return Api.put(url + 'update/' +projectId, body).then(res => res.data)
     },
 
+    createProject (projectTitle, projectVisibility, projectStatus = 0, projectDateTarget = null) {
+        let payload = {
+            projectTitle, projectVisibility, projectStatus, projectDateTarget
+        }
+
+        return Api.post(url + 'create', payload).then(res => res.data)
+    },
+
+    createMemberHasProject (memberId, projectId, memberhasprojectStatus, projectIsFavorite = false) {
+        let payload = {
+            memberId, projectId, memberhasprojectStatus, projectIsFavorite
+        }
+        return Api.post(url + 'createMemberHasProject', payload).then(res => res.data)
+    },
+
     updateMemberHasProject (params) {
       return Api.put(`${url}update_memberhasProject${helper.Request.urlFromObject(params)}`).then(res => res.data)
     },

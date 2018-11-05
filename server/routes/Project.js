@@ -4,7 +4,7 @@ const mw = require('../middlewares')
 
 const projectController = require('../controllers').Project;
 
-router.use(mw.Token.verifyToken)
+// router.use(mw.Token.verifyToken)
 
 router.get('/find_all', projectController.findAll);
 router.get('/find_all_searchbar', projectController.findAllSearchbar);
@@ -16,6 +16,8 @@ router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);
 
 router.post('/create', projectController.create);
+
+router.post('/createMemberHasProject', projectController.createMemberHasProject);
 
 router.put('/update/:id', projectController.update);
 
