@@ -6,6 +6,7 @@ const labels = {
 }
 
 function updatecard(card, body) {
+    console.log(card + " ::::::::::: "+body)
     return dispatch => _service.Card.update(card.id,body)
         .then(id => {
             dispatch({

@@ -33,11 +33,6 @@ class Cardboard extends React.Component {
         };
     }
 
-    handleChange (event) {
-        var { name, value } = event.target;
-        this.setState({ [name]: value });
-    }
-
     handleOpen = () => {
         this.setState({ open: true });
     };
@@ -46,12 +41,20 @@ class Cardboard extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
-
     };
 
     changeTitle = () => {
-        this.props.card.title = this.state.cardTitle;
-        this.props.onUpdateCard(this.props.card, {cardTitle: this.state.cardTitle})
+        let dom = document.querySelector('#cardTitle');
+        let value = dom.value;
+        this.props.card.title = value;
+        this.props.onUpdateCard(this.props.card, {cardTitle: value});
+    };
+
+    changeDescription = () => {
+        let dom = document.querySelector('#cardDescription');
+        let value = dom.value;
+        this.props.card.description = value;
+        this.props.onUpdateCard(this.props.card, {cardDescription: value});
     };
 
     render() {
@@ -76,9 +79,8 @@ class Cardboard extends React.Component {
                             <div className={classes.column} style={{ borderRight: '0.1em solid grey'}}>
                                 <div className={classes.row}>
                                     <InputBase
-                                        name="cardTitle"
+                                        id="cardTitle"
                                         defaultValue={this.props.card.title}
-                                        onChange={this.handleChange.bind(this)}
                                     />
                                     <button onClick={this.changeTitle}>
                                         <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
@@ -103,8 +105,16 @@ class Cardboard extends React.Component {
                                             <h4>Description</h4>
                                         </ExpansionPanelSummary>
                                         <ExpansionPanelDetails>
-                                            <Typography>{this.props.card.description}</Typography>
-                                            <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
+                                            <TextField
+                                                id="cardDescription"
+                                                defaultValue={this.props.card.description}
+                                                multiline={true}
+                                                rows={4}
+                                                rowsMax={4}
+                                            />
+                                            <button onClick={this.changeDescription}>
+                                                <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
+                                            </button>
                                         </ExpansionPanelDetails>
                                     </ExpansionPanel>
                                 </div>
