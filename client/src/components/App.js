@@ -55,11 +55,13 @@ class App extends Component {
             <div className={classes.layout}>
                 <Switch>
                     <Route exact path="/login" component={Signin} />
+                    <Route exact path="/login/:memberEmail/:token" component={Signin} />
                     <Route exact path="/signup" component={Signup} />
                     <Route path="/invitation/:token" component={Invitation} />
                     <Route exact path="/password-forgotten" component={PasswordForgotten} />
                     <Route exact path="/account-confirmation" component={AccountConfirmation} />
                     <Route path="/account-confirmation/:token" component={TokenVerification} />
+                    {/*<Route path="/sign_in_with_github/:token" component={SigninGithub} />*/}
                     <Route path='*' render={() => <Redirect to="/login" />}/>
                 </Switch>
             </div>

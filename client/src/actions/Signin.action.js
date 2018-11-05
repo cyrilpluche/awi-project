@@ -105,10 +105,33 @@ function signinWithGithub () {
     }
 }
 
+function confirmSigninGithub (memberEmail, token) {
+    console.log("token \n", token)
+    const body={
+        memberEmail: memberEmail,
+        //memberToken: token,
+    }
+    localStorage.setItem('memberToken', token)
+    return dispatch => {
+        _service.Member.get(body)
+            .then(res => {
+                console.log("res get \n", res);
+
+                _helper.History.push('/home');
+                dispatch(signSuccess(res));
+            })
+            .catch((err) => {
+                dispatch(signError)
+            });
+    }
+
+}
+
 export const signinAction = {
     labels,
     signin,
     signinWithGithub,
+    confirmSigninGithub,
     isMemberLogged,
     sendNewPassword,
     resetField

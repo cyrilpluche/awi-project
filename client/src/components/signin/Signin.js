@@ -15,6 +15,7 @@ import CloudIcon from '@material-ui/icons/Cloud'
 import Typography from "@material-ui/core/Typography/Typography";
 import _helper from "../../helpers";
 import HowToRegIcon from "@material-ui/icons/HowToReg"
+import {member} from "../../reducers/Member.reducer";
 
 
 class Signin extends React.Component {
@@ -29,6 +30,21 @@ class Signin extends React.Component {
         };
 
         this.signinWithGithub = this.signinWithGithub.bind(this);
+    }
+
+    componentDidMount () {
+        let params = this.props.location.pathname.split('/')
+        let memberEmail = params[2]
+        let token = params[3]
+
+        if(token) {
+            console.log("email: \n", memberEmail)
+            console.log("token: \n", token)
+            this.props.onConfirmSigninGithub(memberEmail, token)
+        }
+        //this.props.onValidateAccountWithToken(token)
+        //Method that decrypt the token in server, update the given email else error
+        // push to account-validation if ok, push to home else
     }
 
     submit () {
@@ -190,7 +206,8 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = {
     onLogin : _action.signinAction.signin,
-    onSigninWithGithub: _action.signinAction.signinWithGithub
+    onSigninWithGithub: _action.signinAction.signinWithGithub,
+    onConfirmSigninGithub: _action.signinAction.confirmSigninGithub,
 
 }
 

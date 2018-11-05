@@ -4,6 +4,7 @@ const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
 const bcrypt = require('bcrypt');
+var jwt    = require('jsonwebtoken');
 const qs = require('querystring');
 const request = require('superagent');
 
@@ -319,7 +320,7 @@ module.exports = {
                 client_id: process.env.GITHUB_CLIENT_ID,
                 redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT  + "/api/member/github_callback",
                 state: state,
-                scope: 'user:email'
+                scope: 'user:email read:user'
             });
 
 
@@ -373,40 +374,66 @@ module.exports = {
                     req.access_token = result.body.access_token;
                     console.log("body: \n", result.body)
                     request
-                        .get('https://api.github.com/user/public_emails')
+                        .get('https://api.github.com/user')
                         .set('Authorization', 'token ' + req.access_token)
                         .then( result => {
                             console.log("result: \n", result.body)
+                            //console.log("email: \n", result.body[0].email)
+                            // Member
+                            //     .findOne({
+                            //         where: {
+                            //             memberEmail: result.body[0].email,
+                            //             // TODO : rajouter isGithubAccount in BDa
+                            //             // memberStatus: {
+                            //             //     [Sequelize.Op.ne]: 0
+                            //             // }
+                            //         }
+                            //     })
+                            //     .then(member => {
+                            //         if (member) {
+                            //             req.body.result = member
+                            //             var payload = Object.assign({}, req.body.result.dataValues)
+                            //             payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
+                            //                 expiresIn: 60 * 60 * 24 // expires in 24 hours
+                            //             });
+                            //             console.log("payload: ", payload)
+                            //
+                            //             const redirect_url =
+                            //                 'http://localhost:3000/login/' +
+                            //                 member.memberEmail + "/" +
+                            //                 payload.memberToken
+                            //             res.redirect(redirect_url);
+                            //
+                            //             //next()
+                            //
+                            //         }
+                            //         else res.status(400).send('There is no account with this email.')
+                            //     })
+                            //     .catch(error => next(error));
 
-                            Member
-                                .findOne({
-                                    where: {
-                                        memberEmail: result.body[0].email,
-                                        // memberStatus: {
-                                        //     [Sequelize.Op.ne]: 0
-                                        // }
-                                    }
-                                })
-                                .then(member => {
-                                    if (member && member.memberEmail === result.body[0].email) {
-                                            req.body.result = member
-                                            next()
-                                    }
-                                    else res.status(400).send('Email incorrect, the user dosn\'t exist.')
-                                })
-                                .catch(error => next(error));
+
+
+                                // result.send(
+                                //     "<p>You're logged in! Here's all your emails on GitHub: </p>" +
+                                //     result.body +
+                                //     '<p>Go back to <a href="/">log in page</a>.</p>'
+                                // )
+                        })
+                        .catch(error => next(error));
+
+
                             // result.send(
                             //     "<p>You're logged in! Here's all your emails on GitHub: </p>" +
                             //     result.body +
                             //     '<p>Go back to <a href="/">log in page</a>.</p>'
                             // )
-                        })
-                        .catch(error => next(error));
+                })
+                .catch(error => next(error));
 
                     // Redirects user to /user page so we can use
                     // the token to get some data.
                     //res.redirect('http://localhost:3000/home');
-                });
+
 
 
 
@@ -418,3 +445,4 @@ module.exports = {
         // }
     },
 }
+
