@@ -21,15 +21,17 @@ const signError = msg => ({
     payload: msg || ['Failed to create the account.', ''],
 })
 
-function signup (body) {
+function signup (body, isDirectlyValidate) {
     let checking = checkSignupFields(body)
     if (checking.isFieldsOk) {
         let finalBody = Object.assign({memberStatus: 0}, body)
+        if (isDirectlyValidate) finalBody.memberStatus = 1
+
         return dispatch => {
             _service.Member.signUp(finalBody)
                 .then(res => {
-                    _helper.History.push('/home');
                     dispatch(signSuccess(res));
+                    if (!isDirectlyValidate) _helper.History.push('/home');
                 })
                 .catch((err) => {
                     dispatch(signError(err.response.data))

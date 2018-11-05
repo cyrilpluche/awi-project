@@ -1,11 +1,3 @@
-/*const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOSTNAME,
-    dialect: 'postgres',
-    operatorsAliases: false
-})
-
-const Team = require('../models/Dashboard.action.js').init(sequelize).Team;*/
 const helper = require('../helpers/helpersMethod');
 const Team = require('../config/db_connection').Team;
 const Teamhasmember = require('../config/db_connection').Teamhasmember

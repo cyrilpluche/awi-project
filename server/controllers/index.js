@@ -5,18 +5,22 @@ const Project = require('./Project');
 const List = require('./List');
 const Card = require('./Card');
 
+const MemberHasProject = require('./MemberHasProject');
+
 const Action = require('./Action');
 
 const End = require('./Endpoint');
-const Graphql = require('../schemas/Resolver');
-
 
 module.exports = {
     Team,
     Member,
+
     Project,
     List,
     Card,
+
+    MemberHasProject,
+
     Action,
     End
 };

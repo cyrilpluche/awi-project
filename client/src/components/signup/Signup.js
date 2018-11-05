@@ -25,12 +25,16 @@ class Signup extends React.Component {
             memberPseudo: '',
             memberEmail: '',
             memberPassword: '',
-            memberCheckPassword: '',
-        };
+            memberCheckPassword: ''
+    };
+
+        if (props.invitation) {
+            this.state.memberEmail = props.invitation.memberEmail
+        }
     }
 
     submit () {
-        this.props.onAdd(this.state)
+        this.props.onAdd(this.state, this.props.invitation)
     }
 
     goBackToLogin () {
@@ -44,7 +48,6 @@ class Signup extends React.Component {
 
     // Loop that create textfields
     generateTextfields = () => {
-        const { errorMsg } = this.props;
         const labelsForClient = [
             'First name',
             'Last name',
@@ -72,8 +75,9 @@ class Signup extends React.Component {
                 <TextField
                     error={
                         this.props.errorMsg[1] === keys[index] ||
-                        this.props.errorMsg[1] === 'all' && item === ''
+                        (this.props.errorMsg[1] === 'all' && item === '')
                     }
+                    disabled={this.props.invitation && type[index] === 'email'}
                     required
                     key={keys[index]}
                     name={keys[index]}
@@ -149,7 +153,8 @@ Signup.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-    errorMsg: state.signup.msgError
+    errorMsg: state.signup.msgError,
+    isInvitation: state.signup.isInvitation
 })
 
 const mapDispatchToProps = {

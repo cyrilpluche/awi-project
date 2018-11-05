@@ -130,7 +130,7 @@ module.exports = {
             .catch(e => res.status(400).send(e))
     },
 
-    /*  localhost:4200/api/project/delete/5
+    /**  localhost:4200/api/project/delete/5
      *
      *  return: A boolean. true = deleted, false = no deleted.
      */
