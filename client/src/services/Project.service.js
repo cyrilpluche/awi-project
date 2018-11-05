@@ -34,6 +34,10 @@ const Project = {
         let where = helper.Request.urlFromObject(str)
         return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
     },
+    getMemberHasProject(object){
+        let where = helper.Request.urlFromObject(object)
+        return Api.get(url + 'member_has_project' + where).then(res => res.data)
+    },
 
     getLabels(){
         /**

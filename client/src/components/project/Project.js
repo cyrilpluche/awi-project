@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
+//Helpers and actions
 import _action from '../../actions'
+import _helper from '../../helpers'
 
 // Drag and drop 
 import { DragDropContext} from 'react-beautiful-dnd';
@@ -86,44 +88,60 @@ class Project extends Component {
     }
 
     socketMoveList(newLists){
-        console.log(newLists)
        this.setState({lists:newLists})
     }
 
     componentWillMount() {
+        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getAllMembers,getMemberStatus,getActivity,findAllCards} = this.props
+        
+        
         // Get project informations
-        this.props.getProjectInfo(this.props.match.params.id)
+        getProjectInfo(match.params.id)
+
+        getMemberHasProject(logged.memberId, match.params.id)  
 
         // Get all lists of this project with associated cards
-        this.props.getAllListsWithCards(this.props.match.params.id)
+        getAllListsWithCards(match.params.id)
 
         // Get all project members 
-        this.props.getAllMembers(this.props.match.params.id)
+        getAllMembers(match.params.id)
 
         // Verify if it's a project administrator
-        this.props.getMemberStatus(this.props.match.params.id,/*memberLoggedId*/)
+        getMemberStatus(match.params.id,/*memberLoggedId*/)
 
         //Get all activity related to this project
-        this.props.getActivity(this.props.match.params.id)
+        getActivity(match.params.id)
 
         //this.props.getLabels()
 
         //Not needed 
-        this.props.findAllCards()
+        findAllCards()
     }
     
 
     
     //Will set the state with props
     componentWillReceiveProps(){
+        const {lists,members} = this.props
+            
             this.setState({ updateLists : false, 
-                lists : this.props.lists,
-                members : this.props.members,
+                lists : lists,
+                members : members,
             })
     }
 
     // When a change occurs on our props, we verify to change the state (re rendering) if necessary
     componentDidUpdate(prevProps){
+        const {hasProject,projectInfo} = this.props
+
+        console.log(hasProject)
+        // verify if props exist
+        if(projectInfo){
+            // If Logged user is not a member of the project & project is private
+            if(hasProject === false && projectInfo.projectVisibility ===1)
+            //redirect to home
+            _helper.History.push('/home')
+        }
 
         // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
@@ -530,6 +548,8 @@ const mapStateToProps = (state) => ({
     projectInfo : state.project.projectInfo,
     members : state.project.members || [],
     isAdmin: state.project.isAdmin || false,
+    logged: state.signin.member,
+    hasProject : state.project.loggedHasProject
     //labels : state.project.labels || []
 })
 
@@ -544,6 +564,7 @@ const mapDispatchToProps ={
     getAllMembers : _action.projectAction.findAllMembers,
     getMemberStatus:  _action.projectAction.getMemberStatus,
     getActivity: _action.projectAction.getActivity,
+    getMemberHasProject : _action.projectAction.getMemberHasProject,
     //getLabels :  _action.projectAction.getLabels,
 }
 

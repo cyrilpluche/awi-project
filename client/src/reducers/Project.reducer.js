@@ -76,6 +76,11 @@ export function project (state = initialState, action) {
             return {
                  ...state,
             };
+        case projectLabels.MEMBER_HAS_PROJECT:
+            return {
+                 ...state,
+                 loggedHasProject : action.payload
+            };
         default:
             return state
     }
