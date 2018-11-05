@@ -263,9 +263,12 @@ class Project extends Component {
 
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
-            
-            
-           let findList = findWhere(lists,{listId: draggableId})
+            console.log(draggableId)
+            let dragId = draggableId.split(':');
+            dragId = Number.parseInt(dragId[1])
+           
+           let findList = findWhere(lists,{listId: dragId})
+          
            let indexOfList = lists.indexOf(findList)           
            let newLists = lists
 
@@ -280,7 +283,7 @@ class Project extends Component {
             this.setState({lists:newLists},function(){
 
 
-                let updateList = findWhere(lists,{listId: draggableId})
+                let updateList = findWhere(lists,{listId: dragId})
 
                 let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 

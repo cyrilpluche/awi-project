@@ -23,10 +23,10 @@ export function project (state = initialState, action) {
                 lists 
             };
         case listLabels.CREATE_CARD:
-            let cards = [...state.cards,action.payload]
+    
             return {
                 ...state,
-                cards 
+                lists : action.payload 
             }; 
         case listLabels.GET_ALL_CARDS:
             return {

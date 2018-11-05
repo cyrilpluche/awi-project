@@ -18,7 +18,7 @@ const labels = {
  * Get all list with cards of a project
  * @param idProject project id to search lists for
  */
-function findAllLists (idProject) {
+function findAllLists (projectId) {
     const fakeLists =[
 
         {   listId: 147,
@@ -47,7 +47,10 @@ function findAllLists (idProject) {
     ]
 
     return dispatch => {
-        _service.List.getAll(idProject)
+        const body ={
+            projectId: projectId
+        }
+        _service.Project.getAllWithCards(body)
         .then(res => {
             dispatch({
                 type: labels.GET_ALL_LISTS,
@@ -86,16 +89,10 @@ function createList (listTitle, projectId, listFather) {
         return dispatch => {
             _service.List.create(body)
             .then(res => { 
-                     _service.List.getAll(projectId)
-                    .then(resFinal => {
-                        dispatch({
-                            type: labels.GET_ALL_LISTS,
-                            payload: resFinal
-                        });
-                    })
-                    .catch((err) => {
-                        dispatch(err)
-                    });
+                dispatch({
+                    type: labels.CREATE_LIST,
+                    payload: res
+                });
             })
             .catch((err) => {
                 dispatch(err)

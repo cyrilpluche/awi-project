@@ -45,7 +45,7 @@ class Lists extends Component {
 
     
     render() {
-        const { classes,lists} = this.props;
+        const { classes,lists,idProject} = this.props;
         
         return (
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
@@ -54,7 +54,7 @@ class Lists extends Component {
                         ref={provided.innerRef} 
                         {...provided.droppableProps}>
                         {lists.length === 0 ? '' :lists.map((list, index) => 
-                            <List key={list.listTitle} list={list} index={index}></List>
+                            <List idProject={idProject} key={list.listTitle} list={list} index={index}></List>
                             )}
                         {provided.placeholder}
                         <div>
