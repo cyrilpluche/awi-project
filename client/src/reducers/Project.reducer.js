@@ -18,6 +18,7 @@ export function project (state = initialState, action) {
             };
         case projectLabels.CREATE_LIST: 
             let lists = [...state.lists,action.payload]
+            console.log(lists)
             return {
                 ...state,
                 lists 

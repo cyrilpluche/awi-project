@@ -19,6 +19,7 @@ const List = {
     },
 
     create(body){
+        
         return Api.post(url + 'create', body).then(res => res.data)
     },
 

@@ -13,7 +13,7 @@ class Card extends Component{
     render() {
         const {classes} = this.props
         return (
-            <Draggable draggableId={this.props.card.cardId} index={this.props.index}>
+            <Draggable key={this.props.card.cardId} draggableId={this.props.card.cardId} index={this.props.index}>
                 {(provided, snapshot) =>  {
                     const style = {
                         //backgroundColor: snapshot.isDragging ? 'lightblue' : 'lightgreen',

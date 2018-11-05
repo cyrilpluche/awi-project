@@ -59,11 +59,11 @@ class List extends Component{
                         ref={provided.innerRef}
                     >
                         <h4 className={classes.listTitle} {...provided.dragHandleProps}>{this.props.list.listTitle}</h4>
-                            <div>
+                           {<div>
                                 <Button className={classes.button}  onClick={this.handleClickOpen} variant="fab" mini  aria-label="Add">
                                     <AddIcon />
                                 </Button>
-                            </div>
+                           </div>}
 
                         <SimpleDialog
                             type="card"
@@ -79,9 +79,9 @@ class List extends Component{
                                 return (
                                     <div 
                                     ref={provided.innerRef} 
-                                    {...provided.droppableProps}
-                                    className={classes.dropSpace} style={style}>
-                                      {list.CardListFks.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                    
+                                    className={classes.dropSpace} style={{flexGrow:1}}>
+                                      {list.CardListFks ? list.CardListFks.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ):'' }
                                        
                                     {provided.placeholder}
                                     
