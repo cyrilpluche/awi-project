@@ -9,12 +9,12 @@ import _helper from '../../helpers'
 import { DragDropContext} from 'react-beautiful-dnd';
 import {findWhere} from 'underscore';
 
-//Components
+// Components
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
 import Filter from '../ui/filter/Filter'
 
-//Material Ui
+// Material Ui
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
@@ -26,11 +26,11 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
 
-//Styles
+// Styles
 import {withStyles } from '@material-ui/core/styles';
 import { styles } from './Style'
 
-//Socket IO
+// Socket IO
 import SocketIOClient  from "socket.io-client"
 
 
@@ -81,8 +81,9 @@ class Project extends Component {
         // Get all lists of this project with associated cards
         getAllListsWithCards(match.params.id)
 
-        // Get all project members 
-        getAllMembers(match.params.id)
+        // Get all project members
+        console.log(this.props.match.params.id)
+        this.props.getAllMembers(this.props.match.params.id)
 
         // Verify if it's a project administrator
         getMemberStatus(match.params.id,/*memberLoggedId*/)
@@ -550,8 +551,8 @@ class Project extends Component {
                     <SupervisorAccount className={classes.leftIcon} />
                     {this.props.members? this.props.members.length : 0} Members
                 </Button>
-                <MemberDialog  isAdmin={this.props.isAdmin} members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
-                
+                <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+
                 {/*===================  VISIBILITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                     <RemoveRedEye className={classes.leftIcon} />
@@ -559,7 +560,7 @@ class Project extends Component {
                 </Button>
                 <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
                 
-                {/*===================  ACTIVITY BUTTON  ========================================= */}
+                {/**===================  ACTIVITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
                     <Description className={classes.leftIcon} />
                     Activity

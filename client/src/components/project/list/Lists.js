@@ -54,7 +54,7 @@ class Lists extends Component {
                         ref={provided.innerRef} 
                         {...provided.droppableProps}>
                         {lists.length === 0 ? '' :lists.map((list, index) => 
-                            <List idProject={idProject} key={list.listTitle} list={list} index={index}></List>
+                            <List idProject={idProject} key={list.listTitle+list.listId} list={list} index={index}></List>
                             )}
                         {provided.placeholder}
                         <div>

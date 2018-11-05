@@ -6,16 +6,25 @@ const listLabels = listAction.labels
 
 const initialState = {
     lists: [],
-    cards: []
+    cards: [],
+    members: [],
+    isLoading: false
 };
 
 export function project (state = initialState, action) {
     switch (action.type) {
+        case projectLabels.LOAD:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case projectLabels.GET_ALL_LISTS: 
             return {
                 ...state,
                 lists:action.payload
             };
+
         case projectLabels.CREATE_LIST: 
             let lists = [...state.lists,action.payload]
             console.log(lists)
@@ -46,7 +55,8 @@ export function project (state = initialState, action) {
         case projectLabels.GET_ALL_MEMBERS:
             return {
                 ...state,
-                members: action.payload
+                members: action.payload,
+                isLoading: false
             };
         //TODO
         case projectLabels.SEND_INVITATION:
@@ -62,6 +72,7 @@ export function project (state = initialState, action) {
         case projectLabels.REMOVE_MEMBER_FROM_PROJECT:
             return {
                 ...state,
+                isLoading: false
             };
         //TODO
         case projectLabels.SET_MEMBER_ADMIN:
@@ -77,6 +88,25 @@ export function project (state = initialState, action) {
             return {
                  ...state,
             };
+
+        case projectLabels.INVITATION_SUCCESS:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case projectLabels.INVITATION_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case projectLabels.REMOVE_MEMBER_FROM_PROJECT_ERROR:
+                return {
+                    ...state,
+                    isLoading: false
+                };
+
         case projectLabels.MEMBER_HAS_PROJECT:
             return {
                  ...state,

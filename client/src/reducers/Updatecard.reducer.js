@@ -4,7 +4,7 @@ const labels = updateCardAction.labels
 
 const initialState = {
     card: {
-        id: "123456789",
+        id: "1",
         title: 'Clean the github',
         deadline: 'January 10, 2018',
         description: 'By merging all branches update the master branch',

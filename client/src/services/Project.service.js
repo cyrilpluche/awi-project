@@ -19,6 +19,13 @@ const Project = {
     getAllProjectsMember (member_id) { // get all member that member is involved in
         return Api.get(`${url}find_all_member/${member_id}`).then(res => res.data).catch(e => e.error)
     },
+
+    /** Use for project component */
+    getAllMembers(object){
+        let where = helper.Request.urlFromObject(object)
+        return Api.get(url + 'find_all_members' + where).then(res => res.data)
+    },
+
     get (object) {
         let where = helper.Request.urlFromObject(object)
         return Api.get(url + 'find_one' + where).then(res => res.data)
@@ -83,8 +90,7 @@ const Project = {
         */
 
     },  
-    createAndSendInvitation(object){
-        //let where = helper.Request.urlFromObject(object)
+    createAndSendInvitation(body){
         /**
         * object = {
             * memberEmail:...
@@ -98,7 +104,7 @@ const Project = {
          * -> we create a row in the table memberhasproject with status = 0 (in validation)
          * -> we send an email with a link to update his password and information and update his status = 1 (accepted to join)
          */
-       
+        return Api.post(url + 'create_invitation', body).then(res => res.data)
     },
     getMemberStatus(object){
         /**
@@ -113,18 +119,7 @@ const Project = {
          */ 
         
     },
-    removeFromProject(object){
-        /**
-         * object = {
-         * memberId: ..
-         * projectId: ...
-         * }
-         */
 
-         /**
-          * Remove a member from a project
-          */
-    },
     setAsAdmin(object){
          /**
          * object = {
@@ -143,9 +138,7 @@ const Project = {
          * Return all activities related to this project 
          * in the DB -> Table "action"
          */
-    },
-
-
+    }
 }
 
 export default Project

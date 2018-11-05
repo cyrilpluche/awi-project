@@ -29,7 +29,7 @@ class NotificationList extends React.Component {
      *  }
      */
 
-    /* Build the notification list of the menu */
+    /** Build the notification list of the menu */
     buildNotifications = () => {
         let list = []
 
