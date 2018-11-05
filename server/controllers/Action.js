@@ -7,11 +7,9 @@ module.exports = {
     /* ================= SEQUELIZE METHODS ================= */
     /* ================= SEQUELIZE METHODS ================= */
 
-    /*  localhost:4200/api/action/create
-     *
+    /**
      *  req.body = {
      *      actionType: Int,
-     *      actionStatus: Int,
      *      actionTitle: String,
      *      actionDescription: String
      *      memberId: Int,
@@ -29,6 +27,7 @@ module.exports = {
             .create(req.body)
             .then(action => {
                 req.body.result = action
+                req.body.actionId = action.actionId
                 next()
             })
             .catch(error => next(error));

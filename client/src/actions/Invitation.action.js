@@ -1,5 +1,6 @@
 import _service from '../services'
 import _helper from '../helpers'
+import moment from 'moment'
 
 const labels = {
     MEMBER_EXIST: 'MEMBER_EXIST',
@@ -58,7 +59,7 @@ function isMemberExist (memberToken) {
     };
 }
 
-function replyToInvitation (accept, body, query) {
+function replyToInvitation (accept, body, query, member) {
     return (dispatch) => {
         if (accept) {
             _service.Member.updateInvitation(body, query)
@@ -66,6 +67,15 @@ function replyToInvitation (accept, body, query) {
                     if (isUpdated) {
                         dispatch({
                             type: labels.INVITATION_REPLY
+                        })
+                        _service.Action.createActivityForAllMembers({
+                            actionType: 2,
+                            actionTitle: member.memberPseudo + ' has join the project',
+                            actionDescription: member.memberPseudo + ' has accept the invitation.',
+                            memberId: query.memberId,
+                            projectId: query.projectId,
+                            actionDateCreation: moment(),
+                            mhaStatus: 0
                         })
                         _helper.History.push('/home')
                     } else {

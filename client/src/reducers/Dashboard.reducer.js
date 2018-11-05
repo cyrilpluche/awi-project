@@ -30,11 +30,11 @@ export function dashboard (state = initialState, action) {
 
         case labels.UPDATE_MEMBER_HAS_PROJECT:
             let newProjects = Helper.Method.copy(state.projects)
-            let found = false
+            //let found = false
 
             for (let i =0; i < newProjects.length; i++) {
                 if (action.payload.projectId === newProjects[i].projectId) {
-                    found = true
+                    //found = true
                     newProjects[i].projectIsFavorite = action.payload.projectIsFavorite
                 }
             }

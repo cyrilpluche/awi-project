@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS public.Task CASCADE;
 DROP TABLE IF EXISTS public.MemberHasProject CASCADE;
 DROP TABLE IF EXISTS public.TeamHasMember CASCADE;
 DROP TABLE IF EXISTS public.TeamHasProject CASCADE;
+DROP TABLE IF EXISTS public.MemberHasAction CASCADE;
 DROP TABLE IF EXISTS public.MemberHasPermissionTeam CASCADE;
 DROP TABLE IF EXISTS public.MemberHasPermissionProject CASCADE;
 DROP TABLE IF EXISTS public.CardHasLabel CASCADE;
@@ -117,22 +118,19 @@ CREATE TABLE public.Permission(
 CREATE TABLE public.Action(
 	action_id              SERIAL NOT NULL ,
 	action_type            INT  NOT NULL ,
-	action_status          INT  NOT NULL ,
-	action_title     VARCHAR (250) NOT NULL ,
+	action_title           VARCHAR (50) NOT NULL ,
 	action_description     VARCHAR (250) NOT NULL ,
 	action_date_creation   DATE  NOT NULL ,
 	card_id                INT   ,
 	list_id                INT   ,
 	project_id             INT   ,
-	member_id              INT  NOT NULL ,
 	team_id                INT    ,
 	CONSTRAINT Action_PK PRIMARY KEY (action_id)
 
 	,CONSTRAINT Action_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
 	,CONSTRAINT Action_List0_FK FOREIGN KEY (list_id) REFERENCES public.List(list_id)
 	,CONSTRAINT Action_Project1_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
-	,CONSTRAINT Action_Member2_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
-	,CONSTRAINT Action_Team3_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id)
+	,CONSTRAINT Action_Team2_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id)
 )WITHOUT OIDS;
 
 
@@ -233,6 +231,18 @@ CREATE TABLE public.MemberHasPermissionTeam(
 	,CONSTRAINT MemberHasPermissionTeam_Member1_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
 )WITHOUT OIDS;
 
+------------------------------------------------------------
+-- Table: MemberHasAction
+------------------------------------------------------------
+CREATE TABLE public.MemberHasAction(
+	action_id    INT  NOT NULL ,
+	member_id    INT  NOT NULL ,
+	mha_status   INT  NOT NULL  ,
+	CONSTRAINT MemberHasAction_PK PRIMARY KEY (action_id,member_id)
+
+	,CONSTRAINT MemberHasAction_Action_FK FOREIGN KEY (action_id) REFERENCES public.Action(action_id) ON DELETE CASCADE
+	,CONSTRAINT MemberHasAction_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
+)WITHOUT OIDS;
 
 ------------------------------------------------------------
 -- Table: MemberHasPermissionProject

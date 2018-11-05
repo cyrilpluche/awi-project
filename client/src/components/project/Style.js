@@ -38,6 +38,10 @@ export const styles = theme => ({
     },
     drawer:{
         width:`250px`
-    }
+    },
+    drawerList: {
+        overflowY: 'scroll',
+        maxHeight: theme.spacing.unit * 60
+    },
 
 })

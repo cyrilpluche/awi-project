@@ -13,7 +13,8 @@ const labels = {
     REMOVE_MEMBER_FROM_PROJECT:"REMOVE_MEMBER_FROM_PROJECT",
     REMOVE_MEMBER_FROM_PROJECT_ERROR:"REMOVE_MEMBER_FROM_PROJECT_ERROR",
     SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
-    GET_PROJECT_ACTIVITY:"GET_PROJECT_ACTIVITY",
+    GET_ACTIVITY:"GET_ACTIVITY",
+    GET_ACTIVITY_ERROR: "GET_ACTIVITY_ERROR",
     MEMBER_HAS_PROJECT:"MEMBER_HAS_PROJECT",
     LOAD: "LOAD"
 }
@@ -22,8 +23,7 @@ const labels = {
  * Get all list with cards of a project
  * @param idProject project id to search lists for
  */
-function findAllLists (projectId) {
-
+function findAllLists (idProject) {
     return dispatch => {
         const body ={
             projectId: projectId
@@ -242,10 +242,6 @@ function sendInvitationProject(body){
  * Return true if he is admin, else false
  */
 function getMemberStatus(projectId, memberId){
-    const body = {
-        memberId : memberId,
-        projectId:projectId
-    }
     return dispatch => {
         /*_service.Project.getMemberStatus(body)
         .then(res => {*/
@@ -299,22 +295,13 @@ function removeMemberFromProject(query){
  * Update the status of a member for a specific project. Set him as admin
  */
 function setMemberAsAdmin(projectId, memberId){
-    const body = {
-        memberId : memberId,
-        projectId:projectId
-    }
     return dispatch => {
 
-        /*_service.Project.setAsAdmin(body)
-        .then(res => {*/
         dispatch({
             type: labels.SET_MEMBER_ADMIN,
             payload: false
         });
-        /*})
-        .catch((err) => {
-            dispatch(err)
-        });*/
+
     }
 
 }
@@ -324,17 +311,18 @@ function setMemberAsAdmin(projectId, memberId){
  */
 function getActivity(projectId){
     return dispatch => {
-
-        /*_service.Project.getActivity(projectId)
-        .then(res => {*/
-        dispatch({
-            type: labels.GET_PROJECT_ACTIVITY,
-            payload: false
-        });
-        /*})
-        .catch((err) => {
-            dispatch(err)
-        });*/
+        _service.Project.getAllActions({ projectId: projectId })
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ACTIVITY,
+                    payload: res
+                });
+            })
+            .catch(err => {
+                dispatch({
+                    type: labels.GET_ACTIVITY_ERROR
+                });
+            })
     }
 }
 
@@ -356,9 +344,6 @@ function getLabels(){
             });
     }
 }
-
-
-
 
 export const projectAction = {
     labels,

@@ -105,7 +105,6 @@ module.exports = {
         Member
             .findOne({ where: req.query })
             .then(member => {
-                console.log(member)
                 req.body.result = member
                 next()
             })

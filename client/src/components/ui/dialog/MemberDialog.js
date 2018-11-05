@@ -133,7 +133,7 @@ class MemberDialog extends Component {
                         { isLoading ? (
                             <MiniLoader/>
                         ) :  this.props.members ? this.props.members.map(member =>
-                            member.Member.memberStatus === 1 ? (
+                            member.memberhasprojectStatus === 1 ? (
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
                                     <ListItemText primary={member.Member.memberEmail}>
                                     </ListItemText>
@@ -159,7 +159,7 @@ class MemberDialog extends Component {
                         { isLoading ? (
                             <MiniLoader/>
                         ) :  this.props.members ? this.props.members.map(member =>
-                            member.Member.memberStatus !== 1 ? (
+                            member.memberhasprojectStatus !== 1 ? (
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
                                     <ListItemText primary={member.Member.memberEmail}>
                                     </ListItemText>

@@ -8,7 +8,8 @@ const initialState = {
     lists: [],
     cards: [],
     members: [],
-    isLoading: false
+    isLoading: false,
+    activities: []
 };
 
 export function project (state = initialState, action) {
@@ -86,10 +87,17 @@ export function project (state = initialState, action) {
                 ...state,
             };
         //TODO
-        case projectLabels.GET_PROJECT_ACTIVITY:
+        case projectLabels.GET_ACTIVITY:
+            return {
+                ...state,
+                activities: action.payload
+            };
+
+        case projectLabels.GET_ACTIVITY_ERROR:
             return {
                 ...state,
             };
+
         case projectLabels.GET_ALL_LABELS:
             return {
                  ...state,

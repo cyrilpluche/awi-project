@@ -26,7 +26,12 @@ const Action = {
         let body = {actions: array}
         return Api.put(url + 'update_multiple', body).then(res => res.data)
         //return axios.put(url + 'update/' + array[0].actionId, array[0]).then(res => res.data)
+    },
 
+    /** Generate project activity for all members of an array */
+    createActivityForAllMembers (body) {
+        let where = helper.Request.urlFromObject(body.projectId)
+        return Api.post(url + 'create_mha_from_array' + where, body).then(res => res.data)
     }
 
 }
