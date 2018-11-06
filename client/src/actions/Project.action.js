@@ -16,7 +16,11 @@ const labels = {
     GET_ACTIVITY:"GET_ACTIVITY",
     GET_ACTIVITY_ERROR: "GET_ACTIVITY_ERROR",
     MEMBER_HAS_PROJECT:"MEMBER_HAS_PROJECT",
-    LOAD: "LOAD"
+    LOAD: "LOAD",
+    GET_ALL_PERMISSIONS: "GET_ALL_PERMISSIONS",
+    GET_ALL_PERMISSIONS_ERROR: "GET_ALL_PERMISSIONS_ERROR",
+    UPDATE_PERMISSION_MEMBER: "UPDATE_PERMISSION_MEMBER",
+    UPDATE_PERMISSION_MEMBER_ERROR: "UPDATE_PERMISSION_MEMBER_ERROR"
 }
 
 /** TODO SERVICE
@@ -331,7 +335,6 @@ function getActivity(projectId){
  */
 function getLabels(){
     return dispatch => {
-
         _service.Project.getLabels()
             .then(res => {
                 dispatch({
@@ -341,6 +344,61 @@ function getLabels(){
             })
             .catch((err) => {
                 dispatch(err)
+            });
+    }
+}
+
+/**
+ * Fetch all permissions of all members of a project
+ */
+function getAllPermissions (projectId) {
+    return dispatch => {
+        _service.Permission.getAllOnProject({ projectId: projectId })
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_PERMISSIONS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.GET_ALL_PERMISSIONS_ERROR
+                });
+            });
+    }
+}
+
+/**
+ * Update store and db permissions
+ */
+function updatePermissionMember (projectId, memberId, permissionId, mhppState, storeMembers) {
+    let query = {
+        projectId: projectId,
+        memberId: memberId,
+        permissionId: permissionId
+    }
+    let body = {
+        mhppState: mhppState
+    }
+    console.log(query)
+    return dispatch => {
+        _service.Permission.updateOnProject(query, body)
+            .then(res => {
+                if (res) {
+                    dispatch({
+                        type: labels.UPDATE_PERMISSION_MEMBER,
+                        payload: storeMembers
+                    });
+                } else {
+                    dispatch({
+                        type: labels.UPDATE_PERMISSION_MEMBER_ERROR
+                    });
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.UPDATE_PERMISSION_MEMBER_ERROR
+                });
             });
     }
 }
@@ -360,5 +418,7 @@ export const projectAction = {
     setMemberAsAdmin,
     getActivity,
     getLabels,
-    getMemberHasProject
+    updatePermissionMember,
+    getMemberHasProject,
+    getAllPermissions
 }

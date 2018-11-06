@@ -22,6 +22,7 @@ module.exports = {
     Team: models.Team,
     Member: models.Member,
     Project: models.Project,
+    Permission: models.Permission,
     List: models.List,
     Card: models.Card,
     Action: models.Action,
@@ -29,6 +30,7 @@ module.exports = {
     Attachment: models.Attachment,
     MemberHasProject: models.Memberhasproject,
     MemberHasAction: models.Memberhasaction,
+    MemberHasPermissionProject: models.Memberhaspermissionproject,
     Teamhasmember: models.Teamhasmember,
     Label: models.Label
 

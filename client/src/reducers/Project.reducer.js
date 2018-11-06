@@ -6,10 +6,10 @@ const listLabels = listAction.labels
 
 const initialState = {
     lists: [],
-    cards: [],
     members: [],
     isLoading: false,
-    activities: []
+    activities: [],
+    permissions: []
 };
 
 export function project (state = initialState, action) {
@@ -114,12 +114,18 @@ export function project (state = initialState, action) {
                 isLoading: false
             };
 
-        case projectLabels.INVITATION_ERROR:
+        case projectLabels.INVITATION_ERROR || projectLabels.GET_ALL_PERMISSIONS_ERROR || projectLabels.UPDATE_PERMISSION_MEMBER_ERROR:
             return {
                 ...state,
                 isLoading: false
             };
 
+        case projectLabels.GET_ALL_PERMISSIONS:
+            return {
+                ...state,
+                permissions: action.payload,
+                isLoading: false
+            };
         case projectLabels.REMOVE_MEMBER_FROM_PROJECT_ERROR:
                 return {
                     ...state,
@@ -131,6 +137,13 @@ export function project (state = initialState, action) {
                  ...state,
                  loggedHasProject : action.payload
             };
+
+        case projectLabels.UPDATE_PERMISSION_MEMBER:
+            return {
+                ...state,
+                members : action.payload
+            };
+
         default:
             return state
     }

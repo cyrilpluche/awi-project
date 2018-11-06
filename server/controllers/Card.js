@@ -97,7 +97,10 @@ module.exports = {
      */
     findOne(req, res, next) {
         Card
-            .findOne({ where: req.query })
+            .findOne({
+                where: req.query,
+                include: [{ all: true }]
+            })
             .then(card => {
                 req.body.result = card
                 next()
@@ -139,9 +142,7 @@ module.exports = {
     delete(req, res, next) {
         Card
             .destroy({
-                where: {
-                    cardId: req.params.id
-                }
+                where: req.query
             })
             .then(isDeleted => {
                 req.body.result = isDeleted === 1

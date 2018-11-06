@@ -4,6 +4,7 @@ const sequelize = require('../config/db_connection').sequelize;
 
 const Member = require('../config/db_connection').Member
 const Project = require('../config/db_connection').Project
+const Mhpp = require('../config/db_connection').MemberHasPermissionProject
 
 module.exports = {
 
@@ -38,7 +39,11 @@ module.exports = {
             .findAll({
                 order : sequelize.col('memberId'),
                 where: req.query,
-                include: [{ model: Member, as: 'Member' }]
+                include: [{
+                    model: Member,
+                    as: 'Member',
+                    include: [{ model: Mhpp, as: 'HaspermissionprojectMember1Fks' }]
+                }]
             })
             .then(mhps => {
                 req.body.result = mhps

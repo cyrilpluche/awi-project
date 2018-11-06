@@ -12,5 +12,6 @@ router.use('/card', require("./Card"));
 router.use('/task', require("./Task"));
 
 router.use('/action', require("./Action"));
+router.use('/permission', require("./Permission"));
 
 module.exports = router;

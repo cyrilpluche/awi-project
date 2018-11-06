@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 class Cards extends Component {
     render() {
         return (
-            <Card content = {{id:1}}/>
+            <Card cardId='1'/>
         );
     }
 

@@ -6,7 +6,7 @@ import { notificationAction } from './Notification.action';
 import { profileAction } from './Profile.action';
 import {projectAction} from './Project.action';
 import {listAction} from './List.action';
-import {updateCardAction} from "./UpdateCard.action";
+import {cardAction} from "./Card.action";
 import { searchbarAction } from "./Searchbar.action";
 import { invitationAction } from "./Invitation.action";
 import  { memberAction } from "./Member.action";
@@ -20,7 +20,7 @@ const _action = {
     profileAction,
     projectAction,
     listAction,
-    updateCardAction,
+    cardAction,
     searchbarAction,
     invitationAction,
     memberAction

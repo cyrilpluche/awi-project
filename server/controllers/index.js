@@ -9,8 +9,10 @@ const Attachment = require('./Attachment');
 
 const MemberHasProject = require('./MemberHasProject');
 const MemberHasAction = require('./MemberHasAction');
+const MemberHasPermissionProject = require('./MemberHasPermissionProject');
 
 const Action = require('./Action');
+const Permission = require('./Permission');
 
 const End = require('./Endpoint');
 
@@ -26,7 +28,9 @@ module.exports = {
 
     MemberHasProject,
     MemberHasAction,
+    MemberHasPermissionProject,
 
     Action,
+    Permission,
     End
 };

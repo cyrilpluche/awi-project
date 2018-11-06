@@ -15,6 +15,6 @@ router.post('/create', cardController.create);
 
 router.put('/update/:id', cardController.update);
 
-router.delete('/delete/:id', cardController.delete);
+router.delete('/delete', cardController.delete);
 
 module.exports = router;
