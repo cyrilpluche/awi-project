@@ -5,6 +5,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import _action from "../../actions";
+import connect from "react-redux/es/connect/connect";
+import * as PropTypes from "prop-types";
 
 class ConfirmationDialog extends React.Component {
     state = {
@@ -18,6 +21,17 @@ class ConfirmationDialog extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+    };
+
+    changeStatusArchived = () => {
+        if(this.state.type === 'archive'){
+            console.log("here")
+            this.props.card.cardStatus = 1;
+            this.props.onUpdateCard(this.props.card, {cardStatus: 1});
+            this.setState({ open: false });
+        }else{
+            this.setState({ open: false }); //ToDo handle the delete here
+        }
     };
 
     render() {
@@ -43,7 +57,7 @@ class ConfirmationDialog extends React.Component {
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.changeStatusArchived} color="primary">
                             {this.state.type}
                         </Button>
                     </DialogActions>
@@ -53,4 +67,15 @@ class ConfirmationDialog extends React.Component {
     }
 }
 
-export default ConfirmationDialog;
+ConfirmationDialog.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+    card: state.updatecard.card
+})
+const mapDispatchToProps = {
+    onUpdateCard : _action.updateCardAction.updatecard
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationDialog);
