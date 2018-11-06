@@ -72,7 +72,8 @@ class Project extends Component {
     componentWillMount() {
         const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity,findAllCards} = this.props
         
-        
+        const projectId = this.props.match.params.id
+
         // Get project informations
         getProjectInfo(match.params.id)
 
@@ -91,6 +92,7 @@ class Project extends Component {
         getActivity(match.params.id)
 
         //this.props.getLabels()
+        this.props.onGetAllPermissions(projectId)
 
         //Not needed 
         findAllCards()
@@ -617,6 +619,7 @@ const mapDispatchToProps ={
     getMemberStatus:  _action.projectAction.getMemberStatus,
     getActivity: _action.projectAction.getActivity,
     getMemberHasProject : _action.projectAction.getMemberHasProject,
+    onGetAllPermissions: _action.projectAction.getAllPermissions,
     //getLabels :  _action.projectAction.getLabels,
 }
 

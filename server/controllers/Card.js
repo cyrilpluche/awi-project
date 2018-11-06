@@ -97,7 +97,10 @@ module.exports = {
      */
     findOne(req, res, next) {
         Card
-            .findOne({ where: req.query })
+            .findOne({
+                where: req.query,
+                include: [{ all: true }]
+            })
             .then(card => {
                 req.body.result = card
                 next()
