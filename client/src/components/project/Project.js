@@ -225,7 +225,7 @@ class Project extends Component {
     onDragEnd = (result) => {
         
         //retrieve source and destination data (given by dnd)
-        const { destination,draggableId } = result;
+        const { source, destination,draggableId } = result;
 
         //retrieve lists
         const {lists} = this.state
@@ -274,9 +274,9 @@ class Project extends Component {
                 let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
                 
                 // Change fathers of list in DB
-                if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
+               /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
                 if(findList)  this.props.moveList(updateList.listId,listFather)
-                if(listChild) this.props.moveList(listChild,updateList.listId)
+                if(listChild) this.props.moveList(listChild,updateList.listId)*/
             })
         }
         

@@ -26,7 +26,7 @@ const labels = {
 function findAllLists (idProject) {
     return dispatch => {
         const body ={
-            projectId: projectId
+            projectId: idProject
         }
         _service.Project.getAllWithCards(body)
         .then(res => {
