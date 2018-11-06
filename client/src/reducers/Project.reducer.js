@@ -28,7 +28,6 @@ export function project (state = initialState, action) {
 
         case projectLabels.CREATE_LIST: 
             let lists = [...state.lists,action.payload]
-            console.log(lists)
             return {
                 ...state,
                 lists 
@@ -38,6 +37,10 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 lists : action.payload 
+            }; 
+        case listLabels.UPDATE_CARD:   
+            return {
+                ...state,
             }; 
         case listLabels.GET_ALL_CARDS:
             return {
