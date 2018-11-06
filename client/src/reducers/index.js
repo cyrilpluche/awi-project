@@ -5,7 +5,7 @@ import { signup } from './Signup.reducer';
 import { navbar } from './Navbar.reducer';
 import { profile } from './Profile.reducer';
 import { project } from './Project.reducer';
-import { updatecard } from "./Updatecard.reducer";
+import { card } from "./Card.reducer";
 import { searchbar } from "./Searchbar.reducer";
 import { invitation } from "./Invitation.reducer";
 
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
     navbar,
     profile,
     project,
-    updatecard,
+    card,
     searchbar,
     invitation
 });

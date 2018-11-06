@@ -1,6 +1,6 @@
-import { updateCardAction } from '../actions/UpdateCard.action';
+import { cardAction } from '../actions/Card.action';
 
-const labels = updateCardAction.labels
+const labels = cardAction.labels
 
 const initialState = {
     card: {
@@ -25,10 +25,12 @@ const initialState = {
     }
 };
 
-export function updatecard (state = initialState, action) {
+export function card (state = initialState, action) {
     switch (action.type) {
         case labels.UPDATE_CARD:
             return { ...state, card: action.payload };
+        case labels.DELETE_CARD:
+            return { ...state};
         default:
             return state
     }

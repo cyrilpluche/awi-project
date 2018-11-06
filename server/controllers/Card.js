@@ -139,9 +139,7 @@ module.exports = {
     delete(req, res, next) {
         Card
             .destroy({
-                where: {
-                    cardId: req.params.id
-                }
+                where: req.query
             })
             .then(isDeleted => {
                 req.body.result = isDeleted === 1

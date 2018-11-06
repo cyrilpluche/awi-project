@@ -27,6 +27,11 @@ const Card = {
     searchbarCards (str) {
         let where = helper.Request.urlFromObject(str)
         return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
+    },
+
+    delete(query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.delete(url + 'delete' + where).then(res => res.data)
     }
 
 }
