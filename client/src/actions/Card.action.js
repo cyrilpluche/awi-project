@@ -1,10 +1,27 @@
 import _service from "../services";
 
 const labels = {
+    GET_CARD: 'GET_CARD',
     UPDATE_CARD: 'UPDATE_CARD',
     DELETE_CARD: 'DELETE_CARD',
+    GET_CARD_ERROR: 'GET_CARD_ERROR',
     ERROR_UPDATE_CARD : 'ERROR_UPDATE_CARD',
     DELETE_CARD_ERROR: 'DELETE_CARD_ERROR'
+}
+
+function getCard(cardId) {
+    return dispatch => {
+        _service.Card.get({cardId: cardId})
+            .then(res => {
+                dispatch({
+                    type: labels.GET_CARD,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+    }
 }
 
 function updatecard(card, body) {
@@ -44,6 +61,7 @@ function deleteCard(cardId) {
 
 export const cardAction = {
     labels,
+    getCard,
     updatecard,
     deleteCard
 }

@@ -33,6 +33,10 @@ class Cardboard extends React.Component {
         };
     }
 
+    componentDidMount (){
+        this.props.onGetCard(this.props.cardId)
+    };
+
     handleOpen = () => {
         this.setState({ open: true });
     };
@@ -93,7 +97,7 @@ class Cardboard extends React.Component {
                                 <Divider className={classes.divider}/>
                                 <div className={classes.row}>
                                     <h4>Labels : </h4>
-                                    <Button disabled className={classes.buttonLabel}>{this.props.card.cardhaslabelLabels.labelDescription}</Button>
+                                    <Button disabled className={classes.buttonLabel}>TODO</Button>
                                     <SvgIcon className={classes.buttonIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
                                 </div>
                                 <Divider className={classes.divider}/>
@@ -167,7 +171,7 @@ class Cardboard extends React.Component {
                                 {this.props.card.cardDescription}
                             </Typography>
                             <div className={classes.rowRight}><Avatar className={classes.marginCard}>{this.props.card.members}</Avatar></div>
-                            <Button disabled className={classes.buttonLabel}>{this.props.card.cardhaslabelLabels.labelDescription}</Button>
+                            <Button disabled className={classes.buttonLabel}>TODO</Button>
                         </CardContent>
                     </CardActionArea>
                 </Card>
@@ -184,7 +188,8 @@ const mapStateToProps = (state) => ({
     card: state.card.card
 })
 const mapDispatchToProps = {
-    onUpdateCard : _action.cardAction.updatecard
+    onUpdateCard : _action.cardAction.updatecard,
+    onGetCard : _action.cardAction.getCard
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));

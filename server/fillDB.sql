@@ -9,8 +9,8 @@ INSERT INTO public.permission (
 )
 VALUES (
     1,
-    "admin",
-    "have all permissions on the team"
+    'admin',
+    'have all permissions on the team'
 );
 
 INSERT INTO public.permission (
@@ -20,8 +20,8 @@ INSERT INTO public.permission (
 )
 VALUES (
     2,
-    "add/remove members",
-    "add and remove member in the team"
+    'add/remove members',
+    'add and remove member in the team'
 );
 
 INSERT INTO public.permission (
@@ -31,6 +31,6 @@ INSERT INTO public.permission (
 )
 VALUES (
     3,
-    "admin",
-    "have all permissions on the project"
+    'admin',
+    'have all permissions on the project'
 );
