@@ -92,7 +92,7 @@ function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberh
         })
 }
 
-function createProject (projectTitle, projectVisibility, projectStatus, projectDateTarget,
+function createProject (projectTitle, projectVisibility, projectStatus = 0, projectDateTarget,
                         memberId, memberhasprojectStatus = 0) {
 
     return dispatch => _service.Project.createProject( projectTitle, projectVisibility, projectStatus, projectDateTarget)
@@ -107,12 +107,24 @@ function createProject (projectTitle, projectVisibility, projectStatus, projectD
                         projectStatus,
                         projectDateTarget
                     }
-                    dispatch({
-                        type: labels.CREATE_NEW_PROJECT,
-                        payload: project
-                    })
-                    // todo add permission
-                    _helper.History.push('/project/' + projectId)
+
+
+                    /*
+                        permissionId = 3 because this member is the admin of the project
+                     */
+                    let permissionId = 3
+                    let mhppState = true
+                    return _service.Permission
+                        .createMemberProjectPermission(memberId, projectId, permissionId, mhppState)
+                        .then(permission => {
+                            dispatch({
+                                type: labels.CREATE_NEW_PROJECT,
+                                payload: project
+                            })
+                            // tODO maybe dispatch the permission
+                            _helper.History.push('/project/' + projectId)
+                        })
+
                 })
     }).catch (e => {
             dispatch({
