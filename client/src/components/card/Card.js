@@ -181,10 +181,10 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.updatecard.card
+    card: state.card.card
 })
 const mapDispatchToProps = {
-    onUpdateCard : _action.updateCardAction.updatecard
+    onUpdateCard : _action.cardAction.updatecard
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));
