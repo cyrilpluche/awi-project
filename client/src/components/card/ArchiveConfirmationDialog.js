@@ -25,7 +25,6 @@ class ConfirmationDialog extends React.Component {
 
     changeStatusArchived = () => {
         if(this.state.type === 'archive'){
-            console.log("here")
             this.props.card.cardStatus = 1;
             this.props.onUpdateCard(this.props.card, {cardStatus: 1});
             this.setState({ open: false });
@@ -68,9 +67,10 @@ class ConfirmationDialog extends React.Component {
     }
 }
 
+/*
 ConfirmationDialog.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+};*/
 
 const mapStateToProps = (state) => ({
     card: state.card.card

@@ -10,43 +10,43 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import FormGroup from "@material-ui/core/FormGroup/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import _action from "../../../actions";
+import connect from "react-redux/es/connect/connect";
 
 
 class ChecklistDialog extends React.Component {
+
     handleClose = () => {
         this.props.onClose(this.props.selectedValue);
     };
-    handleChange = name => event => {
+
+    handleChange = (name,object) => event => {
         this.setState({ [name]: event.target.checked });
+        this.props.checklist[object.index].chtState = !object.value
     };
 
     render() {
         const { classes, onClose, selectedValue, ...other } = this.props;
-
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set checklist</DialogTitle>
                 <div className={classes.form}>
                     <FormControl component="fieldset" >
                         <FormGroup>
-                            <div>
-                                <SvgIcon className={classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
-                                <FormControlLabel className={classes.formLabel}
-                                    control={
-                                        <Checkbox onChange={this.handleChange('gilad')} value="gilad" />
-                                    }
-                                    label="******************************************"
-                                />
-                                </div>
-                            <div>
-                                <SvgIcon className={classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
-                                <FormControlLabel className={classes.formLabel}
-                                    control={
-                                        <Checkbox  onChange={this.handleChange('jason')} value="jason" />
-                                    }
-                                    label="*****************************************"
-                                />
-                            </div>
+                            {this.props.checklist.map((task, index) => {
+                                    return (
+                                        <div>
+                                            <SvgIcon className={this.props.classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
+                                            <FormControlLabel className={this.props.classes.formLabel}
+                                                              control={
+                                                                  <Checkbox onChange={this.handleChange(task.chtState, {index: index, value: task.chtState})} value={task.taskId} checked={task.chtState} />
+                                                              }
+                                                              label={task.taskTitle}
+                                            />
+                                        </div>
+                                    )
+                                }
+                            )}
                         </FormGroup>
                     </FormControl>
                 </div>
@@ -56,11 +56,11 @@ class ChecklistDialog extends React.Component {
     }
 }
 
-ChecklistDialog.propTypes = {
+/*ChecklistDialog.propTypes = {
     classes: PropTypes.object.isRequired,
     onClose: PropTypes.func,
     selectedValue: PropTypes.string,
-};
+};*/
 
 const ChecklistDialogWrapped = withStyles(styles)(ChecklistDialog);
 
@@ -87,10 +87,22 @@ class Checklist extends React.Component {
                 <ChecklistDialogWrapped
                     open={this.state.open}
                     onClose={this.handleClose}
+                    checklist = {this.props.card.TaskCardFks}
                 />
             </div>
         );
     }
 }
 
-export default Checklist;
+/*Checklist.propTypes = {
+    classes: PropTypes.object.isRequired,
+};*/
+
+const mapStateToProps = (state) => ({
+    card: state.card.card
+});
+const mapDispatchToProps = {
+    onUpdateCard : _action.cardAction.updatecard
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checklist);
