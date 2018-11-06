@@ -39,6 +39,7 @@ function getAllNonArchivedNotifications () {
     }
 }
 
+/** Change the state of the checkbox locally */
 function handleCheckboxNotification (notifications, newNotification, index, isRead, nbUnread) {
     return dispatch => {
         var res;
@@ -65,7 +66,6 @@ function updateNotifications (notifications) {
     return dispatch => {
         _service.Action.updateMultiple(notifications)
             .then(res => {
-                console.log(res)
                 dispatch({
                     type: labels.UPDATE_NOTIFICATIONS_DB,
                     payload: res

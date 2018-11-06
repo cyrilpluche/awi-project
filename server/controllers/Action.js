@@ -1,4 +1,6 @@
 var Action = require('../config/db_connection').Action;
+var MemberHasAction = require('../config/db_connection').MemberHasAction;
+
 var sequelize = require('../config/db_connection').sequelize;
 var Sequelize = require('../config/db_connection').Sequelize;
 
@@ -115,14 +117,17 @@ module.exports = {
     updateMultiple(req, res, next) {
         let loop = 0
         let isAllUpdated = true
-        for (let action of req.body.actions) {
-            Action
-                .update(action, {
-                    where: { actionId: action.actionId }
+        for (let mha of req.body.memberHasAction) {
+            MemberHasAction
+                .update(mha, {
+                    where: {
+                        actionId: mha.Action.actionId,
+                        memberId: mha.Member.memberId
+                    }
                 })
                 .then(isUpdated => {
                     isAllUpdated = isUpdated[0] === 1
-                    if (loop === req.body.actions.length - 1) {
+                    if (loop === req.body.memberHasAction.length - 1) {
                         req.body.result = isAllUpdated
                         next()
                     }
@@ -158,34 +163,42 @@ module.exports = {
     findAllUnarchived(req, res, next) {
         let Op = Sequelize.Op
         let condition = {
-            actionStatus: {
+            mhaStatus: {
                 [Op.or]: [0, 1]
-            }
+            },
+            memberId: req.decoded.memberId
         }
-        Action
+        MemberHasAction
             .findAll({
                 order: [sequelize.literal('action_id DESC')],
-                where: condition
+                where: condition,
+                include: [{ all: true }]
             })
             .then(actions => {
                 req.body.result = actions
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).render(error));
     },
 
     /* ================= MIDDLEWARE METHODS ================= */
     /* ================= MIDDLEWARE METHODS ================= */
 
     countUnreadAction(req, res, next) {
-        var count = 0
-        for (let action of req.body.result) {
-            if (action.actionStatus === 0) count += 1
-        }
-        req.body.result = {
-            notifications: req.body.result,
-            notificationsUnread: count
-        }
-        next()
+        MemberHasAction
+            .findAndCountAll({
+                where: {
+                    mhaStatus: 0,
+                    memberId: req.decoded.memberId
+                }
+            })
+            .then(count => {
+                req.body.result = {
+                    notifications: req.body.result,
+                    notificationsUnread: count.count
+                }
+                next()
+            })
+            .catch(err => res.status(400).render(err));
     }
 }

@@ -268,6 +268,6 @@ CREATE TABLE public.CardHasLabel(
 	label_id   INT  NOT NULL  ,
 	CONSTRAINT CardHasLabel_PK PRIMARY KEY (card_id,label_id)
 
-	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
+	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
 	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id)
 )WITHOUT OIDS;

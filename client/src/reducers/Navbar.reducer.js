@@ -6,7 +6,6 @@ const notificationLabels = notificationAction.labels
 
 const initialState = {
     notifications: [],
-    notificationsUnarchived: [],
     notificationsUnread: 0
 };
 
