@@ -7,6 +7,7 @@ import Invitation from "./invitation/Invitation";
 import Cards from "./card/Cards";
 import Profile from './profile/Profile'
 import Navbar from "./layout/navbar/Navbar"
+import TransitionGithub from './transitionGithub/TransitionGithub'
 import _helper from '../helpers'
 import connect from "react-redux/es/connect/connect";
 import _action from "../actions";
@@ -61,7 +62,7 @@ class App extends Component {
                     <Route exact path="/password-forgotten" component={PasswordForgotten} />
                     <Route exact path="/account-confirmation" component={AccountConfirmation} />
                     <Route path="/account-confirmation/:token" component={TokenVerification} />
-                    {/*<Route path="/sign_in_with_github/:token" component={SigninGithub} />*/}
+                    <Route path="/callback_github/:memberEmail/:token" component={TransitionGithub} />
                     <Route path='*' render={() => <Redirect to="/login" />}/>
                 </Switch>
             </div>

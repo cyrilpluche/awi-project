@@ -403,7 +403,7 @@ module.exports = {
 
                                         const redirect_url =
                                             process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                            '/login/' +
+                                            '/callback_github/' +
                                             member.memberEmail + "/" +
                                             payload.memberToken
 
@@ -431,7 +431,7 @@ module.exports = {
 
                                                     const redirect_url =
                                                         process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                        '/login/' +
+                                                        '/callback_github/' +
                                                         member.memberEmail + "/" +
                                                         payload.memberToken
 
@@ -489,7 +489,7 @@ module.exports = {
 
                                                         const redirect_url =
                                                             process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                            '/login/' +
+                                                            '/callback_github/' +
                                                             member.memberEmail + "/" +
                                                             payload.memberToken
 
