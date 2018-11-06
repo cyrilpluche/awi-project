@@ -75,7 +75,7 @@ class MemberDialog extends Component {
     }
 
     handleSetAsAdmin(memberId){
-        this.props.removeMemberFromProject(this.props.projectInfo.projectId,memberId)
+        this.props.removeMemberFromProject(this.props.projectInfo.projectId, memberId)
     }
 
     render() {
