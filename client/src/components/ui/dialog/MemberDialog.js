@@ -22,6 +22,9 @@ import MiniLoader from '../../ui/loader/MiniLoader'
 import { styles } from './Style'
 import Grid from "@material-ui/core/Grid/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
+import Fade from "@material-ui/core/Fade/Fade";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 
 
 
@@ -29,12 +32,18 @@ class MemberDialog extends Component {
     constructor(props){
         super(props)
         this.handleRemoveFromProject = this.handleRemoveFromProject.bind(this)
+        this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this)
 
         this.state = {
             memberEmail: '',
             submitted: false,
-            errorMsg: ''
+            errorMsg: '',
+            members: []
         }
+    }
+
+    componentWillReceiveProps () {
+        this.setState({members: this.props.members})
     }
 
     close = () =>{
@@ -73,6 +82,18 @@ class MemberDialog extends Component {
         }
         this.props.removeMemberFromProject(query)
     }
+
+    handleChangeCheckbox = name => event => {
+        let index = event.target.id.split('/')[1]
+        let mhppState = event.target.checked
+        this.state.members[index].Member.HaspermissionprojectMember1Fks[0].mhppState = mhppState
+
+        let projectId = this.props.projectInfo.projectId
+        let memberId = this.state.members[index].memberId
+        let permissionId = this.state.members[index].Member.HaspermissionprojectMember1Fks[0].permissionId
+        this.props.onUpdatePermission(projectId, memberId, permissionId, mhppState, this.state.members)
+        this.setState({ maj: true });
+    };
 
     handleSetAsAdmin(memberId){
         this.props.removeMemberFromProject(this.props.projectInfo.projectId, memberId)
@@ -132,7 +153,7 @@ class MemberDialog extends Component {
                     <List className={ classes.memberList + ' ' + classes.marginBottomTop }>
                         { isLoading ? (
                             <MiniLoader/>
-                        ) :  this.props.members ? this.props.members.map(member =>
+                        ) :  this.state.members ? this.state.members.map(member =>
                             member.memberhasprojectStatus === 1 ? (
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
                                     <ListItemText primary={member.Member.memberEmail}>
@@ -143,7 +164,18 @@ class MemberDialog extends Component {
                                                 <IconButton id={'member/' + member.Member.memberId} color="secondary"  onClick={this.handleRemoveFromProject}>
                                                     <Cancel />
                                                 </IconButton>
-                                                <Checkbox onClick={this.handleSetAsAdmin}/>
+                                                <Tooltip
+                                                    TransitionComponent={Fade}
+                                                    TransitionProps={{ timeout: 600 }}
+                                                    title="Admin"
+                                                    placement="top-start">
+                                                    <Checkbox
+                                                        checked={member.Member.HaspermissionprojectMember1Fks[0].mhppState}
+                                                        id={'isAdmin/' + this.state.members.indexOf(member).toString()}
+                                                        onChange={this.handleChangeCheckbox('members')}
+                                                        value='members'
+                                                    />
+                                                </Tooltip>
                                             </div> : '' }
                                     </div>
                                 </ListItem>
@@ -189,7 +221,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps ={
     sendInvitation: _action.projectAction.sendInvitationProject,
     removeMemberFromProject : _action.projectAction.removeMemberFromProject,
-    setAsAdministrator : _action.projectAction.setMemberAsAdmin
+    setAsAdministrator : _action.projectAction.setMemberAsAdmin,
+    onUpdatePermission: _action.projectAction.updatePermissionMember
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(MemberDialog))

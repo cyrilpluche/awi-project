@@ -105,7 +105,7 @@ class ProjectList extends React.Component {
         if (this.state.newProjectisPublic) visibility = 0
             // public visibility = 1, private visibiliy = 0
 
-        let status = 0; // TODO handle project status
+        let status = 0; // project is activie and normal
         let statusMemberProject = 1 // the member has accepted the invitation
         let targetDate = new Date(document.querySelector('#projectTargetDate').value)
 

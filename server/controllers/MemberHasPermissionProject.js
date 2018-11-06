@@ -11,7 +11,7 @@ module.exports = {
      *      permissionId: INT,
      *      projectId: INT,
      *      memberId: INT,
-     *      mhhpState: BOOL
+     *      mhppState: BOOL
      *  }
      *
      *  return: The MHPP object.
@@ -60,10 +60,9 @@ module.exports = {
                 })
                 .then(mhpps => {
                     let memberPermissions = Object.assign( member.Member )
-                    memberPermissions.permissions =
+                    memberPermissions.dataValues.permissions = mhpps
                     allPermissions.push(memberPermissions)
                     if (members.indexOf(member) === members.length - 1) {
-                        console.log(allPermissions)
                         req.body.result = allPermissions
                         next()
                     }
