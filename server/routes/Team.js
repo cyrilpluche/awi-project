@@ -4,8 +4,9 @@ const mw = require('../middlewares')
 
 const teamController = require('../controllers').Team;
 
-router.get('/find_all', mw.Token.verifyToken, teamController.findAll);
+router.use(mw.Token.verifyToken)
 
+router.get('/find_all', mw.Token.verifyToken, teamController.findAll);
 router.get('/find_all/:member', mw.Token.verifyToken, teamController.findAllTeamMember);
 
 router.get('/find_one/:id', mw.Token.verifyToken, teamController.findOne);

@@ -4,6 +4,8 @@ const Member = require('./Member');
 const Project = require('./Project');
 const List = require('./List');
 const Card = require('./Card');
+const Task = require('./Task');
+const Attachment = require('./Attachment');
 
 const MemberHasProject = require('./MemberHasProject');
 const MemberHasAction = require('./MemberHasAction');
@@ -19,6 +21,8 @@ module.exports = {
     Project,
     List,
     Card,
+    Task,
+    Attachment,
 
     MemberHasProject,
     MemberHasAction,
