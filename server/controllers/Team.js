@@ -1,14 +1,7 @@
-/*var Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOSTNAME,
-    dialect: 'postgres',
-    operatorsAliases: false
-})
-
-var Team = require('../models/Dashboard.action.js').init(sequelize).Team;*/
-
-var Team = require('../config/db_connection').Team;
-var sequelize = require('../config/db_connection').sequelize;
+const helper = require('../helpers/helpersMethod');
+const Team = require('../config/db_connection').Team;
+const Teamhasmember = require('../config/db_connection').Teamhasmember
+const sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
@@ -48,6 +41,30 @@ module.exports = {
             })
             .catch(error => next(error));
     },
+
+    findAllTeamMember (req, res, next) {
+        Teamhasmember.findAll({
+            where: {member_id: req.params.member},
+            include: [
+                {
+                    model: Team,
+                    as: 'Team'
+
+                }
+            ]
+        })
+            .then(result => {
+                let teams = [];
+
+                for (let i = 0; i < result.length; i++){
+                    teams.push(
+                        helper.flatTeams(result[i])
+                    )
+                }
+                res.send(teams)
+            })
+    },
+
 
     /*  localhost:4200/api/team/find_one --- ?teamName=name... (optional)
      *

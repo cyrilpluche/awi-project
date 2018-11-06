@@ -4,6 +4,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 export const style = theme => ({
     root: {
         width: '100%',
+        marginBottom: theme.spacing.unit * 4
     },
     grow: {
         flexGrow: 1,
@@ -68,6 +69,29 @@ export const style = theme => ({
         [theme.breakpoints.up('md')]: {
             display: 'none',
         },
+    },
+    openedMenu: {
+        textDecoration: 'none',
+        marginTop: 55
+    },
+    openedNotifications: {
+        marginTop: 72
+    },
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    },
+    notificationList: {
+        overflowY: 'scroll',
+        maxHeight: theme.spacing.unit * 50,
+    },
+    button: {
+        margin: 0,
+    },
+    filterRow: {
+        marginLeft: theme.spacing.unit * 3
     },
 });
 

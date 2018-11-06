@@ -22,12 +22,12 @@ function init(sequelize) {
     model.Label = sequelize.import('./definition/label.js');
     model.List = sequelize.import('./definition/list.js');
     model.Member = sequelize.import('./definition/member.js');
+    model.Memberhasaction = sequelize.import('./definition/memberhasaction.js');
     model.Memberhaspermissionproject = sequelize.import('./definition/memberhaspermissionproject.js');
     model.Memberhaspermissionteam = sequelize.import('./definition/memberhaspermissionteam.js');
     model.Memberhasproject = sequelize.import('./definition/memberhasproject.js');
     model.Permission = sequelize.import('./definition/permission.js');
     model.Project = sequelize.import('./definition/project.js');
-    model.SequelizeMetum = sequelize.import('./definition/sequelize-meta.js');
     model.Task = sequelize.import('./definition/task.js');
     model.Team = sequelize.import('./definition/team.js');
     model.Teamhasmember = sequelize.import('./definition/teamhasmember.js');
@@ -45,12 +45,12 @@ function init(sequelize) {
     require('./definition/label.js').initRelations();
     require('./definition/list.js').initRelations();
     require('./definition/member.js').initRelations();
+    require('./definition/memberhasaction.js').initRelations();
     require('./definition/memberhaspermissionproject.js').initRelations();
     require('./definition/memberhaspermissionteam.js').initRelations();
     require('./definition/memberhasproject.js').initRelations();
     require('./definition/permission.js').initRelations();
     require('./definition/project.js').initRelations();
-    require('./definition/sequelize-meta.js').initRelations();
     require('./definition/task.js').initRelations();
     require('./definition/team.js').initRelations();
     require('./definition/teamhasmember.js').initRelations();

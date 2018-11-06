@@ -2,18 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _action from '../../actions'
 import { style } from './Style'
-
+import logo from '../../public/images/prello-logo-2.png'
 
 
 // CSS imports
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid/Grid";
+import CloudIcon from '@material-ui/icons/Cloud'
+import Typography from "@material-ui/core/Typography/Typography";
+import _helper from "../../helpers";
+import HowToRegIcon from "@material-ui/icons/HowToReg"
 
 
 class Signin extends React.Component {
@@ -22,20 +23,36 @@ class Signin extends React.Component {
 
         this.submit = this.submit.bind(this);
 
-        this.state = {
-            memberEmail: '',
-            memberPassword: '',
-        };
-
-        
+        if (props.invitation) {
+            this.state = {
+                memberEmail: props.invitation.memberEmail,
+                memberPassword: '',
+            };
+        } else {
+            this.state = {
+                memberEmail: '',
+                memberPassword: '',
+            };
+        }
     }
 
     submit () {
         let memberEmail = this.state.memberEmail
         let memberPassword = this.state.memberPassword
-        console.log(memberEmail)
-        console.log(memberPassword)
-        this.props.onLogin(memberEmail, memberPassword)
+
+        if (this.props.invitation) {
+            this.props.onLogin(memberEmail, memberPassword, null)
+        } else {
+            this.props.onLogin(memberEmail, memberPassword, '/home')
+        }
+    }
+
+    goToForgottenPassword () {
+        _helper.History.push('/password-forgotten')
+    }
+
+    goToSignUp () {
+        _helper.History.push('/signup')
     }
 
     handleChange (event) {
@@ -44,79 +61,131 @@ class Signin extends React.Component {
     }
 
     render() {
-        const { classes,errorMsg } = this.props;
+        const { classes, errorMsg } = this.props;
         return (
-            <React.Fragment>
-                <CssBaseline />
+            <Grid container alignItems='flex-start' className={classes.layout}>
 
-                <main className={classes.layout}>
-                    <Paper className={classes.paper} >
-                        <Avatar className={classes.avatar}>
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-                        
-                        <label className={classes.errorLabel}>{errorMsg}</label>
-                        <form className={classes.form}>
-                            <div>
-                                <TextField
-                                    error={errorMsg? true :false}
-                                    required
-                                    name="memberEmail"
-                                    id='email'
-                                    label="Email"
-                                    margin="normal"
-                                    variant="outlined"
-                                    type="email"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
+                <Grid xs={1} sm={3} md={5} item className={classes.leftLayout}>
 
-                            </div>
-                            <div>
-                                <TextField
-                                    required
-                                    error={errorMsg? true:false}
-                                    id='password'
-                                    name="memberPassword"
-                                    label="Password"
-                                    margin="normal"
-                                    variant="outlined"
-                                    type="password"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                />
+                </Grid>
 
-                            </div>
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    fullWidth 
-                                    color="primary"
-                                    onClick={this.submit}
-                                    className={classes.submit}
-                                >
-                                    Sign In
-                                </Button>
-                            </div>
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    fullWidth 
-                                    color="default"
-                                    className={classes.submit}
-                                >
-                                    Sign In with Github
-                                </Button>
-                            </div>
+                <Grid xs={10} sm={9} md={7} item className={classes.rightLayout}>
+                    <Grid container justify="center">
 
-                        </form>
+                        <Grid xs={12} item className={classes.xsMarginBottom}>
+                            <form>
+                                <Grid spacing={16} alignItems='flex-start' container>
+                                    <Grid xs={6} sm={4} item>
+                                        <TextField
+                                            error={!!errorMsg}
+                                            required
+                                            disabled={this.props.invitation}
+                                            className={classes.textfield}
+                                            name="memberEmail"
+                                            id='email'
+                                            label="Email"
+                                            margin="normal"
+                                            variant="outlined"
+                                            type="email"
+                                            value={this.state.memberEmail}
+                                            fullWidth
+                                            onChange={this.handleChange.bind(this)}
+                                        />
+                                    </Grid>
+                                    <Grid xs={6} sm={4} item>
+                                        <TextField
+                                            required
+                                            className={classes.textfield}
+                                            error={!!errorMsg}
+                                            id='password'
+                                            name="memberPassword"
+                                            label="Password"
+                                            margin="normal"
+                                            variant="outlined"
+                                            type="password"
+                                            fullWidth
+                                            onChange={this.handleChange.bind(this)}
+                                        />
+                                        <Button
+                                            size="small"
+                                            onClick={this.goToForgottenPassword}
+                                        >
+                                            Forgot password
+                                        </Button>
+                                    </Grid>
+                                    <Grid xs={12} sm={4} item>
+                                        <Button
+                                            variant="contained"
+                                            fullWidth
+                                            size="large"
+                                            color="primary"
+                                            onClick={this.submit}
+                                        >
+                                            Sign In
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </form>
+                        </Grid>
 
-                    </Paper>
-                </main>
+                        <Grid xs={12} item>
+                            <Grid container>
+                                <Grid xs={1} sm={2} lg={3} item>
+                                </Grid>
+                                <Grid xs={11} sm={8} lg={6} item>
+                                    <Grid justify='center' container className={classes.xsMarginBottom}>
+                                        <Grid item>
+                                            <img src={logo} width="70" alt="prello logo"/>
+                                        </Grid>
+                                    </Grid>
 
-            </React.Fragment>
+                                    <Typography variant="h4" gutterBottom className={classes.xsMarginBottom}>
+                                        Start managing your projects and share them
+                                    </Typography>
+                                    { !this.props.invitation ? (
+                                        <div>
+                                            <Typography variant="h6" gutterBottom>
+                                                Join Prello today
+                                            </Typography>
+
+                                            <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            fullWidth
+                                            className={classes.button}
+                                            onClick={this.goToSignUp}
+                                            >
+                                                Create your account
+                                                <HowToRegIcon className={classes.rightIcon} />
+                                            </Button>
+
+                                            <Button
+                                            variant="outlined"
+                                            color="inherit"
+                                            fullWidth
+                                            className={classes.button}
+                                            >
+                                                Sign In with Github
+                                                <CloudIcon className={classes.rightIcon} />
+                                            </Button>
+                                        </div>
+                                    ) : null }
+
+
+
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+
+                        <Grid item>
+
+                        </Grid>
+                    </Grid>
+
+                    <label className={classes.errorLabel}>{errorMsg}</label>
+                </Grid>
+            </Grid>
         )
     }
 

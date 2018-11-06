@@ -6,13 +6,18 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "apollo-server-express": "^2.1.0",
+    "bcrypt": "^3.0.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
-    "dotenv": "^6.0.0",
+    "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "express-graphql": "^0.6.12",
     "graphql": "^14.0.2",
+    "graphql-sequelize": "^9.0.4",
+    "graphql-server-express": "^1.4.0",
+    "graphql-tools": "^4.0.2",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.3.0",
     "morgan": "~1.9.0",
@@ -20,8 +25,10 @@
     "pg": "^7.5.0",
     "pg-generator": "^4.8.0",
     "pg-hstore": "^2.3.2",
+    "pg-promise": "^8.5.1",
     "pug": "2.0.0-beta11",
     "sequelize": "^4.40.0",
-    "sequelize-cli": "^5.1.0"
+    "sequelize-cli": "^5.1.0",
+    "socket.io": "^2.1.1"
   }
 }

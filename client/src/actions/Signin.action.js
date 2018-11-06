@@ -6,13 +6,16 @@ const labels = {
     ERROR : "ERROR",
     CREATE_USER : "CREATE_USER",
     IS_LOGGED: "IS_LOGGED",
-    IS_NOT_LOGGED: "IS_NOT_LOGGED"
+    IS_NOT_LOGGED: "IS_NOT_LOGGED",
+    NEW_PASSWORD_SENT: "NEW_PASSWORD_SENT",
+    NEW_PASSWORD_FAILED: "NEW_PASSWORD_FAILED",
+    RESET_FIELD: "RESET_FIELD"
 }
 
-const signSuccess = token => ({
+const signSuccess = member => ({
     type: labels.LOGIN,
     payload: {
-        memberToken: token
+        member: member
     }
 })
 
@@ -21,7 +24,7 @@ const signError = {
     payload: "Email or password is incorrect.",
 }
 
-function signin (memberEmail, memberPassword) {
+function signin (memberEmail, memberPassword, redirection) {
     const body = {
         memberEmail: memberEmail,
         memberPassword: memberPassword
@@ -30,8 +33,8 @@ function signin (memberEmail, memberPassword) {
         _service.Member.signIn(body)
             .then(res => {
                 localStorage.setItem('memberToken', res.memberToken)
-                _helper.History.push('/home');
                 dispatch(signSuccess(res));
+                if (redirection) _helper.History.push(redirection);
             })
             .catch((err) => {
                 dispatch(signError)
@@ -59,8 +62,35 @@ function isMemberLogged () {
     }
 }
 
+function sendNewPassword (memberEmail) {
+    return dispatch => {
+        _service.Member.sendNewPassword(memberEmail)
+            .then(res => {
+                dispatch({
+                    type: labels.NEW_PASSWORD_SENT
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.NEW_PASSWORD_FAILED
+                })
+            });
+    }
+}
+
+function resetField () {
+    return dispatch => {
+        dispatch({
+            type: labels.RESET_FIELD
+
+        })
+    }
+}
+
 export const signinAction = {
     labels,
     signin,
-    isMemberLogged
+    isMemberLogged,
+    sendNewPassword,
+    resetField
 }

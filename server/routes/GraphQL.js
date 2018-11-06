@@ -1,31 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
+const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 
-// GraphQL schema
-var schema = buildSchema(`
-    type Query {
-        message: String
-    }
-`);
-
-// Root resolver
-var root = {
-    message: () => 'Hello World!',
-    rootValue: root
-};
-
-router.get('/', graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
-}));
-
-router.post('/', graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
-}));
+router.use('/graphql', (req, res, next) =>
+    graphqlExpress({
+        schema,
+        context: { user: req.user }
+    })(req, res, next)
+);
 
 module.exports = router;
