@@ -9,12 +9,12 @@ import _helper from '../../helpers'
 import { DragDropContext} from 'react-beautiful-dnd';
 import {findWhere} from 'underscore';
 
-//Components
+// Components
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
 import Filter from '../ui/filter/Filter'
 
-//Material Ui
+// Material Ui
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
@@ -26,39 +26,15 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
 
-//Styles
+// Styles
 import {withStyles } from '@material-ui/core/styles';
 import { styles } from './Style'
 
-//Socket IO
+// Socket IO
 import SocketIOClient  from "socket.io-client"
 
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
 
-    return result;
-};
-
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-    destClone.splice(droppableDestination.index, 0, removed);
-
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-
-    return result;
-};
 
 
 class Project extends Component {
@@ -79,20 +55,22 @@ class Project extends Component {
         }
 
         this.socket = SocketIOClient("http://localhost:4200")
-        this.socket.on('addList', this.socketNewList.bind(this))
-        this.socket.on('moveList', this.socketMoveList.bind(this))
+        this.socket.on('add', this.socketNew.bind(this))
+        this.socket.on('move', this.socketMove.bind(this))
+
+        
     }
 
-    socketNewList(msg){
+    socketNew(msg){
         this.props.getAllListsWithCards(this.props.match.params.id)
     }
 
-    socketMoveList(newLists){
+    socketMove(newLists){
        this.setState({lists:newLists})
     }
 
     componentWillMount() {
-        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getAllMembers,getMemberStatus,getActivity,findAllCards} = this.props
+        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity,findAllCards} = this.props
         
         
         // Get project informations
@@ -103,8 +81,8 @@ class Project extends Component {
         // Get all lists of this project with associated cards
         getAllListsWithCards(match.params.id)
 
-        // Get all project members 
-        getAllMembers(match.params.id)
+        // Get all project members
+        this.props.getAllMembers(this.props.match.params.id)
 
         // Verify if it's a project administrator
         getMemberStatus(match.params.id,/*memberLoggedId*/)
@@ -134,7 +112,6 @@ class Project extends Component {
     componentDidUpdate(prevProps){
         const {hasProject,projectInfo} = this.props
 
-        console.log(hasProject)
         // verify if props exist
         if(projectInfo){
             // If Logged user is not a member of the project & project is private
@@ -222,11 +199,10 @@ class Project extends Component {
      */
     createNewList(listName,idProject){
         const {lists} = this.state
-        const exist = findWhere(lists,{listTitle:listName})
+        
 
-        this.socket.emit('addList',"new card")
-        // We can't create 2 list with the same name
-        if(!exist){
+        this.socket.emit('add',"new list")
+
 
             // if its the first list created for this project, the list has no father
             if(lists.length === 0 ){
@@ -237,7 +213,7 @@ class Project extends Component {
                 let lastElement = lists[lists.length -1]
                 this.props.createList(listName,idProject,lastElement.listId)
             } 
-        }
+        
     }
 
 
@@ -263,9 +239,12 @@ class Project extends Component {
 
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
-            
-            
-           let findList = findWhere(lists,{listId: draggableId})
+
+            let dragId = draggableId.split(':');
+            dragId = Number.parseInt(dragId[1])
+           
+           let findList = findWhere(lists,{listId: dragId})
+          
            let indexOfList = lists.indexOf(findList)           
            let newLists = lists
 
@@ -276,11 +255,12 @@ class Project extends Component {
             newLists.splice(destination.index,0,findList)
            
             //set state with the new list
-            this.socket.emit('moveList', newLists)
-            this.setState({lists:newLists},function(){
+            
+            this.setState({lists:newLists},() =>{
 
+                this.socket.emit('move', newLists)
 
-                let updateList = findWhere(lists,{listId: draggableId})
+                let updateList = findWhere(lists,{listId: dragId})
 
                 let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 
@@ -294,35 +274,106 @@ class Project extends Component {
                 let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
                 
                 // Change fathers of list in DB
-                if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
+               /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
                 if(findList)  this.props.moveList(updateList.listId,listFather)
-                if(listChild) this.props.moveList(listChild,updateList.listId)
+                if(listChild) this.props.moveList(listChild,updateList.listId)*/
             })
         }
-        /*
+        
         // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-           console.log(source)
-           console.log(destination)
-           let updatedList = Array.from(lists)
-           
-            if(source.droppableId === destination.droppableId){
+
+            let sourceListId =  Number.parseInt(source.droppableId.split(':')[0])
+            let sourceList = Object.assign({},lists.find(list => list.listId === sourceListId ))
+
+            let destinationListId = Number.parseInt(destination.droppableId.split(':')[0])
+            let destinationList =  Object.assign({},lists.find(list => list.listId === destinationListId ))
+
+            let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
+
+            if(destinationListId !== sourceListId){
+                
+
+                let deleteSourceList = Array.from(sourceList.CardListFks)
+                deleteSourceList.splice(source.index,1,)
+    
+                let addDestinationList = Array.from(destinationList.CardListFks)
+                addDestinationList.splice(destination.index,0,draggedCard)
+
+                sourceList.CardListFks = deleteSourceList
+                destinationList.CardListFks = addDestinationList
+
+                let sourceListIndex = lists.findIndex(list => list.listId === sourceList.listId )
+                let destinationListIndex = lists.findIndex(list => list.listId === destinationList.listId )
+
+                let newList = Array.from(lists)
+                newList.splice(sourceListIndex,1,)
+                newList.splice(sourceListIndex,0,sourceList)
+                newList.splice(destinationListIndex,1,)
+                newList.splice(destinationListIndex,0,destinationList)
+
+                this.setState({lists: newList}, () =>{
+                    this.socket.emit('move', newList)
+                })
+            }
+            else{
+
+                let newSourceList = Array.from(sourceList.CardListFks)
+                newSourceList.splice(source.index,1,)
+                newSourceList.splice(destination.index,0,draggedCard)
+
+                sourceList.CardListFks = newSourceList
+
+                let sourceListIndex = lists.findIndex(list => list.listId === sourceList.listId )
+
+                let newList = Array.from(lists)
+
+                newList.splice(sourceListIndex,1,)
+                newList.splice(sourceListIndex,0, sourceList)
+
+                this.setState({lists: newList}, () =>{
+                    this.socket.emit('move', newList)
+                })
+
+            }
+            
+            
+
+
+            
+            // Update lists
+           /* const updatedList = lists.map((list) => {
+                if (list.listId === sourceId) {
+
+                    list.CardListFks.splice(list.CardListFks.findIndex(card => card.cardId === cardId), 1);
+                    console.log(list.CardListFks)
+                }
+                if (list.listId === destinationId) {
+                    list.CardListFks.splice(destinationIndex, 0, draggedCard);
+                    console.log(list.CardListFks)
+                }
+                return list;
+            });*/
+
+            //this.setState({ lists: updatedList  })
+            /*if(sourceId === destinationId){
                 const newLists = reorder(
-                    findWhere(lists, {listTitle : source.droppableId}).cards,
+                    findWhere(lists, {listId : sourceId}).CardListFks,
                     source.index,
                     destination.index
                 );
-                console.log(newLists)
-                let sourceList = findWhere(updatedList, {listTitle:source.droppableId})
+                 console.log(newLists)
+                let sourceList = findWhere(updatedList, {listId:sourceId})
                 let sourceListIndex = updatedList.indexOf(sourceList)
                 console.log(sourceListIndex)
                 console.log(updatedList)
-                updatedList[sourceListIndex].cards = newLists
-                console.log(updatedList)
-                this.setState({lists: updatedList})
 
-            }/*
-            else{
+                /*updatedList[sourceListIndex].CardListFks = newLists
+                console.log(updatedList)
+                /*this.setState({lists: updatedList})
+
+        }*/
+          /*  else{
 
                 const newLists = move(
                     findWhere(updatedList, {listTitle : source.droppableId}).cards,
@@ -349,9 +400,9 @@ class Project extends Component {
                 
             }
 
-           // this.props.updateCard(cardId,findListId.listId)
-    }*/
-
+           // this.props.updateCard(cardId,findListId.listId)}*/
+    
+        }
 
     };
 
@@ -427,8 +478,8 @@ class Project extends Component {
                         <Grid xs={2} item>
                         </Grid>
                     </Grid>
-                    <div>
-                        <ActivityList activities={null}></ActivityList>
+                    <div className={classes.drawerList}>
+                        <ActivityList activities={this.props.activities}/>
                     </div>
                 </div>
             </Drawer>
@@ -464,7 +515,7 @@ class Project extends Component {
                         </Grid>
                     </Grid>
                     <div>
-                        <Filter projectInfo={projectInfo}></Filter>
+                        <Filter projectInfo={projectInfo}/>
                     </div>
                 </div>
             </Drawer>
@@ -494,14 +545,14 @@ class Project extends Component {
                 </Typography>
                 <Grid container spacing={24} >
 
-                {/*===================  MEMBERS BUTTON  ========================================= */}
+                {/**===================  MEMBERS BUTTON  ========================================= */}
                <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
                     <SupervisorAccount className={classes.leftIcon} />
                     {this.props.members? this.props.members.length : 0} Members
                 </Button>
-                <MemberDialog  isAdmin={this.props.isAdmin} members={this.props.members} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
-                
-                {/*===================  VISIBILITY BUTTON  ========================================= */}
+                <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+
+                {/**===================  VISIBILITY BUTTON  ========================================= */}
                 < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
                     <RemoveRedEye className={classes.leftIcon} />
                     Visibility
@@ -530,7 +581,7 @@ class Project extends Component {
 
         const dndArea = (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} ></Lists>
+                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} />
             </DragDropContext>
         )
 
@@ -549,7 +600,8 @@ const mapStateToProps = (state) => ({
     members : state.project.members || [],
     isAdmin: state.project.isAdmin || false,
     logged: state.signin.member,
-    hasProject : state.project.loggedHasProject
+    hasProject : state.project.loggedHasProject,
+    activities: state.project.activities
     //labels : state.project.labels || []
 })
 

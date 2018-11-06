@@ -6,36 +6,53 @@ const listLabels = listAction.labels
 
 const initialState = {
     lists: [],
-    cards: []
+    cards: [],
+    members: [],
+    isLoading: false,
+    activities: []
 };
 
 export function project (state = initialState, action) {
     switch (action.type) {
+        case projectLabels.LOAD:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case projectLabels.GET_ALL_LISTS: 
             return {
                 ...state,
                 lists:action.payload
             };
+
         case projectLabels.CREATE_LIST: 
             let lists = [...state.lists,action.payload]
+            console.log(lists)
             return {
                 ...state,
                 lists 
             };
         case listLabels.CREATE_CARD:
-            let cards = [...state.cards,action.payload]
+    
             return {
                 ...state,
-                cards 
+                lists : action.payload 
             }; 
         case listLabels.GET_ALL_CARDS:
             return {
                 ...state,
                 cards: action.payload,
             }; 
-        case projectLabels.UPDATE_LIST:
+        case listLabels.UPDATE_LIST:
             return {
                 ...state,
+                lists: action.payload,
+            };
+        case listLabels.DELETE_LIST:
+            return {
+                ...state,
+                lists: action.payload,
             };
         case projectLabels.GET_PROJECT_INFO:
             return {
@@ -45,7 +62,8 @@ export function project (state = initialState, action) {
         case projectLabels.GET_ALL_MEMBERS:
             return {
                 ...state,
-                members: action.payload
+                members: action.payload,
+                isLoading: false
             };
         //TODO
         case projectLabels.SEND_INVITATION:
@@ -61,6 +79,7 @@ export function project (state = initialState, action) {
         case projectLabels.REMOVE_MEMBER_FROM_PROJECT:
             return {
                 ...state,
+                isLoading: false
             };
         //TODO
         case projectLabels.SET_MEMBER_ADMIN:
@@ -68,14 +87,40 @@ export function project (state = initialState, action) {
                 ...state,
             };
         //TODO
-        case projectLabels.GET_PROJECT_ACTIVITY:
+        case projectLabels.GET_ACTIVITY:
+            return {
+                ...state,
+                activities: action.payload
+            };
+
+        case projectLabels.GET_ACTIVITY_ERROR:
             return {
                 ...state,
             };
+
         case projectLabels.GET_ALL_LABELS:
             return {
                  ...state,
             };
+
+        case projectLabels.INVITATION_SUCCESS:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case projectLabels.INVITATION_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case projectLabels.REMOVE_MEMBER_FROM_PROJECT_ERROR:
+                return {
+                    ...state,
+                    isLoading: false
+                };
+
         case projectLabels.MEMBER_HAS_PROJECT:
             return {
                  ...state,

@@ -6,6 +6,7 @@ const List = require('./List');
 const Card = require('./Card');
 
 const MemberHasProject = require('./MemberHasProject');
+const MemberHasAction = require('./MemberHasAction');
 
 const Action = require('./Action');
 
@@ -20,6 +21,7 @@ module.exports = {
     Card,
 
     MemberHasProject,
+    MemberHasAction,
 
     Action,
     End

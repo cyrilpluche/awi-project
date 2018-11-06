@@ -27,7 +27,7 @@ module.exports = {
         // We copy the object because dataValues don't have memberToken field.
         var payload = Object.assign({}, req.body.result.dataValues)
         payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: 60 * 60 * 24 // expires in 24 hours
+            expiresIn: 60 * 60 * 24 * 365 // expires in 1 year
         });
         req.body.result = payload
         next()

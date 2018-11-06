@@ -9,7 +9,7 @@ module.exports = {
 
     /* ================= CRUD ================= */
 
-    /*  localhost:4200/api/member/create
+    /**  localhost:4200/api/member/create
      *
      *  req.body = {
      *      memberFirstname = firstname,
@@ -40,6 +40,21 @@ module.exports = {
 
     },
 
+    createOrNext(req, res, next) {
+        if (!req.body.result) {
+            Member
+                .create(req.body)
+                .then(member => {
+                    member.memberPassword = null
+                    req.body.result = member
+                    next()
+                })
+                .catch(error => next(error));
+        } else {
+            next()
+        }
+
+    },
 
     /*  localhost:4200/api/member/find_all/:idProject
      *

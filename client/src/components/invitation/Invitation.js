@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { withStyles} from "@material-ui/core";
 import { style } from './Style'
 import _action from "../../actions";
-import _helper from "../../helpers";
 
 import LoaderPage from "../loaderPage/LoaderPage"
 import Grid from "@material-ui/core/Grid/Grid";
@@ -39,7 +38,7 @@ class Invitation extends React.Component {
             projectId: this.props.project.projectId,
             memberId: this.props.member.memberId
         }
-        this.props.onReplyToInvitation(true, body, query)
+        this.props.onReplyToInvitation(true, body, query, this.props.member)
     }
 
     refuseInvitation () {

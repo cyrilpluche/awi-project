@@ -30,14 +30,14 @@ app.set('socketio', io)
 io.on('connection', (client) => {
   console.log("Connected to Socket!!")
 
-  // ----- Add list ----- //
-  client.on('addList', (msg) => {
-      client.broadcast.emit('addList', msg)
+  // ----- Add list or card ----- //
+  client.on('add', (msg) => {
+      client.broadcast.emit('add', msg)
   })
 
-  // ----- move list ----- //
-  client.on('moveList', (lists) => {
-    client.broadcast.emit('moveList', lists)
+  // ----- move list or card ----- //
+  client.on('move', (lists) => {
+    client.broadcast.emit('move', lists)
 })
 
 })

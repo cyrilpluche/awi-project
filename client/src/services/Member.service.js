@@ -7,12 +7,16 @@ const url = 'member/'
 
 const Member = {
 
+    createIfNotExist (body) {
+        let where = helper.Request.urlFromObject({ memberEmail: body.memberEmail })
+        return Api.post(url + 'create_if_not_exist' + where, body).then(res => res.data)
+    },
+
     signIn (body) {
         return Api.post(url + 'sign_in', body).then(res => res.data)
     },
 
     signUp (body) {
-
         return Api.post(url + 'sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)
     },
 
@@ -67,9 +71,6 @@ const Member = {
             memberEmail: memberEmail
         }
         return Api.post(url + 'password_forgotten', body).then(res => res.data)
-    },
-    getAllMembers(projectId){
-        return Api.get(url + 'find_all_members/'+projectId,).then(res => res.data)
     },
 
     /** ==================== INVITATIONS ==================== */

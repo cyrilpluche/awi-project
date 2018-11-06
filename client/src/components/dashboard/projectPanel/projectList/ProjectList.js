@@ -17,23 +17,18 @@ import ClearIon from '@material-ui/icons/Clear'
 import FavoriteIcon from '@material-ui/icons/Star'
 import AddProjectIcon from '@material-ui/icons/Add'
 import LockerIcon from '@material-ui/icons/Lock'
-import OpenLockerIcon from '@material-ui/icons/NoEncryption'
 import ProjectIcon from '@material-ui/icons/SchoolRounded'
 import Icon from '@material-ui/core/Icon';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputBase from '@material-ui/core/InputBase';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import {dashboardAction} from "../../../../actions/Dashboard.action";
-
 
 class ProjectList extends React.Component {
 
@@ -106,13 +101,16 @@ class ProjectList extends React.Component {
 
     createProject () {
         let title = document.querySelector('#projectTitle').value;
-        let visibility = 0
-        if (this.state.newProjectisPublic) visibility = 1
+        let visibility = 1
+        if (this.state.newProjectisPublic) visibility = 0
+            // public visibility = 1, private visibiliy = 0
 
-        let status = 0
+        let status = 0; // TODO handle project status
+        let statusMemberProject = 1 // the member has accepted the invitation
         let targetDate = new Date(document.querySelector('#projectTargetDate').value)
 
-        this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, 0)
+        this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, statusMemberProject)
+            // statusMemberProject = 1, member has accepted the invitation
 
         this.handleCloseDialog()
     }

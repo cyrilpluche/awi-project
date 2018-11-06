@@ -24,7 +24,8 @@ class List extends Component{
     createNewCard(){
         let cardName = this.state.newCardTitle
         let listId = this.props.list.listId
-        if(cardName) this.props.createCard(cardName,listId)
+        console.log(this.props.idProject)
+        if(cardName) this.props.createCard(cardName,listId,this.props.idProject)
         
     }
 
@@ -41,10 +42,10 @@ class List extends Component{
 
 
     render() {
-        const {classes,cards, list} = this.props
+        const {classes,cards, list,idProject} = this.props
         
         return (
-            <Draggable draggableId={this.props.list.listId} index={this.props.index}>
+            <Draggable draggableId={"List:"+this.props.list.listId} index={this.props.index}>
                 {(provided,snapshot) => {
                     const style = {
                         backgroundColor: '#eeeeee',
@@ -58,18 +59,18 @@ class List extends Component{
                         ref={provided.innerRef}
                     >
                         <h4 className={classes.listTitle} {...provided.dragHandleProps}>{this.props.list.listTitle}</h4>
-                            <div>
+                           {<div>
                                 <Button className={classes.button}  onClick={this.handleClickOpen} variant="fab" mini  aria-label="Add">
                                     <AddIcon />
                                 </Button>
-                            </div>
+                           </div>}
 
                         <SimpleDialog
                             type="card"
                             open={this.state.open}
                             onClose={this.handleClose}
                         />
-                        <Droppable droppableId={this.props.list.listTitle} type="CARD">
+                        <Droppable droppableId={this.props.list.listId+":"+this.props.list.listTitle} type="CARD">
                             {(provided,snapshot) => {
                                 const style = {
                                     //backgroundColor: '#e4e4e4',
@@ -78,9 +79,9 @@ class List extends Component{
                                 return (
                                     <div 
                                     ref={provided.innerRef} 
-                                    {...provided.droppableProps}
-                                    className={classes.dropSpace} style={style}>
-                                      {cards.filter(card => card.listId === list.listId).map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ) }
+                                    
+                                    className={classes.dropSpace} style={{flexGrow:1}}>
+                                      {list.CardListFks ? list.CardListFks.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ):'' }
                                        
                                     {provided.placeholder}
                                     

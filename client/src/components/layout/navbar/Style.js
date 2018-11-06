@@ -92,7 +92,7 @@ export const style = theme => ({
     },
     filterRow: {
         marginLeft: theme.spacing.unit * 3
-    }
+    },
 });
 
 

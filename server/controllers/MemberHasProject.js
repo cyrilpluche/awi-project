@@ -37,7 +37,8 @@ module.exports = {
         MemberHasProject
             .findAll({
                 order : sequelize.col('memberId'),
-                where: req.query
+                where: req.query,
+                include: [{ model: Member, as: 'Member' }]
             })
             .then(mhps => {
                 req.body.result = mhps
