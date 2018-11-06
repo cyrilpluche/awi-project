@@ -37,8 +37,6 @@ class Cardboard extends React.Component {
         this.setState({ open: true });
     };
 
-    //this.props.onUpdateCard(idCard, body)
-
     handleClose = () => {
         this.setState({ open: false });
     };
@@ -46,14 +44,14 @@ class Cardboard extends React.Component {
     changeTitle = () => {
         let dom = document.querySelector('#cardTitle');
         let value = dom.value;
-        this.props.card.title = value;
+        this.props.card.cardTitle = value;
         this.props.onUpdateCard(this.props.card, {cardTitle: value});
     };
 
     changeDescription = () => {
         let dom = document.querySelector('#cardDescription');
         let value = dom.value;
-        this.props.card.description = value;
+        this.props.card.cardDescription = value;
         this.props.onUpdateCard(this.props.card, {cardDescription: value});
     };
 
@@ -80,7 +78,7 @@ class Cardboard extends React.Component {
                                 <div className={classes.row}>
                                     <InputBase
                                         id="cardTitle"
-                                        defaultValue={this.props.card.title}
+                                        defaultValue={this.props.card.cardTitle}
                                     />
                                     <button onClick={this.changeTitle}>
                                         <SvgIcon className={classes.iconComments}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>}</SvgIcon>
@@ -95,7 +93,7 @@ class Cardboard extends React.Component {
                                 <Divider className={classes.divider}/>
                                 <div className={classes.row}>
                                     <h4>Labels : </h4>
-                                    <Button disabled className={classes.buttonLabel}>{this.props.card.labels}</Button>
+                                    <Button disabled className={classes.buttonLabel}>{this.props.card.cardhaslabelLabels.labelDescription}</Button>
                                     <SvgIcon className={classes.buttonIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
                                 </div>
                                 <Divider className={classes.divider}/>
@@ -107,7 +105,7 @@ class Cardboard extends React.Component {
                                         <ExpansionPanelDetails>
                                             <TextField
                                                 id="cardDescription"
-                                                defaultValue={this.props.card.description}
+                                                defaultValue={this.props.card.cardDescription}
                                                 multiline={true}
                                                 rows={4}
                                                 rowsMax={4}
@@ -161,15 +159,15 @@ class Cardboard extends React.Component {
                 <Card className={classes.card} >
                     <CardActionArea onClick={this.handleOpen}>
                         <CardHeader
-                            title={this.props.card.title}
-                            subheader={this.props.card.deadline}
+                            title={this.props.card.cardTitle}
+                            subheader={this.props.card.cardDateTarget}
                         />
                         <CardContent>
                             <Typography component="p">
-                                {this.props.card.description}
+                                {this.props.card.cardDescription}
                             </Typography>
                             <div className={classes.rowRight}><Avatar className={classes.marginCard}>{this.props.card.members}</Avatar></div>
-                            <Button disabled className={classes.buttonLabel}>{this.props.card.labels}</Button>
+                            <Button disabled className={classes.buttonLabel}>{this.props.card.cardhaslabelLabels.labelDescription}</Button>
                         </CardContent>
                     </CardActionArea>
                 </Card>
