@@ -10,14 +10,14 @@ const actionController = require('../controllers').Action;
 // router.use(mw.Token.verifyToken)
 
 router.get('/find_all', projectController.findAll);
-router.get('/find_all_searchbar', projectController.findAllSearchbar);
 router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.findAllProjectMember);
-router.get('/find_all_mhp',mw.Token.verifyToken, memberHasProjectController.findAll);
+router.get('/member_has_project',mw.Token.verifyToken, projectController.findMemberHasProject);
 
 router.get('/find_all_lists_cards',mw.Token.verifyToken, projectController.findAllListsCards);
+router.get('/find_all_searchbar', projectController.findAllSearchbar);
 router.get('/find_all_members', mw.Token.verifyToken, memberHasProjectController.findAll)
 router.get('/find_all_actions', mw.Token.verifyToken, actionController.findAll)
-router.get('/member_has_project',mw.Token.verifyToken, projectController.findMemberHasProject);
+router.get('/find_all_mhp',mw.Token.verifyToken, memberHasProjectController.findAll);
 
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);

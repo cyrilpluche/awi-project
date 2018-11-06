@@ -1,6 +1,5 @@
 const Mhpp = require('../config/db_connection').MemberHasPermissionProject
 const sequelize = require('../config/db_connection').sequelize;
-
 const Permission = require('../config/db_connection').Permission
 
 module.exports = {
@@ -9,6 +8,7 @@ module.exports = {
 
     /**
      *  req.body = {
+     *      permissionId: INT,
      *      projectId: INT,
      *      memberId: INT,
      *      mhhpState: BOOL
@@ -33,14 +33,44 @@ module.exports = {
     findAll(req, res, next) {
         Mhpp
             .findAll({
-                order : sequelize.col('memberhavepermissionprojectId'),
-                where: req.query
+                order : sequelize.col('memberId'),
+                where: req.query,
+                include: [{ model: Permission, as: 'Permission' }]
             })
             .then(mhpps => {
                 req.body.result = mhpps
                 next()
             })
             .catch(error => res.status(400).send(error))
+    },
+
+    findAllFromMembers(req, res, next) {
+        let members = req.body.result
+        let allPermissions = []
+
+        for (let member of members) {
+            Mhpp
+                .findAll({
+                    order : sequelize.col('memberId'),
+                    where: {
+                        projectId: req.query.projectId,
+                        memberId: member.memberId
+                    },
+                    include: [{ model: Permission, as: 'Permission' }]
+                })
+                .then(mhpps => {
+                    let memberPermissions = Object.assign( member.Member )
+                    memberPermissions.permissions =
+                    allPermissions.push(memberPermissions)
+                    if (members.indexOf(member) === members.length - 1) {
+                        console.log(allPermissions)
+                        req.body.result = allPermissions
+                        next()
+                    }
+                })
+                .catch(error => res.status(400).send(error))
+        }
+
     },
 
     /**  ?permissionId=id... (optional)
@@ -53,8 +83,8 @@ module.exports = {
             .findOne({
                 where: req.query
             })
-            .then(permission => {
-                req.body.result = permission
+            .then(mhpp => {
+                req.body.result = mhpp
                 next()
             })
             .catch(error => res.status(400).send(error))
@@ -63,6 +93,7 @@ module.exports = {
     /**  ?permissionId=id... (optional)
      *
      *  req.body = {
+     *      permissionId: INT, (optional)
      *      projectId: INT, (optional)
      *      memberId: INT, (optional)
      *      mhhpState: BOOL (optional)
