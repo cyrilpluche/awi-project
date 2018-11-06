@@ -42,11 +42,13 @@ class Lists extends Component {
     handleClose = (value) => {
         this.setState({ newListname: value, open: false }, function(){  this.createNewList()});       
     };
+    
 
     
     render() {
         const { classes,lists,idProject} = this.props;
         
+
         return (
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
@@ -54,7 +56,9 @@ class Lists extends Component {
                         ref={provided.innerRef} 
                         {...provided.droppableProps}>
                         {lists.length === 0 ? '' :lists.map((list, index) => 
-                            <List idProject={idProject} key={list.listTitle+list.listId} list={list} index={index}></List>
+                            <div key={list.listTitle+list.listId}>
+                                <List idProject={idProject} key={list.listTitle+list.listId} list={list} index={index}></List>
+                            </div>
                             )}
                         {provided.placeholder}
                         <div>

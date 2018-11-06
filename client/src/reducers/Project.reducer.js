@@ -26,8 +26,10 @@ export function project (state = initialState, action) {
                 lists:action.payload
             };
 
-        case projectLabels.CREATE_LIST: 
-            let lists = [...state.lists,action.payload]
+        case projectLabels.CREATE_LIST:
+            let newList = action.payload
+            newList.CardListFks = []
+            let lists = [...state.lists,newList]
             return {
                 ...state,
                 lists 
