@@ -54,29 +54,30 @@ class Notification extends React.Component {
         this.handleChange = this.handleChange.bind(this);
 
         this.state = {
-            isRead: this.props.notification.actionStatus === 1,
+            isRead: this.props.notification.mhaStatus === 1,
             updatedNotifications: []
         }
     }
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
-        var item = this.props.notification;
+        var item = this.props.notification
         var index = this.props.notifications.indexOf(item)
         if (event.target.checked) {
-            item.actionStatus = 1
+            item.mhaStatus = 1
         }
-        else item.actionStatus = 0
+        else item.mhaStatus = 0
+
         // Update the notification in the store
         this.props.onHandleCheckbox(this.props.notifications, item, index, event.target.checked, this.props.notificationsUnread)
 
         // Store the new item in navbar array, which will update the database
-        this.props.updateNotification(item)
+        // this.props.updateNotification(item)
     };
 
     computeBackground = () => {
         const { classes } = this.props;
-        if (this.props.notification.actionStatus === 1) return classes.card
+        if (this.props.notification.mhaStatus === 1) return classes.card
         else return classes.cardUnread
     }
 
@@ -88,7 +89,7 @@ class Notification extends React.Component {
             <Card className={this.computeBackground()}>
                 <CardContent className={classes.content}>
                     <Typography align='right' variant="caption" className={classes.pos}>
-                        {notification.actionDateCreation}
+                        {notification.Action.actionDateCreation}
                     </Typography>
                     <Tooltip
                         TransitionComponent={Fade}
@@ -104,11 +105,11 @@ class Notification extends React.Component {
                                     color="primary"
                                 />
                             }
-                            label={notification.actionTitle}
+                            label={notification.Action.actionTitle}
                         />
                     </Tooltip>
                     <Typography className={classes.pos} color="textSecondary">
-                        {notification.actionDescription}
+                        {notification.Action.actionDescription}
                     </Typography>
                 </CardContent>
                 <CardActions>

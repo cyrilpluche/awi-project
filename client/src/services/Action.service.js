@@ -18,12 +18,11 @@ const Action = {
     },
 
     getNonArchived () {
-        // axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
         return Api.get(url + 'find_all_unarchived').then(res => res.data)
     },
 
     updateMultiple (array) {
-        let body = {actions: array}
+        let body = {memberHasAction: array}
         return Api.put(url + 'update_multiple', body).then(res => res.data)
         //return axios.put(url + 'update/' + array[0].actionId, array[0]).then(res => res.data)
     },

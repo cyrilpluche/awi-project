@@ -43,7 +43,6 @@ class Navbar extends React.Component {
         this.logOff = this.logOff.bind(this);
 
         // Notifications
-        this.updateNotification = this.updateNotification.bind(this)
         this.updateNotifications = this.updateNotifications.bind(this)
         this.handleFilterChange = this.handleFilterChange.bind(this)
         this.toggleDrawer = this.toggleDrawer.bind(this)
@@ -56,7 +55,6 @@ class Navbar extends React.Component {
             mobileMoreAnchorEl: null,
             resultsAnchorEl: null,
             right: false,
-            updatedNotifications: [],
             showSearchResults: false
         };
     }
@@ -93,24 +91,15 @@ class Navbar extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
-    /* ================= Notifications ================= */
+    /** ================= Notifications ================= */
     toggleDrawer = (side, open) => () => {
-        this.setState({showOnlyUnread: this.props.notificationsUnarchived.length > 0})
-
         this.updateNotifications()
         this.setState({
             [side]: open,
         });
-    };
-    updateNotification (item) {
-        let index = this.state.updatedNotifications.indexOf(item)
-        if (index === -1) this.state.updatedNotifications.push(item)
     }
     updateNotifications () {
-        if (this.state.updatedNotifications.length > 0) {
-            this.props.onUpdateNotifications(this.state.updatedNotifications)
-            this.setState({updatedNotifications: []})
-        }
+        this.props.onUpdateNotifications(this.props.notifications)
     }
     handleFilterChange = name => event => {
         this.setState({ [name]: event.target.checked });
@@ -187,7 +176,6 @@ class Navbar extends React.Component {
                         <NotificationList
                             notifications={this.props.notifications}
                             notificationsUnread={this.props.notificationsUnread}
-                            updateNotification={this.updateNotification}
                         />
                     </div>
                     <Divider/>

@@ -41,7 +41,6 @@ class NotificationList extends React.Component {
                             notification={item}
                             notifications={this.props.notifications}
                             notificationsUnread={this.props.notificationsUnread}
-                            updateNotification={this.props.updateNotification}
                         />
                     </ListItem>
                 )
