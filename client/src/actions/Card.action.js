@@ -14,7 +14,8 @@ const labels = {
     DELETE_TASK_ERROR: 'DELETE_TASK_ERROR',
     CREATE_TASK: 'CREATE_TASK',
     CREATE_TASK_ERROR: 'CREATE_TASK_ERROR',
-    LOAD: "LOAD"
+    LOAD: "LOAD",
+    GET_ALL_LABEL: 'GET_ALL_LABEL'
 }
 
 function getCard(cardId) {
@@ -23,6 +24,21 @@ function getCard(cardId) {
             .then(res => {
                 dispatch({
                     type: labels.GET_CARD,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+    }
+}
+
+function getLabels() {
+    return dispatch => {
+        _service.Label.getAll()
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_LABEL,
                     payload: res
                 });
             })
@@ -138,5 +154,6 @@ export const cardAction = {
     updateTask,
     deleteCard,
     deleteTask,
-    createTask
+    createTask,
+    getLabels
 }

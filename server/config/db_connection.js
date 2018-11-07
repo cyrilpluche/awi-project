@@ -25,6 +25,7 @@ module.exports = {
     Permission: models.Permission,
     List: models.List,
     Card: models.Card,
+    Cardhaslabel: models.Cardhaslabel,
     Action: models.Action,
     Task: models.Task,
     Attachment: models.Attachment,

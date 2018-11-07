@@ -31,6 +31,8 @@ export function card (state = initialState, action) {
             return { ...state, card: action.payload };
         case labels.GET_CARD:
             return { ...state, card: action.payload };
+        case labels.GET_ALL_LABEL:
+            return { ...state, labels: action.payload };
         case labels.UPDATE_TASK:
             return { ...state, card: action.payload };
         case labels.DELETE_CARD:
