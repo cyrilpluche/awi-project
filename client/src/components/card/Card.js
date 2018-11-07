@@ -21,7 +21,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ConfirmationDialog from'./ArchiveConfirmationDialog'
+import ConfirmationDialog from './ConfirmationDialog'
 import InputBase from "@material-ui/core/InputBase/InputBase";
 
 class Cardboard extends React.Component {
