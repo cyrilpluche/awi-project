@@ -29,7 +29,7 @@ class Cardboard extends React.Component {
         super(props)
 
         this.state = {
-            open: false,
+            open: false
         };
     }
 
@@ -61,7 +61,6 @@ class Cardboard extends React.Component {
 
     render() {
         const { classes } = this.props;
-
         return (
             <div>
                 <Modal
