@@ -26,9 +26,10 @@ export function project (state = initialState, action) {
                 lists:action.payload
             };
 
-        case projectLabels.CREATE_LIST: 
-            let lists = [...state.lists,action.payload]
-            console.log(lists)
+        case projectLabels.CREATE_LIST:
+            let newList = action.payload
+            newList.CardListFks = []
+            let lists = [...state.lists,newList]
             return {
                 ...state,
                 lists 
@@ -38,6 +39,10 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 lists : action.payload 
+            }; 
+        case listLabels.UPDATE_CARD:   
+            return {
+                ...state,
             }; 
         case listLabels.GET_ALL_CARDS:
             return {
@@ -50,9 +55,14 @@ export function project (state = initialState, action) {
                 lists: action.payload,
             };
         case listLabels.DELETE_LIST:
+
+        const deletedListIndex = state.lists.findIndex(list => list.listId === action.payload )
+        let newlists = Array.from(state.lists)
+        newlists.splice(deletedListIndex,1)
+            
             return {
                 ...state,
-                lists: action.payload,
+                lists: newlists,
             };
         case projectLabels.GET_PROJECT_INFO:
             return {

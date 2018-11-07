@@ -10,6 +10,22 @@ belongs to        team                                     as Team
 belongs to many   member                                   as MemberhasactionMembers 
 
 
+Actiononcard
+------------
+
+
+Actiononlist
+------------
+
+
+Actiononproject
+---------------
+
+
+Actiononteam
+------------
+
+
 Attachment
 ----------
 belongs to        card                                     as Card 
@@ -19,25 +35,30 @@ Card
 ----
 has many          action                                   as ActionCardFks 
 has many          attachment                               as AttachmentCardFks 
-has many          cardhaslabel                             as HaslabelCardFks 
+has many          cardhaslabel                             as HaslabelCard0Fks 
+has many          memberhascard                            as MemberhascardCardFks 
 has many          task                                     as TaskCardFks 
 belongs to        list                                     as List 
 belongs to many   list                                     as ActionLists 
 belongs to many   project                                  as ActionProjects 
 belongs to many   team                                     as ActionTeams 
 belongs to many   label                                    as CardhaslabelLabels 
+belongs to many   project                                  as CardhaslabelProjects 
+belongs to many   member                                   as MemberhascardMembers 
 
 
 Cardhaslabel
 ------------
 belongs to        card                                     as Card 
 belongs to        label                                    as Label 
+belongs to        project                                  as Project 
 
 
 Label
 -----
-has many          cardhaslabel                             as CardhaslabelLabel0Fks 
+has many          cardhaslabel                             as CardhaslabelLabelFks 
 belongs to many   card                                     as CardhaslabelCards 
+belongs to many   project                                  as CardhaslabelProjects 
 
 
 List
@@ -53,11 +74,13 @@ belongs to many   team                                     as ActionTeams
 Member
 ------
 has many          memberhasaction                          as HasactionMember0Fks 
+has many          memberhascard                            as HascardMember0Fks 
 has many          memberhaspermissionproject               as HaspermissionprojectMember1Fks 
 has many          memberhaspermissionteam                  as HaspermissionteamMember1Fks 
 has many          memberhasproject                         as HasprojectMember0Fks 
 has many          teamhasmember                            as TeamhasmemberMember0Fks 
 belongs to many   action                                   as MemberhasactionActions 
+belongs to many   card                                     as MemberhascardCards 
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
 belongs to many   project                                  as MemberhaspermissionprojectProjects 
 belongs to many   permission                               as MemberhaspermissionteamPermissions 
@@ -69,6 +92,12 @@ belongs to many   team                                     as TeamhasmemberTeams
 Memberhasaction
 ---------------
 belongs to        action                                   as Action 
+belongs to        member                                   as Member 
+
+
+Memberhascard
+-------------
+belongs to        card                                     as Card 
 belongs to        member                                   as Member 
 
 
@@ -105,6 +134,7 @@ belongs to many   team                                     as Memberhaspermissio
 Project
 -------
 has many          action                                   as ActionProject1Fks 
+has many          cardhaslabel                             as CardhaslabelProject1Fks 
 has many          list                                     as ListProjectFks 
 has many          memberhaspermissionproject               as MemberhaspermissionprojectProject0Fks 
 has many          memberhasproject                         as MemberhasprojectProjectFks 
@@ -112,14 +142,12 @@ has many          teamhasproject                           as TeamhasprojectProj
 belongs to many   card                                     as ActionCards 
 belongs to many   list                                     as ActionLists 
 belongs to many   team                                     as ActionTeams 
+belongs to many   card                                     as CardhaslabelCards 
+belongs to many   label                                    as CardhaslabelLabels 
 belongs to many   member                                   as MemberhaspermissionprojectMembers 
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
 belongs to many   member                                   as MemberhasprojectMembers 
 belongs to many   team                                     as TeamhasprojectTeams 
-
-
-SequelizeMetum
---------------
 
 
 Task

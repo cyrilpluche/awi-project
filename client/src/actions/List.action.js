@@ -4,7 +4,8 @@ const labels = {
     GET_ALL_CARDS :"GET_ALL_CARDS",
     CREATE_CARD:"CREATE_CARD",
     UPDATE_LIST:"UPDATE_LIST",
-    DELETE_LIST:"DELETE_LIST"
+    DELETE_LIST:"DELETE_LIST",
+    UPDATE_CARD: "UPDATE_CARD"
 }
 
 
@@ -58,24 +59,18 @@ function updateCard(cardId, listId){
     const body={
         listId : listId
     }
-    console.log(cardId)
-    console.log(listId)
+    console.log("DANS LE UPDATE")
     return dispatch => {
         _service.Card.update(cardId,body)
         .then(res => {
-            _service.Card.getAll()
-            .then(resFinal => {
-                dispatch({
-                    type: labels.GET_ALL_CARDS,
-                    payload: resFinal
-                });
-            })
-            .catch((err) => {
-                dispatch(err)
+
+            dispatch({
+                    type: labels.UPDATE_CARD,
+                    payload: res
             });
         })
         .catch((err) => {
-            dispatch(err)
+                dispatch(err)
         });
     }
 }
@@ -135,16 +130,10 @@ function deleteList(listId, projectId) {
     return dispatch => {
         _service.List.delete(listId)
             .then(res => {
-                _service.List.getAll(projectId)
-                    .then(res => {
-                        dispatch({
-                            type: labels.DELETE_LIST,
-                            payload: res
-                        });
-                    })
-                    .catch((err) => {
-                        dispatch(err)
-                    });
+                dispatch({
+                    type: labels.DELETE_LIST,
+                    payload: listId
+                });
             })
             .catch((err) => {
                 dispatch(err)
