@@ -18,9 +18,10 @@ import Filter from '../ui/filter/Filter'
 
 // Material Ui
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
-import {SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
+import {RestorePage, Archive, SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
@@ -53,8 +54,10 @@ class Project extends Component {
             members:[],
             openActivity:false,
             openFilter:false,
+            openArchived:false,
             projectInfo:''
         }
+        this.handleRestoreArchived = this.handleRestoreArchived.bind(this)
 
         this.socket = SocketIOClient('http://localhost:4200')
         this.socket.on('add', this.socketNew.bind(this))
@@ -339,6 +342,12 @@ class Project extends Component {
             [side]: open,
         });
     };
+
+    handleRestoreArchived = listId => event =>{
+        console.log(listId)
+        this.props.restoreList(listId,0)
+        //this.toggleDrawer('openArchived', false)
+    }
     
     render() {  
         
@@ -416,6 +425,57 @@ class Project extends Component {
             </Drawer>
         );
 
+        /* ================= ARCHIVED DRAWER================= */
+        const renderArchived = (
+            <Drawer
+                anchor="right"
+                open={this.state.openArchived} 
+                onClose={this.toggleDrawer('openArchived', false)}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('openArchived', false)}
+                >
+                    <Grid alignItems='center' justify='center' container >
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('openArchived', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.drawer}>
+                                Archived
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                        <Grid key={1} xs={12} item>
+                            {this.props.lists ? this.props.lists.filter(list => list.listStatus === 1).map((list,index) => 
+                        
+                            <Paper key={index} className={classes.paper}>
+                            <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
+                                <Grid xs={10} item>
+                                    {list.listTitle}
+                                </Grid>
+                                <Grid xs={2} item>
+                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
+                                        <RestorePage fontSize="small" />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                            </Paper>
+                        
+                        ): <div>Nothing archived</div>}
+                        </Grid>
+                    </Grid>
+                </div>
+            </Drawer>
+        );
+
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
 
@@ -467,6 +527,13 @@ class Project extends Component {
                     Filter
                 </Button>
                 {renderFilter}
+
+                {/*===================  ARCHIVED BUTTON  ========================================= */}
+                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
+                    <Archive className={classes.leftIcon} />
+                    Archived
+                </Button>
+                {renderArchived}
                
 
 
@@ -512,7 +579,7 @@ const mapDispatchToProps ={
     getActivity: _action.projectAction.getActivity,
     getMemberHasProject : _action.projectAction.getMemberHasProject,
     onGetAllPermissions: _action.projectAction.getAllPermissions,
-    //getLabels :  _action.projectAction.getLabels,
+    restoreList: _action.listAction.updateListStatus
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

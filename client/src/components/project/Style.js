@@ -43,5 +43,19 @@ export const styles = theme => ({
         overflowY: 'scroll',
         maxHeight: theme.spacing.unit * 60
     },
+    paper: {
+        padding: theme.spacing.unit * 1,
+        textAlign: 'left',
+        color: 'black',
+        fontFamily : `"Roboto", "Helvetica", "Arial", sans-serif`,
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+        border : `1px solid lightgrey`,
+        margin: '10px',
+        borderRadius:'10px'
+      },
+      restoreButton: {
+        color: 'green',
+        border : `1px solid green`,
+      }
 
 })
