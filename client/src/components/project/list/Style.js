@@ -4,7 +4,7 @@ export const styles = theme => ({
         display: 'flex',
         padding:theme.spacing.unit * 1,           
         //whiteSpace: `nowrap`,
-        //overflowY: `auto`,
+        overflowY: `auto`,
         //position: `fixed`,
         left: `0`, 
         right: `0`
@@ -52,5 +52,8 @@ export const styles = theme => ({
     },
     badge:{
         left:'0'
+    },
+    validEditTitle:{
+        color : 'green',
     }
 });

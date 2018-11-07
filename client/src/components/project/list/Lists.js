@@ -9,6 +9,7 @@ import SimpleDialog from '../../ui/dialog/SimpleDialog'
 
 
 
+
 class Lists extends Component {
     constructor(props){
         super(props)
@@ -42,22 +43,24 @@ class Lists extends Component {
     handleClose = (value) => {
         this.setState({ newListname: value, open: false }, function(){  this.createNewList()});       
     };
-    
+
+
 
     
     render() {
         const { classes,lists,idProject} = this.props;
         
-
+    
         return (
+
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
                     <div className={classes.listArea}
                         ref={provided.innerRef} 
                         {...provided.droppableProps}>
-                        {lists.length === 0 ? '' :lists.map((list, index) => 
+                        {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) => 
                             <div key={list.listTitle+list.listId}>
-                                <List idProject={idProject} key={list.listTitle+list.listId} list={list} index={index}></List>
+                                <List idProject={idProject} key={list.listTitle+list.listId} list={list} index={index} ></List>
                             </div>
                             )}
                         {provided.placeholder}
@@ -75,7 +78,7 @@ class Lists extends Component {
                     </div>
                 )}
                 
-            </Droppable>          
+            </Droppable>         
         )
     }
 }
