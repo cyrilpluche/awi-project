@@ -1,4 +1,5 @@
 import _service from "../services";
+import _helper from "../helpers";
 
 const labels = {
     GET_CARD: 'GET_CARD',
@@ -10,7 +11,10 @@ const labels = {
     UPDATE_TASK: 'UPDATE_TASK',
     UPDATE_TASK_ERROR: 'UPDATE_TASK_ERROR',
     DELETE_TASK: 'DELETE_TASK',
-    DELETE_TASK_ERROR: 'DELETE_TASK_ERROR'
+    DELETE_TASK_ERROR: 'DELETE_TASK_ERROR',
+    CREATE_TASK: 'CREATE_TASK',
+    CREATE_TASK_ERROR: 'CREATE_TASK_ERROR',
+    LOAD: "LOAD"
 }
 
 function getCard(cardId) {
@@ -41,14 +45,9 @@ function updatecard(card, body) {
                 errorMsg: 'impossible to execute this action'
             })
         })
-    };
+};
 
 function updateTask(card, taskId, body) {
-    console.log(taskId)
-    console.log(card)
-
-    console.log(body)
-
     return dispatch => _service.Task.update({taskId: taskId}, body)
         .then(isUpdated => {
             if(isUpdated){
@@ -70,12 +69,13 @@ function updateTask(card, taskId, body) {
         })
 };
 
-function deleteTask(taskId) {
+function deleteTask(taskId, card) {
     return dispatch => _service.Task.delete({taskId: taskId})
         .then(isDeleted => {
             if(isDeleted){
                 dispatch({
-                    type: labels.DELETE_TASK
+                    type: labels.DELETE_TASK,
+                    payload: card
                 })
             }else{
                 dispatch({
@@ -95,7 +95,8 @@ function deleteCard(cardId) {
         .then(isDeleted => {
             if(isDeleted){
                 dispatch({
-                    type: labels.DELETE_CARD
+                    type: labels.DELETE_CARD,
+                    payload: '' //TODO handle payload if deleted
                 })
             }else{
                 dispatch({
@@ -110,11 +111,32 @@ function deleteCard(cardId) {
         })
 };
 
+function createTask(newTask, card) {
+    return dispatch => {
+        dispatch({
+            type: labels.LOAD
+        })
+        _service.Task.create(newTask)
+            .then(res => {
+                card.TaskCardFks.push(res)
+                dispatch({
+                    type: labels.CREATE_TASK,
+                    payload : card
+                })
+            }).catch (e => {
+            dispatch({
+                type: labels.CREATE_TASK_ERROR
+            })
+        })
+    }
+};
+
 export const cardAction = {
     labels,
     getCard,
     updatecard,
     updateTask,
     deleteCard,
-    deleteTask
+    deleteTask,
+    createTask
 }

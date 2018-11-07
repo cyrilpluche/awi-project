@@ -12,6 +12,8 @@ import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import _action from "../../../actions";
 import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
+import Input from "@material-ui/core/Input/Input";
+import MiniLoader from "../../ui/loader/MiniLoader";
 
 
 class ChecklistDialog extends React.Component {
@@ -28,7 +30,6 @@ class ChecklistDialog extends React.Component {
     };
 
     handleChangeCheckbox = name => event => {
-        //this.setState({ [name]: event.target.checked });
         let index = event.target.id.split('/')[1]
         let chtState = event.target.checked
         this.state.card.TaskCardFks[index].chtState = chtState
@@ -40,30 +41,44 @@ class ChecklistDialog extends React.Component {
         this.setState({ maj: true });
     };
 
+    handleCreateTask = event => {
+        let dom = document.querySelector('#newChecklist');
+        let value = dom.value;
+        if(value !== ''){
+            let cardId = this.props.card.cardId;
+            let newTask = {
+                taskTitle: value,
+                chtState: false,
+                cardId: cardId
+            };
+            let card = this.props.card
+            this.props.onCreateTask(newTask, card)
+        }
+    };
+
     handleRemoveTask = event => {
-        let taskId = event.currentTarget.id;
-        this.props.onDeleteTask(taskId);
+        let index = event.currentTarget.id;
+        let taskId = this.props.card.TaskCardFks[index].taskId
+        this.state.card.TaskCardFks.splice(index,1)
+        let card = this.props.card
+        this.props.onDeleteTask(taskId, card);
         this.setState({ maj: true });
     };
 
-    /*handleUpdateTask = event => {
-        let taskId = event.currentTarget.id
-        //this.props.checklist[object.index].chtState = !object.value;
-        this.props.onUpdateTask(taskId,{chtState: !object.value})
-    }*/
-
     render() {
-        const { classes, onClose, selectedValue, ...other } = this.props;
+        const { classes, onClose, selectedValue, isLoading, ...other } = this.props;
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set checklist</DialogTitle>
                 <div className={classes.form}>
                     <FormControl component="fieldset" >
                         <FormGroup>
-                            {this.props.card.TaskCardFks.map((task, index) => {
+                            { isLoading ? (
+                                <MiniLoader/>
+                            ) :  this.state.card.TaskCardFks ? this.props.card.TaskCardFks.map((task, index) => {
                                     return (
                                         <div key={task.taskId}>
-                                            <button id={task.taskId} onClick={this.handleRemoveTask}>
+                                            <button id={index} onClick={this.handleRemoveTask}>
                                                 <SvgIcon className={this.props.classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
                                             </button>
                                             <FormControlLabel className={this.props.classes.formLabel}
@@ -80,13 +95,23 @@ class ChecklistDialog extends React.Component {
                                         </div>
                                     )
                                 }
-                            )}
+                            ) : null}
+                            <div>
+                                <Input
+                                    id = 'newChecklist'
+                                    placeholder="New checklist"
+                                    className={classes.input}
+                                    inputProps={{
+                                        'aria-label': 'Description',
+                                    }}
+                                />
+                                <button onClick={this.handleCreateTask}>
+                                    <SvgIcon className={classes.addIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
+                                </button>
+                            </div>
                         </FormGroup>
                     </FormControl>
                 </div>
-                <button>
-                    <SvgIcon className={classes.addIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
-                </button>
             </Dialog>
         );
     }
@@ -127,6 +152,7 @@ class Checklist extends React.Component {
                     card = {this.props.card}
                     onUpdateTask = {this.props.onUpdateTask}
                     onDeleteTask = {this.props.onDeleteTask}
+                    onCreateTask = {this.props.onCreateTask}
                 />
             </div>
         );
@@ -138,11 +164,13 @@ Checklist.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.card.card
+    card: state.card.card,
+    isLoading: state.card.isLoading
 });
 const mapDispatchToProps = {
     onUpdateTask : _action.cardAction.updateTask,
-    onDeleteTask : _action.cardAction.deleteTask
+    onDeleteTask : _action.cardAction.deleteTask,
+    onCreateTask : _action.cardAction.createTask
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checklist);
