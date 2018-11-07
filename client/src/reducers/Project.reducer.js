@@ -49,7 +49,7 @@ export function project (state = initialState, action) {
                 ...state,
                 cards: action.payload,
             }; 
-        case listLabels.UPDATE_LIST:
+        case listLabels.UPDATE_LIST_TITLE:
             let updateList  = state.lists.find(list => list.listId === action.payload.listId)
             let updateListIndex =  state.lists.findIndex(list => list.listId === action.payload.listId)
             let newListTitle = {...updateList, listTitle:action.payload.newListTitle}
@@ -59,6 +59,17 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 lists: allList
+            };
+        case listLabels.UPDATE_LIST_STATUS:
+            let updateListStatus  = state.lists.find(list => list.listId === action.payload.listId)
+            let updateListStatusIndex =  state.lists.findIndex(list => list.listId === action.payload.listId)
+            let newListStatus = {...updateListStatus, listStatus:action.payload.listStatus}
+            let newLists = Array.from(state.lists)
+            newLists.splice(updateListStatusIndex,1)
+            newLists.splice(updateListStatusIndex,0,newListStatus)
+            return {
+                ...state,
+                lists: newLists
             };
         case listLabels.DELETE_LIST:
 

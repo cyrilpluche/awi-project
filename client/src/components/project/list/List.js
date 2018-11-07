@@ -23,6 +23,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
 import { Done} from '@material-ui/icons';
 
 const ITEM_HEIGHT = 28;
@@ -36,14 +37,12 @@ class ListPrello extends Component{
             newCardTitle:'',
             isOpenAddCardDialog: false,
             anchorEl: null,
-            cards: [],
             isOpenDeleteDialog: false,
             open:false,
         
         }
-
+        this.handleArchivedList = this.handleArchivedList.bind(this)
         this.handleEditTitle = this.handleEditTitle.bind(this)
-       // this.handleValidationEditTitle = this.handleValidationEditTitle.bind(this)
         this.handleCloseDeleteListDialog = this.handleCloseDeleteListDialog.bind(this)
         this.handleConfirmDeleteList = this.handleConfirmDeleteList.bind(this)
     }
@@ -73,50 +72,57 @@ class ListPrello extends Component{
 
     handleClickMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
-      };
+    };
     
-      handleCloseMenu = () => {
+    handleCloseMenu = () => {
         this.setState({ anchorEl: null });
-      };
+    };
     
-      /* =============DELETE LIST ================= */
-      handleDeleteList = () =>{
+    /* =============DELETE LIST ================= */
+    handleDeleteList = () =>{
           
         this.setState({ isOpenDeleteDialog: true });
-      }
+    }
 
-      handleCloseDeleteListDialog(){
+    handleCloseDeleteListDialog(){
 
         this.setState({ isOpenDeleteDialog: false });
-      }
+    }
 
-      handleConfirmDeleteList(){
+    handleConfirmDeleteList(){
 
         const {list, idProject} = this.props
         this.props.deleteList(list.listId,idProject)
-      }
+    }
 
       /*===============Edit title ====================*/
-      handleOpenMenu = name => event =>{
+    handleOpenMenu = name => event =>{
         this.setState({ [name]: true });
-      }
+    }
       
-      handleChange = name => event => {
+    handleChange = name => event => {
             console.log(event.target.value)
             this.setState({
             [name]: event.target.value,
             });     
-      };
+    };
 
-     handleEditTitle(){
+    handleEditTitle(){
           console.log(this.state.newListTitle)
           console.log(this.props.list.listId)
           this.setState({editListTitle: false}, ()=>{
             this.props.updateTitle(this.state.newListTitle,this.props.list.listId)
           })
-         
-      }
+    }
       
+
+    /*============== Archived list ==============*/
+    handleArchivedList (){
+        const {list} = this.props
+        this.handleCloseMenu()
+        this.props.archiveList(list.listId,1)
+    }
+
 
 
     render() {
@@ -183,9 +189,10 @@ class ListPrello extends Component{
                         Delete
                     </MenuItem>
                     {confirmDeleteDialog}
-                    <MenuItem key="archivedList"  onClick={this.handleCloseMenu}>
+                    <MenuItem key="archivedList"  onClick={this.handleArchivedList}>
                         Archived
                     </MenuItem>
+                   
                 ))}
                 </Menu>
             </div>
@@ -279,7 +286,8 @@ class ListPrello extends Component{
                         />
                     </List>
                     </div>
-                )}}           
+                )}
+                }           
             </Draggable>   
         )
     }
@@ -293,6 +301,7 @@ const mapDispatchToProps ={
     createCard: _action.listAction.createCard,   
     updateTitle: _action.listAction.updateListTitle,
     deleteList: _action.listAction.deleteList,
+    archiveList: _action.listAction.updateListStatus
 }
 
 

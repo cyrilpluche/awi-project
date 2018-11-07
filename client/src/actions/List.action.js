@@ -3,9 +3,10 @@ import _service from '../services'
 const labels = {
     GET_ALL_CARDS :"GET_ALL_CARDS",
     CREATE_CARD:"CREATE_CARD",
-    UPDATE_LIST:"UPDATE_LIST",
+    UPDATE_LIST_TITLE:"UPDATE_LIST_TITLE",
     DELETE_LIST:"DELETE_LIST",
-    UPDATE_CARD: "UPDATE_CARD"
+    UPDATE_CARD: "UPDATE_CARD",
+    UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS"
 }
 
 
@@ -114,7 +115,7 @@ function updateListTitle(newListTitle, listId){
         _service.List.update(listId,body)
             .then(res => {
                     dispatch({
-                            type: labels.UPDATE_LIST,
+                            type: labels.UPDATE_LIST_TITLE,
                             payload: setDispacth
                     });
             })
@@ -141,6 +142,25 @@ function deleteList(listId, projectId) {
     }
 }
 
+function updateListStatus(listId, status){
+    const body ={
+        listId:listId, 
+        listStatus:status
+    }
+    return dispatch => {
+        _service.List.update(listId,body)
+            .then(res => {
+                dispatch({
+                    type: labels.UPDATE_LIST_STATUS,
+                    payload: body
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
+            });
+    } 
+}
+
 
 export const listAction = {
     labels,
@@ -149,5 +169,6 @@ export const listAction = {
     updateCard,
     updateListTitle,
     deleteList,
+    updateListStatus
 }
 
