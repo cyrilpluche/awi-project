@@ -26,7 +26,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { Done} from '@material-ui/icons';
 
-const ITEM_HEIGHT = 28;
+const ITEM_HEIGHT = 38;
 
 class ListPrello extends Component{
     constructor(props){

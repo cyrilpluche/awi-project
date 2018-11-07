@@ -72,7 +72,7 @@ class Project extends Component {
     }
 
     componentWillMount() {
-        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity,findAllCards} = this.props
+        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
         
         const projectId = this.props.match.params.id
 
@@ -173,41 +173,44 @@ class Project extends Component {
         
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
-
+        console.log(result)
         //retrieve lists
         const {lists} = this.state
-        
-        
+        const notArchivedList = Array.from(lists.filter(list => list.listStatus === 0))
+        const archivedList = Array.from(lists.filter(list => list.listStatus === 1))
+
+        console.log(notArchivedList)
         // dropped outside the droppagble area
         if (!destination) {
             return;
         }
 
-
+        console.log(lists)
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
 
             let dragId = draggableId.split(':');
             dragId = Number.parseInt(dragId[1])
-           
-           let findList = findWhere(lists,{listId: dragId})
-          
-           let indexOfList = lists.indexOf(findList)           
-           let newLists = lists
-
+            let findList = notArchivedList.find(list => list.listId === dragId)
+     
+            console.log(findList)
+           let indexOfList = notArchivedList.indexOf(findList) 
+           console.log(indexOfList)          
+           let newLists = Array.from(notArchivedList)
+            
             //remove list from list of list
             newLists.splice(indexOfList,1,)
 
             //Insert list in new index
             newLists.splice(destination.index,0,findList)
-           
+            console.log(newLists)
             //set state with the new list
             
-            this.setState({lists:newLists},() =>{
+            this.setState({lists:newLists.concat(archivedList)},() =>{
 
                 this.socket.emit('move', newLists)
-
-                let updateList = findWhere(lists,{listId: dragId})
+                //let updateList = lists.find(list => list.listId === dragId)
+                //let updateList = findWhere(lists,{listId: dragId})
 
                 let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 
@@ -499,7 +502,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps ={
     getAllListsWithCards: _action.projectAction.findAllLists,
-    findAllCards: _action.listAction.findAllCards,
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
     updateCard: _action.listAction.updateCard,
