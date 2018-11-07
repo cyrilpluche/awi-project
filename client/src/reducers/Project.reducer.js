@@ -55,9 +55,14 @@ export function project (state = initialState, action) {
                 lists: action.payload,
             };
         case listLabels.DELETE_LIST:
+
+        const deletedListIndex = state.lists.findIndex(list => list.listId === action.payload )
+        let newlists = Array.from(state.lists)
+        newlists.splice(deletedListIndex,1)
+            
             return {
                 ...state,
-                lists: action.payload,
+                lists: newlists,
             };
         case projectLabels.GET_PROJECT_INFO:
             return {

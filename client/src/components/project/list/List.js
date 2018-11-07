@@ -39,10 +39,10 @@ class ListPrello extends Component{
             open:false
         }
 
-       /* this.handleEditTitle = this.handleEditTitle.bind(this)
-        this.handleValidationEditTitle = this.handleValidationEditTitle.bind(this)
+       // this.handleEditTitle = this.handleEditTitle.bind(this)
+       // this.handleValidationEditTitle = this.handleValidationEditTitle.bind(this)
         this.handleCloseDeleteListDialog = this.handleCloseDeleteListDialog.bind(this)
-        this.handleConfirmDeleteList = this.handleConfirmDeleteList.bind(this)*/
+        this.handleConfirmDeleteList = this.handleConfirmDeleteList.bind(this)
     }
 
 
@@ -78,9 +78,23 @@ class ListPrello extends Component{
         this.setState({ anchorEl: null });
       };
     
+      /* =============DELETE LIST ================= */
       handleDeleteList = () =>{
+
         this.setState({ isOpenDeleteDialog: true });
       }
+      
+      handleCloseDeleteListDialog(){
+
+        this.setState({ isOpenDeleteDialog: false });
+      }
+
+      handleConfirmDeleteList(){
+
+        const {list, idProject} = this.props
+        this.props.deleteList(list.listId,idProject)
+      }
+      
 
 
     render() {
@@ -142,7 +156,7 @@ class ListPrello extends Component{
                 >
                 
                     <MenuItem key="editListTitle"  onClick={this.handleCloseMenu}>
-                        Edit
+                        Edit title
                     </MenuItem>
                     <MenuItem key="deleteList"  onClick={this.handleDeleteList}>
                         Delete
@@ -237,7 +251,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps ={
     createCard: _action.listAction.createCard,   
     //updateTitle: _action.listAction.updateListTitle,
-    //deleteList: _action.listAction.deleteList,
+    deleteList: _action.listAction.deleteList,
 }
 
 

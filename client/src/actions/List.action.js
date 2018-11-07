@@ -130,16 +130,10 @@ function deleteList(listId, projectId) {
     return dispatch => {
         _service.List.delete(listId)
             .then(res => {
-                _service.List.getAll(projectId)
-                    .then(res => {
-                        dispatch({
-                            type: labels.DELETE_LIST,
-                            payload: res
-                        });
-                    })
-                    .catch((err) => {
-                        dispatch(err)
-                    });
+                dispatch({
+                    type: labels.DELETE_LIST,
+                    payload: listId
+                });
             })
             .catch((err) => {
                 dispatch(err)
