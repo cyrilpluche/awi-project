@@ -12,6 +12,7 @@ import _action from '../../../actions'
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import Badge from '@material-ui/core/Badge';
+import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
@@ -22,6 +23,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Done} from '@material-ui/icons';
 
 const ITEM_HEIGHT = 28;
 
@@ -36,23 +38,26 @@ class ListPrello extends Component{
             anchorEl: null,
             cards: [],
             isOpenDeleteDialog: false,
-            open:false
+            open:false,
+        
         }
 
-       // this.handleEditTitle = this.handleEditTitle.bind(this)
+        this.handleEditTitle = this.handleEditTitle.bind(this)
        // this.handleValidationEditTitle = this.handleValidationEditTitle.bind(this)
         this.handleCloseDeleteListDialog = this.handleCloseDeleteListDialog.bind(this)
         this.handleConfirmDeleteList = this.handleConfirmDeleteList.bind(this)
     }
 
+    
 
     createNewCard(){
         let cardName = this.state.newCardTitle
         let listId = this.props.list.listId
-        console.log(this.props.idProject)
+
         if(cardName) this.props.createCard(cardName,listId,this.props.idProject)
-        
     }
+
+
 
     handleClickOpen = () => {
         this.setState({
@@ -60,10 +65,6 @@ class ListPrello extends Component{
         });
     };
 
-    handleEditTitle(){
-        //this.setState({editListTitle:true})
-        this.handleCloseEditMenu()
-    }
 
     handleClose = (value) => {
         this.setState({ newCardTitle: value, open: false }, function(){  this.createNewCard()});
@@ -80,10 +81,10 @@ class ListPrello extends Component{
     
       /* =============DELETE LIST ================= */
       handleDeleteList = () =>{
-
+          
         this.setState({ isOpenDeleteDialog: true });
       }
-      
+
       handleCloseDeleteListDialog(){
 
         this.setState({ isOpenDeleteDialog: false });
@@ -94,16 +95,36 @@ class ListPrello extends Component{
         const {list, idProject} = this.props
         this.props.deleteList(list.listId,idProject)
       }
+
+      /*===============Edit title ====================*/
+      handleOpenMenu = name => event =>{
+        this.setState({ [name]: true });
+      }
+      
+      handleChange = name => event => {
+            console.log(event.target.value)
+            this.setState({
+            [name]: event.target.value,
+            });     
+      };
+
+     handleEditTitle(){
+          console.log(this.state.newListTitle)
+          console.log(this.props.list.listId)
+          this.setState({editListTitle: false}, ()=>{
+            this.props.updateTitle(this.state.newListTitle,this.props.list.listId)
+          })
+         
+      }
       
 
 
     render() {
-        const {classes, list,idProject} = this.props
-        const { anchorEl } = this.state;
+        const {classes,list} = this.props
+        const { editListTitle, anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
         
-
         const confirmDeleteDialog = (
             <Dialog
                 open={this.state.isOpenDeleteDialog}
@@ -131,7 +152,7 @@ class ListPrello extends Component{
             </Dialog>
         )
 
-        const EditTitle = (
+        const MenuList = (
             <div>
                 <IconButton
                 aria-label="More"
@@ -155,7 +176,7 @@ class ListPrello extends Component{
                 }}
                 >
                 
-                    <MenuItem key="editListTitle"  onClick={this.handleCloseMenu}>
+                    <MenuItem key="editListTitle"  onClick={this.handleOpenMenu('editListTitle')}>
                         Edit title
                     </MenuItem>
                     <MenuItem key="deleteList"  onClick={this.handleDeleteList}>
@@ -189,17 +210,36 @@ class ListPrello extends Component{
                         component="nav"
                         subheader={
                         <ListSubheader component="div"  {...provided.dragHandleProps} className={classes.listTitle}>
+                        {!editListTitle ?
                             <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={16}>
                                 <Grid item xs={11}>
-                                    {this.props.list.listTitle}
+                                    { this.props.list.listTitle}               
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid item xs={1}>    
                                     <Badge badgeContent={list.CardListFks ? list.CardListFks.length : 0} color="primary" className={classes.badge}>
                                         <div></div>
                                     </Badge> 
                                 </Grid>                              
                             </Grid>
+                        :   <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={8}>
+                                <Grid item xs={10}>
+                                <TextField
+                                    id="standard-bare"
+                                    className={classes.textField}
+                                    defaultValue={list.listTitle}
+                                    margin="normal"
+                                    onChange={this.handleChange('newListTitle')}
+                                />               
+                                </Grid>
+                                <Grid item xs={2}>   
+                                   <IconButton aria-label="valid" className={classes.validEditTitle} onClick={this.handleEditTitle}>
+                                        <Done fontSize="small" />
+                                    </IconButton>
+                                </Grid>                              
+                            </Grid>}
+                        
                         </ListSubheader>}
+                        
                         >
                            
                         <Droppable droppableId={this.props.list.listId+":"+this.props.list.listTitle} type="CARD">
@@ -212,7 +252,8 @@ class ListPrello extends Component{
                                     <div 
                                     ref={provided.innerRef} 
                                     
-                                    className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}}>
+                                    className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
+
                                       {list.CardListFks ? list.CardListFks.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ):'' }
                                        
                                     {provided.placeholder}
@@ -227,7 +268,7 @@ class ListPrello extends Component{
                                     </Button>
                                 </Grid>
                                 <Grid item xs={2}>
-                                    {EditTitle}
+                                    {MenuList}
                                 </Grid>
                             </Grid>
 
@@ -250,7 +291,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps ={
     createCard: _action.listAction.createCard,   
-    //updateTitle: _action.listAction.updateListTitle,
+    updateTitle: _action.listAction.updateListTitle,
     deleteList: _action.listAction.deleteList,
 }
 

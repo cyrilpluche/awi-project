@@ -95,8 +95,6 @@ class Project extends Component {
         //this.props.getLabels()
         this.props.onGetAllPermissions(projectId)
 
-        //Not needed 
-        findAllCards()
     }
     
 
@@ -114,7 +112,7 @@ class Project extends Component {
     // When a change occurs on our props, we verify to change the state (re rendering) if necessary
     componentDidUpdate(prevProps){
         const {hasProject,projectInfo} = this.props
-
+      
         // verify if props exist
         if(projectInfo){
             // If Logged user is not a member of the project & project is private
@@ -125,7 +123,9 @@ class Project extends Component {
 
         // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
-            this.setState( {lists : this.props.lists})
+            
+            this.setState( {lists : this.props.lists},()=>{
+            })
            // this.orderList(this.props.lists)      
         }
         
@@ -136,63 +136,6 @@ class Project extends Component {
     }
 
 
-
-   /*orderList(lists){
-        
-        if(lists.length !== 0){
-            const headList = findWhere(lists,{listFather: null})
-            const indexHead = lists.indexOf(headList)
-            if(headList){
-                lists.splice(indexHead,1)
-                this.recursiveOrdering(lists,headList,[headList])
-                
-            }else{
-                this.setState({lists:this.props.lists,updateLists : true})
-            }               
-        }else{
-            this.setState({lists:[],updateLists : true})
-        }
-  
-    }*/
-
-
-    /* recursiveOrdering(oldList,current, newList){
-        
-     
-        if(oldList.length === 0) {
-            this.setState({lists:newList,updateLists : true}); 
-        }
-        else{
-            if(current){
-                let nextList = findWhere(oldList,{listFather:current.listId})
-                let indexNextList = oldList.indexOf(nextList)
-                if(nextList){
-                    if(oldList.length === 1){
-                        newList.push(nextList)
-                        this.setState({lists:newList,updateLists : true})
-                    }else{
-                        oldList.splice(indexNextList,1)
-                        newList.push(nextList) 
-                        this.recursiveOrdering(oldList,nextList, newList) 
-                    }
-                }else{
-                    let nextList = oldList[0]
-
-                    if(oldList.length === 1){
-                        newList.push(nextList)
-                        this.setState({lists:newList,updateLists : true})
-                    }else{
-                        oldList.splice(0,1)
-                        newList.push(nextList) 
-                        this.recursiveOrdering(oldList,nextList, newList) 
-                    }
-                }
-                
-            }else{
-                this.setState({lists:this.props.lists,updateLists : true})
-            }        
-        }
-     }*/
 
 
     /**
@@ -275,8 +218,7 @@ class Project extends Component {
                 //New father and child of dragged list
                 let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
                 let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
-                console.log(listFather)
-                console.log(listChild)
+
 
                 // Change fathers of list in DB
                /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
@@ -319,7 +261,7 @@ class Project extends Component {
                 
                 this.setState({lists: newList}, () =>{
                     this.socket.emit('move', newList)
-                    this.props.updateCard(draggedCard.cardId, destinationList.listId )
+                    this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
 
                
@@ -395,6 +337,7 @@ class Project extends Component {
     };
     
     render() {  
+        
         const {classes, match, projectInfo } = this.props
 
         /* ================= ACTIVITY DRAWER================= */

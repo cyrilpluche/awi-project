@@ -55,18 +55,17 @@ function findAllCards() {
     }
 }
 
-function updateCard(cardId, listId){
+function updateCard(cardId, listId, newLists){
     const body={
         listId : listId
     }
-    console.log("DANS LE UPDATE")
     return dispatch => {
         _service.Card.update(cardId,body)
         .then(res => {
 
             dispatch({
                     type: labels.UPDATE_CARD,
-                    payload: res
+                    payload: newLists
             });
         })
         .catch((err) => {
@@ -100,22 +99,23 @@ function updateCard(cardId, listId){
 //     }
 // }
 
-function updateListTitle(newListTitle, listId, projectId){
+function updateListTitle(newListTitle, listId){
     const body = {
-        listTitle : newListTitle
+        listTitle : newListTitle,
+        listId : listId
     }
+    const setDispacth = {
+        listTitle : newListTitle,
+        listId : listId,
+        newListTitle : newListTitle
+    }
+
     return dispatch => {
         _service.List.update(listId,body)
             .then(res => {
-                _service.List.getAll(projectId)
-                    .then(res => {
-                        dispatch({
+                    dispatch({
                             type: labels.UPDATE_LIST,
-                            payload: res
-                        });
-                    })
-                    .catch((err) => {
-                        dispatch(err)
+                            payload: setDispacth
                     });
             })
             .catch((err) => {

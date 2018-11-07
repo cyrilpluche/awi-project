@@ -52,5 +52,8 @@ export const styles = theme => ({
     },
     badge:{
         left:'0'
+    },
+    validEditTitle:{
+        color : 'green',
     }
 });

@@ -48,7 +48,7 @@ class Lists extends Component {
     render() {
         const { classes,lists,idProject} = this.props;
         
-
+    
         return (
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
