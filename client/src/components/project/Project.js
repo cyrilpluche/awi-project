@@ -196,22 +196,22 @@ class Project extends Component {
             dragId = Number.parseInt(dragId[1])
             let findList = notArchivedList.find(list => list.listId === dragId)
      
-            console.log(findList)
-           let indexOfList = notArchivedList.indexOf(findList) 
-           console.log(indexOfList)          
-           let newLists = Array.from(notArchivedList)
+            let indexOfList = notArchivedList.indexOf(findList)                 
+            let newLists = Array.from(notArchivedList)
             
             //remove list from list of list
             newLists.splice(indexOfList,1,)
 
             //Insert list in new index
             newLists.splice(destination.index,0,findList)
-            console.log(newLists)
-            //set state with the new list
             
-            this.setState({lists:newLists.concat(archivedList)},() =>{
-
-                this.socket.emit('move', newLists)
+            const newArrayList = newLists.concat(archivedList)
+            console.log(newArrayList)
+            this.props.updatePositionLists(newArrayList)
+            //set state with the new list           
+            this.setState({lists:newArrayList},() =>{
+                
+                this.socket.emit('move', newArrayList)
                 //let updateList = lists.find(list => list.listId === dragId)
                 //let updateList = findWhere(lists,{listId: dragId})
 
@@ -579,7 +579,8 @@ const mapDispatchToProps ={
     getActivity: _action.projectAction.getActivity,
     getMemberHasProject : _action.projectAction.getMemberHasProject,
     onGetAllPermissions: _action.projectAction.getAllPermissions,
-    restoreList: _action.listAction.updateListStatus
+    restoreList: _action.listAction.updateListStatus,
+    updatePositionLists: _action.listAction.updatePositionLists
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

@@ -140,7 +140,7 @@ class ListPrello extends Component{
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle id="alert-dialog-slide-title">
-                    {"Attention"}
+                    {"Warning"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
