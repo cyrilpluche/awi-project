@@ -264,10 +264,24 @@ CREATE TABLE public.MemberHasPermissionProject(
 -- Table: CardHasLabel
 ------------------------------------------------------------
 CREATE TABLE public.CardHasLabel(
-	card_id    INT  NOT NULL ,
-	label_id   INT  NOT NULL  ,
-	CONSTRAINT CardHasLabel_PK PRIMARY KEY (card_id,label_id)
+	label_id     INT  NOT NULL ,
+	card_id      INT  NOT NULL ,
+	project_id   INT  NOT NULL  ,
+	CONSTRAINT CardHasLabel_PK PRIMARY KEY (label_id,card_id,project_id)
 
-	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
-	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id)
+	,CONSTRAINT CardHasLabel_Label_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id)
+,CONSTRAINT CardHasLabel_Card0_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
+,CONSTRAINT CardHasLabel_Project1_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
+)WITHOUT OIDS;
+
+------------------------------------------------------------
+-- Table: MemberHasCard
+------------------------------------------------------------
+CREATE TABLE public.MemberHasCard(
+	card_id     INT  NOT NULL ,
+	member_id   INT  NOT NULL  ,
+	CONSTRAINT MemberHasCard_PK PRIMARY KEY (card_id,member_id)
+
+	,CONSTRAINT MemberHasCard_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
+,CONSTRAINT MemberHasCard_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
 )WITHOUT OIDS;
