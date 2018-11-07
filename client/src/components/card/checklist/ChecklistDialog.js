@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -12,18 +11,46 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import _action from "../../../actions";
 import connect from "react-redux/es/connect/connect";
+import * as PropTypes from "prop-types";
 
 
 class ChecklistDialog extends React.Component {
+    constructor (props) {
+        super(props)
+        this.handleRemoveTask = this.handleRemoveTask.bind(this)
+        this.state = {
+            card: this.props.card
+        }
+    }
 
     handleClose = () => {
         this.props.onClose(this.props.selectedValue);
     };
 
-    handleChange = (name,object) => event => {
-        this.setState({ [name]: event.target.checked });
-        this.props.checklist[object.index].chtState = !object.value
+    handleChangeCheckbox = name => event => {
+        //this.setState({ [name]: event.target.checked });
+        let index = event.target.id.split('/')[1]
+        let chtState = event.target.checked
+        this.state.card.TaskCardFks[index].chtState = chtState
+
+        let card = this.state.card
+        let taskId = this.state.card.TaskCardFks[index].taskId
+
+        this.props.onUpdateTask(card, taskId, {chtState: chtState})
+        this.setState({ maj: true });
     };
+
+    handleRemoveTask = event => {
+        let taskId = event.currentTarget.id;
+        this.props.onDeleteTask(taskId);
+        this.setState({ maj: true });
+    };
+
+    /*handleUpdateTask = event => {
+        let taskId = event.currentTarget.id
+        //this.props.checklist[object.index].chtState = !object.value;
+        this.props.onUpdateTask(taskId,{chtState: !object.value})
+    }*/
 
     render() {
         const { classes, onClose, selectedValue, ...other } = this.props;
@@ -33,13 +60,20 @@ class ChecklistDialog extends React.Component {
                 <div className={classes.form}>
                     <FormControl component="fieldset" >
                         <FormGroup>
-                            {this.props.checklist.map((task, index) => {
+                            {this.props.card.TaskCardFks.map((task, index) => {
                                     return (
-                                        <div>
-                                            <SvgIcon className={this.props.classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
+                                        <div key={task.taskId}>
+                                            <button id={task.taskId} onClick={this.handleRemoveTask}>
+                                                <SvgIcon className={this.props.classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
+                                            </button>
                                             <FormControlLabel className={this.props.classes.formLabel}
                                                               control={
-                                                                  <Checkbox onChange={this.handleChange(task.chtState, {index: index, value: task.chtState})} value={task.taskId} checked={task.chtState} />
+                                                                  <Checkbox
+                                                                      id={'checklist/'+index}
+                                                                      onChange={this.handleChangeCheckbox('checklist')}
+                                                                      value='checklist'
+                                                                      checked={task.chtState}
+                                                                  />
                                                               }
                                                               label={task.taskTitle}
                                             />
@@ -50,17 +84,20 @@ class ChecklistDialog extends React.Component {
                         </FormGroup>
                     </FormControl>
                 </div>
-                <SvgIcon className={classes.addIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
+                <button>
+                    <SvgIcon className={classes.addIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
+                </button>
             </Dialog>
         );
     }
 }
 
-/*ChecklistDialog.propTypes = {
+ChecklistDialog.propTypes = {
     classes: PropTypes.object.isRequired,
     onClose: PropTypes.func,
     selectedValue: PropTypes.string,
-};*/
+    onUpdateTask: PropTypes.func
+};
 
 const ChecklistDialogWrapped = withStyles(styles)(ChecklistDialog);
 
@@ -87,22 +124,25 @@ class Checklist extends React.Component {
                 <ChecklistDialogWrapped
                     open={this.state.open}
                     onClose={this.handleClose}
-                    checklist = {this.props.card.TaskCardFks}
+                    card = {this.props.card}
+                    onUpdateTask = {this.props.onUpdateTask}
+                    onDeleteTask = {this.props.onDeleteTask}
                 />
             </div>
         );
     }
 }
 
-/*Checklist.propTypes = {
-    classes: PropTypes.object.isRequired,
-};*/
+Checklist.propTypes = {
+    classes: PropTypes.object,
+};
 
 const mapStateToProps = (state) => ({
     card: state.card.card
 });
 const mapDispatchToProps = {
-    onUpdateCard : _action.cardAction.updatecard
+    onUpdateTask : _action.cardAction.updateTask,
+    onDeleteTask : _action.cardAction.deleteTask
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checklist);

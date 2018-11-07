@@ -21,6 +21,8 @@ export function card (state = initialState, action) {
             return { ...state, card: action.payload };
         case labels.GET_CARD:
             return { ...state, card: action.payload };
+        case labels.UPDATE_TASK:
+            return { ...state};
         case labels.DELETE_CARD:
             return { ...state};
         default:
