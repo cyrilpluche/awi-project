@@ -1,4 +1,7 @@
 var Card = require('../config/db_connection').Card;
+var CardHasLabel = require('../config/db_connection').Cardhaslabel;
+var Label = require('../config/db_connection').Label;
+
 var sequelize = require('../config/db_connection').sequelize;
 var Sequelize = require('../config/db_connection').Sequelize;
 
@@ -99,7 +102,14 @@ module.exports = {
         Card
             .findOne({
                 where: req.query,
-                include: [{ all: true }]
+                include: [
+                    { all: true },
+                    {
+                        model: CardHasLabel,
+                        as: 'HaslabelCard0Fks',
+                        include: [{ model: Label, as: 'Label' }]
+                    }
+                ],
             })
             .then(card => {
                 req.body.result = card
