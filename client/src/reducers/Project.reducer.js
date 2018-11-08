@@ -36,9 +36,17 @@ export function project (state = initialState, action) {
                 lists 
             };
         case listLabels.CREATE_CARD:
+            let listWithCard = Array.from(state.lists)
+            let findList = listWithCard.find(list => list.listId === action.payload.listId)
+            let findListIndex = listWithCard.findIndex(list => list.listId === action.payload.listId)
+            
+            findList.CardListFks.push(action.payload)
+            listWithCard.splice(findListIndex,1)
+            listWithCard.splice(findListIndex,0,findList)
+            
             return {
                 ...state,
-                lists : action.payload 
+                lists : listWithCard
             }; 
         case listLabels.UPDATE_CARD:   
             return {

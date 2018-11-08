@@ -176,19 +176,17 @@ class Project extends Component {
         
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
-        console.log(result)
         //retrieve lists
         const {lists} = this.state
         const notArchivedList = Array.from(lists.filter(list => list.listStatus === 0))
         const archivedList = Array.from(lists.filter(list => list.listStatus === 1))
 
-        console.log(notArchivedList)
         // dropped outside the droppagble area
         if (!destination) {
             return;
         }
 
-        console.log(lists)
+
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
 
@@ -206,7 +204,7 @@ class Project extends Component {
             newLists.splice(destination.index,0,findList)
             
             const newArrayList = newLists.concat(archivedList)
-            console.log(newArrayList)
+      
             this.props.updatePositionLists(newArrayList)
             //set state with the new list           
             this.setState({lists:newArrayList},() =>{
@@ -344,7 +342,6 @@ class Project extends Component {
     };
 
     handleRestoreArchived = listId => event =>{
-        console.log(listId)
         this.props.restoreList(listId,0)
         //this.toggleDrawer('openArchived', false)
     }

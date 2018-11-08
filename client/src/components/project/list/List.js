@@ -101,17 +101,16 @@ class ListPrello extends Component{
     }
       
     handleChange = name => event => {
-            console.log(event.target.value)
+            
             this.setState({
             [name]: event.target.value,
             });     
     };
 
     handleEditTitle(){
-          console.log(this.state.newListTitle)
-          console.log(this.props.list.listId)
-          this.setState({editListTitle: false}, ()=>{
-            this.props.updateTitle(this.state.newListTitle,this.props.list.listId)
+
+        if(this.state.newListTitle) this.props.updateTitle(this.state.newListTitle,this.props.list.listId)
+          this.setState({editListTitle: false}, ()=>{        
           })
     }
       

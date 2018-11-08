@@ -22,23 +22,23 @@ function createCard(cardTitle,listId,projectId) {
     return dispatch => {
         _service.Card.create(body)
         .then(res => {
-            const body ={
-                projectId: projectId
-            }
-            _service.Project.getAllWithCards(body)
-            .then(resF => {
+            //_service.Project.getAllWithCards(body)
+           // .then(resF => {
+               const card = {
+                   ...res,
+                   CardListFks : []
+               }
                 dispatch({
                     type: labels.CREATE_CARD,
-                    payload: resF
+                    payload: card
                 });
             })
-            .catch((err) => {
+         /*   .catch((err) => {
                 dispatch(err)
-            })
+            })*/
         .catch((err) => {
             dispatch(err)
         });
-    })
     }
 }
 
