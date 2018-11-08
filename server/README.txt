@@ -18,6 +18,8 @@ USER_MAIL_SERVICE=gmail
 MAIL_ID_CLIENT=735288017834-ki8u5pgl4oog11rd8t607scot8df1l2j.apps.googleusercontent.com
 MAIL_SECRET=uuIMVIL3NDzm6SMXbx1aZNVB
 MAIL_TOKEN=1/4uFiKldJEHJEbuSOCzIF4EcpMYX310crK3V1359_bNQ
+GITHUB_CLIENT_ID=b81474afe67274ecc8b5
+GITHUB_CLIENT_SECRET=c3e66dc7b859e5da4fce057438ca5d646023e026
 
 3. Execute : cd server
 
@@ -28,7 +30,7 @@ MAIL_TOKEN=1/4uFiKldJEHJEbuSOCzIF4EcpMYX310crK3V1359_bNQ
     pgen template sequelize -t sequelize-template
 
 (Every time you change database structure)
-    pgen exec sequelize-template -d db_name -u user -p password -t models
+    pgen exec sequelize-template -d prello -u postgres -p postgres -t models
 
 5. Generate GraphQL schemas
 (Only on the first time)

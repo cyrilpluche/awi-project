@@ -16,6 +16,8 @@ router.get('/decrypt_invitation', mw.Token.verifyToken, memberController.tokenTo
 router.post('/create', mw.Token.verifyToken, memberController.create);
 router.post('/sign_up', memberController.findOne, memberController.create, mw.Token.generateToken, mw.Email.sendEmail);
 router.post('/sign_in', memberController.findOneSignIn, mw.Token.generateToken);
+router.get('/sign_in_with_github', memberController.sign_in_with_github);
+router.all('/github_callback', memberController.github_callback, mw.Token.generateToken);
 router.post('/password_forgotten',mw.Token.generateRandomToken, memberController.resetPassword, mw.Email.sendNewPassword);
 router.post('/create_if_not_exist', mw.Token.verifyToken, memberController.findOne, memberController.createOrNext);
 

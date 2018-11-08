@@ -124,10 +124,10 @@ class Project extends Component {
             //redirect to home
             _helper.History.push('/home')
         }
+        console.log('Did Update')
 
         // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
-            
             this.setState( {lists : this.props.lists},()=>{
             })
            // this.orderList(this.props.lists)      

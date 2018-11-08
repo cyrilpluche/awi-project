@@ -261,7 +261,12 @@ class ListPrello extends Component{
                                     className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
 
                                       {list.CardListFks ? list.CardListFks.map((card,index) =>
-                                          <Card key={card.cardId} card={card} index={index}/>
+                                          <Card
+                                              key={card.cardId}
+                                              card={card}
+                                              listIndex={this.props.listIndex}
+                                              cardIndex={index}
+                                              index={index}/>
                                       ):'' }
 
                                     {provided.placeholder}
