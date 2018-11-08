@@ -102,10 +102,17 @@ class Dashboard extends React.Component {
                 </Grid>
                 <Grid xs={7} item className={classes.subLayout}>
                     <ProjectList
+                        title={"Favorite projects"}
+                        iconList={'work_outline'}
+                        projects={this.props.allProjects}
+                        isFavorite={true}
+                    />
+
+                    <ProjectList
                         title={"Personal projects"}
                         iconList={'work_outline'}
                         projects={this.props.allProjects}
-                        canCreateProject
+                        isFavorite={false}
                     />
 
                     <ProjectList

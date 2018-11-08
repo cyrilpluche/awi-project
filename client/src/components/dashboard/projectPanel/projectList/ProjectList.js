@@ -15,7 +15,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from "@material-ui/core/IconButton";
 import AddFavoriteIcon from '@material-ui/icons/StarBorderOutlined'
 import ClearIon from '@material-ui/icons/Clear'
-import FavoriteIcon from '@material-ui/icons/Star'
+import StarIcon from '@material-ui/icons/Star'
+import StarBorderIcon from '@material-ui/icons/StarBorder'
+
 import AddProjectIcon from '@material-ui/icons/Add'
 import LockerIcon from '@material-ui/icons/Lock'
 import ProjectIcon from '@material-ui/icons/SchoolRounded'
@@ -44,7 +46,7 @@ class ProjectList extends React.Component {
         super(props)
         this.createProject = this.createProject.bind(this)
         this.handleChangeProjectVisibility = this.handleChangeProjectVisibility.bind(this)
-        this.setProjectHasFavorite = this.setProjectHasFavorite.bind(this)
+        this.setProjectFavorite = this.setProjectFavorite.bind(this)
 
         this.state = {
             projectTitle: '',
@@ -73,8 +75,6 @@ class ProjectList extends React.Component {
     };
 
     handleChangeProjectVisibility = name => event => {
-        console.log(name)
-        console.log(event.target.checked)
         // Private
         let projectVisibility = 1
         // Public
@@ -98,16 +98,12 @@ class ProjectList extends React.Component {
     }
 
     // TODO
-    setProjectHasFavorite (projectId) {
-        let projectFound = false
-        let favoriteSate = true // will be sent to server to update the projects
-        for (let i = 0; i < this.props.projects.length && !projectFound ; i++) {
-            if (this.props.projects[i].projectId === projectId) {
-                favoriteSate =  !this.props.projects[i].projectIsFavorite
-                projectFound = true
-            }
-        }
-        this.props.updateProject(projectId, this.props.memberId, favoriteSate, null)
+    setProjectFavorite (event) {
+        let index = event.currentTarget.id.split('/')[1]
+        let projectIsFavorite = !this.props.projects[index].projectIsFavorite
+        let projectId = this.props.projects[index].projectId
+        let memberId = this.props.memberId
+        this.props.updateProject(projectId, memberId, projectIsFavorite, null)
     }
 
     render() {
@@ -172,23 +168,49 @@ class ProjectList extends React.Component {
         /** NEW PROJECT LIST */
         const projectList2 = (
             <GridList className={classes.gridList} cols={2.5}>
-                {this.props.projects.map(project => (
-                    <GridListTile key={project.projectId}>
-                        <img src={Background} alt='prello logo' />
-                        <GridListTileBar
-                            title={project.projectTitle}
-                            classes={{
-                                root: classes.titleBar,
-                                title: classes.gridTitle,
-                            }}
-                            actionIcon={
-                                <IconButton>
-                                    <FavoriteIcon className={classes.gridTitle} />
-                                </IconButton>
-                            }
-                        />
-                    </GridListTile>
-                ))}
+                {this.props.projects.map(project => { if (project.projectIsFavorite === this.props.isFavorite) {
+                    return (
+                        <GridListTile key={project.projectId}>
+                            <img src={Background} alt='prello logo'/>
+                            {this.props.isFavorite ? (
+                                <GridListTileBar
+                                    title={project.projectTitle}
+                                    classes={{
+                                        root: classes.titleBar,
+                                        title: classes.gridTitle,
+                                    }}
+                                    actionIcon={
+                                        <IconButton>
+                                            <StarIcon
+                                                className={classes.gridTitle}
+                                                id={'project/' + this.props.projects.indexOf(project)}
+                                                onClick={this.setProjectFavorite}
+                                            />
+                                        </IconButton>
+                                    }
+                                />
+                            ) : (
+                                <GridListTileBar
+                                    title={project.projectTitle}
+                                    classes={{
+                                        root: classes.titleBar,
+                                        title: classes.gridTitle,
+                                    }}
+                                    actionIcon={
+                                        <IconButton>
+                                            <StarBorderIcon
+                                                className={classes.gridTitle}
+                                                id={'project/' + this.props.projects.indexOf(project)}
+                                                onClick={this.setProjectFavorite}
+                                            />
+                                        </IconButton>
+                                    }
+                                />
+                            )}
+
+                        </GridListTile>
+                    )
+                }})}
             </GridList>
         )
 
