@@ -168,6 +168,7 @@ module.exports = {
      *  return: Find the user and connect him if credentials matched.
      */
     findOneSignIn(req, res, next) {
+        console.log(req.body)
         Member
             .findOne({
                 where: {
@@ -178,6 +179,7 @@ module.exports = {
                 }
             })
             .then(member => {
+                console.log(member)
                 if (member && member.memberEmail === req.body.memberEmail) {
                     if (member.memberPassword === req.body.memberPassword) {
                         req.body.result = member

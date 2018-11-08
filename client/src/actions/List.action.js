@@ -16,7 +16,8 @@ function createCard(cardTitle,listId,projectId) {
     const body = {
         cardTitle: cardTitle,
         cardStatus : 0,
-        listId: listId
+        listId: listId,
+        cardDescription: ''
     }
     return dispatch => {
         _service.Card.create(body)

@@ -33,12 +33,12 @@ class Cardboard extends React.Component {
 
         this.state = {
             open: false,
-            card: props.currentCard
+            card: this.props.currentCard
         };
     }
 
     componentDidMount () {
-        this.props.onGetCard(this.props.currentCard.cardId)
+        //this.props.onGetCard(this.props.currentCard.cardId)
     };
 
     /** Open/Close the card modal */
@@ -186,7 +186,7 @@ class Cardboard extends React.Component {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogContent>
-                    { this.props.card ? (
+                    { this.props.currentCard ? (
                         <Grid justify='center' container>
                             <Grid xs={8} item>
                                 <form className={classes.container} noValidate autoComplete="off">
@@ -263,19 +263,18 @@ class Cardboard extends React.Component {
                     <CardActionArea>
                         <Grid justify='center' container>
                             <Typography variant="subtitle2">
-                                {this.props.card.cardTitle}
+                                {this.state.card.cardTitle}
                             </Typography>
                         </Grid>
-                        {this.props.card.members ? (
+                        {this.props.currentCard.members ? (
                             <div className={classes.rowRight}>
                                 <Avatar className={classes.marginCard}>
-                                    {this.props.card.members}
+                                    {this.state.card.members}
                                 </Avatar>
                             </div>
                         ) : null}
                     </CardActionArea>
                 </Card>
-
             </div>
         );
     }
@@ -286,7 +285,6 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.card.card,
     membersOnCard: state.card.membersOnCard,
     membersOffCard: state.card.membersOffCard
 })

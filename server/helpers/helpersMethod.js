@@ -46,6 +46,14 @@ const methods = {
             flat.push(project.Project)
         }
         return flat
+    },
+
+    flatSearchList (queryResult) {
+        let flat = []
+        for (let project of queryResult ) {
+            flat.push(project.Project)
+        }
+        return flat
     }
 };
 
