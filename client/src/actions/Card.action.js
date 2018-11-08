@@ -6,7 +6,11 @@ const labels = {
     DELETE_CARD: 'DELETE_CARD',
     GET_CARD_ERROR: 'GET_CARD_ERROR',
     ERROR_UPDATE_CARD : 'ERROR_UPDATE_CARD',
-    DELETE_CARD_ERROR: 'DELETE_CARD_ERROR'
+    DELETE_CARD_ERROR: 'DELETE_CARD_ERROR',
+    ADD_MEMBER: "ADD_MEMBER",
+    ADD_MEMBER_ERROR: "ADD_MEMBER_ERROR",
+    DELETE_MEMBER: "DELETE_MEMBER",
+    DELETE_MEMBER_ERROR: "DELETE_MEMBER_ERROR"
 }
 
 function getCard(cardId) {
@@ -59,9 +63,61 @@ function deleteCard(cardId) {
         })
 };
 
+function addMember(cardId, memberId, membersOnCard, membersOffCard) {
+    let body = {
+        cardId: cardId,
+        memberId: memberId
+    }
+    return dispatch => _service.Card.addMember(body)
+        .then(mhc => {
+            dispatch({
+                type: labels.ADD_MEMBER,
+                payload: {
+                    membersOnCard: membersOnCard,
+                    membersOffCard: membersOffCard
+                }
+            })
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.ADD_MEMBER_ERROR
+            })
+        })
+};
+
+function removeMember (cardId, memberId, membersOnCard, membersOffCard) {
+    let query = {
+        cardId: cardId,
+        memberId: memberId
+    }
+    return dispatch => _service.Card.removeMember(query)
+        .then(isDeleted => {
+            if (isDeleted) {
+                dispatch({
+                    type: labels.DELETE_CARD,
+                    payload: {
+                        membersOnCard: membersOnCard,
+                        membersOffCard: membersOffCard
+                    }
+                })
+            } else {
+                dispatch({
+                    type: labels.DELETE_CARD_ERROR
+                })
+            }
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.DELETE_CARD_ERROR
+            })
+        })
+};
+
 export const cardAction = {
     labels,
     getCard,
     updatecard,
-    deleteCard
+    deleteCard,
+    addMember,
+    removeMember
 }

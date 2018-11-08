@@ -49,6 +49,11 @@ export const style = theme => ({
     bootstrapFormLabel: {
         fontSize: 18,
     },
+
+
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
 });
 
 

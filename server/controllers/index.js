@@ -8,6 +8,7 @@ const Task = require('./Task');
 const Attachment = require('./Attachment');
 
 const MemberHasProject = require('./MemberHasProject');
+const MemberHasCard = require('./MemberHasCard');
 const MemberHasAction = require('./MemberHasAction');
 const MemberHasPermissionProject = require('./MemberHasPermissionProject');
 
@@ -27,6 +28,7 @@ module.exports = {
     Attachment,
 
     MemberHasProject,
+    MemberHasCard,
     MemberHasAction,
     MemberHasPermissionProject,
 

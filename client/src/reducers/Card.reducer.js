@@ -12,7 +12,17 @@ const initialState = {
         cardFather: null,
         cardChild: null,
         listId: null
-    }
+    },
+    membersOnCard: [
+        { memberId: 1, memberPseudo: 'Pluchezerrr' },
+        { memberId: 2, memberPseudo: 'Wohou' },
+        { memberId: 3, memberPseudo: 'yaye' }
+    ],
+    membersOffCard: [
+        { memberId: 4, memberPseudo: 'Amin' },
+        { memberId: 5, memberPseudo: 'Mehdi' },
+        { memberId: 6, memberPseudo: 'Enzo' }
+    ]
 };
 
 export function card (state = initialState, action) {

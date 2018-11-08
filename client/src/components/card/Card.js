@@ -23,6 +23,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/Expan
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ConfirmationDialog from'./ArchiveConfirmationDialog'
 import InputBase from "@material-ui/core/InputBase/InputBase";
+import MembersOnCard from './membersOnCard/MembersOnCard'
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -148,7 +149,7 @@ class Cardboard extends React.Component {
                                 <Divider className={classes.divider}/>
                             </div>
                             <div>
-                                <Button variant="contained" className={classes.buttonModal}>Members</Button>
+                                <MembersOnCard variant="contained" card={this.props.card} membersOnCard={this.props.membersOnCard} membersOffCard={this.props.membersOffCard}>Members</MembersOnCard>
                                 <Button variant="contained" className={classes.buttonModal}>Labels</Button>
                                 <Checklist/>
                                 <ConfirmationDialog content = {{type:'archive'}}/>
@@ -184,7 +185,9 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.card.card
+    card: state.card.card,
+    membersOnCard: state.card.membersOnCard,
+    membersOffCard: state.card.membersOffCard
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,

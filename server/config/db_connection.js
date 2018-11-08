@@ -29,6 +29,7 @@ module.exports = {
     Task: models.Task,
     Attachment: models.Attachment,
     MemberHasProject: models.Memberhasproject,
+    MemberHasCard: models.Memberhascard,
     MemberHasAction: models.Memberhasaction,
     MemberHasPermissionProject: models.Memberhaspermissionproject,
     Teamhasmember: models.Teamhasmember,
