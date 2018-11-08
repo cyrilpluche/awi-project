@@ -8,6 +8,7 @@ import { Lazy } from 'react-lazy'
 import _helper from '../../../../helpers'
 import Background from '../../../../public/images/project-bg.jpg'
 import Gallery from '../../../ui/gallery/BackgroundGallery'
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
