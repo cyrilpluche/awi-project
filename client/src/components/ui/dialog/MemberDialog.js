@@ -220,9 +220,8 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps ={
     sendInvitation: _action.projectAction.sendInvitationProject,
-    removeMemberFromProject : _action.projectAction.removeMemberFromProject,
-    setAsAdministrator : _action.projectAction.setMemberAsAdmin,
-    onUpdatePermission: _action.projectAction.updatePermissionMember
+    onUpdatePermission: _action.projectAction.updatePermissionMember,
+    removeMemberFromProject : _action.projectAction.removeMemberFromProject
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(MemberDialog))

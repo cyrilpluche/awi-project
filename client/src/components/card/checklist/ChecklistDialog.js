@@ -143,9 +143,18 @@ class Checklist extends React.Component {
     };
 
     render() {
+        const { classes } = this.props
+
         return (
             <div>
-                <Button onClick={this.handleClickOpen}>Checklist</Button>
+                <Button
+                    color="primary"
+                    className={classes.button}
+                    fullWidth
+                    onClick={this.handleClickOpen}
+                >
+                    Checklist
+                </Button>
                 <ChecklistDialogWrapped
                     open={this.state.open}
                     onClose={this.handleClose}
@@ -173,4 +182,4 @@ const mapDispatchToProps = {
     onCreateTask : _action.cardAction.createTask
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checklist);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Checklist));

@@ -1,5 +1,6 @@
 import _service from '../services'
 import _helper from '../helpers'
+import moment from "moment";
 
 const labels = {
     SELECT_PROJECT: 'project:select_one',
@@ -93,7 +94,7 @@ function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberh
 }
 
 function createProject (projectTitle, projectVisibility, projectStatus = 0, projectDateTarget,
-                        memberId, memberhasprojectStatus = 0) {
+                        memberId, memberhasprojectStatus = 0, member) {
 
     return dispatch => _service.Project.createProject( projectTitle, projectVisibility, projectStatus, projectDateTarget)
         .then(project => {
@@ -121,6 +122,17 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
                                 type: labels.CREATE_NEW_PROJECT,
                                 payload: project
                             })
+
+                            _service.Action.createActivityForAllMembers({
+                                actionType: 0,
+                                actionTitle: "Project was created",
+                                actionDescription: member.memberPseudo + " has create the project '" + projectTitle + "'.",
+                                memberId: memberId,
+                                projectId: projectId,
+                                actionDateCreation: moment(),
+                                mhaStatus: 0
+                            })
+
                             // tODO maybe dispatch the permission
                             _helper.History.push('/project/' + projectId)
                         })

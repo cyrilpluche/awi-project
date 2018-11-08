@@ -55,5 +55,8 @@ export const styles = theme => ({
     },
     validEditTitle:{
         color : 'green',
+    },
+    listElement: {
+        marginBottom: 20
     }
 });

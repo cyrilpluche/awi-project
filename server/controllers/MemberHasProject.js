@@ -1,10 +1,13 @@
 const helper = require('../helpers/helpersMethod');
 const MemberHasProject = require('../config/db_connection').MemberHasProject
 const sequelize = require('../config/db_connection').sequelize;
+const Sequelize = require('../config/db_connection').Sequelize;
 
 const Member = require('../config/db_connection').Member
 const Project = require('../config/db_connection').Project
 const Mhpp = require('../config/db_connection').MemberHasPermissionProject
+const List = require('../config/db_connection').List
+const Card = require('../config/db_connection').Card
 
 module.exports = {
 
@@ -50,6 +53,38 @@ module.exports = {
                 next()
             })
             .catch(error => res.status(400).send(error))
+    },
+
+    /**
+     *  return: Array of Project objects containing the str query.
+     */
+    findAllSearchbar(req, res, next) {
+        MemberHasProject
+            .findAll({
+                order : sequelize.col('project_id'),
+                where: {
+                    memberId: req.query.memberId
+                },
+                include: [{
+                    model: Project,
+                    as: 'Project',
+                    where: {
+                        projectTitle: {
+                            [Sequelize.Op.or]: [
+                                { [Sequelize.Op.like]: '%' + req.query.str + '%' },
+                                { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
+                            ]
+                        }
+                    },
+                    attributes: [['project_id', 'id'], ['project_title', 'label']]
+                }]
+            })
+            .then(projects => {
+                let flatproject = helper.flatSearchProject(projects)
+                req.body.result = flatproject
+                next()
+            })
+            .catch(error => res.status(400).send(error));
     },
 
     /**  ?projectId=id... (optional)

@@ -13,11 +13,11 @@ export const style = theme => ({
         //height: '100%',
         margin: 0,
         //backgroundColor: '#f0f0f5',
-        borderRadius: '5px',
+        /*borderRadius: '5px',
         backgroundImage: `url(${backgroundimage})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
-        backgroundRepeat: 'noRepeat'
+        backgroundRepeat: 'noRepeat'*/
     },
     rightLayout: {
         //height: '100%',

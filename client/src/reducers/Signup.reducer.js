@@ -6,24 +6,33 @@ const labels = _action.signupAction.labels
 const initialState = {
     isAccountValidNow: false,
     msgError: ['', ''],
-    isInvitation: false
+    isInvitation: false,
+    isLoading: false
 }
 
 export function signup (state = initialState, action){
 
     switch (action.type) {
+        case labels.LOAD_SIGNUP:
+            return {
+                ...state,
+                isLoading: true
+            }
+
         case labels.SIGN_UP:
             return {
                 ...state,
                 member: action.payload,
                 isLogged: true,
-                msgError: null
+                isLoading: false,
+                msgError: ['', '']
             };
 
         case labels.SIGN_UP_ERROR:
             return {
                 ...state,
                 isLogged: false,
+                isLoading: false,
                 msgError: action.payload
             }
 

@@ -3,6 +3,7 @@ import _helper from '../helpers';
 
 const labels = {
     //LOGIN : "LOGIN",
+    LOAD_SIGNUP: "LOAD_SIGNUP",
     SIGN_UP : "SIGN_UP",
     SIGN_UP_ERROR : "SIGN_UP_ERROR",
     CREATE_USER : "CREATE_USER",
@@ -22,24 +23,29 @@ const signError = msg => ({
 })
 
 function signup (body, isDirectlyValidate) {
-    let checking = checkSignupFields(body)
-    if (checking.isFieldsOk) {
-        let finalBody = Object.assign({memberStatus: 0}, body)
-        if (isDirectlyValidate) finalBody.memberStatus = 1
+    return dispatch => {
+        dispatch({
+            type: labels.LOAD_SIGNUP
+        })
+        let checking = checkSignupFields(body)
+        if (checking.isFieldsOk) {
+            let finalBody = Object.assign({memberStatus: 0}, body)
+            if (isDirectlyValidate) finalBody.memberStatus = 1
 
-        return dispatch => {
-            _service.Member.signUp(finalBody)
-                .then(res => {
-                    dispatch(signSuccess(res));
-                    if (!isDirectlyValidate) _helper.History.push('/home');
-                })
-                .catch((err) => {
-                    dispatch(signError(err.response.data))
-                });
-        }
-    } else {
-        return dispatch => {
-            dispatch(signError(checking.payload))
+                _service.Member.signUp(finalBody)
+                    .then(res => {
+                        dispatch(signSuccess(res));
+                        if (!isDirectlyValidate) _helper.History.push('/home');
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        dispatch(signError(err.response.data))
+                    });
+
+        } else {
+            return dispatch => {
+                dispatch(signError(checking.payload))
+            }
         }
     }
 }

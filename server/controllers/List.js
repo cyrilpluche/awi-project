@@ -1,6 +1,8 @@
 var List = require('../config/db_connection').List;
 var sequelize = require('../config/db_connection').sequelize;
 var Sequelize = require('../config/db_connection').Sequelize;
+const MemberHasProject = require('../config/db_connection').MemberHasProject
+const Project = require('../config/db_connection').Project
 
 module.exports = {
 
@@ -50,21 +52,33 @@ module.exports = {
      *  return: Array of Cards objects with given attributes.
      */
     findAllSearchbar(req, res, next) {
-        List
+        MemberHasProject
             .findAll({
-                attributes: [['list_id', 'id'], ['list_title', 'label']],
-                order : sequelize.col('list_id'),
+                order : sequelize.col('project_id'),
                 where: {
-                    listTitle: {
-                        [Sequelize.Op.or]: {
-                            [Sequelize.Op.like]: '%' + req.query.str + '%',
-                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
-                        },
-                    }
-                }
+                    memberId: req.query.memberId
+                },
+                include: [{
+                    model: Project,
+                    as: 'Project',
+                    attributes: [['project_id', 'id'], ['project_title', 'label']],
+                    include: [{
+                        model: List,
+                        as: 'ListProjectFks',
+                        attributes: [['list_id', 'id'], ['list_title', 'label']],
+                        where: {
+                            listTitle: {
+                                [Sequelize.Op.or]: [
+                                    { [Sequelize.Op.like]: '%' + req.query.str + '%' },
+                                    { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
+                                ]
+                            }
+                        }
+                    }]
+                }]
             })
-            .then(lists => {
-                req.body.result = lists
+            .then(projects => {
+                req.body.result = projects
                 next()
             })
             .catch(error => res.status(400).send(error));

@@ -380,7 +380,6 @@ function updatePermissionMember (projectId, memberId, permissionId, mhppState, s
     let body = {
         mhppState: mhppState
     }
-    console.log(query)
     return dispatch => {
         _service.Permission.updateOnProject(query, body)
             .then(res => {
@@ -415,7 +414,6 @@ export const projectAction = {
     sendInvitationProject,
     getMemberStatus,
     removeMemberFromProject,
-    setMemberAsAdmin,
     getActivity,
     getLabels,
     updatePermissionMember,

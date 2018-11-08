@@ -7,6 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import _action from "../../actions";
 import connect from "react-redux/es/connect/connect";
+import { withStyles } from '@material-ui/core/styles';
+import { styles } from './Style'
 import * as PropTypes from "prop-types";
 
 class ConfirmationDialog extends React.Component {
@@ -35,9 +37,18 @@ class ConfirmationDialog extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
-                <Button onClick={this.handleClickOpen}>{this.state.type}</Button>
+                <Button
+                    color="primary"
+                    className={classes.button}
+                    fullWidth
+                    onClick={this.handleClickOpen}
+                >
+                    {this.state.type}
+                </Button>
                 <Dialog
                     open={this.state.open}
                     keepMounted
@@ -54,7 +65,7 @@ class ConfirmationDialog extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.handleClose} color="secondary">
                             Cancel
                         </Button>
                         <Button onClick={this.changeStatusArchived} color="primary">
@@ -80,4 +91,4 @@ const mapDispatchToProps = {
     onDeleteCard : _action.cardAction.deleteCard
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ConfirmationDialog));

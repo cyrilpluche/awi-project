@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid/Grid";
+import LoaderPage from "../loaderPage/LoaderPage";
 
 class Signup extends React.Component {
     constructor (props) {
@@ -26,7 +27,7 @@ class Signup extends React.Component {
             memberEmail: '',
             memberPassword: '',
             memberCheckPassword: ''
-    };
+        };
 
         if (props.invitation) {
             this.state.memberEmail = props.invitation.memberEmail
@@ -34,7 +35,7 @@ class Signup extends React.Component {
     }
 
     submit () {
-        this.props.onAdd(this.state, this.props.invitation)
+        this.props.onAdd(this.state, this.props.isInvitation)
     }
 
     goBackToLogin () {
@@ -98,52 +99,57 @@ class Signup extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-            <Grid justify='center' className={classes.layout} container>
-                <Grid justify='center' container className={classes.logo}>
-                    <Grid item>
-                        <img src={logo} width="60" alt="prello logo"/>
-                    </Grid>
-                </Grid>
-                <Typography component="h1" variant="h5">
-                    Create your account
-                </Typography>
-
-                <Grid justify='center' container className={ classes.marginBottom }>
-                    <Grid xs={10} sm={6} md={4} item>
-                        <form className={classes.form}>
-                            {this.generateTextfields()}
-                        </form>
-
-                        <Grid container>
-                            <Grid container justify="center" className={ classes.marginBottom }>
-                                <Typography variant="overline">
-                                    {this.props.errorMsg[0]}
-                                </Typography>
+            <div>
+                { this.props.isLoading ? (
+                    <LoaderPage/>
+                ) : (
+                    <Grid justify='center' className={classes.layout} container>
+                        <Grid justify='center' container className={classes.logo}>
+                            <Grid item>
+                                <img src={logo} width="60" alt="prello logo"/>
                             </Grid>
-                            <Grid xs={6} className={ classes.paddingRight } item>
-                                <Button
-                                    variant="outlined"
-                                    fullWidth color="primary"
-                                    onClick={this.goBackToLogin}
-                                >
-                                    Back
-                                </Button>
-                            </Grid>
-                            <Grid xs={6} className={ classes.paddingLeft } item>
-                                <Button
-                                    variant="contained"
-                                    fullWidth color="primary"
-                                    onClick={this.submit}
-                                >
-                                    Sign Up
-                                </Button>
+                        </Grid>
+                        <Typography component="h1" variant="h5">
+                            Create your account
+                        </Typography>
+
+                        <Grid justify='center' container className={ classes.marginBottom }>
+                            <Grid xs={10} sm={6} md={4} item>
+                                <form className={classes.form}>
+                                    {this.generateTextfields()}
+                                </form>
+
+                                <Grid container>
+                                    <Grid container justify="center" className={ classes.marginBottom }>
+                                        <Typography variant="overline">
+                                            {this.props.errorMsg[0]}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid xs={6} className={ classes.paddingRight } item>
+                                        <Button
+                                            variant="outlined"
+                                            fullWidth color="primary"
+                                            onClick={this.goBackToLogin}
+                                        >
+                                            Back
+                                        </Button>
+                                    </Grid>
+                                    <Grid xs={6} className={ classes.paddingLeft } item>
+                                        <Button
+                                            variant="contained"
+                                            fullWidth color="primary"
+                                            onClick={this.submit}
+                                        >
+                                            Sign Up
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
+                )}
 
-
-            </Grid>
+            </div>
         )
     }
 }
@@ -154,7 +160,8 @@ Signup.propTypes = {
 
 const mapStateToProps = (state) => ({
     errorMsg: state.signup.msgError,
-    isInvitation: state.signup.isInvitation
+    isInvitation: state.signup.isInvitation,
+    isLoading: state.signup.isLoading
 })
 
 const mapDispatchToProps = {

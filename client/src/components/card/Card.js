@@ -16,18 +16,9 @@ import MiniLoader from "../ui/loader/MiniLoader";
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
-import Modal from '@material-ui/core/Modal';
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Button from "@material-ui/core/Button/Button";
-import { Scrollbars } from 'react-custom-scrollbars';
-import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import Divider from "@material-ui/core/Divider/Divider";
 import TextField from "@material-ui/core/TextField/TextField";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InputBase from "@material-ui/core/InputBase/InputBase";
 import Grid from "@material-ui/core/Grid/Grid";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -72,7 +63,7 @@ class Cardboard extends React.Component {
         this.props.onUpdateCard(this.state.card, this.state.card);
     }
 
-    changeTitle = () => {
+    /*changeTitle = () => {
         let dom = document.querySelector('#cardTitle');
         let value = dom.value;
         this.props.card.cardTitle = value;
@@ -84,12 +75,12 @@ class Cardboard extends React.Component {
         let value = dom.value;
         this.props.card.cardDescription = value;
         this.props.onUpdateCard(this.props.card, {cardDescription: value});
-    };
+    };*/
 
     render() {
         const { classes } = this.props;
 
-        const dialog1 = (
+        /*const oldDialog = (
             <Modal
                 open={this.state.open}
                 onClose={this.handleClose}
@@ -186,7 +177,7 @@ class Cardboard extends React.Component {
                     </div>
                 </Scrollbars>
             </Modal>
-        )
+        )*/
 
         const cardDialog = (
             <Dialog
@@ -244,27 +235,10 @@ class Cardboard extends React.Component {
                                 >
                                     Members
                                 </Button>
-                                <Button
-                                    color="primary"
-                                    className={classes.button}
-                                    fullWidth
-                                >
-                                    Labels
-                                </Button>
-                                <Button
-                                    color="primary"
-                                    className={classes.button}
-                                    fullWidth
-                                >
-                                    Archive
-                                </Button>
-                                <Button
-                                    color="primary"
-                                    className={classes.button}
-                                    fullWidth
-                                >
-                                    Delete
-                                </Button>
+                                <LabelDialog/>
+                                <Checklist/>
+                                <ConfirmationDialog content = {{type:'archive'}}/>
+                                <ConfirmationDialog content = {{type:'delete'}}/>
                                 <Button
                                     color="primary"
                                     className={classes.button}

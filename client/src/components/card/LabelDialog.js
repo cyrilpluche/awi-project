@@ -103,9 +103,18 @@ class Label extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
-                <Button onClick={this.handleClickOpen}>Label</Button>
+                <Button
+                    color="primary"
+                    className={classes.button}
+                    fullWidth
+                    onClick={this.handleClickOpen}
+                >
+                    Label
+                </Button>
                 <LabelDialogWrapped
                     open={this.state.open}
                     onClose={this.handleClose}
@@ -126,4 +135,4 @@ const mapDispatchToProps = {
     onGetLabels : _action.cardAction.getLabels
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Label);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Label));

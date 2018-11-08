@@ -5,7 +5,7 @@ import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
 import { Lazy } from 'react-lazy'
-import Helper from '../../../../helpers'
+import _helper from '../../../../helpers'
 import Background from '../../../../public/images/project-bg.jpg'
 import Gallery from '../../../ui/gallery/BackgroundGallery'
 
@@ -95,8 +95,14 @@ class ProjectList extends React.Component {
         let targetDate = null
         let memberId = this.props.memberId
 
-        this.props.createProjectMember(title, visibility, status, targetDate, memberId, statusMemberProject)
+        this.props.createProjectMember(title, visibility, status, targetDate, memberId, statusMemberProject, this.props.member)
         this.handleCloseDialog()
+    }
+
+    /** Go the the clicked project */
+    goToProject (event) {
+        let projectId = event.currentTarget.id
+        _helper.History.push('/project/' + projectId)
     }
 
     // TODO
@@ -170,15 +176,22 @@ class ProjectList extends React.Component {
             </Dialog>
         )
 
+        /** Gallery save */
+        /*const gallery = (
+            <Lazy component="a" href={"/project/" + project.projectId} >
+                <img src={"https://res.cloudinary.com/o1-g1-prello/image/upload/v1541634595/prello%20project/adventure-beach-blue-386025.jpg"} width={'100%'} alt='prello logo'/>
+            </Lazy>
+        )*/
+
         /** NEW PROJECT LIST */
         const projectList2 = (
             <GridList className={classes.gridList} cols={2.5}>
                 {this.props.projects.map(project => { if (project.projectIsFavorite === this.props.isFavorite) {
                     return (
-                        <GridListTile key={project.projectId}>
-                            <Lazy component="a" href={"/project/" + project.projectId} >
-                                <img src={/*Background*/ "https://res.cloudinary.com/o1-g1-prello/image/upload/v1541634595/prello%20project/adventure-beach-blue-386025.jpg"} width={'100%'} alt='prello logo'/>
-                            </Lazy>
+                        <GridListTile
+                            key={project.projectId}
+                        >
+                            <img id={project.projectId} onClick={this.goToProject} src={Background} alt='project background'/>
                             {this.props.isFavorite ? (
                                 <GridListTileBar
                                     title={project.projectTitle}
@@ -257,7 +270,8 @@ ProjectList.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    memberId: state.signin.member.memberId
+    memberId: state.signin.member.memberId,
+    member: state.signin.member
 })
 
 const mapDispatchToProps = {

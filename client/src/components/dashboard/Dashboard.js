@@ -134,7 +134,6 @@ Dashboard.propTypes = {
 
 const mapStateToProps = (state) => {
     let list_favorite = []
-    console.log(state.dashboard.projects)
     for (let i = 0; i < state.dashboard.projects.length; i++) {
         if (state.dashboard.projects[i].projectIsFavorite) list_favorite.push(state.dashboard.projects[i])
     } // only save the favorite projects of the member

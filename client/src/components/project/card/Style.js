@@ -15,5 +15,8 @@ export const styles = theme => ({
       },
     paragraph:{
         wordWrap: `break-word`
+    },
+    listElement: {
+        marginBottom: theme.spacing.unit * 1
     }
 });
