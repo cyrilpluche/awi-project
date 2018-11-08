@@ -31,15 +31,15 @@ DROP TABLE IF EXISTS public.CardHasLabel CASCADE;
 -- Table: Member
 ------------------------------------------------------------
 CREATE TABLE public.Member(
-	member_id             SERIAL NOT NULL ,
-	member_firstname      VARCHAR (50) NOT NULL ,
-	member_lastname       VARCHAR (50) NOT NULL ,
-	member_pseudo         VARCHAR (250) NOT NULL ,
-	member_email          VARCHAR (50)  ,
-	member_password       VARCHAR (50)  ,
-	member_picture        VARCHAR (250)  ,
-	member_status         INT  NOT NULL ,
-	member_oauth_github   VARCHAR (250)   ,
+    member_id                   SERIAL NOT NULL ,
+    member_firstname            VARCHAR (50) NOT NULL ,
+    member_lastname             VARCHAR (50) NOT NULL ,
+    member_pseudo               VARCHAR (250) NOT NULL ,
+    member_email                VARCHAR (50)  ,
+    member_password             VARCHAR (50)  ,
+    member_picture              VARCHAR (250)  ,
+    member_status               INT  NOT NULL ,
+	member_is_link_with_github  BOOL  DEFAULT false  ,
 	CONSTRAINT Member_PK PRIMARY KEY (member_id)
 )WITHOUT OIDS;
 
