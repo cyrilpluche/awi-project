@@ -7,7 +7,6 @@ const Label = require('../config/db_connection').Label;
 const Member = require('../config/db_connection').Member;
 
 const MemberHasProject = require('../config/db_connection').MemberHasProject
-const Member = require('../config/db_connection').Member
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 
