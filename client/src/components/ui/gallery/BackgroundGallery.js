@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
+import { Scrollbars } from 'react-custom-scrollbars';
 import _action from "../../../actions";
 
 const IMAGES =
@@ -101,9 +102,12 @@ class BackgroundGallery extends React.Component {
     render () {
 
         return (
-            <Gallery images={this.state.images} onClickThumbnail={this.clickOnImg}
-                     onSelectImage={this.clickOnImg}
-                     rowHeight={65}/>
+            <Scrollbars style={{ width: 500, height: 80, background:'#ebebe0' }}>
+                <Gallery images={this.state.images} onClickThumbnail={this.clickOnImg}
+                         onSelectImage={this.clickOnImg}
+                         rowHeight={80}/>
+            </Scrollbars>
+
         )
     }
 }

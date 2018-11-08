@@ -113,6 +113,7 @@ class Dashboard extends React.Component {
                         iconList={'work_outline'}
                         projects={this.props.allProjects}
                         isFavorite={false}
+                        canCreateProject
                     />
 
                     <ProjectList

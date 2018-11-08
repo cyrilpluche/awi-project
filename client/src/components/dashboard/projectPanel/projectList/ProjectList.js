@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
+import { Lazy } from 'react-lazy'
 import Helper from '../../../../helpers'
 import Background from '../../../../public/images/project-bg.jpg'
+import Gallery from '../../../ui/gallery/BackgroundGallery'
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -153,6 +155,9 @@ class ProjectList extends React.Component {
                             </Typography>
                         </Grid>
                     </form>
+
+                    <Gallery/>
+
                     <Button
                         color="primary"
                         fullWidth
@@ -171,7 +176,9 @@ class ProjectList extends React.Component {
                 {this.props.projects.map(project => { if (project.projectIsFavorite === this.props.isFavorite) {
                     return (
                         <GridListTile key={project.projectId}>
-                            <img src={Background} alt='prello logo'/>
+                            <Lazy component="a" href={"/project/" + project.projectId} >
+                                <img src={/*Background*/ "https://res.cloudinary.com/o1-g1-prello/image/upload/v1541634595/prello%20project/adventure-beach-blue-386025.jpg"} width={'100%'} alt='prello logo'/>
+                            </Lazy>
                             {this.props.isFavorite ? (
                                 <GridListTileBar
                                     title={project.projectTitle}
@@ -215,12 +222,15 @@ class ProjectList extends React.Component {
         )
 
         /** NEW BUTTON */
-        const createProjectButton = (
-            <Button color="primary" className={classes.button} onClick={this.handleClickOpenDialog}>
-                New
-                <AddIcon className={classes.rightIcon} />
-            </Button>
-        )
+        let createProjectButton = ''
+        if (this.props.canCreateProject){
+            createProjectButton = (
+                <Button color="primary" className={classes.button} onClick={this.handleClickOpenDialog}>
+                    New
+                    <AddIcon className={classes.rightIcon} />
+                </Button>
+            )
+        }
 
         return (
             <Grid container className={ classes.projectLayout}>
