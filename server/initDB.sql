@@ -54,6 +54,8 @@ CREATE TABLE public.Project(
 	project_visibility    INT  NOT NULL ,
 	project_status        INT  NOT NULL ,
 	project_date_target   DATE    ,
+	project_backgroundimg VARCHAR (250),
+	project_thumbnail VARCHAR(250),
 	CONSTRAINT Project_PK PRIMARY KEY (project_id)
 )WITHOUT OIDS;
 

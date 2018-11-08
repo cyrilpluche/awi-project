@@ -22,6 +22,8 @@ function init(sequelize) {
     model.Label = sequelize.import('./definition/label.js');
     model.List = sequelize.import('./definition/list.js');
     model.Member = sequelize.import('./definition/member.js');
+    model.Memberhasaction = sequelize.import('./definition/memberhasaction.js');
+    model.Memberhascard = sequelize.import('./definition/memberhascard.js');
     model.Memberhaspermissionproject = sequelize.import('./definition/memberhaspermissionproject.js');
     model.Memberhaspermissionteam = sequelize.import('./definition/memberhaspermissionteam.js');
     model.Memberhasproject = sequelize.import('./definition/memberhasproject.js');
@@ -44,6 +46,8 @@ function init(sequelize) {
     require('./definition/label.js').initRelations();
     require('./definition/list.js').initRelations();
     require('./definition/member.js').initRelations();
+    require('./definition/memberhasaction.js').initRelations();
+    require('./definition/memberhascard.js').initRelations();
     require('./definition/memberhaspermissionproject.js').initRelations();
     require('./definition/memberhaspermissionteam.js').initRelations();
     require('./definition/memberhasproject.js').initRelations();
