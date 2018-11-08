@@ -9,20 +9,21 @@ import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
-import Divider from "@material-ui/core/Divider/Divider";
 import List from "@material-ui/core/List/List";
+
 
 class LabelDialog extends React.Component {
     constructor (props) {
-        super(props)
+        super(props);
         this.state = {
             card: this.props.card,
-            selectedIndex: 1
+            selectedIndex: 1,
         }
     }
 
     handleListItemClick = (event, index) => {
         this.setState({ selectedIndex: index });
+        console.log("aminnnnnnnnnnn")
     };
 
     handleClose = () => {
@@ -30,43 +31,27 @@ class LabelDialog extends React.Component {
     };
 
     render() {
-        const { classes, onClose, selectedValue, isLoading, ...other } = this.props;
+        const { classes, onClose, selectedValue, ...other } = this.props;
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set labels</DialogTitle>
                 <div className={classes.root}>
                     <List component="nav">
-                        <ListItem
-                            button
-                            selected={this.state.selectedIndex === 0}
-                            onClick={event => this.handleListItemClick(event, 0)}
-                        >
-                            <ListItemText primary="Inbox" />
-                        </ListItem>
-                        <ListItem
-                            button
-                            selected={this.state.selectedIndex === 1}
-                            onClick={event => this.handleListItemClick(event, 1)}
-                        >
-                            <ListItemText primary="Drafts" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List component="nav">
-                        <ListItem
-                            button
-                            selected={this.state.selectedIndex === 2}
-                            onClick={event => this.handleListItemClick(event, 2)}
-                        >
-                            <ListItemText primary="Trash" />
-                        </ListItem>
-                        <ListItem
-                            button
-                            selected={this.state.selectedIndex === 3}
-                            onClick={event => this.handleListItemClick(event, 3)}
-                        >
-                            <ListItemText primary="Spam" />
-                        </ListItem>
+                        { this.props.labels == null ? (
+                                null
+                            ) :  this.props.labels ? this.props.labels.map((label, index) => {
+                            return (
+                                <ListItem
+                                    key={label.labelId}
+                                    button
+                                    style={{backgroundColor: label.labelColor}}
+                                    selected={this.state.selectedIndex === 2}
+                                    onClick={event => this.handleListItemClick(event, 2)}
+                                >
+                                    <ListItemText primary={label.labelDescription} />
+                                </ListItem>
+                            )
+                        }):null}
                     </List>
                 </div>
             </Dialog>
@@ -118,6 +103,8 @@ class Label extends React.Component {
                 <LabelDialogWrapped
                     open={this.state.open}
                     onClose={this.handleClose}
+                    card = {this.props.card}
+                    labels = {this.props.labels}
                 />
             </div>
         );
@@ -129,10 +116,12 @@ Label.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.card.card
+    card: state.card.card,
+    labels: state.card.labels
 });
 const mapDispatchToProps = {
-    onGetLabels : _action.cardAction.getLabels
+    onGetLabels : _action.cardAction.getLabels,
+    onUpdateLabel: _action.cardAction.updateLabel
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Label));

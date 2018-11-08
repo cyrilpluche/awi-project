@@ -24,6 +24,11 @@ const Card = {
         return Api.put(url + 'update/'+cardId, body).then(res => res.data)
     },
 
+    updateLabel (object, body) {
+        let where = helper.Request.urlFromObject(object)
+        return Api.put(url + 'update_card_has_label' + where, body).then(res => res.data)
+    },
+
     searchbarCards (str) {
         let where = helper.Request.urlFromObject(str)
         return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
@@ -41,7 +46,7 @@ const Card = {
     removeMember(query) {
         let where = helper.Request.urlFromObject(query)
         return Api.post(url + 'delete_member_has_card' + where).then(res => res.data)
-    }
+    },
 
 }
 

@@ -19,7 +19,9 @@ const labels = {
     CREATE_TASK: 'CREATE_TASK',
     CREATE_TASK_ERROR: 'CREATE_TASK_ERROR',
     LOAD: "LOAD",
-    GET_ALL_LABEL: 'GET_ALL_LABEL'
+    GET_ALL_LABEL: 'GET_ALL_LABEL',
+    UPDATE_LABEL: 'UPDATE_LABEL',
+    UPDATE_LABEL_ERROR: 'UPDATE_LABEL_ERROR',
 }
 
 function getCard(cardId) {
@@ -52,6 +54,7 @@ function getLabels() {
     }
 }
 
+
 function updatecard(card, body) {
     return dispatch => _service.Card.update(card.cardId,body)
         .then(id => {
@@ -67,6 +70,7 @@ function updatecard(card, body) {
         })
 };
 
+
 function updateTask(card, taskId, body) {
     return dispatch => _service.Task.update({taskId: taskId}, body)
         .then(isUpdated => {
@@ -76,7 +80,6 @@ function updateTask(card, taskId, body) {
                     payload: card
                 })
             }else{
-                console.log("passé dans l'erreur")
                 dispatch({
                     type: labels.UPDATE_TASK_ERROR
                 })
@@ -85,6 +88,31 @@ function updateTask(card, taskId, body) {
         .catch (e => {
             dispatch({
                 type: labels.UPDATE_TASK_ERROR
+            })
+        })
+};
+
+function updateLabel(cardId, labelId, query, labels) {
+    let id = {
+        cardId: cardId,
+        labelId: labelId
+    };
+    return dispatch => _service.Card.updateLabel(id, query)
+        .then(isUpdated => {
+            if(isUpdated){
+                dispatch({
+                    type: labels.UPDATE_LABEL,
+                    payload: labels
+                })
+            }else{
+                dispatch({
+                    type: labels.UPDATE_LABEL_ERROR
+                })
+            }
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.UPDATE_LABEL_ERROR
             })
         })
 };
