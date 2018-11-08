@@ -1,8 +1,10 @@
 import { projectAction } from '../actions/Project.action';
 import { listAction } from '../actions/List.action';
+import { cardAction } from '../actions/Card.action';
 
 const projectLabels = projectAction.labels
 const listLabels = listAction.labels
+const cardLabels = cardAction.labels
 
 const initialState = {
     lists: [],
@@ -16,6 +18,12 @@ export function project (state = initialState, action) {
    
     switch (action.type) {
         case projectLabels.LOAD:
+            return {
+                ...state,
+                isLoading: true
+            };
+
+        case cardLabels.LOAD_PROJECT:
             return {
                 ...state,
                 isLoading: true
@@ -171,6 +179,15 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 lists : action.payload
+            };
+
+        case cardLabels.DELETE_CARD:
+            let updatedLists = Array.from(state.lists)
+            updatedLists[action.payload.listIndex].CardListFks.splice(action.payload.cardIndex, 1)
+            return {
+                ...state,
+                lists : updatedLists,
+                isLoading: false
             };
 
         default:

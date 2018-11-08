@@ -6,6 +6,9 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { styles } from './Style'
 import SimpleDialog from '../../ui/dialog/SimpleDialog'
+import MiniLoader from "../../ui/loader/MiniLoader";
+import connect from "react-redux/es/connect/connect";
+import _action from "../../../actions";
 
 
 
@@ -60,7 +63,17 @@ class Lists extends Component {
                         {...provided.droppableProps}>
                         {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) => 
                             <div key={list.listTitle+list.listId}>
-                                <List idProject={idProject} key={list.listTitle+list.listId} list={list} index={index} ></List>
+                                { this.props.isLoading ? (
+                                    <MiniLoader/>
+                                ) : (
+                                    <List
+                                    idProject={idProject}
+                                    key={list.listTitle+list.listId}
+                                    list={list}
+                                    listIndex={index}
+                                    index={index}
+                                    />
+                                )}
                             </div>
                             )}
                         {provided.placeholder}
@@ -83,7 +96,10 @@ class Lists extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    isLoading: state.project.isLoading
+})
+const mapDispatchToProps = {
+};
 
-/**/
-
-export default withStyles(styles)(Lists)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Lists));
