@@ -29,7 +29,11 @@ class Card extends Component{
                                 {...provided.dragHandleProps}
                                 ref={provided.innerRef}
                             >
-                                <CardElement currentCard={this.props.card} />
+                                <CardElement
+                                    currentCard={this.props.card}
+                                    listIndex={this.props.listIndex}
+                                    cardIndex={this.props.cardIndex}
+                                />
                             </div>
                         )}}
                 </Draggable>
