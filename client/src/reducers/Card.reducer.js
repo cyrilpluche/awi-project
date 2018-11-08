@@ -13,8 +13,7 @@ const initialState = {
         cardChild: null,
         listId: null
     },
-    isLoading: false
-    },
+    isLoading: false,
     membersOnCard: [
         { memberId: 1, memberPseudo: 'Pluchezerrr' },
         { memberId: 2, memberPseudo: 'Wohou' },
