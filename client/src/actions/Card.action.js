@@ -8,6 +8,10 @@ const labels = {
     ERROR_UPDATE_CARD : 'ERROR_UPDATE_CARD',
     DELETE_CARD: 'DELETE_CARD',
     DELETE_CARD_ERROR: 'DELETE_CARD_ERROR',
+    ADD_MEMBER: "ADD_MEMBER",
+    ADD_MEMBER_ERROR: "ADD_MEMBER_ERROR",
+    DELETE_MEMBER: "DELETE_MEMBER",
+    DELETE_MEMBER_ERROR: "DELETE_MEMBER_ERROR",
     UPDATE_TASK: 'UPDATE_TASK',
     UPDATE_TASK_ERROR: 'UPDATE_TASK_ERROR',
     DELETE_TASK: 'DELETE_TASK',
@@ -127,6 +131,56 @@ function deleteCard(cardId) {
         })
 };
 
+function addMember(cardId, memberId, membersOnCard, membersOffCard) {
+    let body = {
+        cardId: cardId,
+        memberId: memberId
+    }
+    return dispatch => _service.Card.addMember(body)
+        .then(mhc => {
+            dispatch({
+                type: labels.ADD_MEMBER,
+                payload: {
+                    membersOnCard: membersOnCard,
+                    membersOffCard: membersOffCard
+                }
+            })
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.ADD_MEMBER_ERROR
+            })
+        })
+};
+
+function removeMember (cardId, memberId, membersOnCard, membersOffCard) {
+    let query = {
+        cardId: cardId,
+        memberId: memberId
+    }
+    return dispatch => _service.Card.removeMember(query)
+        .then(isDeleted => {
+            if (isDeleted) {
+                dispatch({
+                    type: labels.DELETE_CARD,
+                    payload: {
+                        membersOnCard: membersOnCard,
+                        membersOffCard: membersOffCard
+                    }
+                })
+            } else {
+                dispatch({
+                    type: labels.DELETE_CARD_ERROR
+                })
+            }
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.DELETE_CARD_ERROR
+            })
+        })
+};
+
 function createTask(newTask, card) {
     return dispatch => {
         dispatch({
@@ -155,5 +209,7 @@ export const cardAction = {
     deleteCard,
     deleteTask,
     createTask,
-    getLabels
+    getLabels,
+    addMember,
+    removeMember
 }

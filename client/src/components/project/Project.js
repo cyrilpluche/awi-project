@@ -18,9 +18,10 @@ import Filter from '../ui/filter/Filter'
 
 // Material Ui
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
-import {SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
+import {RestorePage, Archive, SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
@@ -53,8 +54,10 @@ class Project extends Component {
             members:[],
             openActivity:false,
             openFilter:false,
+            openArchived:false,
             projectInfo:''
         }
+        this.handleRestoreArchived = this.handleRestoreArchived.bind(this)
 
         this.socket = SocketIOClient('http://localhost:4200')
         this.socket.on('add', this.socketNew.bind(this))
@@ -72,7 +75,7 @@ class Project extends Component {
     }
 
     componentWillMount() {
-        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity,findAllCards} = this.props
+        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
         
         const projectId = this.props.match.params.id
 
@@ -173,41 +176,44 @@ class Project extends Component {
         
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
-
+        console.log(result)
         //retrieve lists
         const {lists} = this.state
-        
-        
+        const notArchivedList = Array.from(lists.filter(list => list.listStatus === 0))
+        const archivedList = Array.from(lists.filter(list => list.listStatus === 1))
+
+        console.log(notArchivedList)
         // dropped outside the droppagble area
         if (!destination) {
             return;
         }
 
-
+        console.log(lists)
         //When a list has been dragged and dropped
         if(result.type === 'LIST'){
 
             let dragId = draggableId.split(':');
             dragId = Number.parseInt(dragId[1])
-           
-           let findList = findWhere(lists,{listId: dragId})
-          
-           let indexOfList = lists.indexOf(findList)           
-           let newLists = lists
-
+            let findList = notArchivedList.find(list => list.listId === dragId)
+     
+            let indexOfList = notArchivedList.indexOf(findList)                 
+            let newLists = Array.from(notArchivedList)
+            
             //remove list from list of list
             newLists.splice(indexOfList,1,)
 
             //Insert list in new index
             newLists.splice(destination.index,0,findList)
-           
-            //set state with the new list
             
-            this.setState({lists:newLists},() =>{
-
-                this.socket.emit('move', newLists)
-
-                let updateList = findWhere(lists,{listId: dragId})
+            const newArrayList = newLists.concat(archivedList)
+            console.log(newArrayList)
+            this.props.updatePositionLists(newArrayList)
+            //set state with the new list           
+            this.setState({lists:newArrayList},() =>{
+                
+                this.socket.emit('move', newArrayList)
+                //let updateList = lists.find(list => list.listId === dragId)
+                //let updateList = findWhere(lists,{listId: dragId})
 
                 let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 
@@ -336,6 +342,12 @@ class Project extends Component {
             [side]: open,
         });
     };
+
+    handleRestoreArchived = listId => event =>{
+        console.log(listId)
+        this.props.restoreList(listId,0)
+        //this.toggleDrawer('openArchived', false)
+    }
     
     render() {  
         
@@ -413,6 +425,57 @@ class Project extends Component {
             </Drawer>
         );
 
+        /* ================= ARCHIVED DRAWER================= */
+        const renderArchived = (
+            <Drawer
+                anchor="right"
+                open={this.state.openArchived} 
+                onClose={this.toggleDrawer('openArchived', false)}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={this.toggleDrawer('openArchived', false)}
+                >
+                    <Grid alignItems='center' justify='center' container >
+                        <Grid xs={2} item>
+                            <IconButton
+                                onClick={this.toggleDrawer('openArchived', false)}
+                                color="inherit"
+                            >
+                                <ChevronLeftIcon color='primary' />
+                            </IconButton>
+                        </Grid>
+                        <Grid xs={8} item>
+                            <Button fullWidth color="primary" className={classes.drawer}>
+                                Archived
+                            </Button>
+                        </Grid>
+                        <Grid xs={2} item>
+                        </Grid>
+                        <Grid key={1} xs={12} item>
+                            {this.props.lists ? this.props.lists.filter(list => list.listStatus === 1).map((list,index) => 
+                        
+                            <Paper key={index} className={classes.paper}>
+                            <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
+                                <Grid xs={10} item>
+                                    {list.listTitle}
+                                </Grid>
+                                <Grid xs={2} item>
+                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
+                                        <RestorePage fontSize="small" />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                            </Paper>
+                        
+                        ): <div>Nothing archived</div>}
+                        </Grid>
+                    </Grid>
+                </div>
+            </Drawer>
+        );
+
         const header =(
             <Grid container spacing={16} className={classes.projectHeader}>
 
@@ -464,6 +527,13 @@ class Project extends Component {
                     Filter
                 </Button>
                 {renderFilter}
+
+                {/*===================  ARCHIVED BUTTON  ========================================= */}
+                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
+                    <Archive className={classes.leftIcon} />
+                    Archived
+                </Button>
+                {renderArchived}
                
 
 
@@ -499,7 +569,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps ={
     getAllListsWithCards: _action.projectAction.findAllLists,
-    findAllCards: _action.listAction.findAllCards,
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
     updateCard: _action.listAction.updateCard,
@@ -510,7 +579,8 @@ const mapDispatchToProps ={
     getActivity: _action.projectAction.getActivity,
     getMemberHasProject : _action.projectAction.getMemberHasProject,
     onGetAllPermissions: _action.projectAction.getAllPermissions,
-    //getLabels :  _action.projectAction.getLabels,
+    restoreList: _action.listAction.updateListStatus,
+    updatePositionLists: _action.listAction.updatePositionLists
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

@@ -6,7 +6,8 @@ const labels = {
     UPDATE_LIST_TITLE:"UPDATE_LIST_TITLE",
     DELETE_LIST:"DELETE_LIST",
     UPDATE_CARD: "UPDATE_CARD",
-    UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS"
+    UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS",
+    UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS"
 }
 
 
@@ -161,6 +162,15 @@ function updateListStatus(listId, status){
     } 
 }
 
+function updatePositionLists(newOrderedArray){
+    return dispatch => {
+            dispatch({
+                type: labels.UPDATE_POSITION_LISTS,
+                payload: newOrderedArray
+            });
+    }
+}
+
 
 export const listAction = {
     labels,
@@ -169,6 +179,7 @@ export const listAction = {
     updateCard,
     updateListTitle,
     deleteList,
-    updateListStatus
+    updateListStatus,
+    updatePositionLists
 }
 

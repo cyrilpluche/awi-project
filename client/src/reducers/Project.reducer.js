@@ -13,6 +13,7 @@ const initialState = {
 };
 
 export function project (state = initialState, action) {
+   
     switch (action.type) {
         case projectLabels.LOAD:
             return {
@@ -164,6 +165,12 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 members : action.payload
+            };
+        case listLabels.UPDATE_POSITION_LISTS:
+            
+            return {
+                ...state,
+                lists : action.payload
             };
 
         default:

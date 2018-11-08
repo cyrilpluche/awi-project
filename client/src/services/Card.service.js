@@ -32,6 +32,15 @@ const Card = {
     delete(query) {
         let where = helper.Request.urlFromObject(query)
         return Api.delete(url + 'delete' + where).then(res => res.data)
+    },
+
+    addMember(body) {
+        return Api.post(url + 'create_member_has_card', body).then(res => res.data)
+    },
+
+    removeMember(query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.post(url + 'delete_member_has_card' + where).then(res => res.data)
     }
 
 }

@@ -1,24 +1,28 @@
+/** REACT */
 import React from 'react'
 import { connect } from 'react-redux'
-import _action from '../../actions'
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import _action from '../../actions'
+
+/** COMPONENTS */
 import ProjectList from './projectPanel/projectList/ProjectList'
 import TeamPanel from './teamPanel/TeamPanel'
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+
+/** MATERIAL UI */
 import { style } from './Style'
-import logo from '../../public/images/prello-logo-2.png'
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
+import Grid from '@material-ui/core/Grid';
+
+/** ICONS */
 import ClearIon from '@material-ui/icons/Clear'
 import IconButton from "@material-ui/core/IconButton";
-import Zoom from '@material-ui/core/Zoom';
-
 
 class Dashboard extends React.Component {
     constructor (props) {
         super(props)
-
         this.onClick = this.onClick.bind(this);
 
         this.state = { // will be load at start
@@ -90,29 +94,26 @@ class Dashboard extends React.Component {
             )
         }
         return (
-            <Grid container alignItems='flex-start' className={classes.layout}>
-                <Grid item xs={1} sm={1} className={classes.leftLayout}/>
-                <Grid item container spacing={24} xs={11} sm={10} direction="row"
-                      justify="center" alignItems="flex-start" style={{textAlign: 'center'}}>
-                   {errorMsg}
-                    <Grid item xs={11} sm={2} container justify="center" style={{textAlign: 'center'}}
-                          alignItems="center">
-                        <Grid item xs={12}>
-                            <TeamPanel teams={this.props.teams}/>
-                        </Grid>
+            <Grid container className={classes.layout}>
+                <Grid xs={5} item className={classes.subLayout}>
+                    <Grid justify="center" container>
+                        <TeamPanel teams={this.props.teams}/>
                     </Grid>
-                    <Grid item xs={11} sm={9} container justify="center"
-                          alignItems="center"> {/* Project List Container */}
-                        {favoriteProjects}
-                        <Grid item xs={12}>
-                            <ProjectList title={"Team project"} iconList={'people_outline'}
-                                         projects={this.props.teamProjects} canCreateProject/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ProjectList title={"Personal projects"} iconList={'work_outline'}
-                                         projects={this.props.allProjects} canCreateProject/>
-                        </Grid>
-                    </Grid>
+                </Grid>
+                <Grid xs={7} item className={classes.subLayout}>
+                    <ProjectList
+                        title={"Personal projects"}
+                        iconList={'work_outline'}
+                        projects={this.props.allProjects}
+                        canCreateProject
+                    />
+
+                    <ProjectList
+                        title={"Team project"}
+                        iconList={'people_outline'}
+                        projects={this.props.teamProjects}
+                        canCreateProject
+                    />
                 </Grid>
             </Grid>
         )

@@ -8,10 +8,9 @@ export const style = theme => ({
     leftLayout: {
         height: '100%',
         padding: theme.spacing.unit * 2,
-        borderRadius: '5px'
     },
     layout: {
-        height: '100%',
+        //height: '100%',
         margin: 0,
         //backgroundColor: '#f0f0f5',
         borderRadius: '5px',
@@ -21,7 +20,7 @@ export const style = theme => ({
         backgroundRepeat: 'noRepeat'
     },
     rightLayout: {
-        height: '100%',
+        //height: '100%',
         padding: theme.spacing.unit * 2,
     },
     xsMarginBottom: {
@@ -30,6 +29,11 @@ export const style = theme => ({
     errorMsg: {
         backgroundColor: '#ffb3b3',
         border: 'solid 5px #ff0000'
+    },
+    subLayout: {
+        paddingRight: theme.spacing.unit * 5,
+        paddingLeft: theme.spacing.unit * 5
+
     }
 });
 

@@ -24,6 +24,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ConfirmationDialog from './ConfirmationDialog';
 import LabelDialog from './LabelDialog'
 import InputBase from "@material-ui/core/InputBase/InputBase";
+import MembersOnCard from './membersOnCard/MembersOnCard'
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -185,7 +186,9 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.card.card
+    card: state.card.card,
+    membersOnCard: state.card.membersOnCard,
+    membersOffCard: state.card.membersOffCard
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,
