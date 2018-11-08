@@ -258,13 +258,15 @@ class ListPrello extends Component{
                                 return (
                                     <div 
                                     ref={provided.innerRef} 
-                                    
+
                                     className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
 
-                                      {list.CardListFks ? list.CardListFks.map((card,index) =><Card key={card.cardId} card={card} index={index}></Card> ):'' }
-                                       
+                                      {list.CardListFks ? list.CardListFks.map((card,index) =>
+                                          <Card key={card.cardId} card={card} index={index}/>
+                                      ):'' }
+
                                     {provided.placeholder}
-                                    
+
                                     </div>
                             )}}
                         </Droppable>

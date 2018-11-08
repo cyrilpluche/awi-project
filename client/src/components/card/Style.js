@@ -1,8 +1,7 @@
 export const styles = theme => ({
     card: {
-        width: 300,
-        margin: 5,
-        backgroundColor: '#FFFAF0'
+        backgroundColor: '#FFFAF0',
+        padding: theme.spacing.unit,
     },
     media: {
         height: 0,
@@ -62,8 +61,7 @@ export const styles = theme => ({
         margin: 5,
     },
     button: {
-        margin: 3,
-        width: '23%'
+        margin: theme.spacing.unit,
     },
     divider:{
         margin: 15

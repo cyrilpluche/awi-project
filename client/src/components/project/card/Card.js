@@ -3,12 +3,10 @@ import { withStyles } from '@material-ui/core/styles';
 import {  Draggable } from 'react-beautiful-dnd';
 import { styles } from './Style'
 
-
+import CardElement from '../../card/Card'
 
 
 class Card extends Component{
-
-    
 
     render() {
         const {classes} = this.props
@@ -21,15 +19,14 @@ class Card extends Component{
                         ...provided.draggableProps.style,
                     };
                     return (
-                <div className={classes.card} 
-                    {...provided.draggableProps} 
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef} 
-                    style={style}                             
-                    >
-                    {this.props.card.cardTitle}
-                </div>
-                )}}
+                        <div
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                        >
+                            <CardElement currentCard={this.props.card} />
+                        </div>
+                    )}}
             </Draggable>
         )
     }
