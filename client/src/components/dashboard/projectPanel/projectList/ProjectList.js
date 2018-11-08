@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
 import Helper from '../../../../helpers'
 
+import Gallery from '../../../ui/gallery/BackgroundGallery'
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card'
@@ -29,6 +30,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputBase from '@material-ui/core/InputBase';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import DatePicker from "react-datepicker";
+import moment from "moment";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class ProjectList extends React.Component {
 
@@ -36,9 +41,11 @@ class ProjectList extends React.Component {
         super(props)
 
         this.setProjectHasFavorite = this.setProjectHasFavorite.bind(this)
+        this.handleChangeDate = this.handleChangeDate.bind(this);
         this.goTo = this.goTo.bind(this)
         this.createProject = this.createProject.bind(this)
         this.state = {
+            date: null,
             dialogDisplayed: false,
             buttonCreateProjectDisabled: true,
             newProjectisPublic: true // project visibility
@@ -70,6 +77,10 @@ class ProjectList extends React.Component {
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
     };
+
+    handleChangeDate (date) {
+        this.setState({date: date})
+    }
 
     projectVisiblity = () =>  {
         if (this.state.newProjectisPublic) return 'Public'
@@ -107,7 +118,9 @@ class ProjectList extends React.Component {
 
         let status = 0; // project is activie and normal
         let statusMemberProject = 1 // the member has accepted the invitation
-        let targetDate = new Date(document.querySelector('#projectTargetDate').value)
+
+        let targetDate = new Date()
+        if (this.state.date != null) targetDate = new Date(this.state.date)
 
         this.props.createProjectMember(title, visibility, status, targetDate,this.props.memberId, statusMemberProject)
             // statusMemberProject = 1, member has accepted the invitation
@@ -149,6 +162,7 @@ class ProjectList extends React.Component {
                         <Grid item xs={12}>
                             <InputBase
                                 id="projectTitle"
+                                selected={this.state.date}
                                 style={{marginBottom: '2%', marginTop: '1%'}}
                                 classes={{
                                     root: classes.bootstrapRoot,
@@ -188,24 +202,30 @@ class ProjectList extends React.Component {
                                 <span style={{fontSize: '15px'}}>Target Date</span>
                             </InputLabel>
                         </Grid>
-                        <Grid item xs={12}>
-                            <InputBase
+                        <Grid item xs={12} style={{textAlign:'center', marginBottom: '3%'}}>
+                            <DatePicker
+                                selected={this.state.date}
+                                onChange={this.handleChangeDate}
+                                placeholderText="Click to select a date"
                                 id="projectTargetDate"
-                                style={{marginBottom: '2%', marginTop: '1%'}}
-                                classes={{
-                                    root: classes.bootstrapRoot,
-                                    input: classes.bootstrapInput,
-                                }}
-                                placeholder="title"
-                                defaultValue={new Date() /* TODO format tade*/}
-                                type="date"
-                                fullWidth
-
+                                minDate={moment()}
+                                dateFormat="YYYY/MM/DD"
+                                isClearable
+                                withPortal
+                                showDisabledMonthNavigation
                             />
                         </Grid>
                         <Grid item xs={3}/>
                         <Grid item xs={6}>
                             <Divider />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputLabel shrink htmlFor="teamName-input">
+                                <span style={{fontSize: '15px'}}>Background image</span>
+                            </InputLabel>
+                        </Grid>
+                        <Grid item xs={12} style={{width: '80%', marginLeft: '15%', textAlign:'center'}}>
+                            <Gallery/>
                         </Grid>
                     </Grid>
                     <DialogActions>
@@ -260,24 +280,29 @@ class ProjectList extends React.Component {
                             </CardActionArea>
                         </Card>
                     );
+                    let bg = "https://res.cloudinary.com/o1-g1-prello/image/upload/v1541633860/prello%20project/2.jpg"
                     if (this.props.backgroundimage !== undefined && this.props.backgroundimage !=='') {
                         // if the projects has a background image
-                        card = (
-                            <Card className={classes.default_card} raised>
-                                <CardActionArea onClick={(e) => {
-                                    this.goTo(project.projectId)
-                                }}>
-                                    <CardMedia  height="120" src={this.props.backgroundimage}>
-                                        <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
-                                            {project.projectTitle}
-                                        </h2>
-                                        {icon}
-                                    </CardMedia>
-                                </CardActionArea>
-                            </Card>
-                        );
-
+                       bg = this.props.backgroundimage
                     }
+
+                    card = (
+                        <Card className={classes.default_card} raised>
+
+                                <CardMedia  image={bg}>
+                                    <CardActionArea onClick={(e) => {
+                                        this.goTo(project.projectId)
+                                    }}>
+                                    <h2 style={{color: 'white', top: 0, left: 0, display: 'flex', paddingLeft: '2%'}}>
+                                        {project.projectTitle}
+                                    </h2>
+                                    {icon}
+                                    </CardActionArea>
+                                </CardMedia>
+
+                        </Card>
+                    );
+
 
                     return <Grid item sm={3} xs={12} key={key} >
                         {card}

@@ -91,20 +91,17 @@ class Dashboard extends React.Component {
         }
         return (
             <Grid container alignItems='flex-start' className={classes.layout}>
-                <Grid item xs={1} sm={2} className={classes.leftLayout}/>
+                <Grid item xs={1} sm={1} className={classes.leftLayout}/>
                 <Grid item container spacing={24} xs={11} sm={10} direction="row"
                       justify="center" alignItems="flex-start" style={{textAlign: 'center'}}>
-                    <Grid item xs={12}>
-                        <img src={logo} width="100" alt="prello logo"/>
-                    </Grid>
                    {errorMsg}
-                    <Grid item xs={8} sm={4} container justify="center" style={{textAlign: 'center'}}
+                    <Grid item xs={11} sm={2} container justify="center" style={{textAlign: 'center'}}
                           alignItems="center">
                         <Grid item xs={12}>
                             <TeamPanel teams={this.props.teams}/>
                         </Grid>
                     </Grid>
-                    <Grid item xs={8} container justify="center"
+                    <Grid item xs={11} sm={9} container justify="center"
                           alignItems="center"> {/* Project List Container */}
                         {favoriteProjects}
                         <Grid item xs={12}>
