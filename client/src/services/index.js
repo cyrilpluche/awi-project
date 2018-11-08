@@ -5,6 +5,8 @@ import Member from './Member.service';
 import Permission from './Permission.service';
 import Project from './Project.service';
 import Team from './Team.service';
+import Task from './Task.service';
+import Label from './Label.service'
 
 const service = {
     Action,
@@ -14,6 +16,8 @@ const service = {
     Permission,
     Project,
     Team,
+    Task,
+    Label
 }
 
 export default service

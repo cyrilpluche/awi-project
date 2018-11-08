@@ -21,7 +21,8 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ConfirmationDialog from'./ArchiveConfirmationDialog'
+import ConfirmationDialog from './ConfirmationDialog';
+import LabelDialog from './LabelDialog'
 import InputBase from "@material-ui/core/InputBase/InputBase";
 import MembersOnCard from './membersOnCard/MembersOnCard'
 
@@ -149,8 +150,8 @@ class Cardboard extends React.Component {
                                 <Divider className={classes.divider}/>
                             </div>
                             <div>
-                                <MembersOnCard variant="contained" card={this.props.card} membersOnCard={this.props.membersOnCard} membersOffCard={this.props.membersOffCard}>Members</MembersOnCard>
-                                <Button variant="contained" className={classes.buttonModal}>Labels</Button>
+                                <Button variant="contained" className={classes.buttonModal}>Members</Button>
+                                <LabelDialog/>
                                 <Checklist/>
                                 <ConfirmationDialog content = {{type:'archive'}}/>
                                 <ConfirmationDialog content = {{type:'delete'}}/>

@@ -13,6 +13,7 @@ const initialState = {
 };
 
 export function project (state = initialState, action) {
+   
     switch (action.type) {
         case projectLabels.LOAD:
             return {
@@ -35,7 +36,6 @@ export function project (state = initialState, action) {
                 lists 
             };
         case listLabels.CREATE_CARD:
-    
             return {
                 ...state,
                 lists : action.payload 
@@ -43,16 +43,34 @@ export function project (state = initialState, action) {
         case listLabels.UPDATE_CARD:   
             return {
                 ...state,
+                lists : action.payload
             }; 
         case listLabels.GET_ALL_CARDS:
             return {
                 ...state,
                 cards: action.payload,
             }; 
-        case listLabels.UPDATE_LIST:
+        case listLabels.UPDATE_LIST_TITLE:
+            let updateList  = state.lists.find(list => list.listId === action.payload.listId)
+            let updateListIndex =  state.lists.findIndex(list => list.listId === action.payload.listId)
+            let newListTitle = {...updateList, listTitle:action.payload.newListTitle}
+            let allList = Array.from(state.lists)
+            allList.splice(updateListIndex,1)
+            allList.splice(updateListIndex,0,newListTitle)
             return {
                 ...state,
-                lists: action.payload,
+                lists: allList
+            };
+        case listLabels.UPDATE_LIST_STATUS:
+            let updateListStatus  = state.lists.find(list => list.listId === action.payload.listId)
+            let updateListStatusIndex =  state.lists.findIndex(list => list.listId === action.payload.listId)
+            let newListStatus = {...updateListStatus, listStatus:action.payload.listStatus}
+            let newLists = Array.from(state.lists)
+            newLists.splice(updateListStatusIndex,1)
+            newLists.splice(updateListStatusIndex,0,newListStatus)
+            return {
+                ...state,
+                lists: newLists
             };
         case listLabels.DELETE_LIST:
 
@@ -147,6 +165,12 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 members : action.payload
+            };
+        case listLabels.UPDATE_POSITION_LISTS:
+            
+            return {
+                ...state,
+                lists : action.payload
             };
 
         default:
