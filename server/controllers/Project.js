@@ -247,10 +247,7 @@ module.exports = {
                     {
                         model: Card,
                         as: 'CardListFks' ,
-                        include: [{
-                            model: Label,
-                            as: 'CardhaslabelLabels' ,
-                        }]
+                        include: [{ all: true }]
                     }
                 ]
             }
