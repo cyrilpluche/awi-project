@@ -58,7 +58,11 @@ class Project extends Component {
             projectInfo:''
         }
         this.handleRestoreArchived = this.handleRestoreArchived.bind(this)
-
+        this.deleteList = this.deleteList.bind(this)
+        this.updateListTitle = this.updateListTitle.bind(this)
+        this.archiveList = this.archiveList.bind(this)
+        this.createCard = this.createCard.bind(this)
+        this.createNewList = this.createNewList.bind(this)
         this.socket = SocketIOClient('http://localhost:4200')
         this.socket.on('add', this.socketNew.bind(this))
         this.socket.on('move', this.socketMove.bind(this))
@@ -165,6 +169,24 @@ class Project extends Component {
             } 
         
     }
+    deleteList(listId,idProject){
+        this.props.deleteList(listId,idProject)
+    }
+
+    updateListTitle(newListTitle,listId){
+        this.props.updateListTitle(newListTitle,listId)
+    }
+    archiveList(listId){
+        this.props.archiveList(listId,1)
+    }
+
+    /*============= CARD ACTIONS ======================*/
+    createCard(cardName,listId,idProject){
+        this.props.createCard(cardName,listId,idProject)
+    }
+
+
+    
 
 
 
@@ -540,7 +562,15 @@ class Project extends Component {
 
         const dndArea = (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                        <Lists key="1" idProject={match.params.id} lists={this.state.lists}  createListCallback={this.createNewList.bind(this)} />
+                        <Lists key="1" 
+                            idProject={match.params.id} 
+                            lists={this.state.lists}  
+                            createListCallback={this.createNewList} 
+                            deleteList = {this.deleteList}
+                            updateListTitle = {this.updateListTitle}
+                            archiveList = {this.archiveList}
+                            createCard = {this.createCard}
+                            />
             </DragDropContext>
         )
 
@@ -577,7 +607,11 @@ const mapDispatchToProps ={
     getMemberHasProject : _action.projectAction.getMemberHasProject,
     onGetAllPermissions: _action.projectAction.getAllPermissions,
     restoreList: _action.listAction.updateListStatus,
-    updatePositionLists: _action.listAction.updatePositionLists
+    updatePositionLists: _action.listAction.updatePositionLists,
+    createCard: _action.listAction.createCard,   
+    updateListTitle: _action.listAction.updateListTitle,
+    deleteList: _action.listAction.deleteList,
+    archiveList: _action.listAction.updateListStatus
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

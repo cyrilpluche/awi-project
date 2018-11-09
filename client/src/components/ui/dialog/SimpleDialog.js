@@ -51,7 +51,7 @@ class SimpleDialog extends Component {
             <DialogContent>
                 <TextField
                         id="outlined-multiline-static"
-                        label="Card name"
+                        label={this.props.type+" name"}
                         name="selectedValue"
                         multiline
                         rows="3"         

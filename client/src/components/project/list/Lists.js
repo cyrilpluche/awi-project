@@ -70,6 +70,10 @@ class Lists extends Component {
                                     list={list}
                                     listIndex={index}
                                     index={index}
+                                    deleteList = {this.props.deleteList}
+                                    updateListTitle = {this.props.updateListTitle}
+                                    archiveList = {this.props.archiveList}
+                                    createCard = {this.props.createCard}
                                     />
                                 
                             </div>
@@ -94,10 +98,7 @@ class Lists extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    isLoading: state.project.isLoading
-})
-const mapDispatchToProps = {
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Lists));
+
+
+export default withStyles(styles)(Lists)

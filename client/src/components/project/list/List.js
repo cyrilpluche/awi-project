@@ -110,7 +110,7 @@ class ListPrello extends Component{
 
     handleEditTitle(){
 
-        if(this.state.newListTitle) this.props.updateTitle(this.state.newListTitle,this.props.list.listId)
+        if(this.state.newListTitle) this.props.updateListTitle(this.state.newListTitle,this.props.list.listId)
           this.setState({editListTitle: false}, ()=>{        
           })
     }
@@ -263,14 +263,12 @@ class ListPrello extends Component{
 
                                       {list.CardListFks.map((card,index) =>
                                       <div key={index}>
-                                      { this.props.isLoading ? (
-                                        <MiniLoader/>
-                                        ) : ( <Card
+                                      {<Card
                                         key={card.cardId}
                                         card={card}
                                         listIndex={this.props.listIndex}
                                         cardIndex={index}
-                                        index={index}/>) 
+                                        index={index}/> 
                                         }
                                         </div>
                                       
@@ -308,18 +306,9 @@ class ListPrello extends Component{
     }
 }
 
-const mapStateToProps = (state) => ({
-    cards: state.project.cards,
-    isLoading: state.project.isLoading
-})
-
-const mapDispatchToProps ={
-    createCard: _action.listAction.createCard,   
-    updateTitle: _action.listAction.updateListTitle,
-    deleteList: _action.listAction.deleteList,
-    archiveList: _action.listAction.updateListStatus
-}
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(ListPrello))
+
+
+export default withStyles(styles)(ListPrello)
 
