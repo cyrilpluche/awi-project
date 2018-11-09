@@ -13,5 +13,8 @@ export const styles = theme => ({
         marginLeft:  'auto',
         marginRight: 20,
         marginBottom: 20
+    },
+    button: {
+        margin: theme.spacing.unit,
     }
 });

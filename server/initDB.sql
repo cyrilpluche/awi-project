@@ -16,9 +16,11 @@ DROP TABLE IF EXISTS public.MemberHasProject CASCADE;
 DROP TABLE IF EXISTS public.TeamHasMember CASCADE;
 DROP TABLE IF EXISTS public.TeamHasProject CASCADE;
 DROP TABLE IF EXISTS public.MemberHasAction CASCADE;
+DROP TABLE IF EXISTS public.MemberHasCard CASCADE;
 DROP TABLE IF EXISTS public.MemberHasPermissionTeam CASCADE;
 DROP TABLE IF EXISTS public.MemberHasPermissionProject CASCADE;
 DROP TABLE IF EXISTS public.CardHasLabel CASCADE;
+DROP TABLE IF EXISTS public.MemberHasCard CASCADE;
 
 ------------------------------------------------------------
 --        Script Postgre
@@ -30,15 +32,15 @@ DROP TABLE IF EXISTS public.CardHasLabel CASCADE;
 -- Table: Member
 ------------------------------------------------------------
 CREATE TABLE public.Member(
-	member_id             SERIAL NOT NULL ,
-	member_firstname      VARCHAR (50) NOT NULL ,
-	member_lastname       VARCHAR (50) NOT NULL ,
-	member_pseudo         VARCHAR (250) NOT NULL ,
-	member_email          VARCHAR (50)  ,
-	member_password       VARCHAR (50)  ,
-	member_picture        VARCHAR (250)  ,
-	member_status         INT  NOT NULL ,
-	member_oauth_github   VARCHAR (250)   ,
+    member_id                   SERIAL NOT NULL ,
+    member_firstname            VARCHAR (50) NOT NULL ,
+    member_lastname             VARCHAR (50) NOT NULL ,
+    member_pseudo               VARCHAR (250) NOT NULL ,
+    member_email                VARCHAR (50)  ,
+    member_password             VARCHAR (50)  ,
+    member_picture              VARCHAR (250)  ,
+    member_status               INT  NOT NULL ,
+	member_is_link_with_github  BOOL  DEFAULT false  ,
 	CONSTRAINT Member_PK PRIMARY KEY (member_id)
 )WITHOUT OIDS;
 
@@ -129,7 +131,7 @@ CREATE TABLE public.Action(
 
 	,CONSTRAINT Action_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
 	,CONSTRAINT Action_List0_FK FOREIGN KEY (list_id) REFERENCES public.List(list_id)
-	,CONSTRAINT Action_Project1_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
+	,CONSTRAINT Action_Project1_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
 	,CONSTRAINT Action_Team2_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id)
 )WITHOUT OIDS;
 
@@ -139,13 +141,16 @@ CREATE TABLE public.Action(
 ------------------------------------------------------------
 CREATE TABLE public.Label(
 	label_id            SERIAL NOT NULL ,
-	label_color         INT  NOT NULL ,
-	label_description   VARCHAR (250)   ,
+	label_color         VARCHAR (50)   NOT NULL ,
+	label_description   VARCHAR (250)  ,
+	project_id          INT  NOT NULL  ,
 	CONSTRAINT Label_PK PRIMARY KEY (label_id)
+
+	,CONSTRAINT Label_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
-------------------------------------------------------------
+------------------------------------------------s------------
 -- Table: Attachment
 ------------------------------------------------------------
 CREATE TABLE public.Attachment(
@@ -183,8 +188,8 @@ CREATE TABLE public.MemberHasProject(
 	project_is_favorite       BOOL,
 	CONSTRAINT MemberHasProject_PK PRIMARY KEY (project_id,member_id)
 
-	,CONSTRAINT MemberHasProject_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
-	,CONSTRAINT MemberHasProject_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
+	,CONSTRAINT MemberHasProject_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
+	,CONSTRAINT MemberHasProject_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -197,8 +202,8 @@ CREATE TABLE public.TeamHasMember(
 	team_status   INT  NOT NULL  ,
 	CONSTRAINT TeamHasMember_PK PRIMARY KEY (team_id,member_id)
 
-	,CONSTRAINT TeamHasMember_Team_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id)
-	,CONSTRAINT TeamHasMember_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
+	,CONSTRAINT TeamHasMember_Team_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id) ON DELETE CASCADE
+	,CONSTRAINT TeamHasMember_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -211,8 +216,8 @@ CREATE TABLE public.TeamHasProject(
 	thp_status   INT  NOT NULL  ,
 	CONSTRAINT TeamHasProject_PK PRIMARY KEY (project_id,team_id)
 
-	,CONSTRAINT TeamHasProject_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
-	,CONSTRAINT TeamHasProject_Team0_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id)
+	,CONSTRAINT TeamHasProject_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
+	,CONSTRAINT TeamHasProject_Team0_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -226,9 +231,9 @@ CREATE TABLE public.MemberHasPermissionTeam(
 	mhpt_state      BOOL  NOT NULL  ,
 	CONSTRAINT MemberHasPermissionTeam_PK PRIMARY KEY (team_id,permission_id,member_id)
 
-	,CONSTRAINT MemberHasPermissionTeam_Team_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id)
-	,CONSTRAINT MemberHasPermissionTeam_Permission0_FK FOREIGN KEY (permission_id) REFERENCES public.Permission(permission_id)
-	,CONSTRAINT MemberHasPermissionTeam_Member1_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
+	,CONSTRAINT MemberHasPermissionTeam_Team_FK FOREIGN KEY (team_id) REFERENCES public.Team(team_id) ON DELETE CASCADE
+	,CONSTRAINT MemberHasPermissionTeam_Permission0_FK FOREIGN KEY (permission_id) REFERENCES public.Permission(permission_id) ON DELETE CASCADE
+	,CONSTRAINT MemberHasPermissionTeam_Member1_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 ------------------------------------------------------------
@@ -254,9 +259,9 @@ CREATE TABLE public.MemberHasPermissionProject(
 	mhpp_state      BOOL    ,
 	CONSTRAINT MemberHasPermissionProject_PK PRIMARY KEY (permission_id,project_id,member_id)
 
-	,CONSTRAINT MemberHasPermissionProject_Permission_FK FOREIGN KEY (permission_id) REFERENCES public.Permission(permission_id)
-	,CONSTRAINT MemberHasPermissionProject_Project0_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
-	,CONSTRAINT MemberHasPermissionProject_Member1_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id)
+	,CONSTRAINT MemberHasPermissionProject_Permission_FK FOREIGN KEY (permission_id) REFERENCES public.Permission(permission_id) ON DELETE CASCADE
+	,CONSTRAINT MemberHasPermissionProject_Project0_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
+	,CONSTRAINT MemberHasPermissionProject_Member1_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -268,6 +273,18 @@ CREATE TABLE public.CardHasLabel(
 	label_id   INT  NOT NULL  ,
 	CONSTRAINT CardHasLabel_PK PRIMARY KEY (card_id,label_id)
 
-	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
-	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id)
+	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
+	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id) ON DELETE CASCADE
+)WITHOUT OIDS;
+
+------------------------------------------------------------
+-- Table: MemberHasCard
+------------------------------------------------------------
+CREATE TABLE public.MemberHasCard(
+	card_id     INT  NOT NULL ,
+	member_id   INT  NOT NULL  ,
+	CONSTRAINT MemberHasCard_PK PRIMARY KEY (card_id,member_id)
+
+	,CONSTRAINT MemberHasCard_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
+,CONSTRAINT MemberHasCard_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
 )WITHOUT OIDS;

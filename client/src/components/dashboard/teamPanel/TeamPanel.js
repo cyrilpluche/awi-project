@@ -26,172 +26,135 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputBase from '@material-ui/core/InputBase';
+import Typography from "@material-ui/core/es/Typography/Typography";
+import GridList from "@material-ui/core/es/GridList/GridList";
+import GridListTile from "@material-ui/core/es/GridListTile/GridListTile";
+import GridListTileBar from "@material-ui/core/es/GridListTileBar/GridListTileBar";
+import Background from '../../../public/images/project-bg.jpg'
+import TextField from "@material-ui/core/es/TextField/TextField";
+
+
 // todo import action
 
 
 class TeamPanel extends React.Component {
     constructor (props) {
         super(props)
+        this.createTeam = this.createTeam.bind(this)
+
         this.state = {
-            drawerOpen: false,
-            dialogDisplayed: false,
-            buttonCreateTeamDisabled: true
+            openDialog: false,
+            teamName: ''
         };
     }
 
-
-    handleDrawerClick = () => {
-        this.setState(state => ({ drawerOpen: !state.drawerOpen }));
-    };
-
+    /** Open and close dialog */
     handleClickOpenDialog = () => {
-        this.setState({ dialogDisplayed: true });
+        this.setState({ openDialog: true });
     };
 
     handleCloseDialog = () => {
-        this.setState({ dialogDisplayed: false, buttonCreateTeamDisabled: true });
-        // close the dialog and disable the button
+        this.setState({ openDialog: false });
     };
 
-    handleChangeTeamName = (event) => {
-        let e = document.querySelector('#teamName').value
-        if (e === undefined ||e === '')
-            this.setState({buttonCreateTeamDisabled: true });
-        else {
-            this.setState({buttonCreateTeamDisabled: false });
-        }
+    /** Update the name and create the team */
+    handleChangeTeamName = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
     };
+
+    createTeam () {
+        console.log('CREATE THE TEAM')
+    }
 
 
     render() {
         const { classes } = this.props;
 
-        let dialog = (
+        /** NEW DIALOG */
+        const createTeamDialog = (
             <Dialog
-                open={this.state.dialogDisplayed}
+                open={this.state.openDialog}
                 onClose={this.handleCloseDialog}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle id="form-dialog-title">
-                    <Grid container style={{textAlign: 'center'}}  alignItems='center'>
-                        <Grid item xs={2} sm={3}>
-                            <PeopleIcon style={{fontSize: '32px', color :'#d6d6c2'}}/>
-                        </Grid>
-                        <Grid item xs={8} sm={7}>
-                            <span style={{marginLeft: '5%'}}>Create a new team</span>
-                        </Grid>
-                        <Grid item xs={2} sm={2}>
-                            <IconButton onClick={this.handleCloseDialog}>
-                                <ClearIon/>
-                            </IconButton>
-                        </Grid>
+                <Grid container justify='center'>
+                    <Typography variant='overline'>
+                        Create a new team
+                    </Typography>
+                    <Grid xs={12} item>
+                        <Divider/>
                     </Grid>
-                </DialogTitle>
+                </Grid>
+
                 <DialogContent>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <InputLabel shrink htmlFor="teamName-input" required>
-                                <span style={{fontSize: '15px'}}>Name</span>
-                            </InputLabel>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <InputBase
-                                id="teamName"
-                                style={{marginBottom: '2%', marginTop: '1%'}}
-                                classes={{
-                                    root: classes.bootstrapRoot,
-                                    input: classes.bootstrapInput,
-                                }}
-                                placeholder="team name"
-                                fullWidth required autoFocus
-                                onChange={this.handleChangeTeamName}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <InputLabel shrink htmlFor="teamDescription-input">
-                                <span style={{fontSize: '15px'}}>Description</span>
-                            </InputLabel>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <InputBase
-                                id="teamDescription"
-                                placeholder="short description"
-                                style={{marginBottom: '2%', marginTop: '1%'}}
-                                classes={{
-                                    root: classes.bootstrapRoot,
-                                    input: classes.bootstrapInput,
-                                }}
-                                fullWidth rows={4} multiline
-                            />
-                        </Grid>
-                        <Grid item xs={3}/>
-                        <Grid item xs={6}>
-                            <Divider />
-                        </Grid>
-                    </Grid>
-                    <DialogActions>
-                        <Button color="primary" fullWidth variant="outlined"
-                                disabled={this.state.buttonCreateTeamDisabled}>
-                            Create
-                        </Button>
-                    </DialogActions>
-                    <DialogContentText style={{textAlign: 'center'}}>
-                        <span style={{fontSize: '12px', textAlign: 'center'}}>
-                            A team is group of project and a group of people who work together.<br />
-                            Create your team then you will be able to add your friends and create your projects
-                        </span>
-                    </DialogContentText>
+                    <form noValidate autoComplete="off">
+                        <TextField
+                            id="teamName"
+                            label="Team name"
+                            className={classes.textField}
+                            value={this.state.teamName}
+                            onChange={this.handleChangeTeamName('teamName')}
+                            margin="normal"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </form>
+                    <Button
+                        color="primary"
+                        fullWidth
+                        disabled={this.state.teamName.trim() === ''}
+                        onClick={this.createTeam}
+                    >
+                        Create
+                    </Button>
                 </DialogContent>
             </Dialog>
         )
 
-        let teams = ''
-        if (this.props.teams !== undefined) {
-            teams = (
-                this.props.teams.map((team, i) =>
-                    <ListItem button className={classes.nested} key={i}>
-                        <ListItemIcon>
-                            <GroupWork style={{fontSize: '20px'}} />
-                        </ListItemIcon>
-                        <ListItemText inset secondary={team.teamName} />
-                    </ListItem>
-                )
-            )
-        }
+        /** NEW TEAM LIST */
+        const teamList = (
+            <GridList className={classes.gridList} cols={2.5}>
+                {this.props.teams.map(team => (
+                    <GridListTile key={team.teamId}>
+                        <img src={Background} alt='prello logo' />
+                        <GridListTileBar
+                            title={team.teamName}
+                            classes={{
+                                root: classes.titleBar,
+                                title: classes.gridTitle,
+                            }}
+                        />
+                    </GridListTile>
+                ))}
+            </GridList>
+        )
 
+        /** NEW BUTTON */
+        const createTeamButton = (
+            <Button color="primary" className={classes.button} onClick={this.handleClickOpenDialog}>
+                New
+                <AddIcon className={classes.rightIcon} />
+            </Button>
+        )
 
         return (
-            <Grid container className={classes.root}>
-                <Grid item xs={12}>
-                    <List
-                        component="nav"
-                        subheader={<ListSubheader component="div" >Teams</ListSubheader>}
-                    >
-                        <ListItem button onClick={this.handleDrawerClick}>
-                            <ListItemIcon>
-                                <PeopleIcon style={{fontSize: '30px'}} className={classes.iconHover}/>
-                            </ListItemIcon>
-                            <ListItemText inset primary="My teams" />
-                            {this.state.drawerOpen ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-
-                        <Collapse in={this.state.drawerOpen} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                {teams}
-                            </List>
-                        </Collapse>
-                    </List>
-                    <Divider/>
-                    <List component="nav">
-                        <ListItem button onClick={this.handleClickOpenDialog}>
-                            <ListItemIcon>
-                                <AddIcon style={{fontSize: '30px'}} className={classes.iconHover}/>
-                            </ListItemIcon>
-                            <ListItemText primary="Add a new team" />
-                        </ListItem>
-                    </List>
+            <Grid container>
+                {createTeamDialog}
+                <Grid container justify='space-between'>
+                    <Typography variant="overline">
+                        Teams
+                    </Typography>
+                    {createTeamButton}
                 </Grid>
-                {dialog}
+                <Grid xs={12} item>
+                    <Divider/>
+                </Grid>
+                <Grid item xs={12}>
+                    {teamList}
+                </Grid>
+
             </Grid>
         )
     }
@@ -206,6 +169,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+    
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(TeamPanel));

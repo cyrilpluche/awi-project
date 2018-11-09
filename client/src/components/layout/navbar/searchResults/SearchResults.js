@@ -9,6 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { style } from './Style'
 import connect from "react-redux/es/connect/connect";
 import _action from "../../../../actions";
+import _helper from "../../../../helpers";
+
 import Typography from "@material-ui/core/Typography/Typography";
 import Divider from "@material-ui/core/Divider/Divider";
 
@@ -21,6 +23,7 @@ class SearchResults extends React.Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
         this.renderSuggestion = this.renderSuggestion.bind(this)
+        this.handleClickSuggestion = this.handleClickSuggestion.bind(this)
         this.renderSuggestion.propTypes = {
             highlightedIndex: PropTypes.number,
             index: PropTypes.number,
@@ -99,8 +102,6 @@ class SearchResults extends React.Component {
 
         const inputLength = inputValue.length;
 
-        console.log(inputValue)
-
         let count = 0;
 
         return inputLength === 0
@@ -120,7 +121,16 @@ class SearchResults extends React.Component {
     }
 
     handleClickSuggestion (event) {
-        console.log(event.target.id)
+        let type = event.target.id.split('/')[0]
+        let id = event.target.id.split('/')[1]
+
+        if (type === 'project') {
+            this.setState({
+                isOpen: false,
+                searchInput: ''
+            })
+            _helper.History.push('/project/' + id)
+        }
     }
 
     render() {

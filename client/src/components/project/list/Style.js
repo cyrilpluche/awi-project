@@ -4,7 +4,7 @@ export const styles = theme => ({
         display: 'flex',
         padding:theme.spacing.unit * 1,           
         //whiteSpace: `nowrap`,
-        //overflowY: `auto`,
+        overflowY: `auto`,
         //position: `fixed`,
         left: `0`, 
         right: `0`
@@ -17,18 +17,17 @@ export const styles = theme => ({
         backgroundColor:`white`,
         width: `200px`,
         minWidth : `200px`,
-        minHeight : `200px`,
+        minHeight : `100px`,
         justifyContent: `center`,
         textAlign: `center`,
         
         
     },
     listTitle: {
-        textAlign:`center`,
+        textAlign:`left`,
         color : `black`,
         backgroundColor:'#e4e4e4',
-        padding:theme.spacing.unit * 2,
-        margin:`0px`,
+        border:`1px solid grey`,
         fontWeight: `lighter`,
         wordBreak: `break-all`
     },
@@ -37,11 +36,12 @@ export const styles = theme => ({
         marginLeft:`30px`
     },
     button:{
-        marginTop:`5px`
+        fontSize: '11px',
+        color: 'grey'
     },
     dropSpace:{
         padding:'10px',
-        minHeight:`100px`
+        minHeight:`20px`
     },
     textField:{
         marginLeft:theme.spacing.unit,
@@ -49,5 +49,14 @@ export const styles = theme => ({
     },
     dialogBox:{
         marginLeft:theme.spacing.unit,
+    },
+    badge:{
+        left:'0'
+    },
+    validEditTitle:{
+        color : 'green',
+    },
+    listElement: {
+        marginBottom: 20
     }
 });

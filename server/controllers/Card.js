@@ -1,4 +1,10 @@
 var Card = require('../config/db_connection').Card;
+var CardHasLabel = require('../config/db_connection').Cardhaslabel;
+var Label = require('../config/db_connection').Label;
+var MemberHasProject = require('../config/db_connection').MemberHasProject;
+var Project = require('../config/db_connection').Project;
+var List = require('../config/db_connection').List;
+
 var sequelize = require('../config/db_connection').sequelize;
 var Sequelize = require('../config/db_connection').Sequelize;
 
@@ -53,21 +59,38 @@ module.exports = {
      *  return: Array of Cards objects with given attributes.
      */
     findAllSearchbar(req, res, next) {
-        Card
+        MemberHasProject
             .findAll({
-                attributes: [['card_id', 'id'], ['card_title', 'label']],
-                order : sequelize.col('card_id'),
+                order : sequelize.col('project_id'),
                 where: {
-                    cardTitle: {
-                        [Sequelize.Op.or]: {
-                            [Sequelize.Op.like]: '%' + req.query.str + '%',
-                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
-                        },
-                    }
-                }
+                    memberId: req.query.memberId
+                },
+                include: [{
+                    model: Project,
+                    as: 'Project',
+                    attributes: [['project_id', 'id'], ['project_title', 'label']],
+                    include: [{
+                        model: List,
+                        as: 'ListProjectFks',
+                        attributes: [['list_id', 'id'], ['list_title', 'label']],
+                        include: [{
+                            model: Card,
+                            as: 'CardListFks',
+                            attributes: [['card_id', 'id'], ['card_title', 'label']],
+                            where: {
+                                cardTitle: {
+                                    [Sequelize.Op.or]: [
+                                        { [Sequelize.Op.like]: '%' + req.query.str + '%' },
+                                        { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
+                                    ]
+                                }
+                            }
+                        }]
+                    }]
+                }]
             })
-            .then(cards => {
-                req.body.result = cards
+            .then(projects => {
+                req.body.result = projects
                 next()
             })
             .catch(error => res.status(400).send(error));
@@ -97,7 +120,17 @@ module.exports = {
      */
     findOne(req, res, next) {
         Card
-            .findOne({ where: req.query })
+            .findOne({
+                where: req.query,
+                include: [
+                    { all: true },
+                    {
+                        model: CardHasLabel,
+                        as: 'HaslabelCard0Fks',
+                        include: [{ model: Label, as: 'Label' }]
+                    }
+                ],
+            })
             .then(card => {
                 req.body.result = card
                 next()
@@ -139,9 +172,7 @@ module.exports = {
     delete(req, res, next) {
         Card
             .destroy({
-                where: {
-                    cardId: req.params.id
-                }
+                where: req.query
             })
             .then(isDeleted => {
                 req.body.result = isDeleted === 1

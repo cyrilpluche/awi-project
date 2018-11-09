@@ -38,6 +38,22 @@ const methods = {
         result.Team = undefined
 
         return result
+    },
+
+    flatSearchProject (queryResult) {
+        let flat = []
+        for (let project of queryResult ) {
+            flat.push(project.Project)
+        }
+        return flat
+    },
+
+    flatSearchList (queryResult) {
+        let flat = []
+        for (let project of queryResult ) {
+            flat.push(project.Project)
+        }
+        return flat
     }
 };
 

@@ -159,7 +159,7 @@ module.exports = {
 
     /* ================ CUSTOM METHODS =============== */
 
-    /*  localhost:4200/api/project/find_all_searchbar?str=customStr. (optional)
+    /*  localhost:4200/api/project/find_all_searchbar?str=customStr&memberId=id. (optional)
      *
      *  return: Array of Project objects with given attributes.
      */
@@ -170,10 +170,10 @@ module.exports = {
                 order : sequelize.col('project_id'),
                 where: {
                     projectTitle: {
-                        [Sequelize.Op.or]: {
-                            [Sequelize.Op.like]: '%' + req.query.str + '%',
-                            [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%',
-                        },
+                        [Sequelize.Op.or]: [
+                            { [Sequelize.Op.like]: '%' + req.query.str + '%' },
+                            { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
+                        ]
                     }
                 }
             })
@@ -247,10 +247,7 @@ module.exports = {
                     {
                         model: Card,
                         as: 'CardListFks' ,
-                        include: [{
-                            model: Label,
-                            as: 'CardhaslabelLabels' ,
-                        }]
+                        include: [{ all: true }]
                     }
                 ]
             }

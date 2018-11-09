@@ -5,6 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import _action from "../../actions";
+import connect from "react-redux/es/connect/connect";
+import { withStyles } from '@material-ui/core/styles';
+import { styles } from './Style'
+import * as PropTypes from "prop-types";
 
 class ConfirmationDialog extends React.Component {
     state = {
@@ -20,10 +25,31 @@ class ConfirmationDialog extends React.Component {
         this.setState({ open: false });
     };
 
+    changeStatusArchived = () => {
+        if(this.state.type === 'archive'){
+            this.props.card.cardStatus = 1;
+            this.props.onUpdateCard(this.props.card, {cardStatus: 1});
+            this.setState({ open: false });
+        }else{
+            this.props.onDeleteCard(this.props.card.cardId, this.props.listIndex, this.props.cardIndex);
+            this.props.handleParentClose()
+            this.setState({ open: false });
+        }
+    };
+
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
-                <Button onClick={this.handleClickOpen}>{this.state.type}</Button>
+                <Button
+                    color="primary"
+                    className={classes.button}
+                    fullWidth
+                    onClick={this.handleClickOpen}
+                >
+                    {this.state.type}
+                </Button>
                 <Dialog
                     open={this.state.open}
                     keepMounted
@@ -40,10 +66,10 @@ class ConfirmationDialog extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.handleClose} color="secondary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.changeStatusArchived} color="primary">
                             {this.state.type}
                         </Button>
                     </DialogActions>
@@ -53,4 +79,16 @@ class ConfirmationDialog extends React.Component {
     }
 }
 
-export default ConfirmationDialog;
+/*
+ConfirmationDialog.propTypes = {
+    classes: PropTypes.object.isRequired,
+};*/
+
+const mapStateToProps = (state) => ({
+})
+const mapDispatchToProps = {
+    onUpdateCard : _action.cardAction.updatecard,
+    onDeleteCard : _action.cardAction.deleteCard
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ConfirmationDialog));

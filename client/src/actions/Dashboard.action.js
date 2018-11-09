@@ -1,5 +1,6 @@
 import _service from '../services'
 import _helper from '../helpers'
+import moment from "moment";
 
 const labels = {
     SELECT_PROJECT: 'project:select_one',
@@ -70,9 +71,9 @@ function getAllTeams(member_id) {
 }
 
 
-function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberhasprojectStatus) {
+function updateMemberHasProject (projectId, memberId, projectIsFavorite) {
     let dataObject = {
-        projectId, memberId, projectIsFavorite, memberhasprojectStatus
+        projectId, memberId, projectIsFavorite
     }
 
     return dispatch => _service.Project.updateMemberHasProject(dataObject)
@@ -92,13 +93,13 @@ function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberh
         })
 }
 
-function createProject (projectTitle, projectVisibility, projectStatus, projectDateTarget,
-                        memberId, memberhasprojectStatus = 0) {
+function createProject (projectTitle, projectVisibility, projectStatus = 0, projectDateTarget,
+                        memberId, memberhasprojectStatus = 0, member) {
 
     return dispatch => _service.Project.createProject( projectTitle, projectVisibility, projectStatus, projectDateTarget)
         .then(project => {
-            let projectId = project.projectId
-            return _service.Project.createMemberHasProject(memberId, projectId, memberhasprojectStatus)
+            const projectId = project.projectId
+            _service.Project.createMemberHasProject(memberId, projectId, memberhasprojectStatus)
                 .then( () => {
                     let project = {
                         projectId,
@@ -107,14 +108,47 @@ function createProject (projectTitle, projectVisibility, projectStatus, projectD
                         projectStatus,
                         projectDateTarget
                     }
-                    dispatch({
-                        type: labels.CREATE_NEW_PROJECT,
-                        payload: project
-                    })
-                    // todo add permission
-                    _helper.History.push('/project/' + projectId)
+
+
+                    /*
+                        permissionId = 3 because this member is the admin of the project
+                     */
+                    let permissionId = 3
+                    let mhppState = true
+                    _service.Permission
+                        .createMemberProjectPermission(memberId, projectId, permissionId, mhppState)
+                        .then(permission => {
+
+                            console.log('ON TENTE SA MERE')
+
+                            _service.Action.createActivityForAllMembers({
+                                actionType: 0,
+                                actionTitle: "Project was created",
+                                actionDescription: member.memberPseudo + " has create the project '" + projectTitle + "'.",
+                                memberId: memberId,
+                                projectId: projectId,
+                                actionDateCreation: moment(),
+                                mhaStatus: 0
+                            })
+                                .then(res => {
+                                    console.log('SUCCESS POULET')
+                                    dispatch({
+                                        type: labels.CREATE_NEW_PROJECT,
+                                        payload: project
+                                    })
+                                    _helper.History.push('/project/' + projectId)
+                                    console.log(res)
+                                })
+                                .catch(err => {
+                                    console.log('ERRER POULET')
+                                    console.log(err)
+                                })
+
+
+                        })
+
                 })
-    }).catch (e => {
+        }).catch (e => {
             dispatch({
                 type: labels.DASHBOARD_ACTION_ERROR,
                 errorMsg: 'The project wasn`t able to be created. Please try later or contact an administrator.'

@@ -22,11 +22,17 @@ module.exports = {
     Team: models.Team,
     Member: models.Member,
     Project: models.Project,
+    Permission: models.Permission,
     List: models.List,
     Card: models.Card,
+    Cardhaslabel: models.Cardhaslabel,
     Action: models.Action,
+    Task: models.Task,
+    Attachment: models.Attachment,
     MemberHasProject: models.Memberhasproject,
+    MemberHasCard: models.Memberhascard,
     MemberHasAction: models.Memberhasaction,
+    MemberHasPermissionProject: models.Memberhaspermissionproject,
     Teamhasmember: models.Teamhasmember,
     Label: models.Label
 

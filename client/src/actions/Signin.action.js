@@ -87,9 +87,51 @@ function resetField () {
     }
 }
 
+function signinWithGithub () {
+
+
+    return dispatch => {
+
+        _service.Member.signInWithGithub()
+            .then(res => {
+                //localStorage.setItem('token', res.token)
+                //_helper.History.push('/home');
+                window.location.assign(res)
+            })
+            .catch((err) => {
+                dispatch(signError)
+            });
+
+    }
+}
+
+function confirmSigninGithub (memberEmail, token) {
+    console.log("token \n", token)
+    const body={
+        memberEmail: memberEmail,
+        //memberToken: token,
+    }
+    localStorage.setItem('memberToken', token)
+    return dispatch => {
+        _service.Member.get(body)
+            .then(res => {
+                console.log("res get \n", res);
+
+                _helper.History.push('/home');
+                dispatch(signSuccess(res));
+            })
+            .catch((err) => {
+                dispatch(signError)
+            });
+    }
+
+}
+
 export const signinAction = {
     labels,
     signin,
+    signinWithGithub,
+    confirmSigninGithub,
     isMemberLogged,
     sendNewPassword,
     resetField

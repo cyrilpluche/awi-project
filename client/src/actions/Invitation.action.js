@@ -23,7 +23,7 @@ function isMemberExist (memberToken) {
                                     payload: {
                                         member: memberProject.Member,
                                         project: memberProject.Project,
-                                        isAccountValid: res.memberStatus !== 0
+                                        isAccountValid: res.memberStatus === 1
                                     }
                                 })
                             } else {
@@ -65,10 +65,13 @@ function replyToInvitation (accept, body, query, member) {
             _service.Member.updateInvitation(body, query)
                 .then(isUpdated => {
                     if (isUpdated) {
-                        dispatch({
-                            type: labels.INVITATION_REPLY
-                        })
-                        _service.Action.createActivityForAllMembers({
+                        _service.Permission.createMemberProjectPermission(member.memberId, query.projectId, 3, true)
+                            .then(res => {
+                                dispatch({
+                                    type: labels.INVITATION_REPLY
+                                })
+                            })
+                        /*_service.Action.createActivityForAllMembers({
                             actionType: 2,
                             actionTitle: member.memberPseudo + ' has join the project',
                             actionDescription: member.memberPseudo + ' has accept the invitation.',
@@ -76,7 +79,7 @@ function replyToInvitation (accept, body, query, member) {
                             projectId: query.projectId,
                             actionDateCreation: moment(),
                             mhaStatus: 0
-                        })
+                        })*/
                         _helper.History.push('/home')
                     } else {
                         dispatch({

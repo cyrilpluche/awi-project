@@ -16,7 +16,11 @@ const labels = {
     GET_ACTIVITY:"GET_ACTIVITY",
     GET_ACTIVITY_ERROR: "GET_ACTIVITY_ERROR",
     MEMBER_HAS_PROJECT:"MEMBER_HAS_PROJECT",
-    LOAD: "LOAD"
+    LOAD: "LOAD",
+    GET_ALL_PERMISSIONS: "GET_ALL_PERMISSIONS",
+    GET_ALL_PERMISSIONS_ERROR: "GET_ALL_PERMISSIONS_ERROR",
+    UPDATE_PERMISSION_MEMBER: "UPDATE_PERMISSION_MEMBER",
+    UPDATE_PERMISSION_MEMBER_ERROR: "UPDATE_PERMISSION_MEMBER_ERROR"
 }
 
 /** TODO SERVICE
@@ -204,7 +208,7 @@ function sendInvitationProject(body){
             .then(member => {
                 body.memberId = member.memberId
                 body.memberhasprojectStatus = 0
-                body.projectIdFavorite = false
+                body.projectIsFavorite = false
 
                 _service.Project.createAndSendInvitation(body)
                     .then(res => {
@@ -269,18 +273,26 @@ function removeMemberFromProject(query){
                 dispatch({
                     type: labels.REMOVE_MEMBER_FROM_PROJECT
                 })
-                _service.Project.getAllMembers({ projectId: query.projectId })
-                    .then(res => {
-                        dispatch({
-                            type: labels.GET_ALL_MEMBERS,
-                            payload: res
-                        });
+                _service.Permission.deleteForMemberOnProject(query)
+                    .then(res2 => {
+                        _service.Project.getAllMembers({ projectId: query.projectId })
+                            .then(res => {
+                                dispatch({
+                                    type: labels.GET_ALL_MEMBERS,
+                                    payload: res
+                                });
+                            })
+                            .catch((err) => {
+                                dispatch({
+                                    type: labels.GET_ALL_MEMBERS_ERROR,
+                                    payload: err
+                                });
+                            });
                     })
                     .catch((err) => {
                         dispatch({
-                            type: labels.GET_ALL_MEMBERS_ERROR,
-                            payload: err
-                        });
+                            type: labels.REMOVE_MEMBER_FROM_PROJECT_ERROR
+                        })
                     });
             })
             .catch((err) => {
@@ -306,7 +318,7 @@ function setMemberAsAdmin(projectId, memberId){
 
 }
 
-/**TODO SERVICE
+/**
  * get all activities related to a project (Limit 15)
  */
 function getActivity(projectId){
@@ -331,7 +343,6 @@ function getActivity(projectId){
  */
 function getLabels(){
     return dispatch => {
-
         _service.Project.getLabels()
             .then(res => {
                 dispatch({
@@ -341,6 +352,60 @@ function getLabels(){
             })
             .catch((err) => {
                 dispatch(err)
+            });
+    }
+}
+
+/**
+ * Fetch all permissions of all members of a project
+ */
+function getAllPermissions (projectId) {
+    return dispatch => {
+        _service.Permission.getAllOnProject({ projectId: projectId })
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_PERMISSIONS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.GET_ALL_PERMISSIONS_ERROR
+                });
+            });
+    }
+}
+
+/**
+ * Update store and db permissions
+ */
+function updatePermissionMember (projectId, memberId, permissionId, mhppState, storeMembers) {
+    let query = {
+        projectId: projectId,
+        memberId: memberId,
+        permissionId: permissionId
+    }
+    let body = {
+        mhppState: mhppState
+    }
+    return dispatch => {
+        _service.Permission.updateOnProject(query, body)
+            .then(res => {
+                if (res) {
+                    dispatch({
+                        type: labels.UPDATE_PERMISSION_MEMBER,
+                        payload: storeMembers
+                    });
+                } else {
+                    dispatch({
+                        type: labels.UPDATE_PERMISSION_MEMBER_ERROR
+                    });
+                }
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.UPDATE_PERMISSION_MEMBER_ERROR
+                });
             });
     }
 }
@@ -357,8 +422,9 @@ export const projectAction = {
     sendInvitationProject,
     getMemberStatus,
     removeMemberFromProject,
-    setMemberAsAdmin,
     getActivity,
     getLabels,
-    getMemberHasProject
+    updatePermissionMember,
+    getMemberHasProject,
+    getAllPermissions
 }

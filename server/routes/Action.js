@@ -6,7 +6,7 @@ var actionController = require('../controllers').Action;
 var memberHasActionController = require('../controllers').MemberHasAction;
 var memberHasProject = require('../controllers').MemberHasProject;
 
-router.use('/', mw.Token.verifyToken)
+router.use(mw.Token.verifyToken)
 
 router.get('/find_all', actionController.findAll);
 router.get('/find_all_unarchived', actionController.findAllUnarchived, actionController.countUnreadAction);

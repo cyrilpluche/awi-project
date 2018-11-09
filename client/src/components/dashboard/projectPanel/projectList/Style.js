@@ -93,6 +93,26 @@ export const style = theme => ({
     bootstrapFormLabel: {
         fontSize: 18,
     },
+
+    // New CSS version
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    gridList: {
+        flexWrap: 'nowrap',
+        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+        transform: 'translateZ(0)',
+    },
+    gridTitle: {
+        color: '#fff',
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    },
+    projectLayout: {
+        marginBottom: theme.spacing.unit * 5
+    }
 });
 
 
