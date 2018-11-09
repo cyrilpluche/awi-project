@@ -63,9 +63,7 @@ class Lists extends Component {
                         {...provided.droppableProps}>
                         {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) => 
                             <div key={list.listTitle+list.listId}>
-                                { this.props.isLoading ? (
-                                    <MiniLoader/>
-                                ) : (
+                                
                                     <List
                                     idProject={idProject}
                                     key={list.listTitle+list.listId}
@@ -73,7 +71,7 @@ class Lists extends Component {
                                     listIndex={index}
                                     index={index}
                                     />
-                                )}
+                                
                             </div>
                             )}
                         {provided.placeholder}

@@ -54,7 +54,8 @@ export function project (state = initialState, action) {
             
             return {
                 ...state,
-                lists : listWithCard
+                lists : listWithCard,
+                isLoading:false
             }; 
         case listLabels.UPDATE_CARD:   
             return {

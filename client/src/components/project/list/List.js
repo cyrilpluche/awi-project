@@ -23,6 +23,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MiniLoader from "../../ui/loader/MiniLoader";
 
 import { Done} from '@material-ui/icons';
 
@@ -260,14 +261,22 @@ class ListPrello extends Component{
 
                                     className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
 
-                                      {list.CardListFks ? list.CardListFks.map((card,index) =>
-                                          <Card
-                                              key={card.cardId}
-                                              card={card}
-                                              listIndex={this.props.listIndex}
-                                              cardIndex={index}
-                                              index={index}/>
-                                      ):'' }
+                                      {list.CardListFks.map((card,index) =>
+                                      <div key={index}>
+                                      { this.props.isLoading ? (
+                                        <MiniLoader/>
+                                        ) : ( <Card
+                                        key={card.cardId}
+                                        card={card}
+                                        listIndex={this.props.listIndex}
+                                        cardIndex={index}
+                                        index={index}/>) 
+                                        }
+                                        </div>
+                                      
+                                          
+                                      
+                                      )}
 
                                     {provided.placeholder}
 
@@ -300,7 +309,8 @@ class ListPrello extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    cards: state.project.cards
+    cards: state.project.cards,
+    isLoading: state.project.isLoading
 })
 
 const mapDispatchToProps ={

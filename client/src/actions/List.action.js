@@ -7,7 +7,8 @@ const labels = {
     DELETE_LIST:"DELETE_LIST",
     UPDATE_CARD: "UPDATE_CARD",
     UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS",
-    UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS"
+    UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS",
+    LOAD_PROJECT:"LOAD_PROJECT"
 }
 
 
@@ -20,10 +21,9 @@ function createCard(cardTitle,listId,projectId) {
         cardDescription: ''
     }
     return dispatch => {
+        dispatch({ type: labels.LOAD_PROJECT })
         _service.Card.create(body)
         .then(res => {
-            //_service.Project.getAllWithCards(body)
-           // .then(resF => {
                const card = {
                    ...res,
                    CardListFks : []
@@ -33,9 +33,6 @@ function createCard(cardTitle,listId,projectId) {
                     payload: card
                 });
             })
-         /*   .catch((err) => {
-                dispatch(err)
-            })*/
         .catch((err) => {
             dispatch(err)
         });
