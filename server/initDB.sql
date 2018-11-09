@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS public.MemberHasCard CASCADE;
 DROP TABLE IF EXISTS public.MemberHasPermissionTeam CASCADE;
 DROP TABLE IF EXISTS public.MemberHasPermissionProject CASCADE;
 DROP TABLE IF EXISTS public.CardHasLabel CASCADE;
+DROP TABLE IF EXISTS public.MemberHasCard CASCADE;
 
 ------------------------------------------------------------
 --        Script Postgre
@@ -140,13 +141,13 @@ CREATE TABLE public.Action(
 ------------------------------------------------------------
 CREATE TABLE public.Label(
 	label_id            SERIAL NOT NULL ,
-	label_color         INT  NOT NULL ,
+	label_color         VARCHAR (50)   NOT NULL ,
 	label_description   VARCHAR (250)   ,
 	CONSTRAINT Label_PK PRIMARY KEY (label_id)
 )WITHOUT OIDS;
 
 
-------------------------------------------------------------
+------------------------------------------------s------------
 -- Table: Attachment
 ------------------------------------------------------------
 CREATE TABLE public.Attachment(

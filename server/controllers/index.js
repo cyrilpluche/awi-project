@@ -13,9 +13,10 @@ const MemberHasCard = require('./MemberHasCard');
 const MemberHasAction = require('./MemberHasAction');
 const MemberHasPermissionProject = require('./MemberHasPermissionProject');
 
+const CardHasLabel = require('./CardHasLabel');
+
 const Action = require('./Action');
 const Permission = require('./Permission');
-
 const End = require('./Endpoint');
 
 module.exports = {
@@ -33,6 +34,8 @@ module.exports = {
     MemberHasCard,
     MemberHasAction,
     MemberHasPermissionProject,
+
+    CardHasLabel,
 
     Action,
     Permission,
