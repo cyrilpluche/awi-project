@@ -22,8 +22,6 @@ export function signup (state = initialState, action){
         case labels.SIGN_UP:
             return {
                 ...state,
-                member: action.payload,
-                isLogged: true,
                 isLoading: false,
                 msgError: ['', '']
             };
@@ -31,7 +29,6 @@ export function signup (state = initialState, action){
         case labels.SIGN_UP_ERROR:
             return {
                 ...state,
-                isLogged: false,
                 isLoading: false,
                 msgError: action.payload
             }

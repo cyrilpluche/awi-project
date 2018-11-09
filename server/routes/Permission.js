@@ -9,7 +9,7 @@ const mhp = require('../controllers').MemberHasProject;
 router.use(mw.Token.verifyToken)
 
 router.get('/find_all', permissionController.findAll);
-router.get('/find_all_for_project', mhp.findAll, mhppController.findAllFromMembers);
+router.get('/find_all_for_project', mhp.findAll);
 router.get('/find_one', permissionController.findOne);
 
 router.post('/create', permissionController.create);

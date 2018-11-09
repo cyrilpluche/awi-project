@@ -32,7 +32,8 @@ class Invitation extends React.Component {
 
     acceptInvitation () {
         let body = {
-            memberhasprojectStatus: 1
+            memberhasprojectStatus: 1,
+            projectIsFavorite: false
         }
         let query = {
             projectId: this.props.project.projectId,
@@ -51,7 +52,7 @@ class Invitation extends React.Component {
 
     render() {
         const {classes} = this.props;
-
+        console.log(this.props)
         return (
             <div className={ classes.layout }>
                 {this.props.isLoading || this.props.isLoadingGlobal ? (
@@ -111,7 +112,7 @@ class Invitation extends React.Component {
                             <div>NOT VALID NO !</div>
                         )}
                     </div>
-                ) : this.props.isAccountExist ? (
+                ) : this.props.member.memberStatus === 1 ? (
                     <Signin parent='Invitation' invitation={{memberEmail: this.props.member.memberEmail}} />
                 ) : (
                     <Signup invitation={{memberEmail: this.props.member.memberEmail}} />

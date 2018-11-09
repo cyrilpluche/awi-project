@@ -2,11 +2,7 @@
 
 server/\.env
 
-server/sequelize-template/
-
 server/node_modules/
-
-server/models/
 
 \.idea/codeStyles/Project\.xml
 

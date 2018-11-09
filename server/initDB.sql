@@ -142,8 +142,11 @@ CREATE TABLE public.Action(
 CREATE TABLE public.Label(
 	label_id            SERIAL NOT NULL ,
 	label_color         VARCHAR (50)   NOT NULL ,
-	label_description   VARCHAR (250)   ,
+	label_description   VARCHAR (250)  ,
+	project_id          INT  NOT NULL  ,
 	CONSTRAINT Label_PK PRIMARY KEY (label_id)
+
+	,CONSTRAINT Label_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -266,14 +269,12 @@ CREATE TABLE public.MemberHasPermissionProject(
 -- Table: CardHasLabel
 ------------------------------------------------------------
 CREATE TABLE public.CardHasLabel(
-	label_id     INT  NOT NULL ,
-	card_id      INT  NOT NULL ,
-	project_id   INT  NOT NULL  ,
-	CONSTRAINT CardHasLabel_PK PRIMARY KEY (label_id,card_id,project_id)
+	card_id    INT  NOT NULL ,
+	label_id   INT  NOT NULL  ,
+	CONSTRAINT CardHasLabel_PK PRIMARY KEY (card_id,label_id)
 
-	,CONSTRAINT CardHasLabel_Label_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id)
-,CONSTRAINT CardHasLabel_Card0_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
-,CONSTRAINT CardHasLabel_Project1_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
+	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
+	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 ------------------------------------------------------------

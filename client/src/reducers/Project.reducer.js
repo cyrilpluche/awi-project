@@ -124,7 +124,6 @@ export function project (state = initialState, action) {
         case projectLabels.REMOVE_MEMBER_FROM_PROJECT:
             return {
                 ...state,
-                isLoading: false
             };
         //TODO
         case projectLabels.SET_MEMBER_ADMIN:

@@ -24,6 +24,10 @@ const Member = {
         return Api.post(url + 'sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)
     },
 
+    updateMemberInvitation (body) {
+        return Api.put(url + 'update_sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)
+    },
+
     /* Set the status of a member to 1 if the token is valid */
     validateAccount (memberToken) {
         return Api.put(url + 'validate_account',null , memberToken).then(res => res.data)

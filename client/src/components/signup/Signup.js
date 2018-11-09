@@ -35,7 +35,9 @@ class Signup extends React.Component {
     }
 
     submit () {
-        this.props.onAdd(this.state, this.props.isInvitation)
+        let isInvitation = false
+        if (this.props.invitation) isInvitation = true
+        this.props.onAdd(this.state, isInvitation)
     }
 
     goBackToLogin () {
