@@ -66,7 +66,7 @@ class ChecklistDialog extends React.Component {
     };
 
     render() {
-        const { classes, onClose, selectedValue, isLoading, ...other } = this.props;
+        const { classes, onClose, selectedValue, onCreateTask, onUpdateTask, onDeleteTask, isLoading, ...other } = this.props;
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set checklist</DialogTitle>

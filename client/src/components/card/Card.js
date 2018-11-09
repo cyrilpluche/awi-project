@@ -29,8 +29,6 @@ class Cardboard extends React.Component {
         super(props)
         this.updateCard = this.updateCard.bind(this)
 
-        console.log(props)
-
         this.state = {
             open: false,
             card: this.props.currentCard
@@ -180,6 +178,7 @@ class Cardboard extends React.Component {
         )*/
 
         const cardDialog = (
+
             <Dialog
                 open={this.state.open}
                 onClose={this.handleClose}

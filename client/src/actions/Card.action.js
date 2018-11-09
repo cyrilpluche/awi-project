@@ -20,8 +20,10 @@ const labels = {
     CREATE_TASK_ERROR: 'CREATE_TASK_ERROR',
     LOAD: "LOAD",
     GET_ALL_LABEL: 'GET_ALL_LABEL',
-    UPDATE_LABEL: 'UPDATE_LABEL',
-    UPDATE_LABEL_ERROR: 'UPDATE_LABEL_ERROR',
+    CREATE_LINK_LABEL: 'CREATE_LINK_LABEL',
+    CREATE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
+    DELETE_LINK_LABEL: 'CREATE_LINK_LABEL',
+    DELETE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR'
 }
 
 function getCard(cardId) {
@@ -92,30 +94,6 @@ function updateTask(card, taskId, body) {
         })
 };
 
-function updateLabel(cardId, labelId, query, labels) {
-    let id = {
-        cardId: cardId,
-        labelId: labelId
-    };
-    return dispatch => _service.Card.updateLabel(id, query)
-        .then(isUpdated => {
-            if(isUpdated){
-                dispatch({
-                    type: labels.UPDATE_LABEL,
-                    payload: labels
-                })
-            }else{
-                dispatch({
-                    type: labels.UPDATE_LABEL_ERROR
-                })
-            }
-        })
-        .catch (e => {
-            dispatch({
-                type: labels.UPDATE_LABEL_ERROR
-            })
-        })
-};
 
 function deleteTask(taskId, card) {
     return dispatch => _service.Task.delete({taskId: taskId})
@@ -229,6 +207,41 @@ function createTask(newTask, card) {
     }
 };
 
+function createLinkLabel(query) {
+    return dispatch => {
+        _service.card.createLinkLabel(query)
+            .then(res => {
+                dispatch({
+                    type: labels.CREATE_LINK_LABEL
+                })
+            }).catch (e => {
+            dispatch({
+                type: labels.CREATE_LINK_LABEL_ERROR
+            })
+        })
+    }
+};
+
+function deleteLinkLabel(query) {
+    return dispatch => _service.Card.deleteLinkLabel(query)
+        .then(isDeleted => {
+            if (isDeleted) {
+                dispatch({
+                    type: labels.DELETE_LINK_LABEL,
+                })
+            } else {
+                dispatch({
+                    type: labels.DELETE_LINK_LABEL_ERROR
+                })
+            }
+        })
+        .catch (e => {
+            dispatch({
+                type: labels.DELETE_LINK_LABEL_ERROR
+            })
+        })
+};
+
 export const cardAction = {
     labels,
     getCard,
@@ -239,5 +252,7 @@ export const cardAction = {
     createTask,
     getLabels,
     addMember,
-    removeMember
+    removeMember,
+    createLinkLabel,
+    deleteLinkLabel
 }

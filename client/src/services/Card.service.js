@@ -20,13 +20,17 @@ const Card = {
         return Api.post(url + 'create', body).then(res => res.data)
     },
 
-    update(cardId,body){
-        return Api.put(url + 'update/'+cardId, body).then(res => res.data)
+    createLinkLabel(body){
+        return Api.post(url + 'create_card_has_label', body).then(res => res.data)
     },
 
-    updateLabel (object, body) {
-        let where = helper.Request.urlFromObject(object)
-        return Api.put(url + 'update_card_has_label' + where, body).then(res => res.data)
+    deleteLinkLabel(query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.delete(url + 'delete_card_has_label' + where).then(res => res.data)
+    },
+
+    update(cardId,body){
+        return Api.put(url + 'update/'+cardId, body).then(res => res.data)
     },
 
     searchbarCards (str) {

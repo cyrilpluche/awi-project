@@ -45,10 +45,8 @@ export function card (state = initialState, action) {
             return { ...state, labels: action.payload };
         case labels.UPDATE_TASK:
             return { ...state, card: action.payload };
-        case labels.UPDATE_LABEL:
-            return { ...state, card: action.payload };
         case labels.DELETE_CARD:
-            return { ...state}; //TODO Handle Payload if delete
+            return { ...state};
         default:
             return state
     }
