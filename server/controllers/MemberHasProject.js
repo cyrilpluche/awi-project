@@ -8,6 +8,7 @@ const Project = require('../config/db_connection').Project
 const Mhpp = require('../config/db_connection').MemberHasPermissionProject
 const List = require('../config/db_connection').List
 const Card = require('../config/db_connection').Card
+const Permission = require('../config/db_connection').Permission
 
 module.exports = {
 
@@ -45,7 +46,15 @@ module.exports = {
                 include: [{
                     model: Member,
                     as: 'Member',
-                    include: [{ model: Mhpp, as: 'HaspermissionprojectMember1Fks' }]
+                    include: [{
+                        model: Mhpp,
+                        as: 'HaspermissionprojectMember1Fks',
+                        where: req.query,
+                        include: [{
+                            model: Permission,
+                            as: 'Permission'
+                        }]
+                    }]
                 }]
             })
             .then(mhps => {
@@ -102,6 +111,8 @@ module.exports = {
             })
             .then(mhp => {
                 req.body.result = mhp
+                console.log('MEMBER HAS PROJECT !!!')
+                console.log(req.body.result)
                 next()
             })
             .catch(error => res.status(400).send(error))

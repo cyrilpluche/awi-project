@@ -116,6 +116,25 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    /**
+     *  return: Take the member with the decoded arguments
+     */
+    findOneForLog(req, res, next) {
+        Member
+            .findOne({
+                where: {
+                    memberEmail: req.decoded.memberEmail
+                }
+            })
+            .then(member => {
+                if (member) next()
+                else {
+                    res.status(400).send('Member:findOneForLog: Failed to decode token.')
+                }
+            })
+            .catch(error => res.status(400).send('Member:findOneForLog | ' + error));
+    },
+
     /*  localhost:4200/api/member/update/2
      *
      *  req.body = {
@@ -297,6 +316,7 @@ module.exports = {
                     memberEmail: req.body.result.memberEmail,
                     memberStatus: req.body.result.memberStatus,
                 }
+                console.log(req.body.result)
                 next()
             } else {
                 // The user don't exist

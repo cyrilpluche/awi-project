@@ -56,7 +56,10 @@ module.exports = {
                         projectId: req.query.projectId,
                         memberId: member.memberId
                     },
-                    include: [{ model: Permission, as: 'Permission' }]
+                    include: [{
+                        model: Permission,
+                        as: 'Permission'
+                    }]
                 })
                 .then(mhpps => {
                     let memberPermissions = Object.assign( member.Member )
@@ -123,6 +126,23 @@ module.exports = {
             })
             .then(isDeleted => {
                 req.body.result = isDeleted === 1
+                next()
+            })
+            .catch(error => res.status(400).send(error))
+    },
+
+    /**
+     *  return: Create all permission (false) for a new member on  project.
+     */
+    initAll (req, res, next) {
+        Mhpp
+            .create({
+                projectId: req.body.result.projectId,
+                memberId: req.body.result.memberId,
+                permissionId: 3,
+                mhppState: false
+            })
+            .then(permission => {
                 next()
             })
             .catch(error => res.status(400).send(error))

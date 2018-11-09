@@ -24,6 +24,11 @@ const Action = {
     updateOnProject (object, body) {
         let where = helper.Request.urlFromObject(object)
         return Api.put(url + 'update_for_project' + where, body).then(res => res.data)
+    },
+
+    deleteForMemberOnProject (object) {
+        let where = helper.Request.urlFromObject(object)
+        return Api.delete(url + 'delete_for_project' + where).then(res => res.data)
     }
 
 

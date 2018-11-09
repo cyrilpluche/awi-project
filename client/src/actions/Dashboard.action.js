@@ -71,9 +71,9 @@ function getAllTeams(member_id) {
 }
 
 
-function updateMemberHasProject (projectId, memberId, projectIsFavorite, memberhasprojectStatus) {
+function updateMemberHasProject (projectId, memberId, projectIsFavorite) {
     let dataObject = {
-        projectId, memberId, projectIsFavorite, memberhasprojectStatus
+        projectId, memberId, projectIsFavorite
     }
 
     return dispatch => _service.Project.updateMemberHasProject(dataObject)
@@ -98,8 +98,8 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
 
     return dispatch => _service.Project.createProject( projectTitle, projectVisibility, projectStatus, projectDateTarget)
         .then(project => {
-            let projectId = project.projectId
-            return _service.Project.createMemberHasProject(memberId, projectId, memberhasprojectStatus)
+            const projectId = project.projectId
+            _service.Project.createMemberHasProject(memberId, projectId, memberhasprojectStatus)
                 .then( () => {
                     let project = {
                         projectId,
@@ -115,13 +115,11 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
                      */
                     let permissionId = 3
                     let mhppState = true
-                    return _service.Permission
+                    _service.Permission
                         .createMemberProjectPermission(memberId, projectId, permissionId, mhppState)
                         .then(permission => {
-                            dispatch({
-                                type: labels.CREATE_NEW_PROJECT,
-                                payload: project
-                            })
+
+                            console.log('ON TENTE SA MERE')
 
                             _service.Action.createActivityForAllMembers({
                                 actionType: 0,
@@ -132,13 +130,25 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
                                 actionDateCreation: moment(),
                                 mhaStatus: 0
                             })
+                                .then(res => {
+                                    console.log('SUCCESS POULET')
+                                    dispatch({
+                                        type: labels.CREATE_NEW_PROJECT,
+                                        payload: project
+                                    })
+                                    _helper.History.push('/project/' + projectId)
+                                    console.log(res)
+                                })
+                                .catch(err => {
+                                    console.log('ERRER POULET')
+                                    console.log(err)
+                                })
 
-                            // tODO maybe dispatch the permission
-                            _helper.History.push('/project/' + projectId)
+
                         })
 
                 })
-    }).catch (e => {
+        }).catch (e => {
             dispatch({
                 type: labels.DASHBOARD_ACTION_ERROR,
                 errorMsg: 'The project wasn`t able to be created. Please try later or contact an administrator.'

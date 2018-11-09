@@ -29,7 +29,7 @@ const Action = {
 
     /** Generate project activity for all members of an array */
     createActivityForAllMembers (body) {
-        let where = helper.Request.urlFromObject(body.projectId)
+        let where = helper.Request.urlFromObject({projectId: body.projectId})
         return Api.post(url + 'create_mha_from_array' + where, body).then(res => res.data)
     }
 

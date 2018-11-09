@@ -208,7 +208,7 @@ function sendInvitationProject(body){
             .then(member => {
                 body.memberId = member.memberId
                 body.memberhasprojectStatus = 0
-                body.projectIdFavorite = false
+                body.projectIsFavorite = false
 
                 _service.Project.createAndSendInvitation(body)
                     .then(res => {
@@ -273,18 +273,26 @@ function removeMemberFromProject(query){
                 dispatch({
                     type: labels.REMOVE_MEMBER_FROM_PROJECT
                 })
-                _service.Project.getAllMembers({ projectId: query.projectId })
-                    .then(res => {
-                        dispatch({
-                            type: labels.GET_ALL_MEMBERS,
-                            payload: res
-                        });
+                _service.Permission.deleteForMemberOnProject(query)
+                    .then(res2 => {
+                        _service.Project.getAllMembers({ projectId: query.projectId })
+                            .then(res => {
+                                dispatch({
+                                    type: labels.GET_ALL_MEMBERS,
+                                    payload: res
+                                });
+                            })
+                            .catch((err) => {
+                                dispatch({
+                                    type: labels.GET_ALL_MEMBERS_ERROR,
+                                    payload: err
+                                });
+                            });
                     })
                     .catch((err) => {
                         dispatch({
-                            type: labels.GET_ALL_MEMBERS_ERROR,
-                            payload: err
-                        });
+                            type: labels.REMOVE_MEMBER_FROM_PROJECT_ERROR
+                        })
                     });
             })
             .catch((err) => {
@@ -310,7 +318,7 @@ function setMemberAsAdmin(projectId, memberId){
 
 }
 
-/**TODO SERVICE
+/**
  * get all activities related to a project (Limit 15)
  */
 function getActivity(projectId){

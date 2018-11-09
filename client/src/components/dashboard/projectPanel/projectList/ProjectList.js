@@ -111,7 +111,7 @@ class ProjectList extends React.Component {
         let projectIsFavorite = !this.props.projects[index].projectIsFavorite
         let projectId = this.props.projects[index].projectId
         let memberId = this.props.memberId
-        this.props.updateProject(projectId, memberId, projectIsFavorite, null)
+        this.props.updateProject(projectId, memberId, projectIsFavorite)
     }
 
     render() {

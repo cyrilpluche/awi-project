@@ -137,6 +137,7 @@ module.exports = {
 
         smtpTransport.sendMail(mailOptions, (error, info) => {
             if (error) {
+                console.log('ERROR MAIL')
                 console.log(error)
                 res.status(400).send('Failed to send email.');
             } else {

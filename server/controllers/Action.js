@@ -32,7 +32,7 @@ module.exports = {
                 req.body.actionId = action.actionId
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send('Action:create | ' + error));
     },
 
     /*  localhost:4200/api/action/find_all --- ?actionTitle=title... (optional)
