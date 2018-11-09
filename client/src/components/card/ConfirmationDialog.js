@@ -31,7 +31,8 @@ class ConfirmationDialog extends React.Component {
             this.props.onUpdateCard(this.props.card, {cardStatus: 1});
             this.setState({ open: false });
         }else{
-            this.props.onDeleteCard(this.props.card.cardId);
+            this.props.onDeleteCard(this.props.card.cardId, this.props.listIndex, this.props.cardIndex);
+            this.props.handleParentClose()
             this.setState({ open: false });
         }
     };
@@ -84,7 +85,6 @@ ConfirmationDialog.propTypes = {
 };*/
 
 const mapStateToProps = (state) => ({
-    card: state.card.card
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,

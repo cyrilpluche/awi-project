@@ -24,6 +24,7 @@ const labels = {
     CREATE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
     DELETE_LINK_LABEL: 'CREATE_LINK_LABEL',
     DELETE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR'
+    LOAD_PROJECT: "LOAD_PROJECT",
 }
 
 function getCard(cardId) {
@@ -116,25 +117,31 @@ function deleteTask(taskId, card) {
         })
 };
 
-function deleteCard(cardId) {
-    return dispatch => _service.Card.delete({cardId: cardId})
-        .then(isDeleted => {
-            if(isDeleted){
-                dispatch({
-                    type: labels.DELETE_CARD,
-                    payload: '' //TODO handle payload if deleted
-                })
-            }else{
+function deleteCard(cardId, listIndex, cardIndex) {
+    return dispatch => {
+        dispatch({ type: labels.LOAD_PROJECT })
+        _service.Card.delete({cardId: cardId})
+            .then(isDeleted => {
+                if(isDeleted){
+                    dispatch({
+                        type: labels.DELETE_CARD,
+                        payload: {
+                            listIndex: listIndex,
+                            cardIndex: cardIndex
+                        }
+                    })
+                }else{
+                    dispatch({
+                        type: labels.DELETE_CARD_ERROR
+                    })
+                }
+            })
+            .catch (e => {
                 dispatch({
                     type: labels.DELETE_CARD_ERROR
                 })
-            }
-        })
-        .catch (e => {
-            dispatch({
-                type: labels.DELETE_CARD_ERROR
             })
-        })
+    }
 };
 
 function addMember(cardId, memberId, membersOnCard, membersOffCard) {

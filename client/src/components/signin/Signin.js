@@ -15,6 +15,7 @@ import CloudIcon from '@material-ui/icons/Cloud'
 import Typography from "@material-ui/core/Typography/Typography";
 import _helper from "../../helpers";
 import HowToRegIcon from "@material-ui/icons/HowToReg"
+import {member} from "../../reducers/Member.reducer";
 
 
 class Signin extends React.Component {
@@ -34,8 +35,8 @@ class Signin extends React.Component {
                 memberPassword: '',
             };
         }
+        this.signinWithGithub = this.signinWithGithub.bind(this);
     }
-
     submit () {
         let memberEmail = this.state.memberEmail
         let memberPassword = this.state.memberPassword
@@ -45,6 +46,10 @@ class Signin extends React.Component {
         } else {
             this.props.onLogin(memberEmail, memberPassword, '/home')
         }
+    }
+
+    signinWithGithub () {
+        this.props.onSigninWithGithub()
     }
 
     goToForgottenPassword () {
@@ -164,15 +169,13 @@ class Signin extends React.Component {
                                             color="inherit"
                                             fullWidth
                                             className={classes.button}
+                                            onClick={this.signinWithGithub}
                                             >
                                                 Sign In with Github
                                                 <CloudIcon className={classes.rightIcon} />
                                             </Button>
                                         </div>
                                     ) : null }
-
-
-
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -200,7 +203,9 @@ const mapStateToProps = (state) => ({
     errorMsg: state.signin.msgError
 })
 const mapDispatchToProps = {
-    onLogin : _action.signinAction.signin
+    onLogin : _action.signinAction.signin,
+    onSigninWithGithub: _action.signinAction.signinWithGithub,
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Signin));
