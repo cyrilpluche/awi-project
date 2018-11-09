@@ -197,6 +197,13 @@ export function project (state = initialState, action) {
                 lists : updatedLists,
                 isLoading: false
             };
+        case cardLabels.ARCHIVE_CARD:
+            updatedLists = Array.from(state.lists)
+            updatedLists[action.payload.listIndex].CardListFks[action.payload.cardIndex].cardStatus = 1
+            return {
+                ...state,
+                lists : updatedLists,
+            };
 
         default:
             return state

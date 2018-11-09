@@ -24,7 +24,8 @@ const labels = {
     CREATE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
     DELETE_LINK_LABEL: 'CREATE_LINK_LABEL',
     DELETE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
-    LOAD_PROJECT: "LOAD_PROJECT"
+    LOAD_PROJECT: "LOAD_PROJECT",
+    ARCHIVE_CARD:"ARCHIVE_CARD"
 }
 
 function getCard(cardId) {
@@ -58,11 +59,19 @@ function getLabels() {
 }
 
 
-function updatecard(card, body) {
-    return dispatch => _service.Card.update(card.cardId,body)
+function updatecard(cardId, value,listIndex, cardIndex) {
+
+    const body = {
+        cardStatus : value
+    }
+    return dispatch => _service.Card.update(cardId,body)
         .then(id => {
             dispatch({
-                card
+                type : labels.ARCHIVE_CARD,
+                payload: {
+                    listIndex: listIndex,
+                    cardIndex: cardIndex
+                }
             })
         })
         .catch (e => {

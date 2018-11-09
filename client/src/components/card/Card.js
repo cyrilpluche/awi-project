@@ -236,7 +236,12 @@ class Cardboard extends React.Component {
                                 </Button>
                                 <LabelDialog/>
                                 <Checklist/>
-                                <ConfirmationDialog content = {{type:'archive'}}/>
+                                <ConfirmationDialog 
+                                    content = {{type:'archive'}} 
+                                    card={this.state.card} 
+                                    listIndex={this.props.listIndex}
+                                    cardIndex={this.props.cardIndex}
+                                />
                                 <ConfirmationDialog
                                     content = {{type:'delete'}}
                                     card={this.state.card}

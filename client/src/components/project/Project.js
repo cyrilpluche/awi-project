@@ -63,20 +63,20 @@ class Project extends Component {
         this.archiveList = this.archiveList.bind(this)
         this.createCard = this.createCard.bind(this)
         this.createNewList = this.createNewList.bind(this)
-        this.socket = SocketIOClient('http://localhost:4200')
-        this.socket.on('add', this.socketNew.bind(this))
-        this.socket.on('move', this.socketMove.bind(this))
+        //this.socket = SocketIOClient('http://localhost:4200')
+        //this.socket.on('add', this.socketNew.bind(this))
+        //this.socket.on('move', this.socketMove.bind(this))
 
         
     }
 
-    socketNew(msg){
+   /* socketNew(msg){
         this.props.getAllListsWithCards(this.props.match.params.id)
     }
 
     socketMove(newLists){
        this.setState({lists:newLists})
-    }
+    }*/
 
     componentWillMount() {
         const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
@@ -128,7 +128,7 @@ class Project extends Component {
             //redirect to home
             _helper.History.push('/home')
         }
-        console.log('Did Update')
+        
 
         // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
@@ -145,7 +145,6 @@ class Project extends Component {
 
 
 
-
     /**
      * Create a new List by calling the action "createList"
      * @param listName title of the new list
@@ -155,7 +154,7 @@ class Project extends Component {
         const {lists} = this.state
         
 
-        this.socket.emit('add',"new list")
+        //this.socket.emit('add',"new list")
 
 
             // if its the first list created for this project, the list has no father
@@ -231,7 +230,7 @@ class Project extends Component {
             //set state with the new list           
             this.setState({lists:newArrayList},() =>{
                 
-                this.socket.emit('move', newArrayList)
+                //this.socket.emit('move', newArrayList)
                 //let updateList = lists.find(list => list.listId === dragId)
                 //let updateList = findWhere(lists,{listId: dragId})
 
@@ -287,7 +286,7 @@ class Project extends Component {
                 newList.splice(destinationListIndex,0,destinationList)
                 
                 this.setState({lists: newList}, () =>{
-                    this.socket.emit('move', newList)
+                    //this.socket.emit('move', newList)
                     this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
 
@@ -309,7 +308,7 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0, sourceList)
                 
                 this.setState({lists: newList}, () =>{
-                    this.socket.emit('move', newList)
+                   // this.socket.emit('move', newList)
                 })
 
                  

@@ -100,7 +100,7 @@ class MemberDialog extends Component {
     }
 
     render() {
-        const { isLoading, isAdmin, setAsAdministrator,removeMemberFromProject, sendInvitation, projectInfo, classes, onClose, selectedValue, ...other } = this.props;
+        const {onUpdatePermission, isLoading, isAdmin, setAsAdministrator,removeMemberFromProject, sendInvitation, projectInfo, classes, onClose, selectedValue, ...other } = this.props;
         return (
             <Dialog
                 onClose={this.close.bind(this)}

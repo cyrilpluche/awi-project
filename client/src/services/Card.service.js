@@ -30,7 +30,8 @@ const Card = {
     },
 
     update(cardId,body){
-        return Api.put(url + 'update/'+cardId, body).then(res => res.data)
+        
+        return Api.put(url + 'update/'+cardId ,body).then(res => res.data)
     },
 
     searchbarCards (str) {
