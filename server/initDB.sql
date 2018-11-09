@@ -146,7 +146,7 @@ CREATE TABLE public.Label(
 	project_id          INT  NOT NULL  ,
 	CONSTRAINT Label_PK PRIMARY KEY (label_id)
 
-	,CONSTRAINT Label_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id)
+	,CONSTRAINT Label_Project_FK FOREIGN KEY (project_id) REFERENCES public.Project(project_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -273,8 +273,8 @@ CREATE TABLE public.CardHasLabel(
 	label_id   INT  NOT NULL  ,
 	CONSTRAINT CardHasLabel_PK PRIMARY KEY (card_id,label_id)
 
-	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id)
-	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id)
+	,CONSTRAINT CardHasLabel_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
+	,CONSTRAINT CardHasLabel_Label0_FK FOREIGN KEY (label_id) REFERENCES public.Label(label_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 ------------------------------------------------------------

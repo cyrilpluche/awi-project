@@ -9,7 +9,8 @@ module.exports = {
     /**
      *  req.body = {
      *      labelColor: Integer,
-     *      labelDescription: String
+     *      labelDescription: String,
+     *      projectId: INT
      *  }
      *
      *  return: The Label object.
@@ -62,6 +63,7 @@ module.exports = {
      *  req.body = {
      *      labelColor: Integer,
      *      labelDescription: String
+     *      projectId: INT
      *  }
      *
      *  return: A boolean. true = Updated, false = Not updated.
