@@ -52,7 +52,6 @@ class Lists extends Component {
     
     render() {
         const { classes,lists,idProject} = this.props;
-        console.log("RE RENDER LISTS")
     
         return (
 

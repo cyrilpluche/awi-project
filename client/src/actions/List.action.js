@@ -8,7 +8,8 @@ const labels = {
     UPDATE_CARD: "UPDATE_CARD",
     UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS",
     UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS",
-    LOAD_PROJECT:"LOAD_PROJECT"
+    LOAD_PROJECT:"LOAD_PROJECT",
+    RESTORE_CARD:"RESTORE_CARD"
 }
 
 
@@ -169,6 +170,22 @@ function updatePositionLists(newOrderedArray){
     }
 }
 
+function restoreCard(card, body){
+    return dispatch => {
+        _service.Card.update(card.cardId,body)
+        .then(res => {
+
+            dispatch({
+                    type: labels.RESTORE_CARD,
+                    payload: card
+            });
+        })
+        .catch((err) => {
+                dispatch(err)
+        });
+    }
+}
+
 
 export const listAction = {
     labels,
@@ -178,6 +195,7 @@ export const listAction = {
     updateListTitle,
     deleteList,
     updateListStatus,
-    updatePositionLists
+    updatePositionLists,
+    restoreCard
 }
 

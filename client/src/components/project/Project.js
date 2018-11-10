@@ -260,7 +260,7 @@ class Project extends Component {
         
         // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-            console.log(result)
+           
             let sourceListId =  Number.parseInt(source.droppableId.split(':')[0])
             let sourceList = Object.assign({},lists.find(list => list.listId === sourceListId ))
 
@@ -295,7 +295,7 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0,sourceList)
                 newList.splice(destinationListIndex,1,)
                 newList.splice(destinationListIndex,0,destinationList)
-                console.log(newList)
+                
                 this.setState({lists: newList}, () =>{
                     //this.socket.emit('move', newList)
                    this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
@@ -377,8 +377,16 @@ class Project extends Component {
         });
     };
 
-    handleRestoreArchived = listId => event =>{
-        this.props.restoreList(listId,0)
+    handleRestoreArchived = (name,type) => event =>{
+
+        if(type === "list") {
+            
+            this.props.restoreList(name,0)
+        }
+        if(type === "card") {
+            
+            this.props.restoreCard(name,{cardStatus:0})
+        }
         //this.toggleDrawer('openArchived', false)
     }
     
@@ -501,7 +509,7 @@ class Project extends Component {
                                                 {list.listTitle}
                                             </Grid>
                                             <Grid xs={2} item>
-                                                <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
+                                                <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId,"list")}>
                                                     <RestorePage fontSize="small" />
                                                 </IconButton>
                                             </Grid>
@@ -525,7 +533,7 @@ class Project extends Component {
                                                     {card.cardTitle}
                                                 </Grid>
                                                 <Grid xs={2} item>
-                                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
+                                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton}  onClick={this.handleRestoreArchived(card,"card")}>
                                                         <RestorePage fontSize="small" />
                                                     </IconButton>
                                                 </Grid>
@@ -655,6 +663,7 @@ const mapDispatchToProps ={
     getMemberHasProject : _action.projectAction.getMemberHasProject,
     onGetAllPermissions: _action.projectAction.getAllPermissions,
     restoreList: _action.listAction.updateListStatus,
+    restoreCard : _action.listAction.restoreCard,
     updatePositionLists: _action.listAction.updatePositionLists,
     createCard: _action.listAction.createCard,   
     updateListTitle: _action.listAction.updateListTitle,

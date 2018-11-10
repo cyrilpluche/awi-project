@@ -192,31 +192,48 @@ export function project (state = initialState, action) {
             };
 
         case cardLabels.DELETE_CARD:
-            console.log(state.lists)
-            console.log(action.payload.listIndex)
-            console.log(action.payload.cardIndex)
+
             let updatedLists = Array.from(state.lists)
             updatedLists[action.payload.listIndex].CardListFks.splice(action.payload.cardIndex, 1)
-            console.log(updatedLists)
             return {
                 ...state,
                 lists : updatedLists,
                 isLoading: false
             };
        case cardLabels.ARCHIVE_CARD:
-            console.log(state.lists)
-            console.log(action.payload.listIndex)
-            console.log(action.payload.cardIndex)
+            //Copy array of list
             let archivedCards = Array.from(state.lists)
+            // modify card status
             archivedCards[action.payload.listIndex].CardListFks[action.payload.cardIndex].cardStatus = 1
+            // reorder archived and not archived card of the updated list in order to correspond to good index
             let notarchivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 0)
             let archivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 1)
+            //concat both lists
             archivedCards[action.payload.listIndex].CardListFks = notarchivedCardsArray.concat(archivedCardsArray)
             return {
                 ...state,
                 lists : archivedCards,
             };
+            case listLabels.RESTORE_CARD:
+            //Copy array of list
+            let arrayOfList = Array.from(state.lists)
 
+            //Find index of the list 
+            let listWithCardIndex = arrayOfList.findIndex(list => list.listId === action.payload.listId)
+            let cardIndex = arrayOfList[listWithCardIndex].CardListFks.findIndex(card => card.cardId === action.payload.cardId)
+
+            // modify card status
+            arrayOfList[listWithCardIndex].CardListFks[cardIndex].cardStatus = 0
+            // reorder archived and not archived card of the updated list in order to correspond to good index
+            let notarchivedCards = arrayOfList[listWithCardIndex].CardListFks.filter(card => card.cardStatus === 0)
+            let archiveCards =  arrayOfList[listWithCardIndex].CardListFks.filter(card => card.cardStatus === 1)
+            
+            //concat both lists
+            arrayOfList[listWithCardIndex].CardListFks = notarchivedCards.concat(archiveCards)
+            return {
+                ...state,
+                lists : arrayOfList,
+            };
         default:
             return state
     }
