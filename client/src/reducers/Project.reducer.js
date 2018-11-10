@@ -192,8 +192,10 @@ export function project (state = initialState, action) {
             };
 
         case cardLabels.DELETE_CARD:
-            let updatedLists = Array.from(state.lists)
             console.log(state.lists)
+            console.log(action.payload.listIndex)
+            console.log(action.payload.cardIndex)
+            let updatedLists = Array.from(state.lists)
             updatedLists[action.payload.listIndex].CardListFks.splice(action.payload.cardIndex, 1)
             console.log(updatedLists)
             return {
@@ -202,8 +204,14 @@ export function project (state = initialState, action) {
                 isLoading: false
             };
        case cardLabels.ARCHIVE_CARD:
+            console.log(state.lists)
+            console.log(action.payload.listIndex)
+            console.log(action.payload.cardIndex)
             let archivedCards = Array.from(state.lists)
             archivedCards[action.payload.listIndex].CardListFks[action.payload.cardIndex].cardStatus = 1
+            let notarchivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 0)
+            let archivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 1)
+            archivedCards[action.payload.listIndex].CardListFks = notarchivedCardsArray.concat(archivedCardsArray)
             return {
                 ...state,
                 lists : archivedCards,
