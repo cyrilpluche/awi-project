@@ -148,7 +148,7 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
                         })
 
                 })
-        }).catch (e => {
+    }).catch (e => {
             dispatch({
                 type: labels.DASHBOARD_ACTION_ERROR,
                 errorMsg: 'The project wasn`t able to be created. Please try later or contact an administrator.'
