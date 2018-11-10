@@ -47,8 +47,10 @@ export function project (state = initialState, action) {
             let listWithCard = Array.from(state.lists)
             let findList = listWithCard.find(list => list.listId === action.payload.listId)
             let findListIndex = listWithCard.findIndex(list => list.listId === action.payload.listId)
-            
-            findList.CardListFks.push(action.payload)
+            let notarchivedCardsCreate = findList.CardListFks.filter(card => card.cardStatus === 0)
+            let archivedCardsCreate = findList.CardListFks.filter(card => card.cardStatus === 1)
+            notarchivedCardsCreate.push(action.payload)
+            findList.CardListFks = notarchivedCardsCreate.concat(archivedCardsCreate)
             listWithCard.splice(findListIndex,1)
             listWithCard.splice(findListIndex,0,findList)
             
@@ -191,18 +193,20 @@ export function project (state = initialState, action) {
 
         case cardLabels.DELETE_CARD:
             let updatedLists = Array.from(state.lists)
+            console.log(state.lists)
             updatedLists[action.payload.listIndex].CardListFks.splice(action.payload.cardIndex, 1)
+            console.log(updatedLists)
             return {
                 ...state,
                 lists : updatedLists,
                 isLoading: false
             };
-        case cardLabels.ARCHIVE_CARD:
-            updatedLists = Array.from(state.lists)
-            updatedLists[action.payload.listIndex].CardListFks[action.payload.cardIndex].cardStatus = 1
+       case cardLabels.ARCHIVE_CARD:
+            let archivedCards = Array.from(state.lists)
+            archivedCards[action.payload.listIndex].CardListFks[action.payload.cardIndex].cardStatus = 1
             return {
                 ...state,
-                lists : updatedLists,
+                lists : archivedCards,
             };
 
         default:

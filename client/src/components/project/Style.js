@@ -53,9 +53,13 @@ export const styles = theme => ({
         margin: '10px',
         borderRadius:'10px'
       },
-      restoreButton: {
+    restoreButton: {
         color: 'green',
         border : `1px solid green`,
-      }
+    },
+    expandPanel:{
+        width: '100%',
+    }
+
 
 })

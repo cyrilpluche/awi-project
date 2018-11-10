@@ -130,7 +130,6 @@ class ListPrello extends Component{
         const { editListTitle, anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
-        
         const confirmDeleteDialog = (
             <Dialog
                 open={this.state.isOpenDeleteDialog}
@@ -223,7 +222,7 @@ class ListPrello extends Component{
                                     { this.props.list.listTitle}               
                                 </Grid>
                                 <Grid item xs={1}>    
-                                    <Badge badgeContent={list.CardListFks ? list.CardListFks.length : 0} color="primary" className={classes.badge}>
+                                    <Badge badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0} color="primary" className={classes.badge}>
                                         <div></div>
                                     </Badge> 
                                 </Grid>                              
@@ -261,7 +260,7 @@ class ListPrello extends Component{
 
                                     className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
 
-                                      {list.CardListFks.map((card,index) =>
+                                      {list.CardListFks.filter(card => card.cardStatus === 0 ).map((card,index) =>
                                       <div key={index}>
                                       {<Card
                                         key={card.cardId}

@@ -27,10 +27,12 @@ class ConfirmationDialog extends React.Component {
 
     changeStatusArchived = () => {
         if(this.state.type === 'archive'){
-            
-           this.props.onUpdateCard(this.props.card.cardId,1, this.props.listIndex, this.props.cardIndex);
+
+           this.props.onUpdateCard(this.props.card, {cardStatus : 1}, this.props.listIndex, this.props.cardIndex);
+           this.props.handleParentClose()
            this.setState({ open: false });
         }else{
+
             this.props.onDeleteCard(this.props.card.cardId, this.props.listIndex, this.props.cardIndex);
             this.props.handleParentClose()
             this.setState({ open: false });

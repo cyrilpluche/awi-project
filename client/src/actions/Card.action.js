@@ -59,12 +59,10 @@ function getLabels() {
 }
 
 
-function updatecard(cardId, value,listIndex, cardIndex) {
+function updatecard(card, body,listIndex, cardIndex) {
 
-    const body = {
-        cardStatus : value
-    }
-    return dispatch => _service.Card.update(cardId,body)
+
+    return dispatch => _service.Card.update(card.cardId,body)
         .then(id => {
             dispatch({
                 type : labels.ARCHIVE_CARD,

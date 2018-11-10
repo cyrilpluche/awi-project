@@ -241,6 +241,7 @@ class Cardboard extends React.Component {
                                     card={this.state.card} 
                                     listIndex={this.props.listIndex}
                                     cardIndex={this.props.cardIndex}
+                                    handleParentClose={this.handleClose}
                                 />
                                 <ConfirmationDialog
                                     content = {{type:'delete'}}

@@ -28,6 +28,10 @@ import VisibilityDialog from '../ui/dialog/VisibilityDialog'
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 // Styles
 import {withStyles } from '@material-ui/core/styles';
@@ -120,7 +124,7 @@ class Project extends Component {
     // When a change occurs on our props, we verify to change the state (re rendering) if necessary
     componentDidUpdate(prevProps){
         const {hasProject,projectInfo} = this.props
-      
+       
         // verify if props exist
         if(projectInfo){
             // If Logged user is not a member of the project & project is private
@@ -132,6 +136,7 @@ class Project extends Component {
 
         // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
+            
             this.setState( {lists : this.props.lists},()=>{
             })
            // this.orderList(this.props.lists)      
@@ -255,7 +260,7 @@ class Project extends Component {
         
         // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-
+            console.log(result)
             let sourceListId =  Number.parseInt(source.droppableId.split(':')[0])
             let sourceList = Object.assign({},lists.find(list => list.listId === sourceListId ))
 
@@ -266,15 +271,21 @@ class Project extends Component {
 
             if(destinationListId !== sourceListId){
                 
+                const notArchivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 0))
+                const archivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 1))
 
-                let deleteSourceList = Array.from(sourceList.CardListFks)
+                let deleteSourceList = Array.from(notArchivedCardsSource)
                 deleteSourceList.splice(source.index,1,)
-    
-                let addDestinationList = Array.from(destinationList.CardListFks)
+
+
+                const notArchivedCardsDestination = Array.from(destinationList.CardListFks.filter(card => card.cardStatus === 0))
+                const archivedCardsDestination = Array.from(destinationList.CardListFks.filter(card => card.cardStatus === 1))
+
+                let addDestinationList = Array.from(notArchivedCardsDestination)
                 addDestinationList.splice(destination.index,0,draggedCard)
 
-                sourceList.CardListFks = deleteSourceList
-                destinationList.CardListFks = addDestinationList
+                sourceList.CardListFks = deleteSourceList.concat(archivedCardsSource)
+                destinationList.CardListFks = addDestinationList.concat(archivedCardsDestination)
 
                 let sourceListIndex = lists.findIndex(list => list.listId === sourceList.listId )
                 let destinationListIndex = lists.findIndex(list => list.listId === destinationList.listId )
@@ -284,21 +295,24 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0,sourceList)
                 newList.splice(destinationListIndex,1,)
                 newList.splice(destinationListIndex,0,destinationList)
-                
+                console.log(newList)
                 this.setState({lists: newList}, () =>{
                     //this.socket.emit('move', newList)
-                    this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
+                   this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
 
                
             }
             else{
 
-                let newSourceList = Array.from(sourceList.CardListFks)
+                const notArchivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 0))
+                const archivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 1))
+
+                let newSourceList = Array.from(notArchivedCardsSource)
                 newSourceList.splice(source.index,1,)
                 newSourceList.splice(destination.index,0,draggedCard)
 
-                sourceList.CardListFks = newSourceList
+                sourceList.CardListFks = newSourceList.concat(archivedCardsSource)
 
                 let sourceListIndex = lists.findIndex(list => list.listId === sourceList.listId )
 
@@ -306,8 +320,9 @@ class Project extends Component {
 
                 newList.splice(sourceListIndex,1,)
                 newList.splice(sourceListIndex,0, sourceList)
-                
+                console.log(newList)
                 this.setState({lists: newList}, () =>{
+                   this.props.updatePositionLists(newList)
                    // this.socket.emit('move', newList)
                 })
 
@@ -370,7 +385,7 @@ class Project extends Component {
     render() {  
         
         const {classes, match, projectInfo } = this.props
-
+        
         /* ================= ACTIVITY DRAWER================= */
         const renderActivity = (
             <Drawer
@@ -471,24 +486,57 @@ class Project extends Component {
                         </Grid>
                         <Grid xs={2} item>
                         </Grid>
-                        <Grid key={1} xs={12} item>
-                            {this.props.lists ? this.props.lists.filter(list => list.listStatus === 1).map((list,index) => 
-                        
-                            <Paper key={index} className={classes.paper}>
-                            <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
-                                <Grid xs={10} item>
-                                    {list.listTitle}
-                                </Grid>
-                                <Grid xs={2} item>
-                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
-                                        <RestorePage fontSize="small" />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                            </Paper>
-                        
-                        ): <div>Nothing archived</div>}
-                        </Grid>
+                        <div className={classes.expandPanel}>
+                            <ExpansionPanel>
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                    <Typography className={classes.heading}>Lists</Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <Grid key={1} xs={12} item>
+                                        {this.props.lists ? this.props.lists.filter(list => list.listStatus === 1).map((list,index) => 
+                                    
+                                        <Paper key={index} className={classes.paper}>
+                                        <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
+                                            <Grid xs={10} item>
+                                                {list.listTitle}
+                                            </Grid>
+                                            <Grid xs={2} item>
+                                                <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
+                                                    <RestorePage fontSize="small" />
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>
+                                        </Paper>
+                                    
+                                    ): <Paper className={classes.paper}> 0 list archived</Paper>}
+                                    </Grid>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                            <ExpansionPanel>
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                    <Typography className={classes.heading}>Cards</Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <Grid key={1} xs={12} item>
+                                        {this.props.lists ? this.props.lists.map((list,index) => list.CardListFks.filter((card,index) => card.cardStatus === 1).map(card =>
+                                            <Paper key={index+card.cardId} className={classes.paper}>
+                                            <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
+                                                <Grid xs={10} item>
+                                                    {card.cardTitle}
+                                                </Grid>
+                                                <Grid xs={2} item>
+                                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId)}>
+                                                        <RestorePage fontSize="small" />
+                                                    </IconButton>
+                                                </Grid>
+                                            </Grid>
+                                            </Paper>
+                                        )                                  
+                                    ): <Paper className={classes.paper}> 0 card archived</Paper>}
+                                    </Grid>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </div>
                     </Grid>
                 </div>
             </Drawer>
@@ -598,6 +646,7 @@ const mapDispatchToProps ={
     createList: _action.projectAction.createList,
     moveList: _action.projectAction.updateLists,
     updateCard: _action.listAction.updateCard,
+    updateCardsPosition : _action.listAction.updateCardPosition,
     getProjectInfo: _action.projectAction.getProjectInfo,
     updateTitle: _action.projectAction.updateProjectTitle,
     getAllMembers : _action.projectAction.findAllMembers,
