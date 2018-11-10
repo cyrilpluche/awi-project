@@ -1,8 +1,6 @@
-\.env
+.env
 
-server/\.env
-
-server/node_modules/
+node_modules/
 
 \.idea/codeStyles/Project\.xml
 
