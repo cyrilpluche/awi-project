@@ -35,3 +35,7 @@ GITHUB_CLIENT_SECRET=c3e66dc7b859e5da4fce057438ca5d646023e026
 5. Generate GraphQL schemas
 (Only on the first time)
     npm install -g sql-to-graphql
+
+6. Build react app
+    cd client
+    npm install --only=dev && npm install && npm run build

@@ -46,7 +46,6 @@ class App extends Component {
         } else {
             return this.LoginContainer
         }
-        //return this.DefaultContainer
     }
 
     LoginContainer = () => {
