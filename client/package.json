@@ -2,6 +2,7 @@
   "name": "client-new",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4200/",
   "dependencies": {
     "@material-ui/core": "^3.2.0",
     "@material-ui/icons": "^3.0.1",
