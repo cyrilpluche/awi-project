@@ -1,0 +1,11 @@
+.env
+
+node_modules/
+
+\.idea/codeStyles/Project\.xml
+
+\.idea/workspace\.xml
+
+client/node_modules/
+
+\.idea/jsLibraryMappings\.xml
