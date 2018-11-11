@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
 
-const BASE_URL = 'http://localhost:4200/api/'
+const BASE_URL = 'https://prello-ig.herokuapp.com/api/'
 
 /*
 Why use Api instead of axios
