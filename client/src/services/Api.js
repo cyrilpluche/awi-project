@@ -3,6 +3,7 @@ import axios from 'axios';
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
 
 const BASE_URL = 'https://prello-ig.herokuapp.com/api/'
+const SOCKET_URL = "https://prello-ig.herokuapp.com"
 
 /*
 Why use Api instead of axios
@@ -11,6 +12,7 @@ we only need to change the BASE_URL if we want to change the server
  */
 
 const apiMethods = {
+    SOCKET_URL,
     headers: {
         Authorization: localStorage.getItem('memberToken')
     },

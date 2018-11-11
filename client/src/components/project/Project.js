@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 //Helpers and actions
 import _action from '../../actions'
 import _helper from '../../helpers'
-
+import _service from '../../services'
 
 // Drag and drop 
 import { DragDropContext} from 'react-beautiful-dnd';
@@ -59,7 +59,7 @@ class Project extends Component {
         }
         this.handleRestoreArchived = this.handleRestoreArchived.bind(this)
 
-        this.socket = SocketIOClient('http://localhost:4200')
+        this.socket = SocketIOClient(_service.Api.SOCKET_URL)
         this.socket.on('add', this.socketNew.bind(this))
         this.socket.on('move', this.socketMove.bind(this))
 
