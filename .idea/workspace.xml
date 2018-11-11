@@ -5,99 +5,101 @@
       <change afterPath="$PROJECT_DIR$/client/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/start_server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/start_server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server/README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/www" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/www" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/db_connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/db_connection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/graphql_connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/graphql_connection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Attachment.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Attachment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Card.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/CardHasLabel.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/CardHasLabel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Endpoint.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Endpoint.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Label.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Label.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/List.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/List.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Member.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Member.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/MemberHasAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/MemberHasAction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/MemberHasCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/MemberHasCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/MemberHasPermissionProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/MemberHasPermissionProject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/MemberHasProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/MemberHasProject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Permission.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Project.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Team.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/Team.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fillDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/fillDB.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers/helpersMethod.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/helpers/helpersMethod.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/initDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/initDB.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/Email.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/Email.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/Token.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/Token.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/.pgen" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/.pgen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/action.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/actiononcard.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/actiononcard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/actiononlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/actiononlist.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/actiononproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/actiononproject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/actiononteam.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/actiononteam.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/attachment.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/attachment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/card.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/card.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/cardhaslabel.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/cardhaslabel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/label.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/label.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/list.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/member.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/member.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/memberhasaction.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/memberhasaction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/memberhascard.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/memberhascard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/memberhaspermissionproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/memberhaspermissionproject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/memberhaspermissionteam.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/memberhaspermissionteam.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/memberhasproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/memberhasproject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/permission.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/sequelize-meta.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/sequelize-meta.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/team.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/team.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/teamhasmember.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/teamhasmember.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/definition/teamhasproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/definition/teamhasproject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/relation-cheatsheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/relation-cheatsheet.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/prello-logo-2.png" beforeDir="false" afterPath="$PROJECT_DIR$/server/public/images/prello-logo-2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/prello-logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/server/public/images/prello-logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/public/stylesheets/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Card.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/GraphQL.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/GraphQL.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Label.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Label.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/List.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/List.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Member.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Member.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Permission.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Project.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/Team.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/Team.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/schemas/Action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/Resolver.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/schemas/Resolver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seeders/20181106081921-Member.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/seeders/20181106081921-Member.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/db/index.js.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/db/index.js.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/db/relation-cheatsheet.txt.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/db/relation-cheatsheet.txt.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/partials/belongs-to-many.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/partials/belongs-to-many.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/partials/belongs-to.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/partials/belongs-to.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/partials/columns.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/partials/columns.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/partials/extra-attributes.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/partials/extra-attributes.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/partials/has-many.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/partials/has-many.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/partials/helper.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/partials/helper.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/table/definition/{table.name # dashCase}.js.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/table/definition/{table.name # dashCase}.js.nunj.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequelize-template/util/sequelize-types.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/sequelize-template/util/sequelize-types.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/error.pug" beforeDir="false" afterPath="$PROJECT_DIR$/server/views/error.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/server/views/index.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/layout.pug" beforeDir="false" afterPath="$PROJECT_DIR$/server/views/layout.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/www" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/db_connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/db_connection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/graphql_connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/graphql_connection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Attachment.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Attachment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Card.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/CardHasLabel.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/CardHasLabel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Endpoint.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Endpoint.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Label.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Label.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/List.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/List.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Member.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Member.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/MemberHasAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/MemberHasAction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/MemberHasCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/MemberHasCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/MemberHasPermissionProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/MemberHasPermissionProject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/MemberHasProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/MemberHasProject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Permission.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Project.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/Team.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Team.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/fillDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/fillDB.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/helpers/helpersMethod.js" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/helpersMethod.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/initDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/initDB.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/middlewares/Email.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/Email.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/middlewares/Token.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/Token.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/middlewares/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/.pgen" beforeDir="false" afterPath="$PROJECT_DIR$/models/.pgen" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/action.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/actiononcard.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/actiononcard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/actiononlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/actiononlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/actiononproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/actiononproject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/actiononteam.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/actiononteam.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/attachment.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/attachment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/card.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/card.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/cardhaslabel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/cardhaslabel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/label.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/label.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/member.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/member.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/memberhasaction.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/memberhasaction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/memberhascard.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/memberhascard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/memberhaspermissionproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/memberhaspermissionproject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/memberhaspermissionteam.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/memberhaspermissionteam.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/memberhasproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/memberhasproject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/permission.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/sequelize-meta.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/sequelize-meta.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/team.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/team.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/teamhasmember.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/teamhasmember.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/definition/teamhasproject.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/definition/teamhasproject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/relation-cheatsheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/models/relation-cheatsheet.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json~HEAD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json~parent of 17c4f6d... Server to the root" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json~HEAD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json~parent of 17c4f6d... Server to the root" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/images/prello-logo-2.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/prello-logo-2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/images/prello-logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/prello-logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/stylesheets/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Card.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/GraphQL.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/GraphQL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Label.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Label.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/List.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/List.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Member.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Member.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Permission.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Project.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/Team.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Team.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/schemas/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/schemas/Resolver.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/Resolver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/seeders/20181106081921-Member.js" beforeDir="false" afterPath="$PROJECT_DIR$/seeders/20181106081921-Member.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/db/index.js.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/db/index.js.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/db/relation-cheatsheet.txt.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/db/relation-cheatsheet.txt.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/partials/belongs-to-many.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/partials/belongs-to-many.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/partials/belongs-to.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/partials/belongs-to.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/partials/columns.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/partials/columns.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/partials/extra-attributes.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/partials/extra-attributes.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/partials/has-many.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/partials/has-many.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/partials/helper.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/partials/helper.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/table/definition/{table.name # dashCase}.js.nunj.html" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/table/definition/{table.name # dashCase}.js.nunj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sequelize-template/util/sequelize-types.js" beforeDir="false" afterPath="$PROJECT_DIR$/sequelize-template/util/sequelize-types.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/error.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/error.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/layout.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/layout.pug" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -131,8 +133,8 @@
           <entry key="gitignore" value="7" />
           <entry key="html" value="6" />
           <entry key="ico" value="1" />
-          <entry key="js" value="1589" />
-          <entry key="json" value="29" />
+          <entry key="js" value="1590" />
+          <entry key="json" value="30" />
           <entry key="md" value="1" />
           <entry key="pug" value="2" />
           <entry key="sql" value="33" />
@@ -148,9 +150,9 @@
           <entry key="DBN-SQL" value="33" />
           <entry key="HTML" value="6" />
           <entry key="Image" value="1" />
-          <entry key="JSON" value="29" />
+          <entry key="JSON" value="30" />
           <entry key="Jade" value="2" />
-          <entry key="JavaScript" value="1590" />
+          <entry key="JavaScript" value="1591" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="20" />
           <entry key="TypeScript" value="1" />
@@ -162,7 +164,7 @@
           <entry key="env" value="144" />
           <entry key="gitignore" value="18" />
           <entry key="html" value="400" />
-          <entry key="js" value="66459" />
+          <entry key="js" value="66460" />
           <entry key="json" value="257" />
           <entry key="sql" value="635" />
           <entry key="txt" value="45" />
@@ -175,7 +177,7 @@
           <entry key="DBN-SQL" value="635" />
           <entry key="HTML" value="400" />
           <entry key="JSON" value="257" />
-          <entry key="JavaScript" value="66459" />
+          <entry key="JavaScript" value="66460" />
           <entry key="PLAIN_TEXT" value="63" />
         </counts>
       </usages-collector>
@@ -208,10 +210,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/app.js">
+        <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="3" selection-start-line="31" selection-start-column="3" selection-end-line="31" selection-end-column="3" />
+            <state relative-caret-position="308">
+              <caret line="35" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="35" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -220,7 +222,7 @@
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
-              <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+              <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -318,10 +320,10 @@
         <option value="$PROJECT_DIR$/client/.gitignore" />
         <option value="$PROJECT_DIR$/server/.env" />
         <option value="$PROJECT_DIR$/client/package.json" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/server/package.json" />
         <option value="$PROJECT_DIR$/server/app.js" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -340,13 +342,11 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/client/node_modules" />
     <handled-path value="$PROJECT_DIR$/node_modules" />
-    <handled-path value="$PROJECT_DIR$/server/node_modules" />
   </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
       <path value="$PROJECT_DIR$/client/package.json" />
       <path value="$PROJECT_DIR$/package.json" />
-      <path value="$PROJECT_DIR$/server/package.json" />
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -369,11 +369,6 @@
               <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="awi-project" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -386,19 +381,19 @@
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/server" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/client/src/public/images" />
-      <recent name="$PROJECT_DIR$/client/src/components" />
-      <recent name="$PROJECT_DIR$/client/src" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server" />
       <recent name="$PROJECT_DIR$/client/public" />
       <recent name="$PROJECT_DIR$/client/src/components/layout/navbar/searchResults" />
       <recent name="$PROJECT_DIR$/client/src/components/signin/passwordForgotten" />
       <recent name="$PROJECT_DIR$/client/src/components/signup/accountConfirmation" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/server" />
+      <recent name="$PROJECT_DIR$/client/src/public/images" />
+      <recent name="$PROJECT_DIR$/client/src/components" />
+      <recent name="$PROJECT_DIR$/client/src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -464,11 +459,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="314253000" />
+    <option name="totallyTimeSpent" value="315047000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="226" y="1075" width="1299" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20590582" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -559,7 +553,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/Card.js" />
-    <entry file="file://$PROJECT_DIR$/server/controllers/Card.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Card.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-36">
           <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
@@ -567,14 +561,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/Permission.js" />
-    <entry file="file://$PROJECT_DIR$/server/controllers/MemberHasPermissionProject.js">
+    <entry file="file://$PROJECT_DIR$/controllers/MemberHasPermissionProject.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="136" column="30" lean-forward="true" selection-start-line="136" selection-start-column="30" selection-end-line="136" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/middlewares/Email.js">
+    <entry file="file://$PROJECT_DIR$/middlewares/Email.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="140" column="22" lean-forward="true" selection-start-line="140" selection-start-column="22" selection-end-line="140" selection-end-column="22" />
@@ -658,21 +652,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/MemberHasAction.js">
+    <entry file="file://$PROJECT_DIR$/controllers/MemberHasAction.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
           <caret line="54" column="9" lean-forward="true" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/fillDB.sql">
+    <entry file="file://$PROJECT_DIR$/fillDB.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/Action.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Action.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-261">
           <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
@@ -680,28 +674,28 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/Member.js" />
-    <entry file="file://$PROJECT_DIR$/server/controllers/Member.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Member.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1205">
           <caret line="108" column="4" selection-start-line="108" selection-start-column="4" selection-end-line="108" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/MemberHasProject.js">
+    <entry file="file://$PROJECT_DIR$/controllers/MemberHasProject.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="40" column="29" lean-forward="true" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/Task.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Task.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="37" column="29" lean-forward="true" selection-start-line="37" selection-end-line="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/Permission.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Permission.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="481">
           <caret line="96" column="5" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
@@ -709,7 +703,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/Action.js" />
-    <entry file="file://$PROJECT_DIR$/server/controllers/Project.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Project.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
           <caret line="249" column="48" selection-start-line="249" selection-start-column="48" selection-end-line="249" selection-end-column="48" />
@@ -718,45 +712,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/Project.js" />
     <entry file="file://$PROJECT_DIR$/server/controllers/ProjectHasLabel.js" />
-    <entry file="file://$PROJECT_DIR$/server/controllers/CardHasLabel.js">
+    <entry file="file://$PROJECT_DIR$/controllers/CardHasLabel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="17" selection-start-line="11" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/config/db_connection.js">
+    <entry file="file://$PROJECT_DIR$/config/db_connection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="146">
           <caret line="24" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/Label.js">
+    <entry file="file://$PROJECT_DIR$/controllers/Label.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="88" column="22" lean-forward="true" selection-start-line="88" selection-start-column="22" selection-end-line="88" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/initDB.sql">
+    <entry file="file://$PROJECT_DIR$/initDB.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2177">
           <caret line="276" column="113" selection-start-line="276" selection-start-column="113" selection-end-line="276" selection-end-column="113" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/.gitignore">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/index.pug">
+    <entry file="file://$PROJECT_DIR$/views/index.pug">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/layout.pug">
+    <entry file="file://$PROJECT_DIR$/views/layout.pug">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/client/.gitignore">
@@ -766,10 +760,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/README.txt">
+    <entry file="file://$PROJECT_DIR$/README.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/.env">
+    <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="19" selection-start-column="19" selection-end-column="19" />
@@ -783,24 +777,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/package.json">
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/app.js">
+    <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="3" selection-start-line="31" selection-start-column="3" selection-end-line="31" selection-end-column="3" />
+        <state relative-caret-position="308">
+          <caret line="35" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="35" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
         </state>
       </provider>
     </entry>
