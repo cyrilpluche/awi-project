@@ -40,11 +40,11 @@
           <entry key="gitignore" value="13" />
           <entry key="html" value="14" />
           <entry key="ico" value="1" />
-          <entry key="js" value="1611" />
-          <entry key="json" value="42" />
+          <entry key="js" value="1612" />
+          <entry key="json" value="43" />
           <entry key="md" value="1" />
           <entry key="pug" value="2" />
-          <entry key="sql" value="36" />
+          <entry key="sql" value="37" />
           <entry key="ts" value="1" />
           <entry key="txt" value="14" />
           <entry key="www" value="1" />
@@ -54,12 +54,12 @@
         <counts>
           <entry key=".env file" value="14" />
           <entry key="CSS" value="5" />
-          <entry key="DBN-SQL" value="36" />
+          <entry key="DBN-SQL" value="37" />
           <entry key="HTML" value="14" />
           <entry key="Image" value="1" />
-          <entry key="JSON" value="42" />
+          <entry key="JSON" value="43" />
           <entry key="Jade" value="2" />
-          <entry key="JavaScript" value="1612" />
+          <entry key="JavaScript" value="1613" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="27" />
           <entry key="TypeScript" value="1" />
@@ -116,20 +116,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/services/Api.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="54" lean-forward="true" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
-              <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -295,13 +286,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -392,13 +376,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="324776000" />
+    <option name="totallyTimeSpent" value="325093000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="226" y="1075" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20590582" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20590582" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Project Explorer" order="3" />
@@ -406,7 +390,7 @@
       <window_info id="Job Explorer" order="5" weight="0.32960895" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32952693" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.23817292" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.23817292" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -437,13 +421,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="[ROUTER] - Redirection OK" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/middlewares/Email.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="140" column="22" lean-forward="true" selection-start-line="140" selection-start-column="22" selection-end-line="140" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/components/project/Project.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -729,13 +706,6 @@
     <entry file="file://$PROJECT_DIR$/client/src/helpers/Request.helper.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/fillDB.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="18" column="37" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -750,10 +720,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fillDB.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="18" column="37" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/profile/overview/Overview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-180">
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
