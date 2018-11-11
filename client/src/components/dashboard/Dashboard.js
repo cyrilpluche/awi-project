@@ -125,6 +125,7 @@ Dashboard.propTypes = {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state.dashboard.projects)
     let list_favorite = []
     for (let i = 0; i < state.dashboard.projects.length; i++) {
         if (state.dashboard.projects[i].projectIsFavorite) list_favorite.push(state.dashboard.projects[i])
