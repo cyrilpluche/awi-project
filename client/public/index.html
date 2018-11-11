@@ -7,6 +7,7 @@
       rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
+    <script src="https://wchat.freshchat.com/js/widget.js"></script>
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -38,5 +39,15 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script type="text/javascript" src="https://s3.amazonaws.com/assets.freshdesk.com/widget/freshwidget.js"></script>
+    <script type="text/javascript">
+        FreshWidget.init("", {"queryString": "&widgetType=popup&submitTitle=Ask+for+support&submitThanks=Thank+you+for+your+feedback.+We+will+answer+as+soon+as+possible&captcha=yes", "utf8": "✓", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#1300E6", "alignment": "2", "offset": "200px", "submitThanks": "Thank you for your feedback. We will answer as soon as possible", "formHeight": "500px", "captcha": "yes", "url": "https://polytechprello.freshdesk.com"} );
+    </script>
+    <script>
+        window.fcWidget.init({
+            token: "fc83ffef-8d06-44e7-817b-6d184a426c36",
+            host: "https://wchat.freshchat.com"
+        });
+    </script>
   </body>
 </html>

@@ -8,6 +8,7 @@ import { Lazy } from 'react-lazy'
 import _helper from '../../../../helpers'
 import Background from '../../../../public/images/project-bg.jpg'
 import Gallery from '../../../ui/gallery/BackgroundGallery'
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -186,13 +187,13 @@ class ProjectList extends React.Component {
         /** NEW PROJECT LIST */
         const projectList2 = (
             <GridList className={classes.gridList} cols={2.5}>
-                {this.props.projects.map(project => { if (project.projectIsFavorite === this.props.isFavorite) {
+                {this.props.projects.map(project => {
                     return (
                         <GridListTile
                             key={project.projectId}
                         >
                             <img id={project.projectId} onClick={this.goToProject} src={Background} alt='project background'/>
-                            {this.props.isFavorite ? (
+                            {project.projectIsFavorite ? (
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     classes={{
@@ -230,7 +231,7 @@ class ProjectList extends React.Component {
 
                         </GridListTile>
                     )
-                }})}
+                })}
             </GridList>
         )
 

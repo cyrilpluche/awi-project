@@ -54,9 +54,7 @@ class Dashboard extends React.Component {
 
         if (this.props.favoriteProjects.length > 0) {
             favoriteProjects = (
-                <Grid item xs={12}>
-                    <ProjectList title={'Favorite projects '} projects={this.props.favoriteProjects}/>
-                </Grid>
+                <ProjectList title={'Favorite projects '} projects={this.props.favoriteProjects}/>
             )
         }
 
@@ -101,18 +99,12 @@ class Dashboard extends React.Component {
                     </Grid>
                 </Grid>
                 <Grid xs={7} item className={classes.subLayout}>
-                    <ProjectList
-                        title={"Favorite projects"}
-                        iconList={'work_outline'}
-                        projects={this.props.allProjects}
-                        isFavorite={true}
-                    />
+                    {favoriteProjects}
 
                     <ProjectList
                         title={"Personal projects"}
                         iconList={'work_outline'}
                         projects={this.props.allProjects}
-                        isFavorite={false}
                         canCreateProject
                     />
 
@@ -133,6 +125,7 @@ Dashboard.propTypes = {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state.dashboard.projects)
     let list_favorite = []
     for (let i = 0; i < state.dashboard.projects.length; i++) {
         if (state.dashboard.projects[i].projectIsFavorite) list_favorite.push(state.dashboard.projects[i])
