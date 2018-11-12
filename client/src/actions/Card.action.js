@@ -239,7 +239,7 @@ function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
 function createTask(newTask, card) {
     return dispatch => {
         dispatch({
-            type: labels.LOAD
+            type: labels.LOAD_CARD
         })
         _service.Task.create(newTask)
             .then(res => {

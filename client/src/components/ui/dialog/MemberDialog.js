@@ -156,8 +156,7 @@ class MemberDialog extends Component {
                         ) :  this.props.members ? this.props.members.map(member =>
                             member.memberhasprojectStatus === 1 ? (
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
-                                    <ListItemText primary={member.Member.memberEmail}>
-                                    </ListItemText>
+                                    <ListItemText primary={member.Member.memberEmail}/>
                                     <div>
                                         {this.props.isAdmin === true ?
                                             <div>
