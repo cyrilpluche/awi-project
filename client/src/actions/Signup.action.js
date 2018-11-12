@@ -53,7 +53,7 @@ function signup (body, isDirectlyValidate) {
                         _helper.History.push('/home');
                     })
                     .catch((err) => {
-                        dispatch(signError(err.response))
+                        dispatch(signError(err.response.data))
                     });
             }
         } else {
