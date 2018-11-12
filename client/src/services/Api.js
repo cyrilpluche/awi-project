@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
 
-const BASE_URL = 'http://localhost:4200/api/'
+const BASE_URL = 'http://localhost:4200/api/';
+const SOCKET_URL = 'http://localhost:4200'
 
 /*
 Why use Api instead of axios
@@ -11,6 +12,7 @@ we only need to change the BASE_URL if we want to change the server
  */
 
 const apiMethods = {
+    SOCKET_URL,
     headers: {
         Authorization: localStorage.getItem('memberToken')
     },
