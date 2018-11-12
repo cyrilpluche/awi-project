@@ -7,6 +7,7 @@ const memberHasProjectController = require('../controllers').MemberHasProject;
 const memberHasActionController = require('../controllers').MemberHasAction;
 const actionController = require('../controllers').Action;
 const mhppController = require('../controllers').MemberHasPermissionProject;
+const labelController = require('../controllers').Label;
 
 // router.use(mw.Token.verifyToken)
 
@@ -24,7 +25,7 @@ router.get('/find_all_mhp',mw.Token.verifyToken, memberHasProjectController.find
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);
 
-router.post('/create', projectController.create);
+router.post('/create', projectController.create, labelController.createForProject);
 router.post('/create_invitation', mw.Token.verifyToken, memberHasProjectController.create, mhppController.initAll, mw.Token.generateInvitationToken, mw.Email.sendNewInvitation);
 router.post('/create_mhp', mw.Token.verifyToken, memberHasProjectController.create);
 router.post('/createMemberHasProject', projectController.createMemberHasProject);

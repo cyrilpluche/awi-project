@@ -45,9 +45,9 @@ function getCard(cardId) {
     }
 }
 
-function getLabels() {
+function getLabels(projectId) {
     return dispatch => {
-        _service.Label.getAll()
+        _service.Label.getAll({ projectId: projectId })
             .then(res => {
                 dispatch({
                     type: labels.GET_ALL_LABEL,

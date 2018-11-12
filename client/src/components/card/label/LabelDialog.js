@@ -80,7 +80,7 @@ class Label extends React.Component {
     };
 
     componentDidMount (){
-        this.props.onGetLabels()
+        this.props.onGetLabels(this.props.route.params.id)
     };
 
     handleClickOpen = () => {

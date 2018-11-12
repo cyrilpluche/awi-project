@@ -23,6 +23,30 @@ VALUES (
 );
 
 ------------------------------------------------------------
+--        Label
+------------------------------------------------------------
+
+INSERT INTO public.member (
+    member_id,
+    member_firstname,
+    member_lastname,
+    member_pseudo,
+    member_email,
+    member_password,
+    member_status
+)
+VALUES (
+    1,
+    'Colonel',
+    'Reyel',
+    'colonelreyel',
+    'awi.project.option1.g1@gmail.com',
+    'password',
+    1
+
+);
+
+------------------------------------------------------------
 --        Permissions
 ------------------------------------------------------------
 

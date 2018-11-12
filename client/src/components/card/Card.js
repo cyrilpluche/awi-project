@@ -139,8 +139,13 @@ class Cardboard extends React.Component {
                                     route={this.props.route}
                                     card={this.props.currentCard}
                                 />
-                                <LabelDialog/>
-                                <Checklist/>
+                                <LabelDialog
+                                    route={this.props.route}
+                                    card={this.props.currentCard}
+                                />
+                                <Checklist
+                                    card={this.props.currentCard}
+                                />
                                 <ConfirmationDialog 
                                     content = {{type:'archive'}} 
                                     card={this.state.card} 
