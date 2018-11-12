@@ -234,6 +234,19 @@ export function project (state = initialState, action) {
                 ...state,
                 lists : arrayOfList,
             };
+
+        case listLabels.UPDATE_DATE_CARD:
+            let listsOld = Array.from(state.lists)
+
+            let listDueDateIndex = listsOld.findIndex(list => list.listId === action.payload.card.listId)
+
+            let cardDueDateIndex = listsOld[listDueDateIndex].CardListFks.findIndex(card => card.cardId === action.payload.card.cardId)
+
+            listsOld[listDueDateIndex].CardListFks[cardDueDateIndex].cardDateTarget =  action.payload.dueDate
+            return {
+                ...state,
+                lists : listsOld
+            };    
         default:
             return state
     }

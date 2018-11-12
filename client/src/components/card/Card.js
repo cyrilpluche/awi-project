@@ -23,19 +23,30 @@ import Grid from "@material-ui/core/Grid/Grid";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import SaveIcon from '@material-ui/icons/Save'
+import IconButton from '@material-ui/core/IconButton';
+import {Edit,Done,Cancel} from '@material-ui/icons';
 
 class Cardboard extends React.Component {
     constructor (props) {
         super(props)
         this.updateCard = this.updateCard.bind(this)
-
+        this.handleChangeDueDate = this.handleChangeDueDate.bind(this)
+        this.handleEditDueDate = this.handleEditDueDate.bind(this)
+        this.handleValidDueDate = this.handleValidDueDate.bind(this)
+        this.handleCancelDueDate = this.handleCancelDueDate.bind(this)
         this.state = {
             open: false,
-            card: this.props.currentCard
+            card: this.props.currentCard,
+            dueDate : this.props.currentCard.cardDateTarget,
+            editDueDate : false,
+            init: false,
         };
     }
 
-    componentDidMount () {
+    componentDidUpdate(){
+        if(!this.state.init){
+            this.setState({dueDate : this.props.currentCard.cardDateTarget,init: true })
+        }
         //this.props.onGetCard(this.props.currentCard.cardId)
     };
 
@@ -59,6 +70,27 @@ class Cardboard extends React.Component {
 
     updateCard () {
         this.props.onUpdateCard(this.state.card, this.state.card);
+    }
+
+    handleChangeDueDate = name => event =>{
+        this.setState({
+            dueDate: event.target.value
+        })
+    }
+    handleEditDueDate(){
+        this.setState({editDueDate:true})
+    }
+    handleValidDueDate(){
+
+        if(this.state.dueDate) {
+        this.props.onUpdateDate(this.props.currentCard, {cardDateTarget:this.state.dueDate})
+        this.setState({editDueDate:false})
+        }
+    }
+
+    handleCancelDueDate(){
+        
+        this.setState({editDueDate:false})
     }
 
     /*changeTitle = () => {
@@ -212,6 +244,44 @@ class Cardboard extends React.Component {
                                             </Button>
                                         </Grid>
                                     </Grid>
+                                    {!this.state.editDueDate ?
+                                    <Grid container justify="space-between" alignItems='center' >
+                                        <Grid item xs={10}>  
+                                            
+                                            <Typography variant='caption' >
+                                                Due date : {this.state.dueDate ? this.state.dueDate : "not defined" }
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>  
+                                            <IconButton color="primary" size="small" aria-label="valid" onClick={this.handleEditDueDate}>
+                                                <Edit fontSize="small" />
+                                            </IconButton>
+                                        </Grid>
+                                    </Grid>
+                                    : <Grid container justify="space-between" alignItems='center' >
+                                         <Grid item xs={8}>  
+                                            <TextField
+                                                id="date"
+                                                label="Due Date"
+                                                type="date"
+                                                className={classes.textField}
+                                                InputLabelProps={{
+                                                shrink: true,
+                                                }}
+                                                onChange={this.handleChangeDueDate('dueDate')}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <IconButton size="small" aria-label="valid" onClick={this.handleValidDueDate}>
+                                                <Done fontSize="small" />
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <IconButton size="small" aria-label="valid" onClick={this.handleCancelDueDate}>
+                                                <Cancel fontSize="small" />
+                                            </IconButton>
+                                        </Grid> 
+                                    </Grid>  }
                                     <TextField
                                         id="cardDescription"
                                         label="Description"
@@ -301,7 +371,8 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,
-    onGetCard : _action.cardAction.getCard
+    onGetCard : _action.cardAction.getCard,
+    onUpdateDate: _action.listAction.updateDueDateCard
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));

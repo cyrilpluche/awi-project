@@ -9,7 +9,10 @@ const labels = {
     UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS",
     UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS",
     LOAD_PROJECT:"LOAD_PROJECT",
-    RESTORE_CARD:"RESTORE_CARD"
+    RESTORE_CARD:"RESTORE_CARD",
+    UPDATE_DATE_CARD:"UPDATE_DATE_CARD",
+    UPDATE_DATE_CARD_ERROR:"UPDATE_DATE_CARD_ERROR"
+
 }
 
 
@@ -74,6 +77,28 @@ function updateCard(cardId, listId, newLists){
         });
     }
 }
+
+function updateDueDateCard(card, body){
+    return dispatch =>{
+        _service.Card.update(card.cardId, body)
+        .then(res =>{
+                dispatch({
+                    type: labels.UPDATE_DATE_CARD,
+                    payload: {
+                        card : card,
+                        dueDate : body.cardDateTarget
+                    }
+                });
+            }
+        ).catch(e => {
+            dispatch({
+                type: labels.UPDATE_DATE_CARD_ERROR
+            })
+        })
+    }
+   
+}
+
 
 // function updateListTitle(newListTitle, listId){
 //     const body = {
@@ -196,6 +221,7 @@ export const listAction = {
     deleteList,
     updateListStatus,
     updatePositionLists,
-    restoreCard
+    restoreCard,
+    updateDueDateCard
 }
 

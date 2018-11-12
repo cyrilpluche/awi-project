@@ -105,5 +105,5 @@ export const styles = theme => ({
         marginLeft:  15,
         marginRight: 0,
         display: 'block'
-    }
+    },
 });

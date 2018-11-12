@@ -30,7 +30,6 @@ const Card = {
     },
 
     update(cardId,body){
-        
         return Api.put(url + 'update/'+cardId ,body).then(res => res.data)
     },
 

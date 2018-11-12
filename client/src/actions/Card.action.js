@@ -25,7 +25,9 @@ const labels = {
     DELETE_LINK_LABEL: 'CREATE_LINK_LABEL',
     DELETE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
     LOAD_PROJECT: "LOAD_PROJECT",
-    ARCHIVE_CARD:"ARCHIVE_CARD"
+    ARCHIVE_CARD:"ARCHIVE_CARD",
+    
+   
 }
 
 function getCard(cardId) {
@@ -100,6 +102,7 @@ function updateTask(taskId, body) {
             })
         })
 };
+
 
 
 function deleteTask(taskId, card) {
@@ -255,6 +258,9 @@ function deleteLinkLabel(query) {
         })
 };
 
+
+
+
 export const cardAction = {
     labels,
     getCard,
@@ -267,5 +273,6 @@ export const cardAction = {
     addMember,
     removeMember,
     createLinkLabel,
-    deleteLinkLabel
+    deleteLinkLabel,
+    
 }
