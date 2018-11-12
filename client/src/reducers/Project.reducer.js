@@ -49,6 +49,13 @@ export function project (state = initialState, action) {
             let findListIndex = listWithCard.findIndex(list => list.listId === action.payload.listId)
             let notarchivedCardsCreate = findList.CardListFks.filter(card => card.cardStatus === 0)
             let archivedCardsCreate = findList.CardListFks.filter(card => card.cardStatus === 1)
+            let newCreatedCard = action.payload
+            newCreatedCard.ActionCardFks = [] 
+            newCreatedCard.AttachmentCardFks = [] 
+            newCreatedCard.HaslabelCardFks = [] 
+            newCreatedCard.MemberhascardCardFks = [] 
+            newCreatedCard.TaskCardFks = [] 
+            
             notarchivedCardsCreate.push(action.payload)
             findList.CardListFks = notarchivedCardsCreate.concat(archivedCardsCreate)
             listWithCard.splice(findListIndex,1)
