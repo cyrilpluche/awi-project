@@ -35,10 +35,6 @@ class Cardboard extends React.Component {
         };
     }
 
-    componentDidMount () {
-        //this.props.onGetCard(this.props.currentCard.cardId)
-    };
-
     /** Open/Close the card modal */
     handleOpen = () => {
         this.setState({ open: true });
@@ -234,7 +230,7 @@ class Cardboard extends React.Component {
                                 >
                                     Members
                                 </Button>
-                                <LabelDialog/>
+                                <LabelDialog card = {this.props.currentCard}/>
                                 <Checklist card = {this.props.currentCard}/>
                                 <ConfirmationDialog 
                                     content = {{type:'archive'}} 
@@ -300,8 +296,7 @@ const mapStateToProps = (state) => ({
     membersOffCard: state.card.membersOffCard
 })
 const mapDispatchToProps = {
-    onUpdateCard : _action.cardAction.updatecard,
-    onGetCard : _action.cardAction.getCard
+    onUpdateCard : _action.cardAction.updatecard
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));

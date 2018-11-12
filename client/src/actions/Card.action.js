@@ -222,7 +222,8 @@ function createTask(newTask, card) {
 
 function createLinkLabel(query) {
     return dispatch => {
-        _service.card.createLinkLabel(query)
+        //{cardId: 1, labelId :1}
+        _service.Card.createLinkLabel(query)
             .then(res => {
                 dispatch({
                     type: labels.CREATE_LINK_LABEL
