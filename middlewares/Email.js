@@ -71,7 +71,7 @@ module.exports = {
         var attachments = [
             {
                 filename: 'prello-logo.png',
-                path: 'server/public/images/prello-logo.png',
+                path: 'public/images/prello-logo.png',
                 cid: 'maillogo' //same cid value as in the html img src
             }
         ]
@@ -114,7 +114,7 @@ module.exports = {
         var attachments = [
             {
                 filename: 'prello-logo.png',
-                path: 'server/public/images/prello-logo.png',
+                path: 'public/images/prello-logo.png',
                 cid: 'maillogo' //same cid value as in the html img src
             }
         ]
