@@ -7,8 +7,9 @@ const url = 'label/'
 
 const Label = {
 
-    getAll () {
-        return Api.get(url + 'find_all').then(res => res.data)
+    getAll (query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.get(url + 'find_all' + where).then(res => res.data)
     }
 
 }

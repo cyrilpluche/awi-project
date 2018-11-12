@@ -64,6 +64,27 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
+    findAllForCard(req, res, next) {
+        MemberHasProject
+            .findAll({
+                order : sequelize.col('memberId'),
+                where: {
+                    projectId: req.query.projectId,
+                    memberhasprojectStatus: req.query.memberhasprojectStatus
+                },
+                include: [{
+                    model: Member,
+                    as: 'Member',
+                    attributes: ['memberId', 'memberPseudo']
+                }]
+            })
+            .then(mhps => {
+                req.body.result = mhps
+                next()
+            })
+            .catch(error => res.status(400).send(error))
+    },
+
     /**
      *  return: Array of Project objects containing the str query.
      */

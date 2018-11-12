@@ -44,9 +44,20 @@ export function project (state = initialState, action) {
                 lists 
             };
         case listLabels.CREATE_CARD:
+            let listWithCard = Array.from(state.lists)
+            let findList = listWithCard.find(list => list.listId === action.payload.listId)
+            let findListIndex = listWithCard.findIndex(list => list.listId === action.payload.listId)
+            let notarchivedCardsCreate = findList.CardListFks.filter(card => card.cardStatus === 0)
+            let archivedCardsCreate = findList.CardListFks.filter(card => card.cardStatus === 1)
+            notarchivedCardsCreate.push(action.payload)
+            findList.CardListFks = notarchivedCardsCreate.concat(archivedCardsCreate)
+            listWithCard.splice(findListIndex,1)
+            listWithCard.splice(findListIndex,0,findList)
+            
             return {
                 ...state,
-                lists : action.payload 
+                lists : listWithCard,
+                isLoading:false
             }; 
         case listLabels.UPDATE_CARD:   
             return {
@@ -181,6 +192,7 @@ export function project (state = initialState, action) {
             };
 
         case cardLabels.DELETE_CARD:
+
             let updatedLists = Array.from(state.lists)
             updatedLists[action.payload.listIndex].CardListFks.splice(action.payload.cardIndex, 1)
             return {
@@ -188,7 +200,40 @@ export function project (state = initialState, action) {
                 lists : updatedLists,
                 isLoading: false
             };
+       case cardLabels.ARCHIVE_CARD:
+            //Copy array of list
+            let archivedCards = Array.from(state.lists)
+            // modify card status
+            archivedCards[action.payload.listIndex].CardListFks[action.payload.cardIndex].cardStatus = 1
+            // reorder archived and not archived card of the updated list in order to correspond to good index
+            let notarchivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 0)
+            let archivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 1)
+            //concat both lists
+            archivedCards[action.payload.listIndex].CardListFks = notarchivedCardsArray.concat(archivedCardsArray)
+            return {
+                ...state,
+                lists : archivedCards,
+            };
+            case listLabels.RESTORE_CARD:
+            //Copy array of list
+            let arrayOfList = Array.from(state.lists)
 
+            //Find index of the list 
+            let listWithCardIndex = arrayOfList.findIndex(list => list.listId === action.payload.listId)
+            let cardIndex = arrayOfList[listWithCardIndex].CardListFks.findIndex(card => card.cardId === action.payload.cardId)
+
+            // modify card status
+            arrayOfList[listWithCardIndex].CardListFks[cardIndex].cardStatus = 0
+            // reorder archived and not archived card of the updated list in order to correspond to good index
+            let notarchivedCards = arrayOfList[listWithCardIndex].CardListFks.filter(card => card.cardStatus === 0)
+            let archiveCards =  arrayOfList[listWithCardIndex].CardListFks.filter(card => card.cardStatus === 1)
+            
+            //concat both lists
+            arrayOfList[listWithCardIndex].CardListFks = notarchivedCards.concat(archiveCards)
+            return {
+                ...state,
+                lists : arrayOfList,
+            };
         default:
             return state
     }

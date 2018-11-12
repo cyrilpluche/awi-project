@@ -25,6 +25,23 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
+    createForProject (req, res, next) {
+        let labels = [
+            '#f44336', '#2196f3', '#4caf50',
+            '#ffc107', '#673ab7', '#ed4b82'
+        ]
+        for (let staticLabel of labels) {
+            Label
+                .create({
+                    projectId: req.body.result.projectId,
+                    labelColor: staticLabel
+                })
+                .then(label => {
+                    if (labels.indexOf(staticLabel) === labels.length - 1) next()
+                })
+        }
+    },
+
     /**  ?labelId=id... (optional)
      *
      *  return: Array of Label objects with given attributes of the query.

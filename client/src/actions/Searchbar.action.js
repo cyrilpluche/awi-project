@@ -10,10 +10,10 @@ const labels = {
 }
 
 
-function searchProjects (value) {
+function searchProjects (value, memberId) {
     return dispatch => {
         if (value !== '') {
-            _service.Project.searchbarProjects({str: value})
+            _service.Project.searchbarProjects({str: value, memberId: memberId})
                 .then(res => {
                     dispatch({
                         type: labels.SEARCH_PROJECTS,
@@ -34,10 +34,10 @@ function searchProjects (value) {
     }
 }
 
-function searchLists (value) {
+function searchLists (value, memberId) {
     return dispatch => {
         if (value !== '') {
-            _service.List.searchbarLists({str: value})
+            _service.List.searchbarLists({str: value, memberId: memberId})
                 .then(res => {
                     dispatch({
                         type: labels.SEARCH_LISTS,
@@ -58,10 +58,10 @@ function searchLists (value) {
     }
 }
 
-function searchCards (value) {
+function searchCards (value, memberId) {
     return dispatch => {
         if (value !== '') {
-            _service.Card.searchbarCards({str: value})
+            _service.Card.searchbarCards({str: value, memberId: memberId})
                 .then(res => {
                     dispatch({
                         type: labels.SEARCH_CARDS,

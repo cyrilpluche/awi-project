@@ -19,9 +19,9 @@ module.exports = {
      *  req.body = {
      *      memberFirstname = firstname,
      *      memberLastname = lastname,
-     *      memberPseudo = pseudo, (optional)
-     *      memberEmail = email, (optional)
-     *      memberPassword = password, (optional)
+     *      memberPseudo = pseudo,
+     *      memberEmail = email,
+     *      memberPassword = password,
      *      memberPicture = url, (optional)
      *      memberStatus = status,
      *      memberOauthGithub = url (optional)
@@ -192,7 +192,6 @@ module.exports = {
      *  return: Find the user and connect him if credentials matched.
      */
     findOneSignIn(req, res, next) {
-        console.log(req.body)
         Member
             .findOne({
                 where: {
@@ -211,7 +210,7 @@ module.exports = {
                     }
                     else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).send('Email or password is incorrect.')
+                else res.status(400).send('EEEmail or password is incorrect.')
             })
             .catch(error => next(error));
     },

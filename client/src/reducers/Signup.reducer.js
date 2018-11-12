@@ -19,6 +19,12 @@ export function signup (state = initialState, action){
                 isLoading: true
             }
 
+        case labels.LOAD_INVITATION:
+            return {
+                ...state,
+                isLoading: true
+            }
+
         case labels.SIGN_UP:
             return {
                 ...state,

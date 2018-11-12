@@ -52,7 +52,6 @@ class Lists extends Component {
     
     render() {
         const { classes,lists,idProject} = this.props;
-        
     
         return (
 
@@ -63,17 +62,20 @@ class Lists extends Component {
                         {...provided.droppableProps}>
                         {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) => 
                             <div key={list.listTitle+list.listId}>
-                                { this.props.isLoading ? (
-                                    <MiniLoader/>
-                                ) : (
+                                
                                     <List
                                     idProject={idProject}
                                     key={list.listTitle+list.listId}
                                     list={list}
                                     listIndex={index}
                                     index={index}
+                                    deleteList = {this.props.deleteList}
+                                    updateListTitle = {this.props.updateListTitle}
+                                    archiveList = {this.props.archiveList}
+                                    createCard = {this.props.createCard}
+                                    route = {this.props.route}
                                     />
-                                )}
+                                
                             </div>
                             )}
                         {provided.placeholder}
@@ -96,10 +98,7 @@ class Lists extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    isLoading: state.project.isLoading
-})
-const mapDispatchToProps = {
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Lists));
+
+
+export default withStyles(styles)(Lists)

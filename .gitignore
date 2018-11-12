@@ -9,3 +9,5 @@ node_modules/
 client/node_modules/
 
 \.idea/jsLibraryMappings\.xml
+
+node_modules/

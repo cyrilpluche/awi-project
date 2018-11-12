@@ -10,6 +10,22 @@ belongs to        team                                     as Team
 belongs to many   member                                   as MemberhasactionMembers 
 
 
+Actiononcard
+------------
+
+
+Actiononlist
+------------
+
+
+Actiononproject
+---------------
+
+
+Actiononteam
+------------
+
+
 Attachment
 ----------
 belongs to        card                                     as Card 
@@ -128,10 +144,6 @@ belongs to many   member                                   as Memberhaspermissio
 belongs to many   permission                               as MemberhaspermissionprojectPermissions 
 belongs to many   member                                   as MemberhasprojectMembers 
 belongs to many   team                                     as TeamhasprojectTeams 
-
-
-SequelizeMetum
---------------
 
 
 Task

@@ -7,7 +7,9 @@ const labels = {
     DELETE_LIST:"DELETE_LIST",
     UPDATE_CARD: "UPDATE_CARD",
     UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS",
-    UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS"
+    UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS",
+    LOAD_PROJECT:"LOAD_PROJECT",
+    RESTORE_CARD:"RESTORE_CARD"
 }
 
 
@@ -20,25 +22,21 @@ function createCard(cardTitle,listId,projectId) {
         cardDescription: ''
     }
     return dispatch => {
+        dispatch({ type: labels.LOAD_PROJECT })
         _service.Card.create(body)
         .then(res => {
-            const body ={
-                projectId: projectId
-            }
-            _service.Project.getAllWithCards(body)
-            .then(resF => {
+               const card = {
+                   ...res,
+                   CardListFks : []
+               }
                 dispatch({
                     type: labels.CREATE_CARD,
-                    payload: resF
+                    payload: card
                 });
-            })
-            .catch((err) => {
-                dispatch(err)
             })
         .catch((err) => {
             dispatch(err)
         });
-    })
     }
 }
 
@@ -172,6 +170,22 @@ function updatePositionLists(newOrderedArray){
     }
 }
 
+function restoreCard(card, body){
+    return dispatch => {
+        _service.Card.update(card.cardId,body)
+        .then(res => {
+
+            dispatch({
+                    type: labels.RESTORE_CARD,
+                    payload: card
+            });
+        })
+        .catch((err) => {
+                dispatch(err)
+        });
+    }
+}
+
 
 export const listAction = {
     labels,
@@ -181,6 +195,7 @@ export const listAction = {
     updateListTitle,
     deleteList,
     updateListStatus,
-    updatePositionLists
+    updatePositionLists,
+    restoreCard
 }
 

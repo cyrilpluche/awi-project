@@ -47,7 +47,9 @@ class SearchResults extends React.Component {
 
     renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem, type }) {
         const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-        const id = type + '/' + suggestion.id
+        var id = type + '/' + suggestion.id
+        if (type !== 'project') id += '/' + suggestion.projectId
+        if (type === 'card') id += '/' + suggestion.listId
         const { classes } = this.props;
 
         return (
@@ -72,9 +74,9 @@ class SearchResults extends React.Component {
         var { name, value } = event.target;
         this.setState({ [name]: value });
 
-        this.props.onSearchProjects(value)
-        this.props.onSearchLists(value)
-        this.props.onSearchCards(value)
+        this.props.onSearchProjects(value, this.props.memberId)
+        this.props.onSearchLists(value, this.props.memberId)
+        this.props.onSearchCards(value, this.props.memberId)
     }
 
     /**
@@ -123,14 +125,26 @@ class SearchResults extends React.Component {
     handleClickSuggestion (event) {
         let type = event.target.id.split('/')[0]
         let id = event.target.id.split('/')[1]
+        let route = ''
 
         if (type === 'project') {
             this.setState({
                 isOpen: false,
                 searchInput: ''
             })
-            _helper.History.push('/project/' + id)
+            route = '/project/' + id
+        } else if (type === 'list') {
+            route = '/project/' + id
+        } else {
+            let listId = event.target.id.split('/')[3]
+            let projectId = event.target.id.split('/')[2]
+            route = '/project/' + projectId + '/' + listId + '/' + id
         }
+        this.setState({
+            isOpen: false,
+            searchInput: ''
+        })
+        _helper.History.push(route)
     }
 
     render() {
@@ -251,7 +265,8 @@ SearchResults.propTypes = {
 const mapStateToProps = (state) => ({
     projects: state.searchbar.projectsFound,
     lists: state.searchbar.listsFound,
-    cards: state.searchbar.cardsFound
+    cards: state.searchbar.cardsFound,
+    memberId: state.signin.member.memberId
 })
 const mapDispatchToProps = {
     onSearchProjects : _action.searchbarAction.searchProjects,

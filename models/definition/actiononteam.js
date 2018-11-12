@@ -6,25 +6,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             field: 'action_id',
             allowNull: false,
-            primaryKey: true,
-            references: {
-                model: 'action',
-                key: 'action_id'
-            },
-            onUpdate: 'NO ACTION',
-            onDelete: 'NO ACTION'
+            primaryKey: true
         },
         teamId: {
             type: DataTypes.INTEGER,
             field: 'team_id',
             allowNull: false,
-            primaryKey: true,
-            references: {
-                model: 'team',
-                key: 'team_id'
-            },
-            onUpdate: 'NO ACTION',
-            onDelete: 'NO ACTION'
+            primaryKey: true
         }
     }, {
         schema: 'public',
@@ -35,24 +23,5 @@ module.exports = (sequelize, DataTypes) => {
 
 module.exports.initRelations = () => {
     delete module.exports.initRelations; // Destroy itself to prevent repeated calls.
-
-    const model = require('../index');
-    const Actiononteam = model.Actiononteam;
-    const Action = model.Action;
-    const Team = model.Team;
-
-    Actiononteam.belongsTo(Action, {
-        as: 'Action',
-        foreignKey: 'action_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
-
-    Actiononteam.belongsTo(Team, {
-        as: 'Team',
-        foreignKey: 'team_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
 
 };

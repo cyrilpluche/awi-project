@@ -14,21 +14,13 @@ const initialState = {
         listId: null
     },
     isLoading: false,
-    membersOnCard: [
-        { memberId: 1, memberPseudo: 'Pluchezerrr' },
-        { memberId: 2, memberPseudo: 'Wohou' },
-        { memberId: 3, memberPseudo: 'yaye' }
-    ],
-    membersOffCard: [
-        { memberId: 4, memberPseudo: 'Amin' },
-        { memberId: 5, memberPseudo: 'Mehdi' },
-        { memberId: 6, memberPseudo: 'Enzo' }
-    ]
+    membersOnCard: [],
+    membersOffCard: []
 };
 
 export function card (state = initialState, action) {
     switch (action.type) {
-        case labels.LOAD:
+        case labels.LOAD_CARD:
             return { ...state, isLoading: true };
         case labels.UPDATE_CARD:
             return { ...state, card: action.payload };
@@ -47,6 +39,49 @@ export function card (state = initialState, action) {
             return { ...state, card: action.payload };
         case labels.DELETE_CARD:
             return { ...state};
+        case labels.ADD_MEMBER_ON_CARD:
+            return {
+                ...state,
+                membersOnCard: action.payload.membersOnCard,
+                membersOffCard: action.payload.membersOffCard,
+                isLoading: false
+            };
+
+        case labels.DELETE_MEMBER:
+            return {
+                ...state,
+                membersOnCard: action.payload.membersOnCard,
+                membersOffCard: action.payload.membersOffCard,
+                isLoading: false
+            };
+
+        case labels.DELETE_MEMBER_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case labels.ADD_MEMBER_ON_CARD_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case labels.FIND_ALL_MEMBERS_ON_CARD_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
+        case labels.FIND_ALL_MEMBERS_ON_CARD:{
+            return {
+                ...state,
+                membersOnCard: action.payload.membersOnCard,
+                membersOffCard: action.payload.membersOffCard,
+                isLoading: false
+            };
+        }
+
         default:
             return state
     }

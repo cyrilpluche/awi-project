@@ -23,6 +23,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MiniLoader from "../../ui/loader/MiniLoader";
 
 import { Done} from '@material-ui/icons';
 
@@ -39,7 +40,7 @@ class ListPrello extends Component{
             anchorEl: null,
             isOpenDeleteDialog: false,
             open:false,
-        
+
         }
         this.handleArchivedList = this.handleArchivedList.bind(this)
         this.handleEditTitle = this.handleEditTitle.bind(this)
@@ -47,7 +48,7 @@ class ListPrello extends Component{
         this.handleConfirmDeleteList = this.handleConfirmDeleteList.bind(this)
     }
 
-    
+
 
     createNewCard(){
         let cardName = this.state.newCardTitle
@@ -60,27 +61,27 @@ class ListPrello extends Component{
 
     handleClickOpen = () => {
         this.setState({
-          open: true,
+            open: true,
         });
     };
 
 
     handleClose = (value) => {
         this.setState({ newCardTitle: value, open: false }, function(){  this.createNewCard()});
-       
+
     };
 
     handleClickMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
     };
-    
+
     handleCloseMenu = () => {
         this.setState({ anchorEl: null });
     };
-    
+
     /* =============DELETE LIST ================= */
     handleDeleteList = () =>{
-          
+
         this.setState({ isOpenDeleteDialog: true });
     }
 
@@ -95,26 +96,25 @@ class ListPrello extends Component{
         this.props.deleteList(list.listId,idProject)
     }
 
-      /*===============Edit title ====================*/
+    /*===============Edit title ====================*/
     handleOpenMenu = name => event =>{
         this.setState({ [name]: true });
     }
-      
+
     handleChange = name => event => {
-            console.log(event.target.value)
-            this.setState({
+
+        this.setState({
             [name]: event.target.value,
-            });     
+        });
     };
 
     handleEditTitle(){
-          console.log(this.state.newListTitle)
-          console.log(this.props.list.listId)
-          this.setState({editListTitle: false}, ()=>{
-            this.props.updateTitle(this.state.newListTitle,this.props.list.listId)
-          })
+
+        if(this.state.newListTitle) this.props.updateListTitle(this.state.newListTitle,this.props.list.listId)
+        this.setState({editListTitle: false}, ()=>{
+        })
     }
-      
+
 
     /*============== Archived list ==============*/
     handleArchivedList (){
@@ -130,7 +130,6 @@ class ListPrello extends Component{
         const { editListTitle, anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
-        
         const confirmDeleteDialog = (
             <Dialog
                 open={this.state.isOpenDeleteDialog}
@@ -161,27 +160,27 @@ class ListPrello extends Component{
         const MenuList = (
             <div>
                 <IconButton
-                aria-label="More"
-                aria-owns={open ? 'long-menu' : undefined}
-                aria-haspopup="true"
-                onClick={this.handleClickMenu}
-                size="small"
+                    aria-label="More"
+                    aria-owns={open ? 'long-menu' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleClickMenu}
+                    size="small"
                 >
-                <MoreVertIcon />
-                    </IconButton>
+                    <MoreVertIcon />
+                </IconButton>
                 <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={this.handleCloseMenu}
-                PaperProps={{
-                    style: {
-                    maxHeight: ITEM_HEIGHT * 4.5,
-                    width: 200,
-                    },
-                }}
+                    id="long-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={this.handleCloseMenu}
+                    PaperProps={{
+                        style: {
+                            maxHeight: ITEM_HEIGHT * 4.5,
+                            width: 200,
+                        },
+                    }}
                 >
-                
+
                     <MenuItem key="editListTitle"  onClick={this.handleOpenMenu('editListTitle')}>
                         Edit title
                     </MenuItem>
@@ -192,8 +191,8 @@ class ListPrello extends Component{
                     <MenuItem key="archivedList"  onClick={this.handleArchivedList}>
                         Archived
                     </MenuItem>
-                   
-                ))}
+
+                    ))}
                 </Menu>
             </div>
         )
@@ -208,109 +207,108 @@ class ListPrello extends Component{
                         ...provided.draggableProps.style,
                     };
                     return (
-                    <div className={classes.list} 
-                        {...provided.draggableProps}
-                        style={style}
-                        ref={provided.innerRef}
-                    >
-                    <List
-                        component="nav"
-                        subheader={
-                        <ListSubheader component="div"  {...provided.dragHandleProps} className={classes.listTitle}>
-                        {!editListTitle ?
-                            <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={16}>
-                                <Grid item xs={11}>
-                                    { this.props.list.listTitle}               
-                                </Grid>
-                                <Grid item xs={1}>    
-                                    <Badge badgeContent={list.CardListFks ? list.CardListFks.length : 0} color="primary" className={classes.badge}>
-                                        <div></div>
-                                    </Badge> 
-                                </Grid>                              
-                            </Grid>
-                        :   <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={8}>
-                                <Grid item xs={10}>
-                                <TextField
-                                    id="standard-bare"
-                                    className={classes.textField}
-                                    defaultValue={list.listTitle}
-                                    margin="normal"
-                                    onChange={this.handleChange('newListTitle')}
-                                />               
-                                </Grid>
-                                <Grid item xs={2}>   
-                                   <IconButton aria-label="valid" className={classes.validEditTitle} onClick={this.handleEditTitle}>
-                                        <Done fontSize="small" />
-                                    </IconButton>
-                                </Grid>                              
-                            </Grid>}
-                        
-                        </ListSubheader>}
-                        
+                        <div className={classes.list}
+                             {...provided.draggableProps}
+                             style={style}
+                             ref={provided.innerRef}
                         >
-                           
-                        <Droppable droppableId={this.props.list.listId+":"+this.props.list.listTitle} type="CARD">
-                            {(provided,snapshot) => {
-                                const style = {
-                                    //backgroundColor: '#e4e4e4',
-                                    ...provided.droppableProps.style,
-                                };
-                                return (
-                                    <div 
-                                    ref={provided.innerRef} 
+                            <List
+                                component="nav"
+                                subheader={
+                                    <ListSubheader component="div"  {...provided.dragHandleProps} className={classes.listTitle}>
+                                        {!editListTitle ?
+                                            <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={16}>
+                                                <Grid item xs={11}>
+                                                    { this.props.list.listTitle}
+                                                </Grid>
+                                                <Grid item xs={1}>
+                                                    <Badge badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0} color="primary" className={classes.badge}>
+                                                        <div></div>
+                                                    </Badge>
+                                                </Grid>
+                                            </Grid>
+                                            :   <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={8}>
+                                                <Grid item xs={10}>
+                                                    <TextField
+                                                        id="standard-bare"
+                                                        className={classes.textField}
+                                                        defaultValue={list.listTitle}
+                                                        margin="normal"
+                                                        onChange={this.handleChange('newListTitle')}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <IconButton aria-label="valid" className={classes.validEditTitle} onClick={this.handleEditTitle}>
+                                                        <Done fontSize="small" />
+                                                    </IconButton>
+                                                </Grid>
+                                            </Grid>}
 
-                                    className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
+                                    </ListSubheader>}
 
-                                      {list.CardListFks ? list.CardListFks.map((card,index) =>
-                                          <Card
-                                              key={card.cardId}
-                                              card={card}
-                                              listIndex={this.props.listIndex}
-                                              cardIndex={index}
-                                              index={index}/>
-                                      ):'' }
+                            >
 
-                                    {provided.placeholder}
+                                <Droppable droppableId={this.props.list.listId+":"+this.props.list.listTitle} type="CARD">
+                                    {(provided,snapshot) => {
+                                        const style = {
+                                            //backgroundColor: '#e4e4e4',
+                                            ...provided.droppableProps.style,
+                                        };
+                                        return (
+                                            <div
+                                                ref={provided.innerRef}
 
-                                    </div>
-                            )}}
-                        </Droppable>
-                            <Grid container justify="space-between">
-                                <Grid item xs={10}>
-                                    <Button size="small" className={classes.button} onClick={this.handleClickOpen}>
-                                        <AddIcon /> add a new card
-                                    </Button>
+                                                className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
+
+                                                {list.CardListFks.filter(card => card.cardStatus === 0 ).map((card,index) =>
+                                                    <div key={index}>
+                                                        <Card
+                                                            key={card.cardId}
+                                                            card={card}
+                                                            listIndex={this.props.listIndex}
+                                                            cardIndex={index}
+                                                            index={index}
+                                                            route={this.props.route}
+                                                        />
+                                                    </div>
+
+
+
+                                                )}
+
+                                                {provided.placeholder}
+
+                                            </div>
+                                        )}}
+                                </Droppable>
+                                <Grid container justify="space-between">
+                                    <Grid item xs={10}>
+                                        <Button size="small" className={classes.button} onClick={this.handleClickOpen}>
+                                            <AddIcon /> add a new card
+                                        </Button>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        {MenuList}
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={2}>
-                                    {MenuList}
-                                </Grid>
-                            </Grid>
 
-                        <SimpleDialog
-                            type="card"
-                            open={this.state.open}
-                            onClose={this.handleClose}
-                        />
-                    </List>
-                    </div>
-                )}
-                }           
-            </Draggable>   
+                                <SimpleDialog
+                                    type="card"
+                                    open={this.state.open}
+                                    onClose={this.handleClose}
+                                />
+                            </List>
+                        </div>
+                    )}
+                }
+            </Draggable>
         )
     }
 }
 
-const mapStateToProps = (state) => ({
-    cards: state.project.cards
-})
-
-const mapDispatchToProps ={
-    createCard: _action.listAction.createCard,   
-    updateTitle: _action.listAction.updateListTitle,
-    deleteList: _action.listAction.deleteList,
-    archiveList: _action.listAction.updateListStatus
-}
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(ListPrello))
+
+
+export default withStyles(styles)(ListPrello)
 
