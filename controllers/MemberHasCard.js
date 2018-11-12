@@ -1,3 +1,4 @@
+const helper = require('../helpers/helpersMethod');
 const MemberHasCard = require('../config/db_connection').MemberHasCard
 const sequelize = require('../config/db_connection').sequelize;
 
@@ -30,12 +31,28 @@ module.exports = {
     findAll(req, res, next) {
         MemberHasCard
             .findAll({
-                order : sequelize.col('taskId'),
+                order : sequelize.col('cardId'),
                 where: req.query,
                 include: [{ all: true }]
             })
             .then(mhcs => {
                 req.body.result = mhcs
+                next()
+            })
+            .catch(error => res.status(400).send(error))
+    },
+
+    findAllMembers(req, res, next) {
+        MemberHasCard
+            .findAll({
+                order : sequelize.col('cardId'),
+                where: {
+                    cardId: req.query.cardId
+                },
+                include: [{ all: true }]
+            })
+            .then(mhcs => {
+                req.body.result = helper.membersOnCardFilter(req.body.result, mhcs)
                 next()
             })
             .catch(error => res.status(400).send(error))

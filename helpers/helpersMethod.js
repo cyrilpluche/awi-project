@@ -51,9 +51,52 @@ const methods = {
     flatSearchList (queryResult) {
         let flat = []
         for (let project of queryResult ) {
-            flat.push(project.Project)
+            for (let list of project.Project.ListProjectFks) {
+                flat.push({
+                    id: list.dataValues.id,
+                    label: list.dataValues.label,
+                    projectId: project.projectId,
+                    projectTitle: project.Project.dataValues.label
+                })
+            }
         }
         return flat
+    },
+
+    flatSearchCard (queryResult) {
+        let flat = []
+        for (let project of queryResult ) {
+            for (let list of project.Project.ListProjectFks) {
+                for (let card of list.CardListFks) {
+                    flat.push({
+                        id: card.dataValues.id,
+                        label: card.dataValues.label,
+                        listId: list.dataValues.id,
+                        listTitle: list.dataValues.label,
+                        projectId: project.projectId,
+                        projectTitle: project.Project.dataValues.label
+                    })
+                }
+            }
+        }
+        return flat
+    },
+
+    membersOnCardFilter (members, queryResult) {
+        let filter = {
+            membersOnCard: [],
+            membersOffCard: []
+        }
+
+        for (let member of members) {
+            if (queryResult.find(mhc => mhc.memberId === member.memberId)) filter.membersOnCard.push(member.Member)
+            else filter.membersOffCard.push(member.Member)
+        }
+
+        //filter.membersOnCard = queryResult
+        //filter.membersOffCard = members
+
+        return filter
     }
 };
 

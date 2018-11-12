@@ -89,6 +89,7 @@ class App extends Component {
                     <Route path="/profile" component={Profile}/>
                     <Route path="/results" component={SearchResults}/>
                     <Route path="/invitation/:token" component={Invitation} />
+                    <Route path="/project/:id/:listid/:cardid" component={Project}/>
                     <Route path="/project/:id" component={Project}/>
                     <Route path="/card" component={Cards} />
                     <Route path='*' render={() => <Redirect to="/home" />}/>

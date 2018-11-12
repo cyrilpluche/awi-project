@@ -15,7 +15,7 @@ router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.fi
 router.get('/member_has_project',mw.Token.verifyToken, projectController.findMemberHasProject);
 
 router.get('/find_all_lists_cards',mw.Token.verifyToken, projectController.findAllListsCards);
-router.get('/find_all_searchbar', memberHasProjectController.findAllSearchbar);
+router.get('/find_all_searchbar', mw.Token.verifyToken, memberHasProjectController.findAllSearchbar);
 
 router.get('/find_all_members', mw.Token.verifyToken, memberHasProjectController.findAll)
 router.get('/find_all_actions', mw.Token.verifyToken, actionController.findAll)

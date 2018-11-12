@@ -251,11 +251,6 @@ class Navbar extends React.Component {
                             </div>
                             <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
-                                <IconButton color="inherit">
-                                    <Badge badgeContent={4} color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
                                 <IconButton
                                     aria-owns={isMenuOpen ? 'material-appbar' : null}
                                     aria-haspopup="true"

@@ -44,7 +44,7 @@ function signup (body, isDirectlyValidate) {
                         });
                     })
                     .catch((err) => {
-                        dispatch(signError(err.response.data))
+                        dispatch(signError(err.response))
                     });
             } else {
                 _service.Member.signUp(finalBody)
@@ -53,13 +53,12 @@ function signup (body, isDirectlyValidate) {
                         _helper.History.push('/home');
                     })
                     .catch((err) => {
-                        dispatch(signError(err.response.data))
+                        dispatch(signError(err.response))
                     });
             }
         } else {
-            return dispatch => {
-                dispatch(signError(checking.payload))
-            }
+            console.log(checking.payload)
+            dispatch(signError(checking.payload))
         }
     }
 }

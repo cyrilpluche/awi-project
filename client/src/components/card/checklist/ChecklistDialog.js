@@ -31,10 +31,13 @@ class ChecklistDialog extends React.Component {
 
     handleChangeCheckbox = name => event => {
         let index = event.target.id.split('/')[1]
-        let value = event.target.checked
-        this.state.card.TaskCardFks[index].chtState = value //TODO put and setState in this version its not immutable
+        let chtState = event.target.checked
+        this.state.card.TaskCardFks[index].chtState = chtState
+
+        let card = this.state.card
         let taskId = this.state.card.TaskCardFks[index].taskId
-        this.props.onUpdateTask(taskId, {chtState: value})
+
+        this.props.onUpdateTask(card, taskId, {chtState: chtState})
         this.setState({ maj: true });
     };
 
@@ -170,6 +173,7 @@ Checklist.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+    card: state.card.card,
     isLoading: state.card.isLoading
 });
 const mapDispatchToProps = {

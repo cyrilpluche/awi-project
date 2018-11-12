@@ -3,7 +3,8 @@ const router = express.Router();
 const mw = require('../middlewares')
 
 const cardController = require('../controllers').Card;
-const mhcController = require('../controllers').Card;
+const mhpController = require('../controllers').MemberHasProject;
+const mhcController = require('../controllers').MemberHasCard;
 
 const chlController = require('../controllers').CardHasLabel;
 
@@ -13,6 +14,7 @@ router.use(mw.Token.verifyToken)
 router.get('/find_all', cardController.findAll);
 router.get('/find_all/:id', cardController.findAllOfList);
 router.get('/find_all_searchbar', cardController.findAllSearchbar);
+router.get('/find_all_members', mhpController.findAllForCard, mhcController.findAllMembers);
 
 router.get('/find_one', cardController.findOne);
 

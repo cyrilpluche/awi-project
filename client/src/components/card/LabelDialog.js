@@ -18,24 +18,13 @@ class LabelDialog extends React.Component {
         super(props);
         this.state = {
             card: this.props.card,
-            selectedIndex: 1
+            selectedIndex: 1,
         }
     }
 
     handleChangeCheckbox = name => event => {
-        let index = event.target.id.split('/')[1]
-        let checked = event.target.checked
-        let labelId = this.props.labels[index].labelId
-        let cardId = this.props.card.cardId
-
-        if(checked){
-            this.state.card.HaslabelCardFks.push({ cardId: cardId, labelId: labelId }) //TODO use setState
-            this.props.onCreateLinkLabel({ cardId: cardId, labelId: labelId })
-        }else{
-            let indexLink = this.state.card.HaslabelCardFks.findIndex(list => list.labelId === labelId)
-            this.state.card.HaslabelCardFks.splice(indexLink,1) //TODO use setState
-            this.props.onDeleteLinkLabel({ cardId: cardId, labelId: labelId })
-        }
+        //let index = event.target.id.split('/')[1]
+        //let checked = event.target.checked
         this.setState({ maj: true });
     };
 
@@ -44,7 +33,7 @@ class LabelDialog extends React.Component {
     };
 
     render() {
-        const { classes, onClose, selectedValue, onDeleteLinkLabel, onCreateLinkLabel, ...other } = this.props;
+        const { classes, onClose, selectedValue, onDeleteLabel, onCreateLabel, ...other } = this.props;
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set labels</DialogTitle>
@@ -64,7 +53,6 @@ class LabelDialog extends React.Component {
                                             id={'checklist/'+index}
                                             onChange={this.handleChangeCheckbox('checklist')}
                                             value='checklist'
-                                            checked = {!(this.state.card.HaslabelCardFks.find(link => link.labelId === label.labelId) === undefined)}
                                         />
                                     </ListItem>
                                 </div>
@@ -123,8 +111,8 @@ class Label extends React.Component {
                     onClose={this.handleClose}
                     card = {this.props.card}
                     labels = {this.props.labels}
-                    onCreateLinkLabel = {this.props.onCreateLinkLabel}
-                    onDeleteLinkLabel = {this.props.onDeleteLinkLabel}
+                    onCreateLabel = {this.props.onCreateLabel}
+                    onDeleteLabel = {this.props.onDeleteLabel}
                 />
             </div>
         );
@@ -136,12 +124,13 @@ Label.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+    card: state.card.card,
     labels: state.card.labels
 });
 const mapDispatchToProps = {
     onGetLabels : _action.cardAction.getLabels,
-    onCreateLinkLabel : _action.cardAction.createLinkLabel,
-    onDeleteLinkLabel : _action.cardAction.deleteLinkLabel
+    onCreateLabel : _action.cardAction.createLinkLabel,
+    onDeleteLabel : _action.cardAction.deleteLinkLabel
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Label));

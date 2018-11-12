@@ -71,26 +71,26 @@ class Project extends Component {
         //this.socket.on('add', this.socketNew.bind(this))
         //this.socket.on('move', this.socketMove.bind(this))
 
-        
+
     }
 
-   /* socketNew(msg){
-        this.props.getAllListsWithCards(this.props.match.params.id)
-    }
+    /* socketNew(msg){
+         this.props.getAllListsWithCards(this.props.match.params.id)
+     }
 
-    socketMove(newLists){
-       this.setState({lists:newLists})
-    }*/
+     socketMove(newLists){
+        this.setState({lists:newLists})
+     }*/
 
     componentWillMount() {
         const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
-        
+
         const projectId = this.props.match.params.id
 
         // Get project informations
         getProjectInfo(match.params.id)
 
-        getMemberHasProject(logged.memberId, match.params.id)  
+        getMemberHasProject(logged.memberId, match.params.id)
 
         // Get all lists of this project with associated cards
         getAllListsWithCards(match.params.id)
@@ -108,40 +108,40 @@ class Project extends Component {
         this.props.onGetAllPermissions(projectId)
 
     }
-    
 
-    
+
+
     //Will set the state with props
     componentWillReceiveProps(){
         const {lists,members} = this.props
-            
-            this.setState({ updateLists : false, 
-                lists : lists,
-                members : members,
-            })
+
+        this.setState({ updateLists : false,
+            lists : lists,
+            members : members,
+        })
     }
 
     // When a change occurs on our props, we verify to change the state (re rendering) if necessary
     componentDidUpdate(prevProps){
         const {hasProject,projectInfo} = this.props
-       
+
         // verify if props exist
         if(projectInfo){
             // If Logged user is not a member of the project & project is private
             if(hasProject === false && projectInfo.projectVisibility ===1)
             //redirect to home
-            _helper.History.push('/home')
+                _helper.History.push('/home')
         }
-        
+
 
         // If a change occurs on lists props
         if(this.props.lists !== prevProps.lists ){
-            
+
             this.setState( {lists : this.props.lists},()=>{
             })
-           // this.orderList(this.props.lists)      
+            // this.orderList(this.props.lists)
         }
-        
+
         //If a change occurs on projectInfo
         if(this.props.projectInfo !== prevProps.projectInfo ){
             this.setState( {projectInfo : this.props.projectInfo})
@@ -157,21 +157,21 @@ class Project extends Component {
      */
     createNewList(listName,idProject){
         const {lists} = this.state
-        
+
 
         //this.socket.emit('add',"new list")
 
 
-            // if its the first list created for this project, the list has no father
-            if(lists.length === 0 ){
-                this.props.createList(listName,idProject,null)
+        // if its the first list created for this project, the list has no father
+        if(lists.length === 0 ){
+            this.props.createList(listName,idProject,null)
 
             // we call creatList action specifying the title, project id and father list id.
-            }else{           
-                let lastElement = lists[lists.length -1]
-                this.props.createList(listName,idProject,lastElement.listId)
-            } 
-        
+        }else{
+            let lastElement = lists[lists.length -1]
+            this.props.createList(listName,idProject,lastElement.listId)
+        }
+
     }
     deleteList(listId,idProject){
         this.props.deleteList(listId,idProject)
@@ -190,16 +190,16 @@ class Project extends Component {
     }
 
 
-    
+
 
 
 
 
     /**
-     * Will occurs when something has been dragged 
+     * Will occurs when something has been dragged
      */
     onDragEnd = (result) => {
-        
+
         //retrieve source and destination data (given by dnd)
         const { source, destination,draggableId } = result;
         //retrieve lists
@@ -219,22 +219,22 @@ class Project extends Component {
             let dragId = draggableId.split(':');
             dragId = Number.parseInt(dragId[1])
             let findList = notArchivedList.find(list => list.listId === dragId)
-     
-            let indexOfList = notArchivedList.indexOf(findList)                 
+
+            let indexOfList = notArchivedList.indexOf(findList)
             let newLists = Array.from(notArchivedList)
-            
+
             //remove list from list of list
             newLists.splice(indexOfList,1,)
 
             //Insert list in new index
             newLists.splice(destination.index,0,findList)
-            
+
             const newArrayList = newLists.concat(archivedList)
-      
+
             this.props.updatePositionLists(newArrayList)
             //set state with the new list           
             this.setState({lists:newArrayList},() =>{
-                
+
                 //this.socket.emit('move', newArrayList)
                 //let updateList = lists.find(list => list.listId === dragId)
                 //let updateList = findWhere(lists,{listId: dragId})
@@ -242,25 +242,25 @@ class Project extends Component {
                 let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 
                 let childUpdatedList = findWhere(lists,{listFather: findList.listId})
-                
+
 
                 let indexOfUpdateList = lists.indexOf(findList)
-                
+
                 //New father and child of dragged list
                 let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
                 let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
 
 
                 // Change fathers of list in DB
-               /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
-                if(findList)  this.props.moveList(updateList.listId,listFather)
-                if(listChild) this.props.moveList(listChild,updateList.listId)*/
+                /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
+                 if(findList)  this.props.moveList(updateList.listId,listFather)
+                 if(listChild) this.props.moveList(listChild,updateList.listId)*/
             })
         }
-        
+
         // When a card has been dragged and dropped
         if (result.type === 'CARD') {
-           
+
             let sourceListId =  Number.parseInt(source.droppableId.split(':')[0])
             let sourceList = Object.assign({},lists.find(list => list.listId === sourceListId ))
 
@@ -270,7 +270,7 @@ class Project extends Component {
             let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
 
             if(destinationListId !== sourceListId){
-                
+
                 const notArchivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 0))
                 const archivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 1))
 
@@ -295,13 +295,13 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0,sourceList)
                 newList.splice(destinationListIndex,1,)
                 newList.splice(destinationListIndex,0,destinationList)
-                
+
                 this.setState({lists: newList}, () =>{
                     //this.socket.emit('move', newList)
-                   this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
+                    this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
 
-               
+
             }
             else{
 
@@ -322,17 +322,17 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0, sourceList)
                 console.log(newList)
                 this.setState({lists: newList}, () =>{
-                   this.props.updatePositionLists(newList)
-                   // this.socket.emit('move', newList)
+                    this.props.updatePositionLists(newList)
+                    // this.socket.emit('move', newList)
                 })
 
-                 
-            }
-            
-        
 
-           // this.props.updateCard(cardId,findListId.listId)}*/
-    
+            }
+
+
+
+            // this.props.updateCard(cardId,findListId.listId)}*/
+
         }
 
     };
@@ -350,8 +350,8 @@ class Project extends Component {
 
     handleChange = name => event => {
         this.setState({
-          [name]: event.target.value,
-        });   
+            [name]: event.target.value,
+        });
     };
 
     handleClickOpen = () => {
@@ -367,7 +367,7 @@ class Project extends Component {
     };
 
     handleClose (){
-        this.setState({ openMemberDialog: false,openVisibilityDialog:false });     
+        this.setState({ openMemberDialog: false,openVisibilityDialog:false });
     };
 
     // Open/Close the left side drawer (for filter and activity)
@@ -380,25 +380,25 @@ class Project extends Component {
     handleRestoreArchived = (name,type) => event =>{
 
         if(type === "list") {
-            
+
             this.props.restoreList(name,0)
         }
         if(type === "card") {
-            
+
             this.props.restoreCard(name,{cardStatus:0})
         }
         //this.toggleDrawer('openArchived', false)
     }
-    
-    render() {  
-        
+
+    render() {
+
         const {classes, match, projectInfo } = this.props
-        
+
         /* ================= ACTIVITY DRAWER================= */
         const renderActivity = (
             <Drawer
                 anchor="right"
-                open={this.state.openActivity} 
+                open={this.state.openActivity}
                 onClose={this.toggleDrawer('openActivity', false)}
             >
                 <div
@@ -430,11 +430,11 @@ class Project extends Component {
             </Drawer>
         );
 
-         /* ================= FILTER DRAWER================= */
-         const renderFilter = (
+        /* ================= FILTER DRAWER================= */
+        const renderFilter = (
             <Drawer
                 anchor="right"
-                open={this.state.openFilter} 
+                open={this.state.openFilter}
                 onClose={this.toggleDrawer('openFilter', false)}
             >
                 <div
@@ -470,7 +470,7 @@ class Project extends Component {
         const renderArchived = (
             <Drawer
                 anchor="right"
-                open={this.state.openArchived} 
+                open={this.state.openArchived}
                 onClose={this.toggleDrawer('openArchived', false)}
             >
                 <div
@@ -501,22 +501,22 @@ class Project extends Component {
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
                                     <Grid key={1} xs={12} item>
-                                        {this.props.lists ? this.props.lists.filter(list => list.listStatus === 1).map((list,index) => 
-                                    
-                                        <Paper key={index} className={classes.paper}>
-                                        <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
-                                            <Grid xs={10} item>
-                                                {list.listTitle}
-                                            </Grid>
-                                            <Grid xs={2} item>
-                                                <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId,"list")}>
-                                                    <RestorePage fontSize="small" />
-                                                </IconButton>
-                                            </Grid>
-                                        </Grid>
-                                        </Paper>
-                                    
-                                    ): <Paper className={classes.paper}> 0 list archived</Paper>}
+                                        {this.props.lists ? this.props.lists.filter(list => list.listStatus === 1).map((list,index) =>
+
+                                            <Paper key={index} className={classes.paper}>
+                                                <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
+                                                    <Grid xs={10} item>
+                                                        {list.listTitle}
+                                                    </Grid>
+                                                    <Grid xs={2} item>
+                                                        <IconButton size="small" aria-label="valid" className={classes.restoreButton} onClick={this.handleRestoreArchived(list.listId,"list")}>
+                                                            <RestorePage fontSize="small" />
+                                                        </IconButton>
+                                                    </Grid>
+                                                </Grid>
+                                            </Paper>
+
+                                        ): <Paper className={classes.paper}> 0 list archived</Paper>}
                                     </Grid>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
@@ -527,20 +527,20 @@ class Project extends Component {
                                 <ExpansionPanelDetails>
                                     <Grid key={1} xs={12} item>
                                         {this.props.lists ? this.props.lists.map((list,index) => list.CardListFks.filter((card,index) => card.cardStatus === 1).map(card =>
-                                            <Paper key={index+card.cardId} className={classes.paper}>
-                                            <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
-                                                <Grid xs={10} item>
-                                                    {card.cardTitle}
-                                                </Grid>
-                                                <Grid xs={2} item>
-                                                    <IconButton size="small" aria-label="valid" className={classes.restoreButton}  onClick={this.handleRestoreArchived(card,"card")}>
-                                                        <RestorePage fontSize="small" />
-                                                    </IconButton>
-                                                </Grid>
-                                            </Grid>
-                                            </Paper>
-                                        )                                  
-                                    ): <Paper className={classes.paper}> 0 card archived</Paper>}
+                                                <Paper key={index+card.cardId} className={classes.paper}>
+                                                    <Grid alignItems='center' justify="space-between" wrap="nowrap" container >
+                                                        <Grid xs={10} item>
+                                                            {card.cardTitle}
+                                                        </Grid>
+                                                        <Grid xs={2} item>
+                                                            <IconButton size="small" aria-label="valid" className={classes.restoreButton}  onClick={this.handleRestoreArchived(card,"card")}>
+                                                                <RestorePage fontSize="small" />
+                                                            </IconButton>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Paper>
+                                            )
+                                        ): <Paper className={classes.paper}> 0 card archived</Paper>}
                                     </Grid>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
@@ -556,83 +556,84 @@ class Project extends Component {
                 {/*===================  TITLE EDIT  ========================================= */}
                 <Typography variant="h5" gutterBottom className={classes.projectTitle}>
                     {this.state.editProjectTitle === false ? <div>{projectInfo? projectInfo.projectTitle : ''}
-                        {this.props.isAdmin === true ?<Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />:''}
-                    </div>:
-                    <div>
-                        <TextField
-                        id="standard-name"
-                        label="Project title"
-                        defaultValue={projectInfo.projectTitle}
-                        onChange={this.handleChange('newProjectTitle')}
-                        className={classes.textField}
-                        margin="normal"
-                        />
-                        <Button color="primary" className={classes.button}>
-                            <Done className={classes.validIcon} onClick={this.handleValidationEditTitle.bind(this)} />
-                        </Button>
-                    </div>}
+                            {this.props.isAdmin === true ?<Edit className={classes.rightIcon} onClick={this.handleEditTitle.bind(this)} fontSize="small" />:''}
+                        </div>:
+                        <div>
+                            <TextField
+                                id="standard-name"
+                                label="Project title"
+                                defaultValue={projectInfo.projectTitle}
+                                onChange={this.handleChange('newProjectTitle')}
+                                className={classes.textField}
+                                margin="normal"
+                            />
+                            <Button color="primary" className={classes.button}>
+                                <Done className={classes.validIcon} onClick={this.handleValidationEditTitle.bind(this)} />
+                            </Button>
+                        </div>}
                 </Typography>
                 <Grid container spacing={24} >
 
-                {/**===================  MEMBERS BUTTON  ========================================= */}
-               <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
-                    <SupervisorAccount className={classes.leftIcon} />
-                    {this.props.members? this.props.members.length : 0} Members
-                </Button>
-                <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                    {/**===================  MEMBERS BUTTON  ========================================= */}
+                    <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
+                        <SupervisorAccount className={classes.leftIcon} />
+                        {this.props.members? this.props.members.length : 0} Members
+                    </Button>
+                    <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
 
-                {/**===================  VISIBILITY BUTTON  ========================================= */}
-                < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
-                    <RemoveRedEye className={classes.leftIcon} />
-                    Visibility
-                </Button>
-                <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
-                
-                {/*===================  ACTIVITY BUTTON  ========================================= */}
-                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
-                    <Description className={classes.leftIcon} />
-                    Activity
-                </Button>
-                {renderActivity}
+                    {/**===================  VISIBILITY BUTTON  ========================================= */}
+                    < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
+                        <RemoveRedEye className={classes.leftIcon} />
+                        Visibility
+                    </Button>
+                    <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
 
-                 {/*===================  FILTER BUTTON  ========================================= */}
-                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
-                    <FilterList className={classes.leftIcon} />
-                    Filter
-                </Button>
-                {renderFilter}
+                    {/*===================  ACTIVITY BUTTON  ========================================= */}
+                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
+                        <Description className={classes.leftIcon} />
+                        Activity
+                    </Button>
+                    {renderActivity}
 
-                {/*===================  ARCHIVED BUTTON  ========================================= */}
-                < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
-                    <Archive className={classes.leftIcon} />
-                    Archived
-                </Button>
-                {renderArchived}
-               
+                    {/*===================  FILTER BUTTON  ========================================= */}
+                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
+                        <FilterList className={classes.leftIcon} />
+                        Filter
+                    </Button>
+                    {renderFilter}
+
+                    {/*===================  ARCHIVED BUTTON  ========================================= */}
+                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
+                        <Archive className={classes.leftIcon} />
+                        Archived
+                    </Button>
+                    {renderArchived}
+
 
 
                 </Grid>
             </Grid>
-            );
+        );
 
         const dndArea = (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                        <Lists key="1" 
-                            idProject={match.params.id} 
-                            lists={this.state.lists}  
-                            createListCallback={this.createNewList} 
-                            deleteList = {this.deleteList}
-                            updateListTitle = {this.updateListTitle}
-                            archiveList = {this.archiveList}
-                            createCard = {this.createCard}
-                            />
+                <Lists key="1"
+                       idProject={match.params.id}
+                       lists={this.state.lists}
+                       createListCallback={this.createNewList}
+                       deleteList = {this.deleteList}
+                       updateListTitle = {this.updateListTitle}
+                       archiveList = {this.archiveList}
+                       createCard = {this.createCard}
+                       route = {match}
+                />
             </DragDropContext>
         )
 
         return (
             <div className={classes.projectBody}>
-                    {header}
-                    {dndArea}
+                {header}
+                {dndArea}
             </div>
         )
     }
@@ -665,7 +666,7 @@ const mapDispatchToProps ={
     restoreList: _action.listAction.updateListStatus,
     restoreCard : _action.listAction.restoreCard,
     updatePositionLists: _action.listAction.updatePositionLists,
-    createCard: _action.listAction.createCard,   
+    createCard: _action.listAction.createCard,
     updateListTitle: _action.listAction.updateListTitle,
     deleteList: _action.listAction.deleteList,
     archiveList: _action.listAction.updateListStatus

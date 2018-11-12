@@ -8,7 +8,14 @@ const labelsSignup = _action.signupAction.labels
 
 const initialState = {
     isLoading: true,
-    isPasswordReset: false
+    isPasswordReset: false,
+    member: {
+        memberId: -1,
+        memberFirstname: 'unknow',
+        memberLastname: 'unknow',
+        memberPseudo: 'unknow',
+        memberEmail: 'unknow@gmail.com'
+    }
 }
 
 export function signin (state = initialState, action){
