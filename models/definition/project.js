@@ -28,6 +28,16 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATEONLY,
             field: 'project_date_target',
             allowNull: true
+        },
+        projectBackgroundimg: {
+            type: DataTypes.STRING(250),
+            field: 'project_backgroundimg',
+            allowNull: true
+        },
+        projectThumbnail: {
+            type: DataTypes.STRING(250),
+            field: 'project_thumbnail',
+            allowNull: true
         }
     }, {
         schema: 'public',
@@ -62,7 +72,7 @@ module.exports.initRelations = () => {
     Project.hasMany(Label, {
         as: 'LabelProjectFks',
         foreignKey: 'project_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 

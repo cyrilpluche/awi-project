@@ -16,5 +16,28 @@ export const styles = theme => ({
     },
     button: {
         margin: theme.spacing.unit,
+    },
+    dialogTitle:{
+        textAlign:`center`
+    },
+    memberList: {
+        overflowY: 'scroll',
+        height: theme.spacing.unit * 30,
+    },
+    marginBottom: {
+        marginBottom: 20
+    },
+    memberItem: {
+        //maxHeight: 10
+    },
+    validIcon:{
+        color:`#6bb53f`,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    marginSide: {
+        marginLeft: 5,
+        marginRight: 5
     }
 });

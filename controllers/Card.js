@@ -1,3 +1,4 @@
+const helper = require('../helpers/helpersMethod');
 var Card = require('../config/db_connection').Card;
 var CardHasLabel = require('../config/db_connection').Cardhaslabel;
 var Label = require('../config/db_connection').Label;
@@ -89,8 +90,8 @@ module.exports = {
                     }]
                 }]
             })
-            .then(projects => {
-                req.body.result = projects
+            .then(cards => {
+                req.body.result = helper.flatSearchCard(cards)
                 next()
             })
             .catch(error => res.status(400).send(error));

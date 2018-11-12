@@ -1,3 +1,4 @@
+const helper = require('../helpers/helpersMethod');
 var List = require('../config/db_connection').List;
 var sequelize = require('../config/db_connection').sequelize;
 var Sequelize = require('../config/db_connection').Sequelize;
@@ -77,8 +78,8 @@ module.exports = {
                     }]
                 }]
             })
-            .then(projects => {
-                req.body.result = projects
+            .then(lists => {
+                req.body.result = helper.flatSearchList(lists)
                 next()
             })
             .catch(error => res.status(400).send(error));

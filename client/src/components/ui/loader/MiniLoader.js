@@ -10,10 +10,10 @@ const styles = theme => ({
 });
 
 function MiniLoader(props) {
-    const { classes } = props;
+    const { classes, size } = props;
     return (
         <div>
-            <CircularProgress className={classes.progress} size={30} />
+            <CircularProgress className={classes.progress} size={size || 30} />
         </div>
     );
 }

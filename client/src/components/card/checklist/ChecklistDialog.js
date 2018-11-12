@@ -14,6 +14,18 @@ import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
 import Input from "@material-ui/core/Input/Input";
 import MiniLoader from "../../ui/loader/MiniLoader";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import {Cancel, Send} from "@material-ui/icons";
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import Fade from "@material-ui/core/Fade/Fade";
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
+import Grid from "@material-ui/core/Grid/Grid";
+import TextField from "@material-ui/core/TextField/TextField";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 
 
 class ChecklistDialog extends React.Component {
@@ -34,6 +46,7 @@ class ChecklistDialog extends React.Component {
         let value = event.target.checked
         this.state.card.TaskCardFks[index].chtState = value //TODO put and setState in this version its not immutable
         let taskId = this.state.card.TaskCardFks[index].taskId
+
         this.props.onUpdateTask(taskId, {chtState: value})
         this.setState({ maj: true });
     };
@@ -66,49 +79,63 @@ class ChecklistDialog extends React.Component {
         const { classes, onClose, selectedValue, onCreateTask, onUpdateTask, onDeleteTask, isLoading, ...other } = this.props;
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
-                <DialogTitle id="simple-dialog-title">Set checklist</DialogTitle>
-                <div className={classes.form}>
-                    <FormControl component="fieldset" >
-                        <FormGroup>
-                            { isLoading ? (
-                                <MiniLoader/>
-                            ) :  this.state.card.TaskCardFks ? this.props.card.TaskCardFks.map((task, index) => {
-                                    return (
-                                        <div key={task.taskId}>
-                                            <button id={index} onClick={this.handleRemoveTask}>
-                                                <SvgIcon className={this.props.classes.deleteIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>}</SvgIcon>
-                                            </button>
-                                            <FormControlLabel className={this.props.classes.formLabel}
-                                                              control={
-                                                                  <Checkbox
-                                                                      id={'checklist/'+index}
-                                                                      onChange={this.handleChangeCheckbox('checklist')}
-                                                                      value='checklist'
-                                                                      checked={task.chtState}
-                                                                  />
-                                                              }
-                                                              label={task.taskTitle}
-                                            />
-                                        </div>
-                                    )
-                                }
-                            ) : null}
-                            <div>
-                                <Input
-                                    id = 'newChecklist'
-                                    placeholder="New checklist"
-                                    className={classes.input}
-                                    inputProps={{
-                                        'aria-label': 'Description',
-                                    }}
-                                />
-                                <button onClick={this.handleCreateTask}>
-                                    <SvgIcon className={classes.addIcon}>{<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>}</SvgIcon>
-                                </button>
-                            </div>
-                        </FormGroup>
-                    </FormControl>
-                </div>
+                <DialogTitle id="simple-dialog-title" className={classes.dialogTitle}>Checklist</DialogTitle>
+                <List className={ classes.memberList + ' ' + classes.marginBottomTop }>
+                    { isLoading ? (
+                        <MiniLoader/>
+                    ) :  this.state.card.TaskCardFks ? this.props.card.TaskCardFks.map((task, index) => {
+                            return (
+                                <ListItem key={task.taskId} className={ classes.memberItem }>
+                                    <ListItemText primary={task.taskTitle}/>
+                                    <IconButton id={index} color="secondary" onClick={this.handleRemoveTask}>
+                                        <Cancel />
+                                    </IconButton>
+                                    <Tooltip
+                                        TransitionComponent={Fade}
+                                        TransitionProps={{ timeout: 600 }}
+                                        title="Remove"
+                                        placement="top-start">
+                                        <Checkbox
+                                            checked={task.chtState}
+                                            id={'checklist/'+index}
+                                            onChange={this.handleChangeCheckbox('checklist')}
+                                            value='checklist'
+                                        />
+                                    </Tooltip>
+                                </ListItem>
+                            )
+                        }
+                    ) : null}
+                </List>
+                <DialogContentText>
+                    Add a new task
+                </DialogContentText>
+                <Grid justify='center' alignItems='flex-end' container className={ classes.marginBottom }>
+                    <Grid item xs={11}>
+                        <TextField
+                            id = 'newChecklist'
+                            label="task"
+                            fullWidth
+                            //value={this.state.newTask}
+                            name="newChecklist"
+                            margin="normal"
+                            variant="outlined"
+                            //onChange={this.handleChange('memberEmail')}
+                        />
+                    </Grid>
+                    <Grid item xs={11}>
+                        <Button
+                            fullWidth
+                            size='small'
+                            color="primary"
+                            className={classes.validIcon}
+                            onClick={this.handleCreateTask.bind(this)}
+                        >
+                            Add
+                            <AddCircleIcon className={classes.rightIcon} />
+                        </Button>
+                    </Grid>
+                </Grid>
             </Dialog>
         );
     }

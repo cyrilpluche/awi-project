@@ -19,15 +19,21 @@ export const styles = theme => ({
     },
     memberList: {
         overflowY: 'scroll',
-        height: theme.spacing.unit * 10,
+        height: theme.spacing.unit * 20
     },
     memberItem: {
-        //maxHeight: 10
+        //maxHeight: 15
     },
     errorMsg: {
         color: '#f44336',
     },
     formControl: {
         width: '100%'
+    },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    modalWidth: {
+        width: '300px'
     }
 })

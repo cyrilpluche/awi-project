@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { styles } from './Style'
-import _action from "../../actions";
+import { styles } from '../Style'
+import _action from "../../../actions/index";
 import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
 import ListItem from "@material-ui/core/ListItem/ListItem";
@@ -16,6 +16,7 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 class LabelDialog extends React.Component {
     constructor (props) {
         super(props);
+        this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this)
         this.state = {
             card: this.props.card,
             selectedIndex: 1,
@@ -25,6 +26,19 @@ class LabelDialog extends React.Component {
     handleChangeCheckbox = name => event => {
         //let index = event.target.id.split('/')[1]
         //let checked = event.target.checked
+        let index = event.target.id.split('/')[1]
+        let checked = event.target.checked
+        let labelId = this.props.labels[index].labelId
+        let cardId = this.props.card.cardId
+
+        if(checked){
+            this.state.card.HaslabelCardFks.push({ cardId: cardId, labelId: labelId }) //TODO use setState
+            this.props.onCreateLinkLabel({ cardId: cardId, labelId: labelId })
+        }else{
+            let indexLink = this.state.card.HaslabelCardFks.findIndex(list => list.labelId === labelId)
+            this.state.card.HaslabelCardFks.splice(indexLink,1) //TODO use setState
+            this.props.onDeleteLinkLabel({ cardId: cardId, labelId: labelId })
+        }
         this.setState({ maj: true });
     };
 
@@ -33,7 +47,7 @@ class LabelDialog extends React.Component {
     };
 
     render() {
-        const { classes, onClose, selectedValue, onDeleteLabel, onCreateLabel, ...other } = this.props;
+        const { classes, onClose, selectedValue, onDeleteLinkLabel, onCreateLinkLabel, ...other } = this.props;
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
                 <DialogTitle id="simple-dialog-title">Set labels</DialogTitle>
@@ -53,6 +67,7 @@ class LabelDialog extends React.Component {
                                             id={'checklist/'+index}
                                             onChange={this.handleChangeCheckbox('checklist')}
                                             value='checklist'
+                                            checked = {!(this.state.card.HaslabelCardFks.find(link => link.labelId === label.labelId) === undefined)}
                                         />
                                     </ListItem>
                                 </div>
@@ -80,7 +95,7 @@ class Label extends React.Component {
     };
 
     componentDidMount (){
-        this.props.onGetLabels()
+        this.props.onGetLabels(this.props.route.params.id)
     };
 
     handleClickOpen = () => {
@@ -111,8 +126,8 @@ class Label extends React.Component {
                     onClose={this.handleClose}
                     card = {this.props.card}
                     labels = {this.props.labels}
-                    onCreateLabel = {this.props.onCreateLabel}
-                    onDeleteLabel = {this.props.onDeleteLabel}
+                    onCreateLinkLabel = {this.props.onCreateLinkLabel}
+                    onDeleteLinkLabel = {this.props.onDeleteLinkLabel}
                 />
             </div>
         );
@@ -124,13 +139,12 @@ Label.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    card: state.card.card,
     labels: state.card.labels
 });
 const mapDispatchToProps = {
     onGetLabels : _action.cardAction.getLabels,
-    onCreateLabel : _action.cardAction.createLinkLabel,
-    onDeleteLabel : _action.cardAction.deleteLinkLabel
+    onCreateLinkLabel : _action.cardAction.createLinkLabel,
+    onDeleteLinkLabel : _action.cardAction.deleteLinkLabel
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Label));

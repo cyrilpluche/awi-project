@@ -8,8 +8,8 @@ const labels = {
     ERROR_UPDATE_CARD : 'ERROR_UPDATE_CARD',
     DELETE_CARD: 'DELETE_CARD',
     DELETE_CARD_ERROR: 'DELETE_CARD_ERROR',
-    ADD_MEMBER: "ADD_MEMBER",
-    ADD_MEMBER_ERROR: "ADD_MEMBER_ERROR",
+    ADD_MEMBER_ON_CARD: "ADD_MEMBER_ON_CARD",
+    ADD_MEMBER_ON_CARD_ERROR: "ADD_MEMBER_ON_CARD_ERROR",
     DELETE_MEMBER: "DELETE_MEMBER",
     DELETE_MEMBER_ERROR: "DELETE_MEMBER_ERROR",
     UPDATE_TASK: 'UPDATE_TASK',
@@ -18,7 +18,7 @@ const labels = {
     DELETE_TASK_ERROR: 'DELETE_TASK_ERROR',
     CREATE_TASK: 'CREATE_TASK',
     CREATE_TASK_ERROR: 'CREATE_TASK_ERROR',
-    LOAD: "LOAD",
+    LOAD_CARD: "LOAD_CARD",
     GET_ALL_LABEL: 'GET_ALL_LABEL',
     CREATE_LINK_LABEL: 'CREATE_LINK_LABEL',
     CREATE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
@@ -26,8 +26,8 @@ const labels = {
     DELETE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
     LOAD_PROJECT: "LOAD_PROJECT",
     ARCHIVE_CARD:"ARCHIVE_CARD",
-    
-   
+    FIND_ALL_MEMBERS_ON_CARD: "FIND_ALL_MEMBERS_ON_CARD",
+    FIND_ALL_MEMBERS_ON_CARD_ERROR: "FIND_ALL_MEMBERS_ON_CARD_ERROR"
 }
 
 function getCard(cardId) {
@@ -45,9 +45,9 @@ function getCard(cardId) {
     }
 }
 
-function getLabels() {
+function getLabels(projectId) {
     return dispatch => {
-        _service.Label.getAll()
+        _service.Label.getAll({ projectId: projectId })
             .then(res => {
                 dispatch({
                     type: labels.GET_ALL_LABEL,
@@ -64,7 +64,7 @@ function getLabels() {
 function updatecard(card, body,listIndex, cardIndex) {
 
 
-    return dispatch => _service.Card.update(card.cardId,body)
+    return dispatch => _service.Card.update(card.cardId, body)
         .then(id => {
             dispatch({
                 type : labels.ARCHIVE_CARD,
@@ -153,60 +153,94 @@ function deleteCard(cardId, listIndex, cardIndex) {
     }
 };
 
-function addMember(cardId, memberId, membersOnCard, membersOffCard) {
+function getMembersOnCard (cardId, projectId) {
+    return dispatch => {
+        dispatch({type: labels.LOAD_CARD})
+        _service.Card.findAllMembers({
+            cardId: cardId,
+            projectId: projectId,
+            memberhasprojectStatus: 1
+        })
+            .then(members => {
+                console.log(members)
+                dispatch({
+                    type: labels.FIND_ALL_MEMBERS_ON_CARD,
+                    payload: {
+                        membersOnCard: members.membersOnCard,
+                        membersOffCard: members.membersOffCard
+                    }
+                })
+            })
+            .catch (e => {
+                dispatch({
+                    type: labels.FIND_ALL_MEMBERS_ON_CARD_ERROR
+                })
+            })
+    }
+}
+
+function addMember(memberId, cardId, membersOnCard, membersOffCard) {
     let body = {
         cardId: cardId,
         memberId: memberId
     }
-    return dispatch => _service.Card.addMember(body)
-        .then(mhc => {
-            dispatch({
-                type: labels.ADD_MEMBER,
-                payload: {
-                    membersOnCard: membersOnCard,
-                    membersOffCard: membersOffCard
-                }
-            })
-        })
-        .catch (e => {
-            dispatch({
-                type: labels.ADD_MEMBER_ERROR
-            })
-        })
-};
+    return dispatch => {
+        dispatch({ type: labels.LOAD_CARD })
 
-function removeMember (cardId, memberId, membersOnCard, membersOffCard) {
-    let query = {
-        cardId: cardId,
-        memberId: memberId
-    }
-    return dispatch => _service.Card.removeMember(query)
-        .then(isDeleted => {
-            if (isDeleted) {
+        _service.Card.addMember(body)
+            .then(mhc => {
                 dispatch({
-                    type: labels.DELETE_CARD,
+                    type: labels.ADD_MEMBER_ON_CARD,
                     payload: {
                         membersOnCard: membersOnCard,
                         membersOffCard: membersOffCard
                     }
                 })
-            } else {
-                dispatch({
-                    type: labels.DELETE_CARD_ERROR
-                })
-            }
-        })
-        .catch (e => {
-            dispatch({
-                type: labels.DELETE_CARD_ERROR
             })
-        })
+            .catch (e => {
+                dispatch({
+                    type: labels.ADD_MEMBER_ON_CARD_ERROR
+                })
+            })
+    }
+};
+
+function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
+    let query = {
+        cardId: cardId,
+        memberId: memberId
+    }
+    return dispatch => {
+        dispatch({ type: labels.LOAD_CARD })
+
+        _service.Card.removeMember(query)
+            .then(isDeleted => {
+                if (isDeleted) {
+                    dispatch({
+                        type: labels.DELETE_MEMBER,
+                        payload: {
+                            membersOnCard: membersOnCard,
+                            membersOffCard: membersOffCard
+                        }
+                    })
+                } else {
+                    dispatch({
+                        type: labels.DELETE_MEMBER_ERROR
+                    })
+                }
+            })
+            .catch (e => {
+                dispatch({
+                    type: labels.DELETE_MEMBER_ERROR
+                })
+            })
+    }
 };
 
 function createTask(newTask, card) {
     return dispatch => {
         dispatch({
-            type: labels.LOAD
+            type: labels.LOAD_CARD
         })
         _service.Task.create(newTask)
             .then(res => {
@@ -225,7 +259,8 @@ function createTask(newTask, card) {
 
 function createLinkLabel(query) {
     return dispatch => {
-        _service.card.createLinkLabel(query)
+        //{cardId: 1, labelId :1}
+        _service.Card.createLinkLabel(query)
             .then(res => {
                 dispatch({
                     type: labels.CREATE_LINK_LABEL
@@ -274,5 +309,5 @@ export const cardAction = {
     removeMember,
     createLinkLabel,
     deleteLinkLabel,
-    
+    getMembersOnCard
 }

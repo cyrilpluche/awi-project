@@ -95,7 +95,7 @@ module.exports.initRelations = () => {
     Card.hasMany(Cardhaslabel, {
         as: 'HaslabelCardFks',
         foreignKey: 'card_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 
@@ -152,7 +152,7 @@ module.exports.initRelations = () => {
         through: Cardhaslabel,
         foreignKey: 'card_id',
         otherKey: 'label_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 

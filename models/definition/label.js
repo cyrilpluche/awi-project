@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'project_id'
             },
             onUpdate: 'NO ACTION',
-            onDelete: 'NO ACTION'
+            onDelete: 'CASCADE'
         }
     }, {
         schema: 'public',
@@ -49,14 +49,14 @@ module.exports.initRelations = () => {
     Label.hasMany(Cardhaslabel, {
         as: 'CardhaslabelLabel0Fks',
         foreignKey: 'label_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 
     Label.belongsTo(Project, {
         as: 'Project',
         foreignKey: 'project_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 
@@ -65,7 +65,7 @@ module.exports.initRelations = () => {
         through: Cardhaslabel,
         foreignKey: 'label_id',
         otherKey: 'card_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 

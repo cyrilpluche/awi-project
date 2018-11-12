@@ -33,6 +33,7 @@ class Card extends Component{
                                     currentCard={this.props.card}
                                     listIndex={this.props.listIndex}
                                     cardIndex={this.props.cardIndex}
+                                    route={this.props.route}
                                 />
                             </div>
                         )}}

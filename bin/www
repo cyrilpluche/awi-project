@@ -28,7 +28,7 @@ app.set('socketio', io)
 
 // IO functions
 io.on('connection', (client) => {
-  console.log("Connected to Socket!!")
+  console.log('\x1b[32m', 'Connection with SocketIO success.\n', '\x1b[0m')
 
   // ----- Add list or card ----- //
   client.on('add', (msg) => {
