@@ -37,7 +37,7 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/server/initDB.sql" connection-id="" session-id="MAIN" current-schema="" />
+    <mapping file-url="file://$PROJECT_DIR$/initDB.sql" connection-id="" session-id="MAIN" current-schema="" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
