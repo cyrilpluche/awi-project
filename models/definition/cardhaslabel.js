@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'card_id'
             },
             onUpdate: 'NO ACTION',
-            onDelete: 'NO ACTION'
+            onDelete: 'CASCADE'
         },
         labelId: {
             type: DataTypes.INTEGER,
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'label_id'
             },
             onUpdate: 'NO ACTION',
-            onDelete: 'NO ACTION'
+            onDelete: 'CASCADE'
         }
     }, {
         schema: 'public',
@@ -44,14 +44,14 @@ module.exports.initRelations = () => {
     Cardhaslabel.belongsTo(Card, {
         as: 'Card',
         foreignKey: 'card_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 
     Cardhaslabel.belongsTo(Label, {
         as: 'Label',
         foreignKey: 'label_id',
-        onDelete: 'NO ACTION',
+        onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 

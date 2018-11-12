@@ -192,7 +192,6 @@ module.exports = {
      *  return: Find the user and connect him if credentials matched.
      */
     findOneSignIn(req, res, next) {
-        console.log(req.body)
         Member
             .findOne({
                 where: {
@@ -211,7 +210,7 @@ module.exports = {
                     }
                     else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).send('Email or password is incorrect.')
+                else res.status(400).send('EEEmail or password is incorrect.')
             })
             .catch(error => next(error));
     },
