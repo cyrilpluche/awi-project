@@ -27,7 +27,7 @@ module.exports = {
      *  return: Void function that send an email to the given adress.
      */
     sendEmail(req, res, next) {
-        var validationLink = process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/account-confirmation/' + req.body.result.memberToken
+        var validationLink = process.env.SERVER_URL + '/account-confirmation/' + req.body.result.memberToken
 
         var attachments = [
             {
@@ -109,7 +109,7 @@ module.exports = {
      *  return: Void function that send a new password.
      */
     sendNewInvitation(req, res, next) {
-        var validationLink = process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/invitation/' + req.body.result.memberToken
+        var validationLink = process.env.SERVER_URL + '/invitation/' + req.body.result.memberToken
 
         var attachments = [
             {
