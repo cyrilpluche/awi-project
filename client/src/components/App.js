@@ -4,7 +4,6 @@ import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
 import Invitation from "./invitation/Invitation";
-import Cards from "./card/Cards";
 import Profile from './profile/Profile'
 import Navbar from "./layout/navbar/Navbar"
 import TransitionGithub from './transitionGithub/TransitionGithub'
@@ -91,7 +90,6 @@ class App extends Component {
                     <Route path="/invitation/:token" component={Invitation} />
                     <Route path="/project/:id/:listid/:cardid" component={Project}/>
                     <Route path="/project/:id" component={Project}/>
-                    <Route path="/card" component={Cards} />
                     <Route path='*' render={() => <Redirect to="/home" />}/>
                 </Switch>
             </div>

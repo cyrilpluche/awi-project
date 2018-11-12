@@ -8,8 +8,8 @@ import connect from "react-redux/es/connect/connect";
 import { styles } from './Style'
 import _action from "../../actions";
 import Checklist from './checklist/ChecklistDialog';
-import LabelDialog from './LabelDialog'
-import ConfirmationDialog from './ConfirmationDialog';
+import LabelDialog from './label/LabelDialog'
+import ConfirmationDialog from './confirmation/ConfirmationDialog';
 import MiniLoader from "../ui/loader/MiniLoader";
 
 /** MATERIAL UI */

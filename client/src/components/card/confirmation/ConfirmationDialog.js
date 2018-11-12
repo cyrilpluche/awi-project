@@ -5,10 +5,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import _action from "../../actions";
+import _action from "../../../actions/index";
 import connect from "react-redux/es/connect/connect";
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from './Style'
+import { styles } from '../Style'
 import * as PropTypes from "prop-types";
 
 class ConfirmationDialog extends React.Component {
