@@ -106,4 +106,7 @@ export const styles = theme => ({
         marginRight: 0,
         display: 'block'
     },
+    done:{
+        color:'green'
+    }
 });

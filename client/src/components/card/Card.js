@@ -272,12 +272,12 @@ class Cardboard extends React.Component {
                                             />
                                         </Grid>
                                         <Grid item xs={2}>
-                                            <IconButton size="small" aria-label="valid" onClick={this.handleValidDueDate}>
+                                            <IconButton className={classes.done} size="small" aria-label="valid" onClick={this.handleValidDueDate}>
                                                 <Done fontSize="small" />
                                             </IconButton>
                                         </Grid>
                                         <Grid item xs={2}>
-                                            <IconButton size="small" aria-label="valid" onClick={this.handleCancelDueDate}>
+                                            <IconButton  color="secondary" size="small" aria-label="valid" onClick={this.handleCancelDueDate}>
                                                 <Cancel fontSize="small" />
                                             </IconButton>
                                         </Grid> 
