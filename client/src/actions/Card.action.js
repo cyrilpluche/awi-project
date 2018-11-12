@@ -81,13 +81,12 @@ function updatecard(card, body,listIndex, cardIndex) {
 };
 
 
-function updateTask(card, taskId, body) {
+function updateTask(taskId, body) {
     return dispatch => _service.Task.update({taskId: taskId}, body)
         .then(isUpdated => {
             if(isUpdated){
                 dispatch({
-                    type: labels.UPDATE_TASK,
-                    payload: card
+                    type: labels.UPDATE_TASK
                 })
             }else{
                 dispatch({

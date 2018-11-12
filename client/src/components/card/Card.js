@@ -235,7 +235,7 @@ class Cardboard extends React.Component {
                                     Members
                                 </Button>
                                 <LabelDialog/>
-                                <Checklist/>
+                                <Checklist card = {this.props.currentCard}/>
                                 <ConfirmationDialog 
                                     content = {{type:'archive'}} 
                                     card={this.state.card} 
