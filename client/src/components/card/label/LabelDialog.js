@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { styles } from './Style'
-import _action from "../../actions";
+import { styles } from '../Style'
+import _action from "../../../actions/index";
 import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
 import ListItem from "@material-ui/core/ListItem/ListItem";
