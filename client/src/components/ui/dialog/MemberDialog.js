@@ -156,9 +156,9 @@ class MemberDialog extends Component {
                         ) :  this.props.members ? this.props.members.map(member =>
                             member.memberhasprojectStatus === 1 ? (
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
-                                    <ListItemText primary={member.Member.memberEmail}/>
+                                    <ListItemText primary={member.Member.memberPseudo}/>
                                     <div>
-                                        {this.props.isAdmin === true ?
+                                        {this.props.isAdmin === true && member.memberId !== this.props.currentMemberId ?
                                             <div>
                                                 <IconButton id={'member/' + member.Member.memberId} color="secondary"  onClick={this.handleRemoveFromProject}>
                                                     <Cancel />
@@ -215,6 +215,7 @@ class MemberDialog extends Component {
 const mapStateToProps = (state) => ({
     projectInfo : state.project.projectInfo || [],
     members : state.project.members,
+    currentMemberId: state.signin.member.memberId,
     isLoading: state.project.isLoading
 })
 const mapDispatchToProps ={

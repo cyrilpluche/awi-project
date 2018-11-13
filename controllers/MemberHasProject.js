@@ -132,8 +132,6 @@ module.exports = {
             })
             .then(mhp => {
                 req.body.result = mhp
-                console.log('MEMBER HAS PROJECT !!!')
-                console.log(req.body.result)
                 next()
             })
             .catch(error => res.status(400).send(error))

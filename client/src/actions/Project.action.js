@@ -10,6 +10,7 @@ const labels = {
     INVITATION_SUCCESS: "INVITATION_SUCCESS",
     INVITATION_ERROR: "INVITATION_ERROR",
     GET_MEMBER_STATUS:"GET_MEMBER_STATUS",
+    GET_MEMBER_STATUS_ERROR: "GET_MEMBER_STATUS_ERROR",
     REMOVE_MEMBER_FROM_PROJECT:"REMOVE_MEMBER_FROM_PROJECT",
     REMOVE_MEMBER_FROM_PROJECT_ERROR:"REMOVE_MEMBER_FROM_PROJECT_ERROR",
     SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
@@ -247,16 +248,19 @@ function sendInvitationProject(body){
  */
 function getMemberStatus(projectId, memberId){
     return dispatch => {
-        /*_service.Project.getMemberStatus(body)
-        .then(res => {*/
-        dispatch({
-            type: labels.GET_MEMBER_STATUS,
-            payload: true
-        });
-        /*})
+        _service.Project.getMemberStatus(({projectId: projectId, memberId: memberId}))
+        .then(res => {
+            dispatch({
+                type: labels.GET_MEMBER_STATUS,
+                payload: res.mhppState
+            });
+        })
         .catch((err) => {
-            dispatch(err)
-        });*/
+            dispatch({
+                type: labels.GET_MEMBER_STATUS_ERROR,
+                payload: false
+            });
+        });
     }
 }
 

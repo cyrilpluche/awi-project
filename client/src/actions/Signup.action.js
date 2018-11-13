@@ -44,7 +44,7 @@ function signup (body, isDirectlyValidate) {
                         });
                     })
                     .catch((err) => {
-                        dispatch(signError(err.response))
+                        dispatch(signError(err.response.data))
                     });
             } else {
                 _service.Member.signUp(finalBody)

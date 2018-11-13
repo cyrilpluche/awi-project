@@ -109,7 +109,7 @@ class Invitation extends React.Component {
                                 </Grid>
                             </Grid>
                         ) : (
-                            <div>NOT VALID NO !</div>
+                            <div>Error</div>
                         )}
                     </div>
                 ) : this.props.member.memberStatus === 1 ? (

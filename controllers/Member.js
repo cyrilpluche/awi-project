@@ -28,19 +28,14 @@ module.exports = {
      *  return: A new token specific for the member created.
      */
     create(req, res, next) {
-        if (!req.body.result) {
-            Member
-                .create(req.body)
-                .then(member => {
-                    member.memberPassword = null
-                    req.body.result = member
-                    next()
-                })
-                .catch(error => next(error));
-        } else {
-            res.status(400).send(['This email adress is already taken.', 'memberEmail'])
-        }
-
+        Member
+            .create(req.body)
+            .then(member => {
+                member.memberPassword = null
+                req.body.result = member
+                next()
+            })
+            .catch(error => next(error));
     },
 
     createOrNext(req, res, next) {
@@ -111,7 +106,44 @@ module.exports = {
                 req.body.result = member
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
+    },
+
+    findOneSignup (req, res, next) {
+        Member
+            .findOne({
+                where: { memberEmail: req.query.memberEmail }
+            })
+            .then(member => {
+                if (member) res.status(400).send(['This email adress is already taken.', 'memberEmail'])
+                else {
+                    Member
+                        .findOne({
+                            where: { memberPseudo: req.query.memberPseudo }
+                        })
+                        .then(member => {
+                            if (member) res.status(400).send(['This pseudo is already taken.', 'memberPseudo'])
+                            else {
+                                next()
+                            }
+                        })
+                        .catch(error => res.status(400).send(error));
+                }
+            })
+            .catch(error => res.status(400).send(error));
+    },
+
+    findOneInvitation (req, res, next) {
+        Member
+            .findOne({
+                where: { memberPseudo: req.body.memberPseudo }
+            })
+            .then(member => {
+                console.log(member)
+                if (member) res.status(400).send(['This pseudo is already taken.', 'memberPseudo'])
+                else next()
+            })
+            .catch(error => res.status(400).send(error));
     },
 
     /**

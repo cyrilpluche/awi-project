@@ -14,6 +14,12 @@ export function invitation (state = initialState, action) {
             return { ...state,
                 isLoading: true
             };
+
+        case labelsSignup.SIGN_UP_ERROR:
+            return { ...state,
+                isLoading: false
+            };
+
         case labels.MEMBER_EXIST:
             return { ...state,
                 project: action.payload.project,

@@ -83,7 +83,7 @@ class Project extends Component {
      }*/
 
     componentWillMount() {
-        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
+        const {match, currentMemberId, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
 
         const projectId = this.props.match.params.id
 
@@ -99,7 +99,7 @@ class Project extends Component {
         this.props.getAllMembers(this.props.match.params.id)
 
         // Verify if it's a project administrator
-        getMemberStatus(match.params.id,/*memberLoggedId*/)
+        getMemberStatus(match.params.id, currentMemberId)
 
         //Get all activity related to this project
         getActivity(match.params.id)
@@ -646,7 +646,8 @@ const mapStateToProps = (state) => ({
     isAdmin: state.project.isAdmin || false,
     logged: state.signin.member,
     hasProject : state.project.loggedHasProject,
-    activities: state.project.activities
+    activities: state.project.activities,
+    currentMemberId: state.signin.member.memberId
     //labels : state.project.labels || []
 })
 

@@ -122,8 +122,9 @@ const Project = {
 
         /***Return the status for a member of a specific project:
          * True if he is admin of this project, else false
-         */ 
-        
+         */
+        let where = helper.Request.urlFromObject(object)
+        return Api.get(url + 'member_is_admin' + where).then(res => res.data)
     },
 
     setAsAdmin(object){
