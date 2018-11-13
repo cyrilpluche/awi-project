@@ -8,6 +8,7 @@ import _action from "../../../actions";
 // Components
 import NotificationList from '../../ui/notification/NotificationList'
 import SearchResults from "./searchResults/SearchResults"
+import Logo from '../../../public/images/prello-logo-2.png'
 
 // Material UI
 import Menu from '@material-ui/core/Menu';
@@ -19,7 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Drawer from "@material-ui/core/Drawer/Drawer";
@@ -120,6 +121,10 @@ class Navbar extends React.Component {
         this.props.onLogOff()
     }
 
+    goToDownloadPage () {
+        _helper.History.push('/download')
+    }
+
     render() {
         const { anchorEl, mobileMoreAnchorEl, resultsAnchorEl } = this.state;
         const { classes } = this.props;
@@ -196,6 +201,12 @@ class Navbar extends React.Component {
                 open={isMobileMenuOpen}
                 onClose={this.handleMobileMenuClose}
             >
+                <MenuItem onClick={this.goToDownloadPage}>
+                    <IconButton color="primary">
+                        <GetAppIcon />
+                    </IconButton>
+                    <p>Download</p>
+                </MenuItem>
                 <MenuItem onClick={this.toggleDrawer('right', true)}>
                     <IconButton color="primary">
                         <Badge badgeContent={this.props.notificationsUnread} color="secondary">
@@ -205,7 +216,7 @@ class Navbar extends React.Component {
                     <p>Notifications</p>
                 </MenuItem>
                 <MenuItem onClick={this.handleProfileMenuOpen}>
-                    <IconButton color="primary">
+                    <IconButton coloar="primary">
                         <AccountCircle />
                     </IconButton>
                     <p>Profile</p>
@@ -235,7 +246,7 @@ class Navbar extends React.Component {
                         <Toolbar variant="dense">
                             <Link to='/home'>
                                 <IconButton className={classes.menuButton} color="inherit">
-                                    <HomeIcon color="secondary" />
+                                    <img src={Logo} width={30} color="secondary" alt='prello logo' />
                                 </IconButton>
                             </Link>
 
@@ -251,6 +262,14 @@ class Navbar extends React.Component {
                             </div>
                             <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
+                                <IconButton
+                                    aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.goToDownloadPage}
+                                    color="inherit"
+                                >
+                                    <GetAppIcon />
+                                </IconButton>
                                 <IconButton
                                     aria-owns={isMenuOpen ? 'material-appbar' : null}
                                     aria-haspopup="true"

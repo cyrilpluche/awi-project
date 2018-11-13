@@ -15,8 +15,7 @@ import CloudIcon from '@material-ui/icons/Cloud'
 import Typography from "@material-ui/core/Typography/Typography";
 import _helper from "../../helpers";
 import HowToRegIcon from "@material-ui/icons/HowToReg"
-import {member} from "../../reducers/Member.reducer";
-
+import GetAppIcon from '@material-ui/icons/GetApp'
 
 class Signin extends React.Component {
     constructor (props) {
@@ -58,6 +57,10 @@ class Signin extends React.Component {
 
     goToSignUp () {
         _helper.History.push('/signup')
+    }
+
+    goToDownloadPage () {
+        _helper.History.push('/download')
     }
 
     handleChange (event) {
@@ -173,6 +176,17 @@ class Signin extends React.Component {
                                             >
                                                 Sign In with Github
                                                 <CloudIcon className={classes.rightIcon} />
+                                            </Button>
+
+                                            <Button
+                                                variant="outlined"
+                                                color="inherit"
+                                                fullWidth
+                                                className={classes.button}
+                                                onClick={this.goToDownloadPage}
+                                            >
+                                                Download desktop app
+                                                <GetAppIcon className={classes.rightIcon} />
                                             </Button>
                                         </div>
                                     ) : null }
