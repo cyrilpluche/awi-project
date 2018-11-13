@@ -11,7 +11,12 @@ const labels = {
     LOAD_PROJECT:"LOAD_PROJECT",
     RESTORE_CARD:"RESTORE_CARD",
     UPDATE_DATE_CARD:"UPDATE_DATE_CARD",
-    UPDATE_DATE_CARD_ERROR:"UPDATE_DATE_CARD_ERROR"
+    UPDATE_DATE_CARD_ERROR:"UPDATE_DATE_CARD_ERROR",
+    UPDATE_DESCRIPTION_CARD:"UPDATE_DESCRIPTION_CARD",
+    UPDATE_DESCRIPTION_CARD_ERROR:"UPDATE_DESCRIPTION_CARD_ERROR",
+    UPDATE_TITLE_CARD:"UPDATE_TITLE_CARD",
+    UPDATE_TITLE_CARD_ERROR:"UPDATE_TITLE_CARD_ERROR"
+
 
 }
 
@@ -99,6 +104,44 @@ function updateDueDateCard(card, body){
    
 }
 
+function updateDescription(card, body){
+    return dispatch =>{
+        _service.Card.update(card.cardId, body)
+        .then(res =>{
+                dispatch({
+                    type: labels.UPDATE_DESCRIPTION_CARD,
+                    payload: {
+                        card : card,
+                        description : body.cardDescription
+                    }
+                });
+            }
+        ).catch(e => {
+            dispatch({
+                type: labels.UPDATE_DESCRIPTION_CARD_ERROR
+            })
+        })
+    }
+}
+function updateCardTitle(card, body){
+    return dispatch =>{
+        _service.Card.update(card.cardId, body)
+        .then(res =>{
+                dispatch({
+                    type: labels.UPDATE_TITLE_CARD,
+                    payload: {
+                        card : card,
+                        title : body.cardTitle
+                    }
+                });
+            }
+        ).catch(e => {
+            dispatch({
+                type: labels.UPDATE_TITLE_CARD_ERROR
+            })
+        })
+    }
+}
 
 // function updateListTitle(newListTitle, listId){
 //     const body = {
@@ -222,6 +265,8 @@ export const listAction = {
     updateListStatus,
     updatePositionLists,
     restoreCard,
-    updateDueDateCard
+    updateDueDateCard,
+    updateDescription,
+    updateCardTitle
 }
 

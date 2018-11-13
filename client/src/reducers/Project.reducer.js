@@ -253,7 +253,32 @@ export function project (state = initialState, action) {
             return {
                 ...state,
                 lists : listsOld
-            };    
+            };
+        case listLabels.UPDATE_DESCRIPTION_CARD:
+            let oldLists = Array.from(state.lists)
+
+            let listDescriptionIndex = oldLists.findIndex(list => list.listId === action.payload.card.listId)
+
+            let cardDescriptionIndex = oldLists[listDescriptionIndex].CardListFks.findIndex(card => card.cardId === action.payload.card.cardId)
+
+            oldLists[listDescriptionIndex].CardListFks[cardDescriptionIndex].cardDescription =  action.payload.description
+            return {
+                ...state,
+                lists : oldLists
+            };
+        case listLabels.UPDATE_TITLE_CARD:
+            let listsArray = Array.from(state.lists)
+
+            let listTitleIndex = listsArray.findIndex(list => list.listId === action.payload.card.listId)
+
+            let cardTitleIndex = listsArray[listTitleIndex].CardListFks.findIndex(card => card.cardId === action.payload.card.cardId)
+
+            listsArray[listTitleIndex].CardListFks[cardTitleIndex].cardTitle=  action.payload.title
+            return {
+                ...state,
+                lists : listsArray
+            };       
+            
         default:
             return state
     }
