@@ -12,13 +12,13 @@ import PrelloDesktop from '../../public/files/Prello-linux-x64.zip'
 import { style } from './Style'
 import Grid from "@material-ui/core/Grid/Grid";
 import logo from "../../public/images/prello-logo-2.png";
+import downloadPicture from "../../public/images/download-picture.png";
 import Typography from "@material-ui/core/Typography/Typography";
 import Button from "@material-ui/core/Button/Button";
 import GetAppIcon from '@material-ui/icons/GetApp'
 import CloseIcon from "@material-ui/icons/Close";
 
 /** ICONS */
-
 class Download extends React.Component {
     constructor (props) {
         super(props)
@@ -45,14 +45,14 @@ class Download extends React.Component {
                     Download Prello for Desktop
                 </Typography>
 
-                <Grid container justify="center">
+                <Grid container justify="center" alignItems="center">
                     <Grid xs={5} item>
-                        <Grid container justify="center">
+                        <Grid container justify="center" alignItems="center">
                             <Typography variant="overline">
                                 Available for linux
                             </Typography>
                         </Grid>
-                        <Grid justify='center' container>
+                        <Grid justify='center' container alignItems="center">
                             <Grid justify="center" item xs={8}>
                                 <Typography variant="caption" className={ classes.marginBottomXs }>
                                     By downloading Prello, you agree to the terms of use
@@ -60,7 +60,7 @@ class Download extends React.Component {
                                 </Typography>
                             </Grid>
                         </Grid>
-                        <Grid justify='center' container>
+                        <Grid justify='center' container alignItems="center">
                             <Grid item xs={4}>
                                 <Button
                                     href={PrelloDesktop}
@@ -77,8 +77,8 @@ class Download extends React.Component {
                         </Grid>
                     </Grid>
                     <Grid xs={5} item>
-                        <Grid container>
-
+                        <Grid container justify="center" alignItems="center">
+                            <img src={downloadPicture} alt='download picture' className={classes.downloadPicture}/>
                         </Grid>
                     </Grid>
                     {!this.props.isLogged ? (

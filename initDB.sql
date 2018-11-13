@@ -40,6 +40,7 @@ CREATE TABLE public.Member(
     member_password             VARCHAR (50)  ,
     member_picture              VARCHAR (250)  ,
     member_status               INT  NOT NULL ,
+    member_github_token         VARCHAR (250),
 	member_is_link_with_github  BOOL  DEFAULT false  ,
 	CONSTRAINT Member_PK PRIMARY KEY (member_id)
 )WITHOUT OIDS;

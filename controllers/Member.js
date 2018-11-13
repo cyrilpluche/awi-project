@@ -1,14 +1,12 @@
 const Member = require('../config/db_connection').Member;
-var Project = require('../config/db_connection').Project;
+const Project = require('../config/db_connection').Project;
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const qs = require('querystring');
 const request = require('superagent');
-var githubState = {}
-
 
 module.exports = {
 
@@ -120,10 +118,17 @@ module.exports = {
      *  return: Take the member with the decoded arguments
      */
     findOneForLog(req, res, next) {
+        console.log(req.decoded)
+        console.log(req.decoded.memberEmail)
+        console.log(req.decoded.memberPseudo)
+
         Member
             .findOne({
                 where: {
-                    memberEmail: req.decoded.memberEmail
+                        [Sequelize.Op.or]: [
+                            { memberEmail: req.decoded.memberEmail },
+                            { memberPseudo: req.decoded.memberPseudo }
+                        ]
                 }
             })
             .then(member => {
@@ -202,7 +207,6 @@ module.exports = {
                 }
             })
             .then(member => {
-                console.log(member)
                 if (member && member.memberEmail === req.body.memberEmail) {
                     if (member.memberPassword === req.body.memberPassword) {
                         req.body.result = member
@@ -315,7 +319,6 @@ module.exports = {
                     memberEmail: req.body.result.memberEmail,
                     memberStatus: req.body.result.memberStatus,
                 }
-                console.log(req.body.result)
                 next()
             } else {
                 // The user don't exist
@@ -343,23 +346,30 @@ module.exports = {
      */
     sign_in_with_github(req, res, next) {
 
-        // generate "state" parameter
-        githubState.state = require('crypto').randomBytes(16).toString('base64')
-
-        const githubAuthUrl =
+        /*var githubState = {}
+        githubState.state = require('crypto').randomBytes(16).toString('base64')*/
+        /*const githubAuthUrl =
             'https://github.com/login/oauth/authorize?' +
             qs.stringify({
                 client_id: process.env.GITHUB_CLIENT_ID,
                 redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT + "/api/member/github_callback",
                 state: githubState.state,
                 scope: 'user:email read:user'
-            });
+            });*/
+        const client_id = 'client_id=' + process.env.GITHUB_CLIENT_ID
+        const githubAuthUrl = 'https://github.com/login/oauth/authorize?' + client_id
 
-
-        const redirect = JSON.stringify(githubAuthUrl)
-
-        req.body.result = redirect
+        req.body.result = JSON.stringify(githubAuthUrl)
         next()
+    },
+
+    github_redirection (req, res, next) {
+        if (process.env.NODE_ENV === 'development') {
+            res.redirect(process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/github_verification/' + req.body.result.memberToken)
+        } else {
+            res.redirect(process.env.SERVER_URL + '/github_verification/' + req.body.result.memberToken)
+        }
+        //next()
     },
 
     /**  localhost:4200/api/member/github_callback
@@ -372,172 +382,58 @@ module.exports = {
      *  - the user doesn't : we create the user with his info and isLinkWithGithub = true
      */
     github_callback(req, res, next) {
-        console.log(req.query);
-        const returnedState = req.query.state;
         const code = req.query.code;
 
-        if (!code) {
-            return res.send({
-                success: false,
-                message: 'Error, no code'
+        request
+            .post('https://github.com/login/oauth/access_token')
+            .send({
+                client_id: process.env.GITHUB_CLIENT_ID,
+                client_secret: process.env.GITHUB_CLIENT_SECRET,
+                code: code
+            })
+            .set('Accept', 'application/json')
+            .then(result => {
+                req.body.result = {
+                    memberGithubToken: result.body.access_token,
+                    memberGithubCode: code
+                };
+                next()
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    },
 
-            });
+    github_get_user (req, res, next) {
+        request
+            .get('https://api.github.com/user')
+            .set('Authorization', 'token ' + req.body.result.memberGithubToken)
+            .then(user => {
+                req.body.result.memberPseudo = user.body.login
+                next()
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    },
+
+    find_one_github (req, res, next) {
+        let defaultData = {
+            memberFirstname: 'unknow',
+            memberLastname: 'unknow',
+            memberPseudo: req.body.result.memberPseudo,
+            memberStatus: 1,
+            memberIsLinkWithGithub: true
         }
-        else if (githubState.state === returnedState) {
-
-            // Request to get a token from github (for access to user data).
-            request
-                .post('https://github.com/login/oauth/access_token')
-                .send({
-                    client_id: process.env.GITHUB_CLIENT_ID,
-                    client_secret: process.env.GITHUB_CLIENT_SECRET,
-                    code: code,
-                    redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT + "/api/member/github_callback",
-                    state: returnedState
-                })
-                .set('Accept', 'application/json')
-                .then(result => {
-                    req.access_token = result.body.access_token;
-                    console.log("body: \n", result.body)
-
-                    // Get the user email from github.
-                    request
-                        .get('https://api.github.com/user/public_emails')
-                        .set('Authorization', 'token ' + req.access_token)
-                        .then(result => {
-
-                            const email = result.body[0].email;
-
-                            // Check if there is an existing user with this email in our database.
-                            Member
-                                .findOne({
-                                    where: {
-                                        memberEmail: email,
-                                        // TODO : rajouter isGithubAccount in BDa
-                                        // memberStatus: {
-                                        //     [Sequelize.Op.ne]: 0
-                                        // }
-                                    }
-                                })
-                                .then(member => {
-                                    if (member) {
-
-                                        // Case account is already link with github.
-                                        if (member.isLinkWithGithub) {
-
-                                            req.body.result = member
-                                            var payload = Object.assign({}, req.body.result.dataValues)
-                                            payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-                                                expiresIn: 60 * 60 * 24 // expires in 24 hours
-                                            });
-
-                                            const redirect_url =
-                                                process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                '/callback_github/' +
-                                                member.memberEmail + "/" +
-                                                payload.memberToken
-
-                                            res.redirect(redirect_url);
-
-                                        }
-                                        // Case account is not link with github, we link it.
-                                        else {
-                                            Member
-                                                .update({memberIsLinkWithGithub: true}, {
-                                                    where: {memberEmail: email}
-                                                })
-
-                                                .then(result => {
-                                                    if (result) { // if the member was updated
-
-                                                        req.body.result = member
-                                                        var payload = Object.assign({}, req.body.result.dataValues)
-                                                        payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-                                                            expiresIn: 60 * 60 * 24 // expires in 24 hours
-                                                        });
-
-                                                        const redirect_url =
-                                                            process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                            '/callback_github/' +
-                                                            member.memberEmail + "/" +
-                                                            payload.memberToken
-
-                                                        res.redirect(redirect_url);
-                                                    }
-                                                })
-                                                .catch(error => next(error));
-                                        }
-                                    }
-                                    // Case no member with this email in our database, we create it.
-                                    else {
-
-                                        // Get the pseudo, firstname and lastname from github.
-                                        request
-                                            .get('https://api.github.com/user')
-                                            .set('Authorization', 'token ' + req.access_token)
-                                            .then(result => {
-
-                                                const pseudo = result.body.login
-                                                const fullname = result.body.name
-                                                let firstname = " "
-                                                let lastname = " "
-
-                                                if (fullname != null) {
-                                                    firstname = fullname.split(' ').slice(0, -1).join(' ');
-                                                    lastname = fullname.split(' ').slice(-1).join(' ');
-                                                }
-
-                                                // Create the member in our database.
-                                                Member
-                                                    .create({
-                                                        memberEmail: email,
-                                                        memberFirstname: firstname,
-                                                        memberLastname: lastname,
-                                                        memberPseudo: pseudo,
-                                                        memberStatus: 1,
-                                                        memberIsLinkWithGithub: true
-
-                                                    })
-                                                    .then(member => {
-                                                        if (member) {
-
-                                                            req.body.result = member
-                                                            var payload = Object.assign({}, req.body.result.dataValues)
-                                                            payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-                                                                expiresIn: 60 * 60 * 24 // expires in 24 hours
-                                                            });
-
-                                                            const redirect_url =
-                                                                process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                                '/callback_github/' +
-                                                                member.memberEmail + "/" +
-                                                                payload.memberToken
-
-                                                            res.redirect(redirect_url);
-
-                                                        }
-                                                        else res.status(400).send('The member was not created.')
-                                                    })
-                                                    .catch(error => next(error));
-
-                                            })
-                                            .catch(error => next(error));
-                                    }
-                                })
-                                .catch(error => next(error));
-                        })
-                })
-                .catch(error => next(error));
-        }
-        else {
-            // if state doesn't match up, something is wrong
-            // just redirect to homepage
-            res.redirect(process.env.SERVER_URL + ":" + process.env.CLIENT_PORT + '/');
-        }
-
-},
-
-
-
+        Member
+            .findOrCreate({where: {memberPseudo: req.body.result.memberPseudo}, defaults: defaultData})
+            .then((user, created) => {
+                req.body.result = user[0]
+                next()
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    }
 }
 

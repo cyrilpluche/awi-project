@@ -18,14 +18,9 @@ class TransitionGithub extends React.Component {
 
     componentDidMount () {
         let params = this.props.location.pathname.split('/')
-        let memberEmail = params[2]
-        let token = params[3]
-
-        if(token) {
-            console.log("email: \n", memberEmail)
-            console.log("token: \n", token)
-            this.props.onConfirmSigninGithub(memberEmail, token)
-        }
+        let memberToken = params[2]
+        localStorage.setItem('memberToken', memberToken)
+        this.props.onIsMemberLogged()
     }
 
 
@@ -45,7 +40,7 @@ class TransitionGithub extends React.Component {
 const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = {
-    onConfirmSigninGithub: _action.signinAction.confirmSigninGithub,
+    onIsMemberLogged: _action.signinAction.isMemberLoggedGithub,
 
 }
 

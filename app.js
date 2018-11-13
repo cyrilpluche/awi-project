@@ -27,9 +27,6 @@ app.use(cors())
 app.use('/api', indexRouter);
 app.use('/api', end.sendRes);
 
-// GraphQL
-app.use('/graphql', require('./routes/GraphQL'));
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

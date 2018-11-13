@@ -6,8 +6,6 @@ var memberController = require('../controllers').Member;
 const memberHasProjectController = require('../controllers').MemberHasProject;
 var mhppController = require('../controllers').MemberHasPermissionProject
 
-router.all('/github_callback', memberController.github_callback, mw.Token.generateToken);
-
 router.get('/find_all', mw.Token.verifyToken, memberController.findAll);
 //router.get('/find_all_members/:id',memberController.findAllMember);
 router.get('/find_one', mw.Token.verifyToken, memberController.findOne);
@@ -16,6 +14,7 @@ router.get('/find_one_invitation', memberHasProjectController.findOne)
 //router.get('/invitation_token', mw.Token.verifyToken, memberController.tokenToQuery, memberController.findOne, memberController.isInvitated)
 router.get('/decrypt_invitation', mw.Token.verifyToken, memberController.tokenToQuery, memberController.findOne, memberController.decodedToResult)
 router.get('/sign_in_with_github', memberController.sign_in_with_github);
+router.get('/github_callback', memberController.github_callback, memberController.github_get_user, memberController.find_one_github, mw.Token.generateToken, memberController.github_redirection);
 
 router.post('/create', mw.Token.verifyToken, memberController.create);
 router.post('/sign_up', memberController.findOne, memberController.create, mw.Token.generateToken, mw.Email.sendEmail);

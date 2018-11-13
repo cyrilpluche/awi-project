@@ -63,7 +63,7 @@ class App extends Component {
                     <Route exact path="/account-confirmation" component={AccountConfirmation} />
                     <Route path="/account-confirmation/:token" component={TokenVerification} />
                     <Route exact path="/download" component={Download} />
-                    <Route path="/callback_github/:memberEmail/:token" component={TransitionGithub} />
+                    <Route path="/github_verification/:token" component={TransitionGithub} />
                     <Route path='*' render={() => <Redirect to="/login" />}/>
                 </Switch>
             </div>

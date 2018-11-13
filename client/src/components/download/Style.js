@@ -14,6 +14,9 @@ export const style = theme => ({
     },
     marginBottomXs: {
         marginBottom: theme.spacing.unit * 2
+    },
+    downloadPicture: {
+        height: 200
     }
 });
 
