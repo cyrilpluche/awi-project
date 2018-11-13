@@ -169,7 +169,7 @@ class Project extends Component {
             // we call creatList action specifying the title, project id and father list id.
         }else{
             let lastElement = lists[lists.length -1]
-            this.props.createList(listName,idProject,lastElement.listId)
+            this.props.createList(listName,idProject,lastElement.listId, this.props.currentMember)
         }
 
     }
@@ -186,7 +186,7 @@ class Project extends Component {
 
     /*============= CARD ACTIONS ======================*/
     createCard(cardName,listId,idProject){
-        this.props.createCard(cardName,listId,idProject)
+        this.props.createCard(cardName,listId,idProject, this.props.currentMember)
     }
 
 
@@ -620,6 +620,7 @@ class Project extends Component {
                 <Lists key="1"
                        idProject={match.params.id}
                        lists={this.state.lists}
+                       member={this.props.currentMember}
                        createListCallback={this.createNewList}
                        deleteList = {this.deleteList}
                        updateListTitle = {this.updateListTitle}
@@ -643,6 +644,7 @@ const mapStateToProps = (state) => ({
     lists: state.project.lists,
     projectInfo : state.project.projectInfo,
     members : state.project.members || [],
+    currentMember: state.signin.member,
     isAdmin: state.project.isAdmin || false,
     logged: state.signin.member,
     hasProject : state.project.loggedHasProject,

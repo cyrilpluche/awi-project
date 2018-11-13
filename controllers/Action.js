@@ -42,7 +42,7 @@ module.exports = {
     findAll(req, res, next) {
         Action
             .findAll({
-                order : sequelize.col('actionDateCreation'),
+                order : sequelize.literal('action_id DESC'),
                 where: req.query
             })
             .then(actions => {

@@ -53,8 +53,7 @@ class ListPrello extends Component{
     createNewCard(){
         let cardName = this.state.newCardTitle
         let listId = this.props.list.listId
-
-        if(cardName) this.props.createCard(cardName,listId,this.props.idProject)
+        if(cardName) this.props.createCard(cardName,listId,this.props.idProject, this.props.member)
     }
 
 

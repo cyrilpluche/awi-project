@@ -37,6 +37,7 @@ function signup (body, isDirectlyValidate) {
             if (isDirectlyValidate) {
                 // A new member answered to an invitation
                 finalBody.memberStatus = 1
+                console.log(finalBody)
                 _service.Member.updateMemberInvitation(finalBody)
                     .then(res => {
                         dispatch({
