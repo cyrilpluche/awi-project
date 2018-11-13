@@ -43,13 +43,17 @@ class Cardboard extends React.Component {
         this.handleChangeDescription = this.handleChangeDescription.bind(this)
         this.editDescription = this.editDescription.bind(this)
         this.validEditDescription = this.validEditDescription.bind(this)
+        this.handleEditTitle =  this.handleEditTitle.bind(this)
+        this.validEditTitle = this.validEditTitle.bind(this)
         this.state = {
             open: false,
             card: this.props.currentCard,
             description: this.props.currentCard.cardDescription,
+            title : this.props.currentCard.cardTitle,
             dueDate : this.props.currentCard.cardDateTarget,
             editDueDate : false,
             editDescription:false,
+            editTitle:false,
             init: false,
         };
 
@@ -60,7 +64,10 @@ class Cardboard extends React.Component {
 
     componentDidUpdate(){
         if(!this.state.init){
-            this.setState({dueDate : this.props.currentCard.cardDateTarget,init: true ,description: this.props.currentCard.cardDescription})
+            this.setState({ dueDate : this.props.currentCard.cardDateTarget,
+                            init: true ,
+                            description: this.props.currentCard.cardDescription,
+                            title : this.props.currentCard.cardTitle,})
         }
         //this.props.onGetCard(this.props.currentCard.cardId)
         if (this.props.route.params.cardid) {
@@ -81,13 +88,20 @@ class Cardboard extends React.Component {
 
 
     /** Update and create project */
-    handleChangeCard = name => event => {
-        console.log(event.target.value)
-        this.state.card[name] = event.target.value
-        this.setState({
-            maj: true,
-        })
+    handleChangeTitle = name => event => {
+        this.setState({title:event.target.value})
     };
+
+    handleEditTitle(){
+        this.setState({editTitle : true})
+    }
+    validEditTitle(){
+        
+        if(this.state.title !== '' ){
+            this.props.onUpdateTitle(this.props.currentCard, {cardTitle:this.state.title})
+            this.setState({editTitle : false})
+        }    
+    }
 
     updateCard () {
         this.props.onUpdateCard(this.state.card, this.state.card);
@@ -115,7 +129,7 @@ class Cardboard extends React.Component {
     }
 
     handleChangeDescription= name => event =>{
-        console.log( event)
+   
         this.setState({description : event})
     }
 
@@ -133,6 +147,7 @@ class Cardboard extends React.Component {
     validEditDescription(){
         this.state.instance.togglePreview();
         this.setState({editDescription:false})
+        this.props.onUpdateDescription(this.props.currentCard, {cardDescription:this.state.description})
     }
 
     /*changeTitle = () => {
@@ -164,29 +179,39 @@ class Cardboard extends React.Component {
                         <Grid justify='center' container>
                             <Grid xs={8} item>
                                 <form className={classes.container} noValidate autoComplete="off">
-                                    <Grid container justify='space-between' alignItems='flex-end'>
-                                        <Grid item xs={9}>
-                                            <TextField
-                                                id="cardTitle"
-                                                label="Title"
-                                                className={classes.textField}
-                                                value={this.state.card.cardTitle}
-                                                onChange={this.handleChangeCard('cardTitle')}
-                                                margin="normal"
-                                                fullWidth
-                                            />
+                                    
+                                        {this.state.editTitle ?
+                                        <Grid container justify='space-between' alignItems='center'>
+                                            <Grid item xs={9}>
+                                                <TextField
+                                                    id="cardTitle"
+                                                    label="Title"
+                                                    className={classes.textField}
+                                                    defaultValue={this.state.title}
+                                                    onChange={this.handleChangeTitle('cardTitle')}
+                                                    margin="normal"
+                                                    fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <IconButton color="primary" size="small" aria-label="valid" onClick={this.validEditTitle}>
+                                                    <Done fontSize="small" />
+                                                </IconButton>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={3}>
-                                            <Button
-                                                fullWidth
-                                                color="primary"
-                                                className={classes.button}
-                                                onClick={this.updateCard}
-                                            >
-                                                <SaveIcon/>
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
+                                        :<Grid container justify='space-between' alignItems='center'>
+                                            <Grid item xs={10}>
+                                                <Typography variant='subtitle1' >
+                                                    {this.state.title}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <IconButton color="primary" size="small" aria-label="valid" onClick={this.handleEditTitle}>
+                                                    <Edit fontSize="small" />
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>}
+                                    
                                     {!this.state.editDueDate ?
                                     <Grid container justify="space-between" alignItems='center' >
                                         <Grid item xs={10}>  
@@ -334,7 +359,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,
     onGetCard : _action.cardAction.getCard,
-    onUpdateDate: _action.listAction.updateDueDateCard
+    onUpdateDate: _action.listAction.updateDueDateCard,
+    onUpdateDescription: _action.listAction.updateDescription,
+    onUpdateTitle:_action.listAction.updateCardTitle
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));
