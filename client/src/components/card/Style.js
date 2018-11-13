@@ -108,5 +108,8 @@ export const styles = theme => ({
     },
     done:{
         color:'green'
+    },
+    markdown:{
+        backgroundColor : 'lightgrey'
     }
 });

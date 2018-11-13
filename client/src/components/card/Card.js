@@ -1,5 +1,6 @@
 /** REACT */
 import React from 'react';
+import ReactDOMServer from "react-dom/server";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import connect from "react-redux/es/connect/connect";
@@ -27,6 +28,10 @@ import IconButton from '@material-ui/core/IconButton';
 import {Edit,Done,Cancel} from '@material-ui/icons';
 import MemberOnCard from "./membersOnCard/MembersOnCard";
 
+/** MARKDOWN EDITOR */
+import SimpleMDEReact from "react-simplemde-editor";
+import "simplemde/dist/simplemde.min.css";
+
 class Cardboard extends React.Component {
     constructor (props) {
         super(props)
@@ -35,20 +40,27 @@ class Cardboard extends React.Component {
         this.handleEditDueDate = this.handleEditDueDate.bind(this)
         this.handleValidDueDate = this.handleValidDueDate.bind(this)
         this.handleCancelDueDate = this.handleCancelDueDate.bind(this)
+        this.handleChangeDescription = this.handleChangeDescription.bind(this)
+        this.editDescription = this.editDescription.bind(this)
+        this.validEditDescription = this.validEditDescription.bind(this)
         this.state = {
             open: false,
             card: this.props.currentCard,
+            description: this.props.currentCard.cardDescription,
             dueDate : this.props.currentCard.cardDateTarget,
             editDueDate : false,
+            editDescription:false,
             init: false,
         };
 
 
     }
 
+
+
     componentDidUpdate(){
         if(!this.state.init){
-            this.setState({dueDate : this.props.currentCard.cardDateTarget,init: true })
+            this.setState({dueDate : this.props.currentCard.cardDateTarget,init: true ,description: this.props.currentCard.cardDescription})
         }
         //this.props.onGetCard(this.props.currentCard.cardId)
         if (this.props.route.params.cardid) {
@@ -70,6 +82,7 @@ class Cardboard extends React.Component {
 
     /** Update and create project */
     handleChangeCard = name => event => {
+        console.log(event.target.value)
         this.state.card[name] = event.target.value
         this.setState({
             maj: true,
@@ -99,6 +112,27 @@ class Cardboard extends React.Component {
     handleCancelDueDate(){
         
         this.setState({editDueDate:false})
+    }
+
+    handleChangeDescription= name => event =>{
+        console.log( event)
+        this.setState({description : event})
+    }
+
+    getInstance = (instance) => {
+        // You can now store and manipulate the simplemde instance. 
+        this.setState({instance : instance})
+        instance.togglePreview();
+    }
+
+    editDescription(){
+        this.state.instance.togglePreview();
+        this.setState({editDescription:true})
+        
+    }
+    validEditDescription(){
+        this.state.instance.togglePreview();
+        this.setState({editDescription:false})
     }
 
     /*changeTitle = () => {
@@ -191,17 +225,37 @@ class Cardboard extends React.Component {
                                             </IconButton>
                                         </Grid> 
                                     </Grid>  }
-                                    <TextField
-                                        id="cardDescription"
-                                        label="Description"
-                                        multiline
-                                        fullWidth
-                                        rows={4}
-                                        value={this.state.card.cardDescription}
-                                        onChange={this.handleChangeCard('cardDescription')}
-                                        margin="normal"
-                                        variant="outlined"
-                                    />
+                                    <Grid container justify="space-between" alignItems='center' >
+                                        <Grid item xs={10}>
+                                            <Typography variant='subtitle1' gutterBottom>
+                                                Description
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                                { this.state.editDescription?
+                                                <IconButton  color="primary" size="small" aria-label="valid" onClick={this.validEditDescription} >
+                                                    <Done fontSize="small" />
+                                                </IconButton>
+                                                :<IconButton  color="primary" size="small" aria-label="valid" onClick={this.editDescription}>
+                                                    <Edit fontSize="small" />
+                                                </IconButton>}                                                                                               
+                                        </Grid> 
+                                        <Grid item xs={12}>
+                        
+                                            <SimpleMDEReact
+                                                className={classes.markdown}
+                                                getMdeInstance= { this.getInstance } 
+                                                
+                                                value={this.state.description}
+                                                onChange={this.handleChangeDescription('description')}
+                                                options={{
+                                                    autofocus: true,
+                                                }}
+                                            />
+                                            
+                                        </Grid>
+                                    </Grid>
+    
                                 </form>
                             </Grid>
                             <Grid xs={4} item>
