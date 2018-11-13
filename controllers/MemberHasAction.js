@@ -4,6 +4,8 @@ const sequelize = require('../config/db_connection').sequelize;
 const Member = require('../config/db_connection').Member
 const Action = require('../config/db_connection').Action
 
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
+
 module.exports = {
 
     /* ================= CRUD ================= */
@@ -83,7 +85,7 @@ module.exports = {
             .findOne({
                 where: req.query,
                 include: [
-                    { model: Member, as: 'Member' },
+                    { model: Member, as: 'Member', attributes: memberFilter },
                     { model: Action, as: 'Action' }
                 ]
             })

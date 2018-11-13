@@ -22,9 +22,10 @@ router.post('/password_forgotten',mw.Token.generateRandomToken, memberController
 router.post('/create_if_not_exist', mw.Token.verifyToken, memberController.findOne, memberController.createOrNext);
 
 router.put('/update', mw.Token.verifyToken, memberController.update, memberController.findOne, mw.Token.generateToken);
-router.put('/update_password', mw.Token.verifyToken, memberController.findOne, memberController.isFound, memberController.update, memberController.findOne, mw.Token.generateToken);
+router.put('/update_password', mw.Token.verifyToken, memberController.findOneUpdatePassword, memberController.isFound, memberController.update, memberController.findOne, mw.Token.generateToken);
 router.put('/validate_account', mw.Token.verifyToken, memberController.validateAccount, memberController.update)
 router.put('/update_invitation', mw.Token.verifyToken, memberHasProjectController.update)
+router.put('/update_sign_up', memberController.findOneInvitation, memberController.update, memberController.findOne)
 router.put('/update_sign_up', memberController.findOneInvitation, memberController.update, memberController.findOne)
 
 router.delete('/delete/:id', mw.Token.verifyToken, memberController.delete);

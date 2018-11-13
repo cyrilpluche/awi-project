@@ -36,8 +36,8 @@ CREATE TABLE public.Member(
     member_firstname            VARCHAR (50) NOT NULL ,
     member_lastname             VARCHAR (50) NOT NULL ,
     member_pseudo               VARCHAR (250) NOT NULL ,
-    member_email                VARCHAR (50)  ,
-    member_password             VARCHAR (50)  ,
+    member_email                VARCHAR (100)  ,
+    member_password             VARCHAR (250)  ,
     member_picture              VARCHAR (250)  ,
     member_status               INT  NOT NULL ,
     member_github_token         VARCHAR (250),
@@ -291,3 +291,40 @@ CREATE TABLE public.MemberHasCard(
 	,CONSTRAINT MemberHasCard_Card_FK FOREIGN KEY (card_id) REFERENCES public.Card(card_id) ON DELETE CASCADE
 ,CONSTRAINT MemberHasCard_Member0_FK FOREIGN KEY (member_id) REFERENCES public.Member(member_id) ON DELETE CASCADE
 )WITHOUT OIDS;
+
+------------------------------------------------------------
+--        Permissions
+------------------------------------------------------------
+
+INSERT INTO public.permission (
+    permission_id,
+    permission_title,
+    permission_description
+)
+VALUES (
+    1,
+    'admin',
+    'have all permissions on the team'
+);
+
+INSERT INTO public.permission (
+    permission_id,
+    permission_title,
+    permission_description
+)
+VALUES (
+    2,
+    'add/remove members',
+    'add and remove member in the team'
+);
+
+INSERT INTO public.permission (
+    permission_id,
+    permission_title,
+    permission_description
+)
+VALUES (
+    3,
+    'admin',
+    'have all permissions on the project'
+);

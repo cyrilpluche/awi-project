@@ -1,6 +1,7 @@
 var Member = require('../config/db_connection').Member;
 var sequelize = require('../config/db_connection').sequelize;
 var jwt    = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -69,6 +70,7 @@ module.exports = {
         }
         req.body.memberPassword = s
         next()
+
     },
 
     /**

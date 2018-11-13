@@ -1,12 +1,13 @@
+const bcrypt = require('bcrypt');
 const Member = require('../config/db_connection').Member;
 const Project = require('../config/db_connection').Project;
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const qs = require('querystring');
+// const qs = require('querystring');
 const request = require('superagent');
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
 
 module.exports = {
 
@@ -28,26 +29,38 @@ module.exports = {
      *  return: A new token specific for the member created.
      */
     create(req, res, next) {
-        Member
-            .create(req.body)
-            .then(member => {
-                member.memberPassword = null
-                req.body.result = member
-                next()
-            })
-            .catch(error => next(error));
+        bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+            if (err) res.status(400).send('Member:create:bcrypt | ' + err)
+            else {
+                req.body.memberPassword = hash
+                Member
+                    .create(req.body)
+                    .then(member => {
+                        member.memberPassword = null
+                        req.body.result = member
+                        next()
+                    })
+                    .catch(error => res.status(400).send('Member:create | ' + error));
+            }
+        });
     },
 
     createOrNext(req, res, next) {
         if (!req.body.result) {
-            Member
-                .create(req.body)
-                .then(member => {
-                    member.memberPassword = null
-                    req.body.result = member
-                    next()
-                })
-                .catch(error => next(error));
+            bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+                if (err) res.status(400).send(err)
+                else {
+                    req.body.memberPassword = hash
+                    Member
+                        .create(req.body)
+                        .then(member => {
+                            member.memberPassword = null
+                            req.body.result = member
+                            next()
+                        })
+                        .catch(error => res.status(400).send(error));
+                }
+            })
         } else {
             next()
         }
@@ -75,7 +88,7 @@ module.exports = {
                 req.body.result = members
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)
@@ -85,6 +98,7 @@ module.exports = {
     findAll(req, res, next) {
         Member
             .findAll({
+                attributes: memberFilter,
                 order: sequelize.col('memberId'),
                 where: req.query
             })
@@ -92,7 +106,7 @@ module.exports = {
                 req.body.result = members
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/member/find_one --- ?memberId=id... (optional)
@@ -101,10 +115,41 @@ module.exports = {
      */
     findOne(req, res, next) {
         Member
-            .findOne({where: req.query})
+            .findOne({
+                attributes: memberFilter,
+                where: req.query
+            })
             .then(member => {
                 req.body.result = member
                 next()
+            })
+            .catch(error => res.status(400).send(error));
+    },
+
+    findOneUpdatePassword (req, res, next) {
+        Member
+            .findOne({
+                where: { memberId: req.query.memberId }
+            })
+            .then(member => {
+                bcrypt.compare(req.query.memberPassword, member.memberPassword, (err, res) => {
+                    if (err) {
+                        console.log('Member:findOneSignIn | ' + err)
+                        next()
+                    }
+                    else {
+                        try {
+                            console.log(res)
+                            if (res) {
+                                req.body.result = member
+                                next()
+                            }
+                            else res.status(400).send('Email or password is incorrect.')
+                        } catch (err) {
+                            res.status(400).send('Email or password is incorrect.')
+                        }
+                    }
+                });
             })
             .catch(error => res.status(400).send(error));
     },
@@ -150,17 +195,13 @@ module.exports = {
      *  return: Take the member with the decoded arguments
      */
     findOneForLog(req, res, next) {
-        console.log(req.decoded)
-        console.log(req.decoded.memberEmail)
-        console.log(req.decoded.memberPseudo)
-
         Member
             .findOne({
                 where: {
-                        [Sequelize.Op.or]: [
-                            { memberEmail: req.decoded.memberEmail },
-                            { memberPseudo: req.decoded.memberPseudo }
-                        ]
+                    [Sequelize.Op.or]: [
+                        { memberEmail: req.decoded.memberEmail },
+                        { memberPseudo: req.decoded.memberPseudo }
+                    ]
                 }
             })
             .then(member => {
@@ -188,15 +229,35 @@ module.exports = {
      *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
-        Member
-            .update(req.body, {
-                where: req.query
-            })
-            .then(isUpdated => {
-                req.body.result = isUpdated[0] === 1
-                next()
-            })
-            .catch(error => next(error));
+        if (req.body.memberPassword) {
+            bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+                if (err) res.status(400).send('Member:update | ' + err)
+                else {
+                    req.body.memberPassword = hash
+                    Member
+                        .update(req.body, {
+                            where: req.query
+                        })
+                        .then(isUpdated => {
+                            req.body.result = isUpdated[0] === 1
+                            next()
+                        })
+                        .catch(error => res.status(400).send('Member:update | ' + error));
+                }
+            });
+        } else {
+            Member
+                .update(req.body, {
+                    where: req.query
+                })
+                .then(isUpdated => {
+                    req.body.result = isUpdated[0] === 1
+                    next()
+                })
+                .catch(error => res.status(400).send('Member:update | ' + error));
+        }
+
+
     },
 
     /*  localhost:4200/api/member/delete/5
@@ -240,13 +301,24 @@ module.exports = {
             })
             .then(member => {
                 if (member && member.memberEmail === req.body.memberEmail) {
-                    if (member.memberPassword === req.body.memberPassword) {
-                        req.body.result = member
-                        next()
+                    try {
+                        bcrypt.compare(req.body.memberPassword, member.memberPassword, (err, res) => {
+                            if (err) console.log('Member:findOneSignIn | ' + err)
+                            else {
+                                console.log(res)
+                                if (res) {
+                                    member.memberPassword = null
+                                    req.body.result = member
+                                    next()
+                                }
+                                next()
+                            }
+                        });
+                    } catch (err) {
+                        res.status(400).send('Email or password is incorrect.')
                     }
-                    else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).send('EEEmail or password is incorrect.')
+                else res.status(400).send('Email or password is incorrect.')
             })
             .catch(error => next(error));
     },
@@ -312,15 +384,20 @@ module.exports = {
      *  return: A boolean. true = Updated, false = Not updated.
      */
     resetPassword(req, res, next) {
-        Member
-            .update({memberPassword: req.body.memberPassword}, {
-                where: {memberEmail: req.body.memberEmail}
-            })
-            .then(isUpdated => {
-                if (isUpdated[0] === 1) next()
-                else res.status(400).send('No email found.')
-            })
-            .catch(error => next(error));
+        bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+            if (err) res.status(400).send('Member:resetPassword | ' + err)
+            else {
+                Member
+                    .update({memberPassword: hash}, {
+                        where: {memberEmail: req.body.memberEmail}
+                    })
+                    .then(isUpdated => {
+                        if (isUpdated[0] === 1) next()
+                        else res.status(400).send('No email found.')
+                    })
+                    .catch(error => next(error));
+            }
+        });
     },
 
     /*  localhost:4200/api/member/invitation_token?memberToken=token
@@ -377,17 +454,6 @@ module.exports = {
      *  return: a string, the github url authentification
      */
     sign_in_with_github(req, res, next) {
-
-        /*var githubState = {}
-        githubState.state = require('crypto').randomBytes(16).toString('base64')*/
-        /*const githubAuthUrl =
-            'https://github.com/login/oauth/authorize?' +
-            qs.stringify({
-                client_id: process.env.GITHUB_CLIENT_ID,
-                redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT + "/api/member/github_callback",
-                state: githubState.state,
-                scope: 'user:email read:user'
-            });*/
         const client_id = 'client_id=' + process.env.GITHUB_CLIENT_ID
         const githubAuthUrl = 'https://github.com/login/oauth/authorize?' + client_id
 
@@ -401,7 +467,6 @@ module.exports = {
         } else {
             res.redirect(process.env.SERVER_URL + '/github_verification/' + req.body.result.memberToken)
         }
-        //next()
     },
 
     /**  localhost:4200/api/member/github_callback
@@ -466,6 +531,20 @@ module.exports = {
             .catch(err => {
                 res.status(400).send(err)
             })
+    },
+
+    cryptPasswordQuery (req, res, next) {
+        if (req.query.memberPassword) {
+            bcrypt.hash(req.query.memberPassword, 10, (err, hash) => {
+                if (err) res.status(400).send('Member:create:bcrypt | ' + err)
+                else {
+                    req.query.memberPassword = hash
+                    next()
+                }
+            })
+        }
+        else next()
     }
+
 }
 

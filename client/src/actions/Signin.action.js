@@ -29,6 +29,9 @@ function signin (memberEmail, memberPassword, redirection) {
         memberEmail: memberEmail,
         memberPassword: memberPassword
     }
+
+
+
     return dispatch => {
         _service.Member.signIn(body)
             .then(res => {
