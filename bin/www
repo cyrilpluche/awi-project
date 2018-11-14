@@ -28,17 +28,24 @@ app.set('socketio', io)
 
 // IO functions
 io.on('connection', (client) => {
-  console.log('\x1b[32m', 'Connection with SocketIO success.\n', '\x1b[0m')
 
-  // ----- Add list or card ----- //
-  client.on('add', (msg) => {
-      client.broadcast.emit('add', msg)
-  })
+  client.on('subscribe',(idBoard)=>{
+      client.join(idBoard)
+       
+    });
+  client.on('unsubscribe',(idBoard)=>{
+        console.log(client.id+" leave room "+(idBoard))
+        client.leave(idBoard)
+    });
 
-  // ----- move list or card ----- //
-  client.on('move', (lists) => {
-    client.broadcast.emit('move', lists)
-})
+  client.on('updateProject',(project) =>{
+    
+    client.broadcast.to(project.projectId).emit('updateProject', project.lists);
+  });
+
+  client.on('disconnect', (client)=>{
+        console.log('Disconnected - '+ client.id);
+    });
 
 })
 

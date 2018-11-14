@@ -29,6 +29,9 @@ function signin (memberEmail, memberPassword, redirection) {
         memberEmail: memberEmail,
         memberPassword: memberPassword
     }
+
+
+
     return dispatch => {
         _service.Member.signIn(body)
             .then(res => {
@@ -58,6 +61,29 @@ function isMemberLogged () {
                 type: labels.IS_NOT_LOGGED,
                 payload: { isLogged: false }
             })
+        }
+    }
+}
+
+function isMemberLoggedGithub () {
+    return (dispatch) => {
+        var memberToken = localStorage.getItem('memberToken')
+        if (memberToken) {
+            _service.Member.isLogged()
+                .then(res => {
+                    console.log('AH BAH GARS : ', res)
+                    dispatch({
+                        type: labels.IS_LOGGED,
+                        payload: res
+                    })
+                    _helper.History.push('/home')
+                })
+        } else {
+            dispatch({
+                type: labels.IS_NOT_LOGGED,
+                payload: { isLogged: false }
+            })
+            _helper.History.push('/home')
         }
     }
 }
@@ -94,7 +120,7 @@ function signinWithGithub () {
 
         _service.Member.signInWithGithub()
             .then(res => {
-                //localStorage.setItem('token', res.token)
+                //localStorage.setItem('memberToken', res.token)
                 //_helper.History.push('/home');
                 window.location.assign(res)
             })
@@ -106,7 +132,6 @@ function signinWithGithub () {
 }
 
 function confirmSigninGithub (memberEmail, token) {
-    console.log("token \n", token)
     const body={
         memberEmail: memberEmail,
         //memberToken: token,
@@ -132,6 +157,7 @@ export const signinAction = {
     signin,
     signinWithGithub,
     confirmSigninGithub,
+    isMemberLoggedGithub,
     isMemberLogged,
     sendNewPassword,
     resetField

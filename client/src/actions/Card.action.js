@@ -27,7 +27,9 @@ const labels = {
     LOAD_PROJECT: "LOAD_PROJECT",
     ARCHIVE_CARD:"ARCHIVE_CARD",
     FIND_ALL_MEMBERS_ON_CARD: "FIND_ALL_MEMBERS_ON_CARD",
-    FIND_ALL_MEMBERS_ON_CARD_ERROR: "FIND_ALL_MEMBERS_ON_CARD_ERROR"
+    FIND_ALL_MEMBERS_ON_CARD_ERROR: "FIND_ALL_MEMBERS_ON_CARD_ERROR",
+    FIND_ALL_COMMENTS_ON_CARD: 'FIND_ALL_COMMENTS_ON_CARD',
+    ADD_COMMENTS_ON_CARD: 'ADD_COMMENTS_ON_CARD'
 }
 
 function getCard(cardId) {
@@ -102,7 +104,6 @@ function updateTask(taskId, body) {
             })
         })
 };
-
 
 function deleteTask(taskId, card) {
     return dispatch => _service.Task.delete({taskId: taskId})
@@ -292,6 +293,23 @@ function deleteLinkLabel(query) {
         })
 };
 
+function findAllComments(cardId) {
+    return dispatch => _service.Comments.getAllComments(cardId).then(comments => dispatch({
+        type: labels.FIND_ALL_COMMENTS_ON_CARD,
+        payload: comments
+    }))
+}
+
+function addComments (cardId, memberId, text) {
+    return dispatch => _service.Comments.addComments().then(comment => {
+        // TODO trigger notification
+        dispatch({
+            type: labels.ADD_COMMENTS_ON_CARD,
+            payload: comment
+        })
+    })
+}
+
 export const cardAction = {
     labels,
     getCard,
@@ -305,5 +323,7 @@ export const cardAction = {
     removeMember,
     createLinkLabel,
     deleteLinkLabel,
-    getMembersOnCard
+    getMembersOnCard,
+    findAllComments,
+    addComments
 }

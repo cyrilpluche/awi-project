@@ -1,6 +1,7 @@
 var Member = require('../config/db_connection').Member;
 var sequelize = require('../config/db_connection').sequelize;
 var jwt    = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -23,12 +24,12 @@ module.exports = {
      */
     generateToken(req, res, next) {
         req.body.result.dataValues.memberPassword = null
-
         // We copy the object because dataValues don't have memberToken field.
         var payload = Object.assign({}, req.body.result.dataValues)
         payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 * 365 // expires in 1 year
         });
+
         req.body.result = payload
         next()
     },
@@ -51,8 +52,6 @@ module.exports = {
                     }
                 })
             } else {
-                console.log('no auto')
-
                 res.status(400).send('No token provided.');
             }
         } else {
@@ -71,6 +70,7 @@ module.exports = {
         }
         req.body.memberPassword = s
         next()
+
     },
 
     /**

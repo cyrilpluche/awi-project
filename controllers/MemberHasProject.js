@@ -10,6 +10,8 @@ const List = require('../config/db_connection').List
 const Card = require('../config/db_connection').Card
 const Permission = require('../config/db_connection').Permission
 
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
+
 module.exports = {
 
     /* ================= CRUD ================= */
@@ -44,6 +46,7 @@ module.exports = {
                 order : sequelize.col('memberId'),
                 where: req.query,
                 include: [{
+                    attributes: memberFilter,
                     model: Member,
                     as: 'Member',
                     include: [{
@@ -126,14 +129,12 @@ module.exports = {
             .findOne({
                 where: req.query,
                 include: [
-                    { model: Member, as: 'Member'},
+                    { model: Member, as: 'Member', attributes: memberFilter },
                     { model: Project, as: 'Project'},
                 ]
             })
             .then(mhp => {
                 req.body.result = mhp
-                console.log('MEMBER HAS PROJECT !!!')
-                console.log(req.body.result)
                 next()
             })
             .catch(error => res.status(400).send(error))

@@ -11,7 +11,7 @@ export const styles = theme => ({
              
     },
     list: {
-        margin: theme.spacing.unit * 2,
+        /*margin: theme.spacing.unit * 2,
         border:`1px solid lightgrey`,
         borderRadius : `4px`,
         backgroundColor:`white`,
@@ -19,14 +19,13 @@ export const styles = theme => ({
         minWidth : `200px`,
         minHeight : `100px`,
         justifyContent: `center`,
-        textAlign: `center`,
-        
-        
+        textAlign: `center`,*/
+        backgroundColor:`#1e88e5`,
     },
     listTitle: {
         textAlign:`left`,
         color : `black`,
-        backgroundColor:'#e4e4e4',
+        backgroundColor:'red',
         border:`1px solid grey`,
         fontWeight: `lighter`,
         wordBreak: `break-all`
@@ -37,7 +36,8 @@ export const styles = theme => ({
     },
     button:{
         fontSize: '11px',
-        color: 'grey'
+        color: 'white',
+        backgroundColor: '#155fa0'
     },
     dropSpace:{
         padding:'10px',
@@ -47,16 +47,44 @@ export const styles = theme => ({
         marginLeft:theme.spacing.unit,
         marginRight:theme.spacing.unit,
     },
+    textField2:{
+        padding: 0,
+        margin: 0,
+        color: 'white'
+    },
     dialogBox:{
-        marginLeft:theme.spacing.unit,
+        marginLeft: theme.spacing.unit,
     },
     badge:{
-        left:'0'
+        left:'0',
+        marginRight: theme.spacing.unit * 2,
+        color: 'white'
     },
     validEditTitle:{
-        color : 'green',
+        color : 'white',
+        left:'0',
+        marginRight: theme.spacing.unit * 2,
     },
     listElement: {
         marginBottom: 20
+    },
+    listsGrid: {
+        marginLeft:  theme.spacing.unit * 5,
+        marginRight: theme.spacing.unit * 5,
+    },
+    listTitle2: {
+        backgroundColor: '#155fa0',
+    },
+    noPadding: {
+        padding: 0
+    },
+    TexfieldGrid: {
+        padding: 0,
+    },
+    cardSlot: {
+        backgroundColor: '1e88e5'
+    },
+    whiteText: {
+        color: 'white'
     }
 });

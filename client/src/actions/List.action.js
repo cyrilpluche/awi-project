@@ -1,4 +1,5 @@
 import _service from '../services'
+import moment from "moment";
 
 const labels = {
     GET_ALL_CARDS :"GET_ALL_CARDS",
@@ -9,12 +10,19 @@ const labels = {
     UPDATE_LIST_STATUS: "UPDATE_LIST_STATUS",
     UPDATE_POSITION_LISTS:"UPDATE_POSITION_LISTS",
     LOAD_PROJECT:"LOAD_PROJECT",
-    RESTORE_CARD:"RESTORE_CARD"
+    RESTORE_CARD:"RESTORE_CARD",
+    UPDATE_DATE_CARD:"UPDATE_DATE_CARD",
+    UPDATE_DATE_CARD_ERROR:"UPDATE_DATE_CARD_ERROR",
+    UPDATE_DESCRIPTION_CARD:"UPDATE_DESCRIPTION_CARD",
+    UPDATE_DESCRIPTION_CARD_ERROR:"UPDATE_DESCRIPTION_CARD_ERROR",
+    UPDATE_TITLE_CARD:"UPDATE_TITLE_CARD",
+    UPDATE_TITLE_CARD_ERROR:"UPDATE_TITLE_CARD_ERROR",
+    CREATE_CARD_ERROR: "CREATE_CARD_ERROR"
+
 }
 
 
-function createCard(cardTitle,listId,projectId) {
-
+function createCard(cardTitle,listId,projectId, member) {
     const body = {
         cardTitle: cardTitle,
         cardStatus : 0,
@@ -24,19 +32,31 @@ function createCard(cardTitle,listId,projectId) {
     return dispatch => {
         dispatch({ type: labels.LOAD_PROJECT })
         _service.Card.create(body)
-        .then(res => {
-               const card = {
-                   ...res,
-                   CardListFks : []
-               }
+            .then(res => {
+                const card = {
+                    ...res,
+                    CardListFks : []
+                }
+                _service.Action.createActivityForAllMembers({
+                    actionType: 0,
+                    actionTitle: "Card was created",
+                    actionDescription: member.memberPseudo + " has create the card '" + cardTitle + "'.",
+                    memberId: member.memberId,
+                    projectId: projectId,
+                    actionDateCreation: moment(),
+                    mhaStatus: 0
+                })
                 dispatch({
                     type: labels.CREATE_CARD,
                     payload: card
                 });
             })
-        .catch((err) => {
-            dispatch(err)
-        });
+            .catch((err) => {
+                console.log(err)
+                dispatch({
+                    type: labels.CREATE_CARD_ERROR
+                })
+            });
     }
 }
 
@@ -44,15 +64,15 @@ function findAllCards() {
 
     return dispatch => {
         _service.Card.getAll()
-        .then(res => {
-            dispatch({
-                type: labels.GET_ALL_CARDS,
-                payload: res
+            .then(res => {
+                dispatch({
+                    type: labels.GET_ALL_CARDS,
+                    payload: res
+                });
+            })
+            .catch((err) => {
+                dispatch(err)
             });
-        })
-        .catch((err) => {
-            dispatch(err)
-        });
     }
 }
 
@@ -62,16 +82,76 @@ function updateCard(cardId, listId, newLists){
     }
     return dispatch => {
         _service.Card.update(cardId,body)
-        .then(res => {
+            .then(res => {
 
-            dispatch({
+                dispatch({
                     type: labels.UPDATE_CARD,
                     payload: newLists
-            });
-        })
-        .catch((err) => {
+                });
+            })
+            .catch((err) => {
                 dispatch(err)
-        });
+            });
+    }
+}
+
+function updateDueDateCard(card, body){
+    return dispatch =>{
+        _service.Card.update(card.cardId, body)
+            .then(res =>{
+                    dispatch({
+                        type: labels.UPDATE_DATE_CARD,
+                        payload: {
+                            card : card,
+                            dueDate : body.cardDateTarget
+                        }
+                    });
+                }
+            ).catch(e => {
+            dispatch({
+                type: labels.UPDATE_DATE_CARD_ERROR
+            })
+        })
+    }
+
+}
+
+function updateDescription(card, body){
+    return dispatch =>{
+        _service.Card.update(card.cardId, body)
+            .then(res =>{
+                    dispatch({
+                        type: labels.UPDATE_DESCRIPTION_CARD,
+                        payload: {
+                            card : card,
+                            description : body.cardDescription
+                        }
+                    });
+                }
+            ).catch(e => {
+            dispatch({
+                type: labels.UPDATE_DESCRIPTION_CARD_ERROR
+            })
+        })
+    }
+}
+function updateCardTitle(card, body){
+    return dispatch =>{
+        _service.Card.update(card.cardId, body)
+            .then(res =>{
+                    dispatch({
+                        type: labels.UPDATE_TITLE_CARD,
+                        payload: {
+                            card : card,
+                            title : body.cardTitle
+                        }
+                    });
+                }
+            ).catch(e => {
+            dispatch({
+                type: labels.UPDATE_TITLE_CARD_ERROR
+            })
+        })
     }
 }
 
@@ -114,10 +194,10 @@ function updateListTitle(newListTitle, listId){
     return dispatch => {
         _service.List.update(listId,body)
             .then(res => {
-                    dispatch({
-                            type: labels.UPDATE_LIST_TITLE,
-                            payload: setDispacth
-                    });
+                dispatch({
+                    type: labels.UPDATE_LIST_TITLE,
+                    payload: setDispacth
+                });
             })
             .catch((err) => {
                 dispatch(err)
@@ -144,7 +224,7 @@ function deleteList(listId, projectId) {
 
 function updateListStatus(listId, status){
     const body ={
-        listId:listId, 
+        listId:listId,
         listStatus:status
     }
     return dispatch => {
@@ -158,31 +238,31 @@ function updateListStatus(listId, status){
             .catch((err) => {
                 dispatch(err)
             });
-    } 
+    }
 }
 
 function updatePositionLists(newOrderedArray){
     return dispatch => {
-            dispatch({
-                type: labels.UPDATE_POSITION_LISTS,
-                payload: newOrderedArray
-            });
+        dispatch({
+            type: labels.UPDATE_POSITION_LISTS,
+            payload: newOrderedArray
+        });
     }
 }
 
 function restoreCard(card, body){
     return dispatch => {
         _service.Card.update(card.cardId,body)
-        .then(res => {
+            .then(res => {
 
-            dispatch({
+                dispatch({
                     type: labels.RESTORE_CARD,
                     payload: card
-            });
-        })
-        .catch((err) => {
+                });
+            })
+            .catch((err) => {
                 dispatch(err)
-        });
+            });
     }
 }
 
@@ -196,6 +276,9 @@ export const listAction = {
     deleteList,
     updateListStatus,
     updatePositionLists,
-    restoreCard
+    restoreCard,
+    updateDueDateCard,
+    updateDescription,
+    updateCardTitle
 }
 

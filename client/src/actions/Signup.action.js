@@ -33,9 +33,11 @@ function signup (body, isDirectlyValidate) {
         let checking = checkSignupFields(body)
         if (checking.isFieldsOk) {
             let finalBody = Object.assign({memberStatus: 0}, body)
+
             if (isDirectlyValidate) {
                 // A new member answered to an invitation
                 finalBody.memberStatus = 1
+                console.log(finalBody)
                 _service.Member.updateMemberInvitation(finalBody)
                     .then(res => {
                         dispatch({
@@ -44,7 +46,7 @@ function signup (body, isDirectlyValidate) {
                         });
                     })
                     .catch((err) => {
-                        dispatch(signError(err.response))
+                        dispatch(signError(err.response.data))
                     });
             } else {
                 _service.Member.signUp(finalBody)

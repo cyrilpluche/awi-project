@@ -1,0 +1,20 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "asar pack Prello-linux-x64/resources/app Prello-linux-x64/resources/app.asar",
+    "build": "electron-packager . Prello --ignore=nodes_modules/electron-*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "asar": "^0.14.5",
+    "electron": "^3.0.8",
+    "electron-builder": "^20.34.0",
+    "electron-packager": "^12.2.0"
+  }
+}

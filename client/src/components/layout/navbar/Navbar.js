@@ -8,6 +8,7 @@ import _action from "../../../actions";
 // Components
 import NotificationList from '../../ui/notification/NotificationList'
 import SearchResults from "./searchResults/SearchResults"
+import Logo from '../../../public/images/prello-logo-2.png'
 
 // Material UI
 import Menu from '@material-ui/core/Menu';
@@ -19,7 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Drawer from "@material-ui/core/Drawer/Drawer";
@@ -34,6 +35,8 @@ import { style } from './Style'
 import { Theme } from "../../ui/palette/Palette";
 import { MuiThemeProvider } from "@material-ui/core/es/styles";
 import Grid from "@material-ui/core/Grid/Grid";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Switch from "@material-ui/core/Switch/Switch";
 
 class Navbar extends React.Component {
 
@@ -55,7 +58,8 @@ class Navbar extends React.Component {
             mobileMoreAnchorEl: null,
             resultsAnchorEl: null,
             right: false,
-            showSearchResults: false
+            showSearchResults: false,
+            filterOnlyUnread: false
         };
     }
 
@@ -104,10 +108,12 @@ class Navbar extends React.Component {
     handleFilterChange = name => event => {
         this.setState({ [name]: event.target.checked });
     };
+    handleFilter = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
 
-    /* ================= Search results ================= */
+    /** ================= Search results ================= */
     handleSearchResultsOpen = event => {
-        console.log(event.target)
         this.setState({showSearchResults: event.target.id === "searchbar" });
     };
     handleSearchResultsClose = () => {
@@ -118,6 +124,10 @@ class Navbar extends React.Component {
     logOff (event) {
         this.handleMenuClose(event)
         this.props.onLogOff()
+    }
+
+    goToDownloadPage () {
+        _helper.History.push('/download')
     }
 
     render() {
@@ -176,6 +186,7 @@ class Navbar extends React.Component {
                         <NotificationList
                             notifications={this.props.notifications}
                             notificationsUnread={this.props.notificationsUnread}
+                            unreadFilter={this.state.filterOnlyUnread}
                         />
                     </div>
                     <Divider/>
@@ -183,6 +194,20 @@ class Navbar extends React.Component {
                     <Button fullWidth color="primary" className={classes.button}>
                         Filters
                     </Button>
+                    <Divider/>
+                    <Grid justify="center" container>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.state.filterOnlyUnread}
+                                    onChange={this.handleFilter('filterOnlyUnread')}
+                                    value="filterOnlyUnread"
+                                    color="primary"
+                                />
+                            }
+                            label="Only unread"
+                        />
+                    </Grid>
                 </div>
             </Drawer>
         );
@@ -196,6 +221,12 @@ class Navbar extends React.Component {
                 open={isMobileMenuOpen}
                 onClose={this.handleMobileMenuClose}
             >
+                <MenuItem onClick={this.goToDownloadPage}>
+                    <IconButton color="primary">
+                        <GetAppIcon />
+                    </IconButton>
+                    <p>Download</p>
+                </MenuItem>
                 <MenuItem onClick={this.toggleDrawer('right', true)}>
                     <IconButton color="primary">
                         <Badge badgeContent={this.props.notificationsUnread} color="secondary">
@@ -205,7 +236,7 @@ class Navbar extends React.Component {
                     <p>Notifications</p>
                 </MenuItem>
                 <MenuItem onClick={this.handleProfileMenuOpen}>
-                    <IconButton color="primary">
+                    <IconButton coloar="primary">
                         <AccountCircle />
                     </IconButton>
                     <p>Profile</p>
@@ -235,7 +266,7 @@ class Navbar extends React.Component {
                         <Toolbar variant="dense">
                             <Link to='/home'>
                                 <IconButton className={classes.menuButton} color="inherit">
-                                    <HomeIcon color="secondary" />
+                                    <img src={Logo} width={30} color="secondary" alt='prello logo' />
                                 </IconButton>
                             </Link>
 
@@ -251,6 +282,14 @@ class Navbar extends React.Component {
                             </div>
                             <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
+                                <IconButton
+                                    aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.goToDownloadPage}
+                                    color="inherit"
+                                >
+                                    <GetAppIcon />
+                                </IconButton>
                                 <IconButton
                                     aria-owns={isMenuOpen ? 'material-appbar' : null}
                                     aria-haspopup="true"

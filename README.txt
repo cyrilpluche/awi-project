@@ -2,24 +2,22 @@
 
 2. Create a ".env" file inside root folder. Copy these informations and complete with your configuration :
 
-NODE_ENV=
-DB_NAME=yourDbName
-DB_USERNAME=yourDbUsername
-DB_PASSWORD=yourDbPassword
+NODE_ENV=development
+DB_NAME=prello
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
 DB_HOSTNAME=localhost
-DB_PORT=yourDbPort
+DB_PORT=5432
 SERVER_URL=http://localhost
 PORT=4200
-CLIENT_PORT=8080
-JWT_SECRET=yourSecret
+CLIENT_PORT=3000
+JWT_SECRET=Pavardinho
 USER_MAIL_ADDRESS=awi.project.option1.g1@gmail.com
 USER_MAIL_PWD=Polytech34
 USER_MAIL_SERVICE=gmail
-MAIL_ID_CLIENT=735288017834-ki8u5pgl4oog11rd8t607scot8df1l2j.apps.googleusercontent.com
-MAIL_SECRET=uuIMVIL3NDzm6SMXbx1aZNVB
-MAIL_TOKEN=1/4uFiKldJEHJEbuSOCzIF4EcpMYX310crK3V1359_bNQ
-GITHUB_CLIENT_ID=b81474afe67274ecc8b5
-GITHUB_CLIENT_SECRET=c3e66dc7b859e5da4fce057438ca5d646023e026
+DB_URI=postgresql://postgres@localhost:5432/prello
+GITHUB_CLIENT_ID=79b7fe764078e8f2995d
+GITHUB_CLIENT_SECRET=fe4304bed1f4e9bce88d17629f61b1bd3fbf1a39
 
 3. Execute : cd server
 

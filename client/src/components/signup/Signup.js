@@ -36,6 +36,7 @@ class Signup extends React.Component {
 
     submit () {
         let isInvitation = false
+        this.state.memberPseudo.trim().toLowerCase()
         if (this.props.invitation) isInvitation = true
         this.props.onAdd(this.state, isInvitation)
     }

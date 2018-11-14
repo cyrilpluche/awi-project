@@ -32,13 +32,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Divider from "@material-ui/core/Divider/Divider";
 
 // Styles
 import {withStyles } from '@material-ui/core/styles';
 import { styles } from './Style'
 
 // Socket IO
-import SocketIOClient  from "socket.io-client"
+import socket from '../../helpers/SocketIo.helper'
 
 
 
@@ -61,30 +62,29 @@ class Project extends Component {
             openArchived:false,
             projectInfo:''
         }
+
+        this.socket = socket
         this.handleRestoreArchived = this.handleRestoreArchived.bind(this)
         this.deleteList = this.deleteList.bind(this)
         this.updateListTitle = this.updateListTitle.bind(this)
         this.archiveList = this.archiveList.bind(this)
         this.createCard = this.createCard.bind(this)
         this.createNewList = this.createNewList.bind(this)
-        //this.socket = SocketIOClient('http://localhost:4200')
-        //this.socket.on('add', this.socketNew.bind(this))
-        //this.socket.on('move', this.socketMove.bind(this))
+
+        this.socket.on('updateProject', this.socketUpdate.bind(this))
+
 
 
     }
 
-    /* socketNew(msg){
-         this.props.getAllListsWithCards(this.props.match.params.id)
+    socketUpdate(lists){
+         this.props.loadLists(lists)
      }
 
-     socketMove(newLists){
-        this.setState({lists:newLists})
-     }*/
-
     componentWillMount() {
-        const {match, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
+        const {match, currentMemberId, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
 
+        this.socket.emit("subscribe", this.props.match.params.id)
         const projectId = this.props.match.params.id
 
         // Get project informations
@@ -99,7 +99,7 @@ class Project extends Component {
         this.props.getAllMembers(this.props.match.params.id)
 
         // Verify if it's a project administrator
-        getMemberStatus(match.params.id,/*memberLoggedId*/)
+        getMemberStatus(match.params.id, currentMemberId)
 
         //Get all activity related to this project
         getActivity(match.params.id)
@@ -107,6 +107,10 @@ class Project extends Component {
         //this.props.getLabels()
         this.props.onGetAllPermissions(projectId)
 
+    }
+
+    componentWillUnmount(){
+        this.socket.emit("unsubscribe",this.props.match.params.id)
     }
 
 
@@ -169,7 +173,7 @@ class Project extends Component {
             // we call creatList action specifying the title, project id and father list id.
         }else{
             let lastElement = lists[lists.length -1]
-            this.props.createList(listName,idProject,lastElement.listId)
+            this.props.createList(listName,idProject,lastElement.listId, this.props.currentMember)
         }
 
     }
@@ -186,7 +190,7 @@ class Project extends Component {
 
     /*============= CARD ACTIONS ======================*/
     createCard(cardName,listId,idProject){
-        this.props.createCard(cardName,listId,idProject)
+        this.props.createCard(cardName,listId,idProject, this.props.currentMember)
     }
 
 
@@ -608,9 +612,6 @@ class Project extends Component {
                         Archived
                     </Button>
                     {renderArchived}
-
-
-
                 </Grid>
             </Grid>
         );
@@ -620,6 +621,7 @@ class Project extends Component {
                 <Lists key="1"
                        idProject={match.params.id}
                        lists={this.state.lists}
+                       member={this.props.currentMember}
                        createListCallback={this.createNewList}
                        deleteList = {this.deleteList}
                        updateListTitle = {this.updateListTitle}
@@ -643,10 +645,12 @@ const mapStateToProps = (state) => ({
     lists: state.project.lists,
     projectInfo : state.project.projectInfo,
     members : state.project.members || [],
+    currentMember: state.signin.member,
     isAdmin: state.project.isAdmin || false,
     logged: state.signin.member,
     hasProject : state.project.loggedHasProject,
-    activities: state.project.activities
+    activities: state.project.activities,
+    currentMemberId: state.signin.member.memberId
     //labels : state.project.labels || []
 })
 
@@ -669,7 +673,8 @@ const mapDispatchToProps ={
     createCard: _action.listAction.createCard,
     updateListTitle: _action.listAction.updateListTitle,
     deleteList: _action.listAction.deleteList,
-    archiveList: _action.listAction.updateListStatus
+    archiveList: _action.listAction.updateListStatus,
+    loadLists:  _action.projectAction.loadLists
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

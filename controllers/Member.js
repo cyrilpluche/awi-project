@@ -1,14 +1,13 @@
+const bcrypt = require('bcrypt');
 const Member = require('../config/db_connection').Member;
-var Project = require('../config/db_connection').Project;
+const Project = require('../config/db_connection').Project;
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 const mw = require('../middlewares')
-const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
-const qs = require('querystring');
+const jwt = require('jsonwebtoken');
+// const qs = require('querystring');
 const request = require('superagent');
-var githubState = {}
-
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
 
 module.exports = {
 
@@ -30,19 +29,20 @@ module.exports = {
      *  return: A new token specific for the member created.
      */
     create(req, res, next) {
-        if (!req.body.result) {
-            Member
-                .create(req.body)
-                .then(member => {
-                    member.memberPassword = null
-                    req.body.result = member
-                    next()
-                })
-                .catch(error => next(error));
-        } else {
-            res.status(400).send(['This email adress is already taken.', 'memberEmail'])
-        }
-
+        bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+            if (err) res.status(400).send('Member:create:bcrypt | ' + err)
+            else {
+                req.body.memberPassword = hash
+                Member
+                    .create(req.body)
+                    .then(member => {
+                        member.memberPassword = null
+                        req.body.result = member
+                        next()
+                    })
+                    .catch(error => res.status(400).send('Member:create | ' + error));
+            }
+        });
     },
 
     createOrNext(req, res, next) {
@@ -54,7 +54,7 @@ module.exports = {
                     req.body.result = member
                     next()
                 })
-                .catch(error => next(error));
+                .catch(error => res.status(400).send(error));
         } else {
             next()
         }
@@ -82,7 +82,7 @@ module.exports = {
                 req.body.result = members
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)
@@ -92,6 +92,7 @@ module.exports = {
     findAll(req, res, next) {
         Member
             .findAll({
+                attributes: memberFilter,
                 order: sequelize.col('memberId'),
                 where: req.query
             })
@@ -99,7 +100,7 @@ module.exports = {
                 req.body.result = members
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/member/find_one --- ?memberId=id... (optional)
@@ -108,12 +109,80 @@ module.exports = {
      */
     findOne(req, res, next) {
         Member
-            .findOne({where: req.query})
+            .findOne({
+                attributes: memberFilter,
+                where: req.query
+            })
             .then(member => {
                 req.body.result = member
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
+    },
+
+    findOneUpdatePassword (req, res, next) {
+        Member
+            .findOne({
+                where: { memberId: req.query.memberId }
+            })
+            .then(member => {
+                bcrypt.compare(req.query.memberPassword, member.memberPassword, (err, res) => {
+                    if (err) {
+                        console.log('Member:findOneSignIn | ' + err)
+                        next()
+                    }
+                    else {
+                        try {
+                            console.log(res)
+                            if (res) {
+                                req.body.result = member
+                                next()
+                            }
+                            else res.status(400).send('Email or password is incorrect.')
+                        } catch (err) {
+                            res.status(400).send('Email or password is incorrect.')
+                        }
+                    }
+                });
+            })
+            .catch(error => res.status(400).send(error));
+    },
+
+    findOneSignup (req, res, next) {
+        Member
+            .findOne({
+                where: { memberEmail: req.query.memberEmail }
+            })
+            .then(member => {
+                if (member) res.status(400).send(['This email adress is already taken.', 'memberEmail'])
+                else {
+                    Member
+                        .findOne({
+                            where: { memberPseudo: req.query.memberPseudo }
+                        })
+                        .then(member => {
+                            if (member) res.status(400).send(['This pseudo is already taken.', 'memberPseudo'])
+                            else {
+                                next()
+                            }
+                        })
+                        .catch(error => res.status(400).send(error));
+                }
+            })
+            .catch(error => res.status(400).send(error));
+    },
+
+    findOneInvitation (req, res, next) {
+        Member
+            .findOne({
+                where: { memberPseudo: req.body.memberPseudo }
+            })
+            .then(member => {
+                console.log(member)
+                if (member) res.status(400).send(['This pseudo is already taken.', 'memberPseudo'])
+                else next()
+            })
+            .catch(error => res.status(400).send(error));
     },
 
     /**
@@ -123,7 +192,10 @@ module.exports = {
         Member
             .findOne({
                 where: {
-                    memberEmail: req.decoded.memberEmail
+                    [Sequelize.Op.or]: [
+                        { memberEmail: req.decoded.memberEmail },
+                        { memberPseudo: req.decoded.memberPseudo }
+                    ]
                 }
             })
             .then(member => {
@@ -151,15 +223,35 @@ module.exports = {
      *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
-        Member
-            .update(req.body, {
-                where: req.query
-            })
-            .then(isUpdated => {
-                req.body.result = isUpdated[0] === 1
-                next()
-            })
-            .catch(error => next(error));
+        if (req.body.memberPassword) {
+            bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+                if (err) res.status(400).send('Member:update | ' + err)
+                else {
+                    req.body.memberPassword = hash
+                    Member
+                        .update(req.body, {
+                            where: req.query
+                        })
+                        .then(isUpdated => {
+                            req.body.result = isUpdated[0] === 1
+                            next()
+                        })
+                        .catch(error => res.status(400).send('Member:update | ' + error));
+                }
+            });
+        } else {
+            Member
+                .update(req.body, {
+                    where: req.query
+                })
+                .then(isUpdated => {
+                    req.body.result = isUpdated[0] === 1
+                    next()
+                })
+                .catch(error => res.status(400).send('Member:update | ' + error));
+        }
+
+
     },
 
     /*  localhost:4200/api/member/delete/5
@@ -202,15 +294,25 @@ module.exports = {
                 }
             })
             .then(member => {
-                console.log(member)
                 if (member && member.memberEmail === req.body.memberEmail) {
-                    if (member.memberPassword === req.body.memberPassword) {
-                        req.body.result = member
-                        next()
+                    try {
+                        bcrypt.compare(req.body.memberPassword, member.memberPassword, (err, res) => {
+                            if (err) console.log('Member:findOneSignIn | ' + err)
+                            else {
+                                console.log(res)
+                                if (res) {
+                                    member.memberPassword = null
+                                    req.body.result = member
+                                    next()
+                                }
+                                next()
+                            }
+                        });
+                    } catch (err) {
+                        res.status(400).send('Email or password is incorrect.')
                     }
-                    else res.status(400).send('Email or password is incorrect.')
                 }
-                else res.status(400).send('EEEmail or password is incorrect.')
+                else res.status(400).send('Email or password is incorrect.')
             })
             .catch(error => next(error));
     },
@@ -276,15 +378,20 @@ module.exports = {
      *  return: A boolean. true = Updated, false = Not updated.
      */
     resetPassword(req, res, next) {
-        Member
-            .update({memberPassword: req.body.memberPassword}, {
-                where: {memberEmail: req.body.memberEmail}
-            })
-            .then(isUpdated => {
-                if (isUpdated[0] === 1) next()
-                else res.status(400).send('No email found.')
-            })
-            .catch(error => next(error));
+        bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
+            if (err) res.status(400).send('Member:resetPassword | ' + err)
+            else {
+                Member
+                    .update({memberPassword: hash}, {
+                        where: {memberEmail: req.body.memberEmail}
+                    })
+                    .then(isUpdated => {
+                        if (isUpdated[0] === 1) next()
+                        else res.status(400).send('No email found.')
+                    })
+                    .catch(error => next(error));
+            }
+        });
     },
 
     /*  localhost:4200/api/member/invitation_token?memberToken=token
@@ -315,7 +422,6 @@ module.exports = {
                     memberEmail: req.body.result.memberEmail,
                     memberStatus: req.body.result.memberStatus,
                 }
-                console.log(req.body.result)
                 next()
             } else {
                 // The user don't exist
@@ -342,24 +448,19 @@ module.exports = {
      *  return: a string, the github url authentification
      */
     sign_in_with_github(req, res, next) {
+        const client_id = 'client_id=' + process.env.GITHUB_CLIENT_ID
+        const githubAuthUrl = 'https://github.com/login/oauth/authorize?' + client_id
 
-        // generate "state" parameter
-        githubState.state = require('crypto').randomBytes(16).toString('base64')
-
-        const githubAuthUrl =
-            'https://github.com/login/oauth/authorize?' +
-            qs.stringify({
-                client_id: process.env.GITHUB_CLIENT_ID,
-                redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT + "/api/member/github_callback",
-                state: githubState.state,
-                scope: 'user:email read:user'
-            });
-
-
-        const redirect = JSON.stringify(githubAuthUrl)
-
-        req.body.result = redirect
+        req.body.result = JSON.stringify(githubAuthUrl)
         next()
+    },
+
+    github_redirection (req, res, next) {
+        if (process.env.NODE_ENV === 'development') {
+            res.redirect(process.env.SERVER_URL + ':' + process.env.CLIENT_PORT + '/github_verification/' + req.body.result.memberToken)
+        } else {
+            res.redirect(process.env.SERVER_URL + '/github_verification/' + req.body.result.memberToken)
+        }
     },
 
     /**  localhost:4200/api/member/github_callback
@@ -372,172 +473,72 @@ module.exports = {
      *  - the user doesn't : we create the user with his info and isLinkWithGithub = true
      */
     github_callback(req, res, next) {
-        console.log(req.query);
-        const returnedState = req.query.state;
         const code = req.query.code;
 
-        if (!code) {
-            return res.send({
-                success: false,
-                message: 'Error, no code'
+        request
+            .post('https://github.com/login/oauth/access_token')
+            .send({
+                client_id: process.env.GITHUB_CLIENT_ID,
+                client_secret: process.env.GITHUB_CLIENT_SECRET,
+                code: code
+            })
+            .set('Accept', 'application/json')
+            .then(result => {
+                req.body.result = {
+                    memberGithubToken: result.body.access_token,
+                    memberGithubCode: code
+                };
+                next()
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    },
 
-            });
+    github_get_user (req, res, next) {
+        request
+            .get('https://api.github.com/user')
+            .set('Authorization', 'token ' + req.body.result.memberGithubToken)
+            .then(user => {
+                req.body.result.memberPseudo = user.body.login
+                next()
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    },
+
+    find_one_github (req, res, next) {
+        let defaultData = {
+            memberFirstname: 'unknow',
+            memberLastname: 'unknow',
+            memberPseudo: req.body.result.memberPseudo,
+            memberStatus: 1,
+            memberIsLinkWithGithub: true
         }
-        else if (githubState.state === returnedState) {
+        Member
+            .findOrCreate({where: {memberPseudo: req.body.result.memberPseudo}, defaults: defaultData})
+            .then((user, created) => {
+                req.body.result = user[0]
+                next()
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    },
 
-            // Request to get a token from github (for access to user data).
-            request
-                .post('https://github.com/login/oauth/access_token')
-                .send({
-                    client_id: process.env.GITHUB_CLIENT_ID,
-                    client_secret: process.env.GITHUB_CLIENT_SECRET,
-                    code: code,
-                    redirect_uri: process.env.SERVER_URL + ":" + process.env.PORT + "/api/member/github_callback",
-                    state: returnedState
-                })
-                .set('Accept', 'application/json')
-                .then(result => {
-                    req.access_token = result.body.access_token;
-                    console.log("body: \n", result.body)
-
-                    // Get the user email from github.
-                    request
-                        .get('https://api.github.com/user/public_emails')
-                        .set('Authorization', 'token ' + req.access_token)
-                        .then(result => {
-
-                            const email = result.body[0].email;
-
-                            // Check if there is an existing user with this email in our database.
-                            Member
-                                .findOne({
-                                    where: {
-                                        memberEmail: email,
-                                        // TODO : rajouter isGithubAccount in BDa
-                                        // memberStatus: {
-                                        //     [Sequelize.Op.ne]: 0
-                                        // }
-                                    }
-                                })
-                                .then(member => {
-                                    if (member) {
-
-                                        // Case account is already link with github.
-                                        if (member.isLinkWithGithub) {
-
-                                            req.body.result = member
-                                            var payload = Object.assign({}, req.body.result.dataValues)
-                                            payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-                                                expiresIn: 60 * 60 * 24 // expires in 24 hours
-                                            });
-
-                                            const redirect_url =
-                                                process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                '/callback_github/' +
-                                                member.memberEmail + "/" +
-                                                payload.memberToken
-
-                                            res.redirect(redirect_url);
-
-                                        }
-                                        // Case account is not link with github, we link it.
-                                        else {
-                                            Member
-                                                .update({memberIsLinkWithGithub: true}, {
-                                                    where: {memberEmail: email}
-                                                })
-
-                                                .then(result => {
-                                                    if (result) { // if the member was updated
-
-                                                        req.body.result = member
-                                                        var payload = Object.assign({}, req.body.result.dataValues)
-                                                        payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-                                                            expiresIn: 60 * 60 * 24 // expires in 24 hours
-                                                        });
-
-                                                        const redirect_url =
-                                                            process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                            '/callback_github/' +
-                                                            member.memberEmail + "/" +
-                                                            payload.memberToken
-
-                                                        res.redirect(redirect_url);
-                                                    }
-                                                })
-                                                .catch(error => next(error));
-                                        }
-                                    }
-                                    // Case no member with this email in our database, we create it.
-                                    else {
-
-                                        // Get the pseudo, firstname and lastname from github.
-                                        request
-                                            .get('https://api.github.com/user')
-                                            .set('Authorization', 'token ' + req.access_token)
-                                            .then(result => {
-
-                                                const pseudo = result.body.login
-                                                const fullname = result.body.name
-                                                let firstname = " "
-                                                let lastname = " "
-
-                                                if (fullname != null) {
-                                                    firstname = fullname.split(' ').slice(0, -1).join(' ');
-                                                    lastname = fullname.split(' ').slice(-1).join(' ');
-                                                }
-
-                                                // Create the member in our database.
-                                                Member
-                                                    .create({
-                                                        memberEmail: email,
-                                                        memberFirstname: firstname,
-                                                        memberLastname: lastname,
-                                                        memberPseudo: pseudo,
-                                                        memberStatus: 1,
-                                                        memberIsLinkWithGithub: true
-
-                                                    })
-                                                    .then(member => {
-                                                        if (member) {
-
-                                                            req.body.result = member
-                                                            var payload = Object.assign({}, req.body.result.dataValues)
-                                                            payload.memberToken = jwt.sign(payload, process.env.JWT_SECRET, {
-                                                                expiresIn: 60 * 60 * 24 // expires in 24 hours
-                                                            });
-
-                                                            const redirect_url =
-                                                                process.env.SERVER_URL + ":" + process.env.CLIENT_PORT +
-                                                                '/callback_github/' +
-                                                                member.memberEmail + "/" +
-                                                                payload.memberToken
-
-                                                            res.redirect(redirect_url);
-
-                                                        }
-                                                        else res.status(400).send('The member was not created.')
-                                                    })
-                                                    .catch(error => next(error));
-
-                                            })
-                                            .catch(error => next(error));
-                                    }
-                                })
-                                .catch(error => next(error));
-                        })
-                })
-                .catch(error => next(error));
+    cryptPasswordQuery (req, res, next) {
+        if (req.query.memberPassword) {
+            bcrypt.hash(req.query.memberPassword, 10, (err, hash) => {
+                if (err) res.status(400).send('Member:create:bcrypt | ' + err)
+                else {
+                    req.query.memberPassword = hash
+                    next()
+                }
+            })
         }
-        else {
-            // if state doesn't match up, something is wrong
-            // just redirect to homepage
-            res.redirect(process.env.SERVER_URL + ":" + process.env.CLIENT_PORT + '/');
-        }
-
-},
-
-
+        else next()
+    }
 
 }
 

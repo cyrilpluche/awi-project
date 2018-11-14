@@ -21,7 +21,11 @@ const Member = {
     },
 
     signUp (body) {
-        return Api.post(url + 'sign_up?memberEmail=' + body.memberEmail, body).then(res => res.data)
+        let where = helper.Request.urlFromObject({
+            memberEmail: body.memberEmail,
+            memberPseudo: body.memberPseudo
+        })
+        return Api.post(url + 'sign_up' + where, body).then(res => res.data)
     },
 
     updateMemberInvitation (body) {

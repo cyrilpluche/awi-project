@@ -1,4 +1,5 @@
 import _service from '../services'
+import moment from "moment";
 
 const labels = {
     GET_ALL_LISTS :"GET_ALL_LISTS",
@@ -10,6 +11,7 @@ const labels = {
     INVITATION_SUCCESS: "INVITATION_SUCCESS",
     INVITATION_ERROR: "INVITATION_ERROR",
     GET_MEMBER_STATUS:"GET_MEMBER_STATUS",
+    GET_MEMBER_STATUS_ERROR: "GET_MEMBER_STATUS_ERROR",
     REMOVE_MEMBER_FROM_PROJECT:"REMOVE_MEMBER_FROM_PROJECT",
     REMOVE_MEMBER_FROM_PROJECT_ERROR:"REMOVE_MEMBER_FROM_PROJECT_ERROR",
     SET_MEMBER_ADMIN : "SET_MEMBER_ADMIN",
@@ -42,6 +44,15 @@ function findAllLists (idProject) {
     }
 }
 
+function loadLists(lists){
+    return dispatch => {
+        dispatch({
+            type: labels.GET_ALL_LISTS,
+            payload: lists
+        });
+    }
+}
+
 function findAllMembers (projectId) {
     return dispatch => {
         _service.Project.getAllMembers({ projectId: projectId })
@@ -60,7 +71,7 @@ function findAllMembers (projectId) {
     }
 }
 
-function createList (listTitle, projectId, listFather) {
+function createList (listTitle, projectId, listFather, member) {
 
     const body = {
         listTitle: listTitle,
@@ -75,6 +86,15 @@ function createList (listTitle, projectId, listFather) {
                     type: labels.CREATE_LIST,
                     payload: res
                 });
+                _service.Action.createActivityForAllMembers({
+                    actionType: 0,
+                    actionTitle: "List was created",
+                    actionDescription: member.memberPseudo + " has create the list '" + listTitle + "'.",
+                    memberId: member.memberId,
+                    projectId: projectId,
+                    actionDateCreation: moment(),
+                    mhaStatus: 0
+                })
             })
             .catch((err) => {
                 dispatch(err)
@@ -247,16 +267,19 @@ function sendInvitationProject(body){
  */
 function getMemberStatus(projectId, memberId){
     return dispatch => {
-        /*_service.Project.getMemberStatus(body)
-        .then(res => {*/
-        dispatch({
-            type: labels.GET_MEMBER_STATUS,
-            payload: true
-        });
-        /*})
+        _service.Project.getMemberStatus(({projectId: projectId, memberId: memberId}))
+        .then(res => {
+            dispatch({
+                type: labels.GET_MEMBER_STATUS,
+                payload: res.mhppState
+            });
+        })
         .catch((err) => {
-            dispatch(err)
-        });*/
+            dispatch({
+                type: labels.GET_MEMBER_STATUS_ERROR,
+                payload: false
+            });
+        });
     }
 }
 
@@ -426,5 +449,6 @@ export const projectAction = {
     getLabels,
     updatePermissionMember,
     getMemberHasProject,
-    getAllPermissions
+    getAllPermissions,
+    loadLists
 }

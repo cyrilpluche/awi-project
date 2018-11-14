@@ -105,5 +105,11 @@ export const styles = theme => ({
         marginLeft:  15,
         marginRight: 0,
         display: 'block'
+    },
+    done:{
+        color:'green'
+    },
+    markdown:{
+        backgroundColor : 'lightgrey'
     }
 });

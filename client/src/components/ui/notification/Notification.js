@@ -108,13 +108,10 @@ class Notification extends React.Component {
                             label={notification.Action.actionTitle}
                         />
                     </Tooltip>
-                    <Typography className={classes.pos} color="textSecondary">
+                    <Typography className={classes.pos} variant="caption">
                         {notification.Action.actionDescription}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Action</Button>
-                </CardActions>
             </Card>
         );
     }

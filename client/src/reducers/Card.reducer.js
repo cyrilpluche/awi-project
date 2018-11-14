@@ -11,7 +11,8 @@ const initialState = {
         cardDateEnd: null,
         cardFather: null,
         cardChild: null,
-        listId: null
+        listId: null,
+        comments: []
     },
     isLoading: false,
     membersOnCard: [],
@@ -81,6 +82,16 @@ export function card (state = initialState, action) {
                 isLoading: false
             };
         }
+
+        case labels.FIND_ALL_COMMENTS_ON_CARD:
+            let card = state.card
+            card.comments = action.payload
+            return { ...state, card: card };
+
+        case labels.ADD_COMMENTS_ON_CARD:
+            let cd = state.card
+            cd.comments.push(action.payload)
+            return { ...state, card: cd };
 
         default:
             return state

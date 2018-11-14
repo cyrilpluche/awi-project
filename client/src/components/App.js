@@ -18,6 +18,7 @@ import AccountConfirmation from "./signup/accountConfirmation/AccountConfirmatio
 import TokenVerification from "./signup/accountConfirmation/TokenVerification"
 import PasswordForgotten from "./signin/passwordForgotten/PasswordForgotten"
 import SearchResults from "./layout/navbar/searchResults/SearchResults"
+import Download from "./download/Download"
 
 class App extends Component {
     constructor (props) {
@@ -60,7 +61,8 @@ class App extends Component {
                     <Route exact path="/password-forgotten" component={PasswordForgotten} />
                     <Route exact path="/account-confirmation" component={AccountConfirmation} />
                     <Route path="/account-confirmation/:token" component={TokenVerification} />
-                    <Route path="/callback_github/:memberEmail/:token" component={TransitionGithub} />
+                    <Route exact path="/download" component={Download} />
+                    <Route path="/github_verification/:token" component={TransitionGithub} />
                     <Route path='*' render={() => <Redirect to="/login" />}/>
                 </Switch>
             </div>
@@ -86,6 +88,7 @@ class App extends Component {
                     <Route path="/home" component={Dashboard}/>
                     <Route path="/profile" component={Profile}/>
                     <Route path="/results" component={SearchResults}/>
+                    <Route exact path="/download" component={Download} />
                     <Route path="/invitation/:token" component={Invitation} />
                     <Route path="/project/:id/:listid/:cardid" component={Project}/>
                     <Route path="/project/:id" component={Project}/>

@@ -1,5 +1,6 @@
 /** REACT */
 import React from 'react';
+import ReactDOMServer from "react-dom/server";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import connect from "react-redux/es/connect/connect";
@@ -23,22 +24,51 @@ import Grid from "@material-ui/core/Grid/Grid";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import SaveIcon from '@material-ui/icons/Save'
+import IconButton from '@material-ui/core/IconButton';
+import {Edit,Done,Cancel} from '@material-ui/icons';
 import MemberOnCard from "./membersOnCard/MembersOnCard";
+
+/** MARKDOWN EDITOR */
+import SimpleMDEReact from "react-simplemde-editor";
+import "simplemde/dist/simplemde.min.css";
 
 class Cardboard extends React.Component {
     constructor (props) {
         super(props)
         this.updateCard = this.updateCard.bind(this)
-
+        this.handleChangeDueDate = this.handleChangeDueDate.bind(this)
+        this.handleEditDueDate = this.handleEditDueDate.bind(this)
+        this.handleValidDueDate = this.handleValidDueDate.bind(this)
+        this.handleCancelDueDate = this.handleCancelDueDate.bind(this)
+        this.handleChangeDescription = this.handleChangeDescription.bind(this)
+        this.editDescription = this.editDescription.bind(this)
+        this.validEditDescription = this.validEditDescription.bind(this)
+        this.handleEditTitle =  this.handleEditTitle.bind(this)
+        this.validEditTitle = this.validEditTitle.bind(this)
         this.state = {
             open: false,
-            card: this.props.currentCard
+            card: this.props.currentCard,
+            description: this.props.currentCard.cardDescription,
+            title : this.props.currentCard.cardTitle,
+            dueDate : this.props.currentCard.cardDateTarget,
+            editDueDate : false,
+            editDescription:false,
+            editTitle:false,
+            init: false,
         };
 
 
     }
 
-    componentDidMount () {
+
+
+    componentDidUpdate(){
+        if(!this.state.init){
+            this.setState({ dueDate : this.props.currentCard.cardDateTarget,
+                            init: true ,
+                            description: this.props.currentCard.cardDescription,
+                            title : this.props.currentCard.cardTitle,})
+        }
         //this.props.onGetCard(this.props.currentCard.cardId)
         if (this.props.route.params.cardid) {
             if (this.props.route.params.cardid.toString() === this.props.currentCard.cardId.toString()) {
@@ -58,15 +88,66 @@ class Cardboard extends React.Component {
 
 
     /** Update and create project */
-    handleChangeCard = name => event => {
-        this.state.card[name] = event.target.value
-        this.setState({
-            maj: true,
-        })
+    handleChangeTitle = name => event => {
+        this.setState({title:event.target.value})
     };
+
+    handleEditTitle(){
+        this.setState({editTitle : true})
+    }
+    validEditTitle(){
+        
+        if(this.state.title !== '' ){
+            this.props.onUpdateTitle(this.props.currentCard, {cardTitle:this.state.title})
+            this.setState({editTitle : false})
+        }    
+    }
 
     updateCard () {
         this.props.onUpdateCard(this.state.card, this.state.card);
+    }
+
+    handleChangeDueDate = name => event =>{
+        this.setState({
+            dueDate: event.target.value
+        })
+    }
+    handleEditDueDate(){
+        this.setState({editDueDate:true})
+    }
+    handleValidDueDate(){
+
+        if(this.state.dueDate) {
+        this.props.onUpdateDate(this.props.currentCard, {cardDateTarget:this.state.dueDate})
+        this.setState({editDueDate:false})
+        }
+    }
+
+    handleCancelDueDate(){
+        
+        this.setState({editDueDate:false})
+    }
+
+    handleChangeDescription= name => event =>{
+   
+        this.setState({description : event})
+    }
+
+    getInstance = (instance) => {
+        // You can now store and manipulate the simplemde instance. 
+        this.setState({instance : instance})
+        instance.togglePreview();
+    }
+
+    editDescription(){
+        this.state.instance.togglePreview();
+        this.setState({editDescription:true})
+        
+    }
+    validEditDescription(){
+        this.state.instance.togglePreview();
+        this.setState({editDescription:false})
+        this.props.onUpdateDescription(this.props.currentCard, {cardDescription:this.state.description})
     }
 
     /*changeTitle = () => {
@@ -98,40 +179,108 @@ class Cardboard extends React.Component {
                         <Grid justify='center' container>
                             <Grid xs={8} item>
                                 <form className={classes.container} noValidate autoComplete="off">
-                                    <Grid container justify='space-between' alignItems='flex-end'>
-                                        <Grid item xs={9}>
-                                            <TextField
-                                                id="cardTitle"
-                                                label="Title"
-                                                className={classes.textField}
-                                                value={this.state.card.cardTitle}
-                                                onChange={this.handleChangeCard('cardTitle')}
-                                                margin="normal"
-                                                fullWidth
-                                            />
+                                    
+                                        {this.state.editTitle ?
+                                        <Grid container justify='space-between' alignItems='center'>
+                                            <Grid item xs={9}>
+                                                <TextField
+                                                    id="cardTitle"
+                                                    label="Title"
+                                                    className={classes.textField}
+                                                    defaultValue={this.state.title}
+                                                    onChange={this.handleChangeTitle('cardTitle')}
+                                                    margin="normal"
+                                                    fullWidth
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <IconButton color="primary" size="small" aria-label="valid" onClick={this.validEditTitle}>
+                                                    <Done fontSize="small" />
+                                                </IconButton>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={3}>
-                                            <Button
-                                                fullWidth
-                                                color="primary"
-                                                className={classes.button}
-                                                onClick={this.updateCard}
-                                            >
-                                                <SaveIcon/>
-                                            </Button>
+                                        :<Grid container justify='space-between' alignItems='center'>
+                                            <Grid item xs={10}>
+                                                <Typography variant='subtitle1' >
+                                                    {this.state.title}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <IconButton color="primary" size="small" aria-label="valid" onClick={this.handleEditTitle}>
+                                                    <Edit fontSize="small" />
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>}
+                                    
+                                    {!this.state.editDueDate ?
+                                    <Grid container justify="space-between" alignItems='center' >
+                                        <Grid item xs={10}>  
+                                            
+                                            <Typography variant='caption' >
+                                                Due date : {this.state.dueDate ? this.state.dueDate : "not defined" }
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>  
+                                            <IconButton color="primary" size="small" aria-label="valid" onClick={this.handleEditDueDate}>
+                                                <Edit fontSize="small" />
+                                            </IconButton>
                                         </Grid>
                                     </Grid>
-                                    <TextField
-                                        id="cardDescription"
-                                        label="Description"
-                                        multiline
-                                        fullWidth
-                                        rows={4}
-                                        value={this.state.card.cardDescription}
-                                        onChange={this.handleChangeCard('cardDescription')}
-                                        margin="normal"
-                                        variant="outlined"
-                                    />
+                                    : <Grid container justify="space-between" alignItems='center' >
+                                         <Grid item xs={8}>  
+                                            <TextField
+                                                id="date"
+                                                label="Due Date"
+                                                type="date"
+                                                className={classes.textField}
+                                                InputLabelProps={{
+                                                shrink: true,
+                                                }}
+                                                onChange={this.handleChangeDueDate('dueDate')}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <IconButton className={classes.done} size="small" aria-label="valid" onClick={this.handleValidDueDate}>
+                                                <Done fontSize="small" />
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <IconButton  color="secondary" size="small" aria-label="valid" onClick={this.handleCancelDueDate}>
+                                                <Cancel fontSize="small" />
+                                            </IconButton>
+                                        </Grid> 
+                                    </Grid>  }
+                                    <Grid container justify="space-between" alignItems='center' >
+                                        <Grid item xs={10}>
+                                            <Typography variant='subtitle1' gutterBottom>
+                                                Description
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                                { this.state.editDescription?
+                                                <IconButton  color="primary" size="small" aria-label="valid" onClick={this.validEditDescription} >
+                                                    <Done fontSize="small" />
+                                                </IconButton>
+                                                :<IconButton  color="primary" size="small" aria-label="valid" onClick={this.editDescription}>
+                                                    <Edit fontSize="small" />
+                                                </IconButton>}                                                                                               
+                                        </Grid> 
+                                        <Grid item xs={12}>
+                        
+                                            <SimpleMDEReact
+                                                className={classes.markdown}
+                                                getMdeInstance= { this.getInstance } 
+                                                
+                                                value={this.state.description}
+                                                onChange={this.handleChangeDescription('description')}
+                                                options={{
+                                                    autofocus: true,
+                                                }}
+                                            />
+                                            
+                                        </Grid>
+                                    </Grid>
+    
                                 </form>
                             </Grid>
                             <Grid xs={4} item>
@@ -209,7 +358,10 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,
-    onGetCard : _action.cardAction.getCard
+    onGetCard : _action.cardAction.getCard,
+    onUpdateDate: _action.listAction.updateDueDateCard,
+    onUpdateDescription: _action.listAction.updateDescription,
+    onUpdateTitle:_action.listAction.updateCardTitle
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cardboard));

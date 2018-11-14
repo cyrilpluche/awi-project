@@ -14,13 +14,12 @@ const labelController = require('../controllers').Label;
 router.get('/find_all', projectController.findAll);
 router.get('/find_all_member/:member',mw.Token.verifyToken, projectController.findAllProjectMember);
 router.get('/member_has_project',mw.Token.verifyToken, projectController.findMemberHasProject);
-
 router.get('/find_all_lists_cards',mw.Token.verifyToken, projectController.findAllListsCards);
 router.get('/find_all_searchbar', mw.Token.verifyToken, memberHasProjectController.findAllSearchbar);
-
 router.get('/find_all_members', mw.Token.verifyToken, memberHasProjectController.findAll)
 router.get('/find_all_actions', mw.Token.verifyToken, actionController.findAll)
 router.get('/find_all_mhp',mw.Token.verifyToken, memberHasProjectController.findAll);
+router.get('/member_is_admin', mhppController.findOne);
 
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);

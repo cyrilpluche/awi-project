@@ -4,6 +4,8 @@ const sequelize = require('../config/db_connection').sequelize;
 const Member = require('../config/db_connection').Member
 const Action = require('../config/db_connection').Action
 
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
+
 module.exports = {
 
     /* ================= CRUD ================= */
@@ -38,13 +40,22 @@ module.exports = {
      */
     createFromArray (req, res, next) {
         let members = req.body.result
+        console.log(req.decoded.memberId)
         for (let member of members) {
-            MemberHasAction
-                .create({
+            let body = {
+                actionId: req.body.actionId,
+                memberId: member.Member.memberId,
+                mhaStatus: req.body.mhaStatus
+            }
+            if (member.memberId === req.decoded.memberId) {
+                body = {
                     actionId: req.body.actionId,
                     memberId: member.Member.memberId,
-                    mhaStatus: req.body.mhaStatus
-                })
+                    mhaStatus: 1
+                }
+            }
+            MemberHasAction
+                .create(body)
                 .then(Mha => {
                     if (members.indexOf(member) === members.length - 1) {
                         req.body.result = true
@@ -83,7 +94,7 @@ module.exports = {
             .findOne({
                 where: req.query,
                 include: [
-                    { model: Member, as: 'Member' },
+                    { model: Member, as: 'Member', attributes: memberFilter },
                     { model: Action, as: 'Action' }
                 ]
             })
