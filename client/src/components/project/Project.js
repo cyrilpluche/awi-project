@@ -38,7 +38,7 @@ import {withStyles } from '@material-ui/core/styles';
 import { styles } from './Style'
 
 // Socket IO
-import SocketIOClient  from "socket.io-client"
+import socket from '../../helpers/SocketIo.helper'
 
 
 
@@ -61,30 +61,29 @@ class Project extends Component {
             openArchived:false,
             projectInfo:''
         }
+
+        this.socket = socket
         this.handleRestoreArchived = this.handleRestoreArchived.bind(this)
         this.deleteList = this.deleteList.bind(this)
         this.updateListTitle = this.updateListTitle.bind(this)
         this.archiveList = this.archiveList.bind(this)
         this.createCard = this.createCard.bind(this)
         this.createNewList = this.createNewList.bind(this)
-        //this.socket = SocketIOClient('http://localhost:4200')
-        //this.socket.on('add', this.socketNew.bind(this))
-        //this.socket.on('move', this.socketMove.bind(this))
+        
+        this.socket.on('updateProject', this.socketUpdate.bind(this))
+        
 
 
     }
 
-    /* socketNew(msg){
-         this.props.getAllListsWithCards(this.props.match.params.id)
+    socketUpdate(lists){
+         this.props.loadLists(lists)
      }
-
-     socketMove(newLists){
-        this.setState({lists:newLists})
-     }*/
-
+   
     componentWillMount() {
         const {match, currentMemberId, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
 
+        this.socket.emit("subscribe", this.props.match.params.id)
         const projectId = this.props.match.params.id
 
         // Get project informations
@@ -107,6 +106,10 @@ class Project extends Component {
         //this.props.getLabels()
         this.props.onGetAllPermissions(projectId)
 
+    }
+
+    componentWillUnmount(){
+        this.socket.emit("unsubscribe",this.props.match.params.id)
     }
 
 
@@ -670,7 +673,8 @@ const mapDispatchToProps ={
     createCard: _action.listAction.createCard,
     updateListTitle: _action.listAction.updateListTitle,
     deleteList: _action.listAction.deleteList,
-    archiveList: _action.listAction.updateListStatus
+    archiveList: _action.listAction.updateListStatus,
+    loadLists:  _action.projectAction.loadLists
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

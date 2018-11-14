@@ -43,6 +43,15 @@ function findAllLists (idProject) {
     }
 }
 
+function loadLists(lists){
+    return dispatch => {
+        dispatch({
+            type: labels.GET_ALL_LISTS,
+            payload: lists
+        });
+    }
+}
+
 function findAllMembers (projectId) {
     return dispatch => {
         _service.Project.getAllMembers({ projectId: projectId })
@@ -430,5 +439,6 @@ export const projectAction = {
     getLabels,
     updatePermissionMember,
     getMemberHasProject,
-    getAllPermissions
+    getAllPermissions,
+    loadLists
 }
