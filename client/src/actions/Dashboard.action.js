@@ -124,8 +124,6 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
                         .createMemberProjectPermission(memberId, projectId, permissionId, mhppState)
                         .then(permission => {
 
-                            console.log('ON TENTE SA MERE')
-
                             _service.Action.createActivityForAllMembers({
                                 actionType: 0,
                                 actionTitle: "Project was created",
@@ -136,16 +134,13 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
                                 mhaStatus: 0
                             })
                                 .then(res => {
-                                    console.log('SUCCESS POULET')
                                     dispatch({
                                         type: labels.CREATE_NEW_PROJECT,
                                         payload: project
                                     })
                                     _helper.History.push('/project/' + projectId)
-                                    console.log(res)
                                 })
                                 .catch(err => {
-                                    console.log('ERRER POULET')
                                     console.log(err)
                                 })
 

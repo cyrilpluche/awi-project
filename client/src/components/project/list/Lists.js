@@ -73,6 +73,7 @@ class Lists extends Component {
                                     updateListTitle = {this.props.updateListTitle}
                                     archiveList = {this.props.archiveList}
                                     createCard = {this.props.createCard}
+                                    member={this.props.member}
                                     route = {this.props.route}
                                     />
                                 

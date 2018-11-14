@@ -1,4 +1,5 @@
 import _service from '../services'
+import moment from "moment";
 
 const labels = {
     GET_ALL_LISTS :"GET_ALL_LISTS",
@@ -70,7 +71,7 @@ function findAllMembers (projectId) {
     }
 }
 
-function createList (listTitle, projectId, listFather) {
+function createList (listTitle, projectId, listFather, member) {
 
     const body = {
         listTitle: listTitle,
@@ -85,6 +86,15 @@ function createList (listTitle, projectId, listFather) {
                     type: labels.CREATE_LIST,
                     payload: res
                 });
+                _service.Action.createActivityForAllMembers({
+                    actionType: 0,
+                    actionTitle: "List was created",
+                    actionDescription: member.memberPseudo + " has create the list '" + listTitle + "'.",
+                    memberId: member.memberId,
+                    projectId: projectId,
+                    actionDateCreation: moment(),
+                    mhaStatus: 0
+                })
             })
             .catch((err) => {
                 dispatch(err)
