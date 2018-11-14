@@ -26,6 +26,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MiniLoader from "../../ui/loader/MiniLoader";
 
 import { Done} from '@material-ui/icons';
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
+import Typography from "@material-ui/core/Typography/Typography";
 
 const ITEM_HEIGHT = 38;
 
@@ -157,13 +161,12 @@ class ListPrello extends Component{
         )
 
         const MenuList = (
-            <div>
+            <ListItemSecondaryAction>
                 <IconButton
-                    aria-label="More"
-                    aria-owns={open ? 'long-menu' : undefined}
-                    aria-haspopup="true"
                     onClick={this.handleClickMenu}
+                    aria-label="Comments"
                     size="small"
+                    className={ classes.whiteText }
                 >
                     <MoreVertIcon />
                 </IconButton>
@@ -193,7 +196,7 @@ class ListPrello extends Component{
 
                     ))}
                 </Menu>
-            </div>
+            </ListItemSecondaryAction>
         )
 
 
@@ -201,7 +204,6 @@ class ListPrello extends Component{
             <Draggable draggableId={"List:"+this.props.list.listId} index={this.props.index}>
                 {(provided,snapshot) => {
                     const style = {
-                        backgroundColor: '#eeeeee',
                         fontSize: 18,
                         ...provided.draggableProps.style,
                     };
@@ -213,40 +215,54 @@ class ListPrello extends Component{
                         >
                             <List
                                 component="nav"
-                                subheader={
-                                    <ListSubheader component="div"  {...provided.dragHandleProps} className={classes.listTitle}>
+                                disablePadding={true}
+                                dense={true}
+                            >
+                                <ListItem {...provided.dragHandleProps} className={classes.listTitle2}>
+                                    <ListItemText>
                                         {!editListTitle ?
-                                            <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={16}>
-                                                <Grid item xs={11}>
-                                                    { this.props.list.listTitle}
-                                                </Grid>
-                                                <Grid item xs={1}>
-                                                    <Badge badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0} color="primary" className={classes.badge}>
-                                                        <div></div>
-                                                    </Badge>
-                                                </Grid>
+                                            <Grid justify='flex-start' alignItems='center' container>
+                                                <Badge
+                                                    badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0}
+                                                    className={classes.badge}
+                                                    color='error'
+                                                />
+                                                <Typography variant='overline' className={ classes.whiteText }>
+                                                    {this.props.list.listTitle}
+                                                </Typography>
+                                                {MenuList}
                                             </Grid>
-                                            :   <Grid container justify="space-between" alignItems="center" wrap="nowrap" spacing={8}>
-                                                <Grid item xs={10}>
+                                            :
+                                            <Grid justify='flex-start' alignItems='center' container className={ classes.noPadding }>
+                                                <Badge
+                                                    badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0}
+                                                    className={classes.badge}
+                                                    color='error'
+                                                />
+                                                <Grid item xs={9} className={ classes.TexfieldGrid }>
                                                     <TextField
                                                         id="standard-bare"
-                                                        className={classes.textField}
+                                                        className={classes.textField2}
                                                         defaultValue={list.listTitle}
                                                         margin="normal"
                                                         onChange={this.handleChange('newListTitle')}
                                                     />
                                                 </Grid>
-                                                <Grid item xs={2}>
-                                                    <IconButton aria-label="valid" className={classes.validEditTitle} onClick={this.handleEditTitle}>
-                                                        <Done fontSize="small" />
+                                                <ListItemSecondaryAction>
+                                                    <IconButton
+                                                        onClick={this.handleEditTitle}
+                                                        aria-label="valid"
+                                                        size="small"
+                                                        className={ classes.validEditTitle }
+                                                    >
+                                                        <Done />
                                                     </IconButton>
-                                                </Grid>
-                                            </Grid>}
+                                                </ListItemSecondaryAction>
+                                            </Grid>
+                                        }
+                                    </ListItemText>
 
-                                    </ListSubheader>}
-
-                            >
-
+                                </ListItem>
                                 <Droppable droppableId={this.props.list.listId+":"+this.props.list.listTitle} type="CARD">
                                     {(provided,snapshot) => {
                                         const style = {
@@ -257,7 +273,7 @@ class ListPrello extends Component{
                                             <div
                                                 ref={provided.innerRef}
 
-                                                className={classes.dropSpace} style={{backgroundColor:'#ffff',flexGrow:1}} >
+                                                className={classes.dropSpace + ' ' + classes.cardSlot} style={{flexGrow:1}} >
 
                                                 {list.CardListFks.filter(card => card.cardStatus === 0 ).map((card,index) =>
                                                     <div key={index}>
@@ -281,13 +297,15 @@ class ListPrello extends Component{
                                         )}}
                                 </Droppable>
                                 <Grid container justify="space-between">
-                                    <Grid item xs={10}>
-                                        <Button size="small" className={classes.button} onClick={this.handleClickOpen}>
-                                            <AddIcon /> add a new card
+                                    <Grid item xs={12}>
+                                        <Button
+                                            fullWidth
+                                            color='primary'
+                                            size="small"
+                                            className={classes.button}
+                                            onClick={this.handleClickOpen}>
+                                            <AddIcon /> new card
                                         </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        {MenuList}
                                     </Grid>
                                 </Grid>
 

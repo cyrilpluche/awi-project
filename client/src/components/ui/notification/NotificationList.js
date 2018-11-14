@@ -5,6 +5,8 @@ import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import Notification from "./Notification"
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Divider from "@material-ui/core/Divider/Divider";
+import Button from "@material-ui/core/Button/Button";
 
 const styles = theme => ({
     menuItem: {},
@@ -28,32 +30,11 @@ class NotificationList extends React.Component {
      *      memberId: Int
      *  }
      */
+    constructor (props) {
+        super(props)
+        this.state = {
 
-    /** Build the notification list of the menu */
-    buildNotifications = () => {
-        let list = []
-
-        if (this.props.notifications.length > 0) {
-            for (let item of this.props.notifications) {
-                list.push(
-                    <ListItem key={this.props.notifications.indexOf(item)}>
-                        <Notification
-                            notification={item}
-                            notifications={this.props.notifications}
-                            notificationsUnread={this.props.notificationsUnread}
-                        />
-                    </ListItem>
-                )
-            }
-        } else {
-            list.push(
-                <ListItem key='0'>
-                        <ListItemText primary="No notifications"/>
-                </ListItem>
-            )
         }
-
-        return list
     }
 
     render() {
@@ -62,7 +43,26 @@ class NotificationList extends React.Component {
         return (
             <div className={classes.list}>
                 <List>
-                    {this.buildNotifications()}
+                    {this.props.notifications.map((notification, index) =>
+                        this.props.unreadFilter ?
+                            notification.mhaStatus === 0 ?
+                                <ListItem key={index}>
+                                    <Notification
+                                        notification={notification}
+                                        notifications={this.props.notifications}
+                                        notificationsUnread={this.props.notificationsUnread}
+                                    />
+                                </ListItem>
+                            : null
+                        :
+                            <ListItem key={index}>
+                                <Notification
+                                    notification={notification}
+                                    notifications={this.props.notifications}
+                                    notificationsUnread={this.props.notificationsUnread}
+                                />
+                            </ListItem>
+                    )}
                 </List>
             </div>
         );

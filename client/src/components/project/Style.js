@@ -6,6 +6,7 @@ export const styles = theme => ({
     projectHeader: {
         marginTop: theme.spacing.unit * 1,
         marginLeft: theme.spacing.unit * 4,
+        marginBottom: theme.spacing.unit * 3,
         alignText: `left`,
              
     },

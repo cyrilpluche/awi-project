@@ -35,6 +35,8 @@ import { style } from './Style'
 import { Theme } from "../../ui/palette/Palette";
 import { MuiThemeProvider } from "@material-ui/core/es/styles";
 import Grid from "@material-ui/core/Grid/Grid";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Switch from "@material-ui/core/Switch/Switch";
 
 class Navbar extends React.Component {
 
@@ -56,7 +58,8 @@ class Navbar extends React.Component {
             mobileMoreAnchorEl: null,
             resultsAnchorEl: null,
             right: false,
-            showSearchResults: false
+            showSearchResults: false,
+            filterOnlyUnread: false
         };
     }
 
@@ -105,10 +108,12 @@ class Navbar extends React.Component {
     handleFilterChange = name => event => {
         this.setState({ [name]: event.target.checked });
     };
+    handleFilter = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
 
-    /* ================= Search results ================= */
+    /** ================= Search results ================= */
     handleSearchResultsOpen = event => {
-        console.log(event.target)
         this.setState({showSearchResults: event.target.id === "searchbar" });
     };
     handleSearchResultsClose = () => {
@@ -181,6 +186,7 @@ class Navbar extends React.Component {
                         <NotificationList
                             notifications={this.props.notifications}
                             notificationsUnread={this.props.notificationsUnread}
+                            unreadFilter={this.state.filterOnlyUnread}
                         />
                     </div>
                     <Divider/>
@@ -188,6 +194,20 @@ class Navbar extends React.Component {
                     <Button fullWidth color="primary" className={classes.button}>
                         Filters
                     </Button>
+                    <Divider/>
+                    <Grid justify="center" container>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.state.filterOnlyUnread}
+                                    onChange={this.handleFilter('filterOnlyUnread')}
+                                    value="filterOnlyUnread"
+                                    color="primary"
+                                />
+                            }
+                            label="Only unread"
+                        />
+                    </Grid>
                 </div>
             </Drawer>
         );

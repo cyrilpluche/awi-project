@@ -7,7 +7,8 @@ import Project from './Project.service';
 import Team from './Team.service';
 import Task from './Task.service';
 import Label from './Label.service'
-import Comments from './Comments.service'
+//import Comments from './Comments.service'
+// TODO Push comment service
 
 const service = {
     Action,
@@ -19,7 +20,7 @@ const service = {
     Team,
     Task,
     Label,
-    Comments
+    //Comments
 }
 
 export default service

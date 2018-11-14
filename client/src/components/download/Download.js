@@ -53,11 +53,12 @@ class Download extends React.Component {
                             </Typography>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
-                            <Grid justify="center" item xs={8}>
-                                <Typography variant="caption" className={ classes.marginBottomXs }>
-                                    By downloading Prello, you agree to the terms of use
-                                    and the privacy policy.
-                                </Typography>
+                            <Grid item xs={8}>
+                                <Grid justify='center' container alignItems="center">
+                                    <Typography variant="caption" className={ classes.marginBottomXs }>
+                                        By downloading Prello, you agree to the terms of use and the privacy policy.
+                                    </Typography>
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid justify='center' container alignItems="center">

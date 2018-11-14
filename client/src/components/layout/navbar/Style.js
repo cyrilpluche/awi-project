@@ -85,7 +85,7 @@ export const style = theme => ({
     },
     notificationList: {
         overflowY: 'scroll',
-        maxHeight: theme.spacing.unit * 50,
+        height: theme.spacing.unit * 50,
     },
     button: {
         margin: 0,

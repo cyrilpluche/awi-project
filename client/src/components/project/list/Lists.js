@@ -9,6 +9,7 @@ import SimpleDialog from '../../ui/dialog/SimpleDialog'
 import MiniLoader from "../../ui/loader/MiniLoader";
 import connect from "react-redux/es/connect/connect";
 import _action from "../../../actions";
+import Grid from "@material-ui/core/Grid/Grid";
 
 
 
@@ -32,69 +33,77 @@ class Lists extends Component {
 
     handleChange = name => event => {
         this.setState({
-          [name]: event.target.value,
+            [name]: event.target.value,
         });
-    
+
     };
 
     handleClickOpen = () => {
         this.setState({
-          open: true,
+            open: true,
         });
     };
 
     handleClose = (value) => {
-        this.setState({ newListname: value, open: false }, function(){  this.createNewList()});       
+        this.setState({ newListname: value, open: false }, function(){  this.createNewList()});
     };
 
 
 
-    
+
     render() {
         const { classes,lists,idProject} = this.props;
-    
+
         return (
 
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
-                    <div className={classes.listArea}
-                        ref={provided.innerRef} 
-                        {...provided.droppableProps}>
-                        {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) => 
-                            <div key={list.listTitle+list.listId}>
-                                
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        <Grid container spacing={24} className={classes.listsGrid}>
+                            {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) =>
+                                <Grid xs={2} item key={list.listTitle+list.listId}>
+
                                     <List
-                                    idProject={idProject}
-                                    key={list.listTitle+list.listId}
-                                    list={list}
-                                    listIndex={index}
-                                    index={index}
-                                    deleteList = {this.props.deleteList}
-                                    updateListTitle = {this.props.updateListTitle}
-                                    archiveList = {this.props.archiveList}
-                                    createCard = {this.props.createCard}
-                                    member={this.props.member}
-                                    route = {this.props.route}
+                                        idProject={idProject}
+                                        key={list.listTitle+list.listId}
+                                        list={list}
+                                        listIndex={index}
+                                        index={index}
+                                        deleteList = {this.props.deleteList}
+                                        updateListTitle = {this.props.updateListTitle}
+                                        archiveList = {this.props.archiveList}
+                                        createCard = {this.props.createCard}
+                                        member={this.props.member}
+                                        route = {this.props.route}
                                     />
-                                
-                            </div>
+
+                                </Grid>
                             )}
-                        {provided.placeholder}
-                        <div>
-                            <Button onClick={this.handleClickOpen} variant="fab"  aria-label="Add" className={classes.buttonList}>
-                                <AddIcon />
-                            </Button>
-                        </div>
-                        <SimpleDialog
-                            type="list"
-                            open={this.state.open}
-                            onClose={this.handleClose}
-                        />
-                        
+                            {provided.placeholder}
+                            <div>
+                                <Button
+                                    onClick={this.handleClickOpen}
+                                    variant="outlined"
+                                    color='primary'
+                                    aria-label="Add"
+                                    className={classes.buttonList}
+                                >
+                                    <AddIcon />
+                                </Button>
+                            </div>
+                            <SimpleDialog
+                                type="list"
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                            />
+                        </Grid>
                     </div>
                 )}
-                
-            </Droppable>         
+
+            </Droppable>
         )
     }
 }

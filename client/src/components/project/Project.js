@@ -32,6 +32,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Divider from "@material-ui/core/Divider/Divider";
 
 // Styles
 import {withStyles } from '@material-ui/core/styles';
@@ -69,9 +70,9 @@ class Project extends Component {
         this.archiveList = this.archiveList.bind(this)
         this.createCard = this.createCard.bind(this)
         this.createNewList = this.createNewList.bind(this)
-        
+
         this.socket.on('updateProject', this.socketUpdate.bind(this))
-        
+
 
 
     }
@@ -79,7 +80,7 @@ class Project extends Component {
     socketUpdate(lists){
          this.props.loadLists(lists)
      }
-   
+
     componentWillMount() {
         const {match, currentMemberId, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
 
@@ -611,9 +612,6 @@ class Project extends Component {
                         Archived
                     </Button>
                     {renderArchived}
-
-
-
                 </Grid>
             </Grid>
         );
