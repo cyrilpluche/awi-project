@@ -58,23 +58,19 @@ class MemberOnCard extends Component {
 
     /** ==================== ADD / REMOVE MEMBERS ==================== */
     addMember (event) {
-        console.log(this.state)
-        console.log(event)
-        console.log(this.props)
         const { onAddMember } = this.props
+        console.log(this.state)
 
         let index = this.state.newMemberIndex
         let member = this.props.membersOffCard[index]
         let cardId = this.props.card.cardId
 
-        let membersOnCard = Array.from(this.state.membersOnCard)
-        let membersOffCard = Array.from(this.state.membersOffCard)
+        let membersOnCard = Array.from(this.props.membersOnCard)
+        let membersOffCard = Array.from(this.props.membersOffCard)
 
         membersOnCard.push(member)
         membersOffCard.splice(index, 1)
 
-        console.log(member)
-        console.log(member.memberId)
         onAddMember(member.memberId, cardId, membersOnCard, membersOffCard)
 
         this.setState({
@@ -122,7 +118,7 @@ class MemberOnCard extends Component {
                     <MiniLoader size={15} />
                     :
                     <div>
-                        {membersOnCard.map(member =>
+                        {membersOnCard.map((member, index) =>
                             <ListItem key={member.memberId} className={classes.memberItem}>
                                 <ListItemText primary={member.memberPseudo}>
                                 </ListItemText>
@@ -133,7 +129,7 @@ class MemberOnCard extends Component {
                                     placement="top-start">
                                     <Checkbox
                                         checked={true}
-                                        id={"members/" + membersOnCard.indexOf(member)}
+                                        id={"members/" + index}
                                         onChange={this.removeMember('membersOnCard')}
                                         value='membersOnCard'
                                     />
@@ -145,6 +141,7 @@ class MemberOnCard extends Component {
             </List>
         )
 
+        /** Members off the card */
         const otherMembers = (
             <div className={ classes.modalWidth}>
                 {this.props.isLoading ?
@@ -161,8 +158,8 @@ class MemberOnCard extends Component {
                                 id: 'new-member',
                             }}
                         >
-                            {membersOffCard.map(member =>
-                                <MenuItem value={membersOffCard.indexOf(member)}>{member.memberPseudo}</MenuItem>
+                            {membersOffCard.map((member, index) =>
+                                <MenuItem value={index}>{member.memberPseudo}</MenuItem>
                             )}
                         </Select>
                     </FormControl>
