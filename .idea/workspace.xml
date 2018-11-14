@@ -117,7 +117,7 @@
       <change afterPath="$PROJECT_DIR$/client/src/services/Task.service.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/services/Team.service.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/services/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Action.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -146,7 +146,7 @@
           <entry key="env" value="4" />
           <entry key="icns" value="1" />
           <entry key="ico" value="1" />
-          <entry key="js" value="255" />
+          <entry key="js" value="256" />
           <entry key="json" value="1" />
           <entry key="sql" value="16" />
           <entry key="ts" value="2" />
@@ -159,7 +159,7 @@
           <entry key="DBN-SQL" value="16" />
           <entry key="Image" value="2" />
           <entry key="JSON" value="1" />
-          <entry key="JavaScript" value="255" />
+          <entry key="JavaScript" value="256" />
           <entry key="PLAIN_TEXT" value="3" />
           <entry key="TypeScript" value="2" />
         </counts>
@@ -167,7 +167,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="env" value="47" />
-          <entry key="js" value="10429" />
+          <entry key="js" value="10431" />
           <entry key="json" value="292" />
           <entry key="sql" value="48" />
         </counts>
@@ -177,7 +177,7 @@
           <entry key=".env file" value="47" />
           <entry key="DBN-SQL" value="48" />
           <entry key="JSON" value="292" />
-          <entry key="JavaScript" value="10429" />
+          <entry key="JavaScript" value="10431" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -188,7 +188,17 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/Action.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -224,7 +234,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/desktop/package.json" />
         <option value="$PROJECT_DIR$/client/src/components/signin/Signin.js" />
         <option value="$PROJECT_DIR$/client/src/components/dashboard/Dashboard.js" />
         <option value="$PROJECT_DIR$/routes/Github.js" />
@@ -275,6 +284,7 @@
         <option value="$PROJECT_DIR$/client/src/components/project/Project.js" />
         <option value="$PROJECT_DIR$/client/src/helpers/SocketIo.helper.js" />
         <option value="$PROJECT_DIR$/middlewares/Email.js" />
+        <option value="$PROJECT_DIR$/routes/Action.js" />
       </list>
     </option>
   </component>
@@ -316,6 +326,11 @@
             <path>
               <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="awi-project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -370,15 +385,16 @@
       <workItem from="1542148372478" duration="3783000" />
       <workItem from="1542189165660" duration="5190000" />
       <workItem from="1542197331691" duration="4958000" />
-      <workItem from="1542202328057" duration="205000" />
+      <workItem from="1542202328057" duration="430000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52506000" />
+    <option name="totallyTimeSpent" value="52731000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25698325" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -405,7 +421,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="Terminal" order="4" weight="0.22905028" />
+      <window_info anchor="right" id="Terminal" order="4" visible="true" weight="0.51955307" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25379092" />
@@ -541,13 +557,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="134" column="30" lean-forward="true" selection-start-line="126" selection-start-column="28" selection-end-line="134" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/Action.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="121" selection-start-line="15" selection-start-column="121" selection-end-line="15" selection-end-column="121" />
         </state>
       </provider>
     </entry>
@@ -805,6 +814,13 @@
             <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/Action.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
         </state>
       </provider>
     </entry>
