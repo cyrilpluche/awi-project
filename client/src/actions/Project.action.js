@@ -1,4 +1,5 @@
 import _service from '../services'
+import moment from "moment";
 
 const labels = {
     GET_ALL_LISTS :"GET_ALL_LISTS",
@@ -43,6 +44,15 @@ function findAllLists (idProject) {
     }
 }
 
+function loadLists(lists){
+    return dispatch => {
+        dispatch({
+            type: labels.GET_ALL_LISTS,
+            payload: lists
+        });
+    }
+}
+
 function findAllMembers (projectId) {
     return dispatch => {
         _service.Project.getAllMembers({ projectId: projectId })
@@ -61,7 +71,7 @@ function findAllMembers (projectId) {
     }
 }
 
-function createList (listTitle, projectId, listFather) {
+function createList (listTitle, projectId, listFather, member) {
 
     const body = {
         listTitle: listTitle,
@@ -76,6 +86,15 @@ function createList (listTitle, projectId, listFather) {
                     type: labels.CREATE_LIST,
                     payload: res
                 });
+                _service.Action.createActivityForAllMembers({
+                    actionType: 0,
+                    actionTitle: "List was created",
+                    actionDescription: member.memberPseudo + " has create the list '" + listTitle + "'.",
+                    memberId: member.memberId,
+                    projectId: projectId,
+                    actionDateCreation: moment(),
+                    mhaStatus: 0
+                })
             })
             .catch((err) => {
                 dispatch(err)
@@ -430,5 +449,6 @@ export const projectAction = {
     getLabels,
     updatePermissionMember,
     getMemberHasProject,
-    getAllPermissions
+    getAllPermissions,
+    loadLists
 }

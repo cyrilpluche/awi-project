@@ -47,20 +47,14 @@ module.exports = {
 
     createOrNext(req, res, next) {
         if (!req.body.result) {
-            bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
-                if (err) res.status(400).send(err)
-                else {
-                    req.body.memberPassword = hash
-                    Member
-                        .create(req.body)
-                        .then(member => {
-                            member.memberPassword = null
-                            req.body.result = member
-                            next()
-                        })
-                        .catch(error => res.status(400).send(error));
-                }
-            })
+            Member
+                .create(req.body)
+                .then(member => {
+                    member.memberPassword = null
+                    req.body.result = member
+                    next()
+                })
+                .catch(error => res.status(400).send(error));
         } else {
             next()
         }

@@ -40,13 +40,22 @@ module.exports = {
      */
     createFromArray (req, res, next) {
         let members = req.body.result
+        console.log(req.decoded.memberId)
         for (let member of members) {
-            MemberHasAction
-                .create({
+            let body = {
+                actionId: req.body.actionId,
+                memberId: member.Member.memberId,
+                mhaStatus: req.body.mhaStatus
+            }
+            if (member.memberId === req.decoded.memberId) {
+                body = {
                     actionId: req.body.actionId,
                     memberId: member.Member.memberId,
-                    mhaStatus: req.body.mhaStatus
-                })
+                    mhaStatus: 1
+                }
+            }
+            MemberHasAction
+                .create(body)
                 .then(Mha => {
                     if (members.indexOf(member) === members.length - 1) {
                         req.body.result = true
