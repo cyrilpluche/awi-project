@@ -30,6 +30,7 @@ module.exports = {
     Card: models.Card,
     Cardhaslabel: models.Cardhaslabel,
     Action: models.Action,
+    ActionOnCard: models.ActionOnCard,
     Task: models.Task,
     Attachment: models.Attachment,
     MemberHasProject: models.Memberhasproject,

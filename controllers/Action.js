@@ -1,8 +1,11 @@
-var Action = require('../config/db_connection').Action;
-var MemberHasAction = require('../config/db_connection').MemberHasAction;
+const Helper = require('../helpers/helpersMethod');
 
-var sequelize = require('../config/db_connection').sequelize;
-var Sequelize = require('../config/db_connection').Sequelize;
+const Action = require('../config/db_connection').Action;
+const MemberHasAction = require('../config/db_connection').MemberHasAction;
+const Card = require('../config/db_connection').Card;
+
+const sequelize = require('../config/db_connection').sequelize;
+const Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
@@ -50,6 +53,52 @@ module.exports = {
                 next()
             })
             .catch(error => next(error));
+    },
+
+    findAllComments (req, res, next) {
+
+        MemberHasAction.findAll({
+            include: [
+                {
+                    model: Action,
+                    as: 'Action',
+                    where: {action_type: 3},
+                    include: [
+                        {
+                            model: Card,
+                            as: 'Card',
+                            where: {
+                                card_id: req.params.card
+                            }
+                        }
+                    ]
+                }
+            ]
+        }).then(r => {
+            let results = []
+            for (let i = 0; i < r.length; i++) {
+                results.push(Helper.flatComents(r[i]))
+            }
+            res.send(results)
+        }).catch(error => res.status(400).send(error))
+        /*Action.findAll({
+            where: {
+                action_type: 3 // comments
+            },
+            include: [
+                {
+                    model: MemberHasAction,
+                    as: 'MemberhasactionActionFks'
+                },
+                {
+                    model: Card,
+                    as: 'Card',
+                    where: {
+                        card_id: req.params.card
+                    }
+                }
+            ]
+        }).then(r => res.send(r)) */
     },
 
     /*  localhost:4200/api/action/find_one --- ?actionTitle=title... (optional)

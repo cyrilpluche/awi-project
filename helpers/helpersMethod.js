@@ -30,6 +30,19 @@ const methods = {
         return result
     },
 
+    flatComents (queryResult) {
+        let result = copy(queryResult)
+        let action = result.Action
+        action.Card = undefined
+        for(let propertyName in action) {
+            result[propertyName] = action[propertyName]
+            // propertyName is what you want
+            // you can get the value like this: myObject[propertyName]
+        }
+        result.Action = undefined
+        return result
+    },
+
     flatTeams (queryResult) {
         let result = copy(queryResult)
         let team = result.Team
