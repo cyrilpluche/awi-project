@@ -25,6 +25,7 @@ class Overview extends React.Component {
             memberFirstname: this.props.member.memberFirstname,
             memberLastname: this.props.member.memberLastname,
             memberPseudo: this.props.member.memberPseudo,
+            memberEmail: this.props.member.memberEmail,
             isEditable: false,
             openSnackbar: false
         }
@@ -46,6 +47,7 @@ class Overview extends React.Component {
             memberId: this.props.member.memberId,
             memberFirstname: this.state.memberFirstname,
             memberLastname: this.state.memberLastname,
+            memberEmail: this.state.memberEmail,
             memberPseudo: this.state.memberPseudo
         }
         this.props.onUpdateMember(body)
@@ -70,7 +72,7 @@ class Overview extends React.Component {
         let attributes = {
             memberFirstname: this.state.memberFirstname,
             memberLastname: this.state.memberLastname,
-            memberPseudo: this.state.memberPseudo
+            memberPseudo: this.state.memberPseudo,
         }
 
         let values = Object.values(attributes)
@@ -136,7 +138,46 @@ class Overview extends React.Component {
                 </Grid>
                 <Grid container justify="center">
                     <form className={classes.container} noValidate autoComplete="off">
-                        {this.generateTextfields()}
+                        <TextField
+                            disabled={!this.state.isEditable}
+                            id='memberFirstname'
+                            label='Firstname'
+                            className={classes.textField}
+                            value={this.state.memberFirstname}
+                            onChange={this.handleChange('memberFirstname')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            disabled={!this.state.isEditable}
+                            id='memberLastname'
+                            label='Lastname'
+                            className={classes.textField}
+                            value={this.state.memberLastname}
+                            onChange={this.handleChange('memberLastname')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            disabled={!this.state.isEditable || this.props.member.memberIsLinkWithGithub}
+                            id='memberPseudo'
+                            label='Pseudo'
+                            className={classes.textField}
+                            value={this.state.memberPseudo}
+                            onChange={this.handleChange('memberPseudo')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            disabled={!this.state.isEditable || this.props.member.memberEmail !== null}
+                            id='memberEmail'
+                            label='Email'
+                            className={classes.textField}
+                            value={this.state.memberEmail}
+                            onChange={this.handleChange('memberEmail')}
+                            margin="normal"
+                            variant="outlined"
+                        />
                     </form>
                 </Grid>
                 <Snackbar

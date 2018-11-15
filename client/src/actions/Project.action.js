@@ -328,21 +328,6 @@ function removeMemberFromProject(query){
     }
 }
 
-/**TODO SERVICE
- * Update the status of a member for a specific project. Set him as admin
- */
-function setMemberAsAdmin(projectId, memberId){
-    return dispatch => {
-
-        dispatch({
-            type: labels.SET_MEMBER_ADMIN,
-            payload: false
-        });
-
-    }
-
-}
-
 /**
  * get all activities related to a project (Limit 15)
  */

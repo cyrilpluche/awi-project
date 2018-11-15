@@ -47,12 +47,10 @@ class SearchResults extends React.Component {
 
     renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem, type }) {
         const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-        var id = 'project/'
-        if (type === 'project') id += suggestion.id
-        else {
-            id += suggestion.projectId
-        }
-        if (type === 'card') id += '/' + suggestion.listId + '/' + suggestion.id
+        var id = ''
+        if (type === 'project') id += 'project/' + suggestion.id
+        if (type === 'list') id += 'list/' + suggestion.projectId + '/' + suggestion.id
+        if (type === 'card') id += 'card/' + suggestion.projectId + '/' + suggestion.listId + '/' + suggestion.id
         const { classes } = this.props;
 
         return (
@@ -126,7 +124,9 @@ class SearchResults extends React.Component {
     }
 
     handleClickSuggestion (event) {
-        let route = event.target.id
+        let split = event.target.id.split('/')
+        let route = '/project/' + split[1]
+        if (split[0] === 'card') route += '/' + split[2] + '/' + split[3]
         this.setState({
             isOpen: false,
             searchInput: ''

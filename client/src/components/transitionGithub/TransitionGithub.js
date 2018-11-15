@@ -12,10 +12,6 @@ import Loader from '../loaderPage/LoaderPage'
 
 
 class TransitionGithub extends React.Component {
-    constructor (props) {
-        super(props)
-    }
-
     componentDidMount () {
         let params = this.props.location.pathname.split('/')
         let memberToken = params[2]

@@ -1,5 +1,3 @@
-
-const backgroundimage = 'https://res.cloudinary.com/o1-g1-prello/image/upload/v1541635194/prello%20project/indoors-shadows-simplicity-707583.jpg'
 export const style = theme => ({
     root: {
         flexGrow: 1,

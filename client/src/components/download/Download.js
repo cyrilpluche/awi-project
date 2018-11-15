@@ -21,9 +21,6 @@ import CloseIcon from "@material-ui/icons/Close";
 
 /** ICONS */
 class Download extends React.Component {
-    constructor (props) {
-        super(props)
-    }
 
     leavePage () {
         _helper.History.push('/home')
@@ -95,7 +92,7 @@ class Download extends React.Component {
                     </Grid>
                     <Grid xs={5} item>
                         <Grid container justify="center" alignItems="center">
-                            <img src={downloadPicture} alt='download picture' className={classes.downloadPicture}/>
+                            <img src={downloadPicture} alt='download' className={classes.downloadPicture}/>
                         </Grid>
                     </Grid>
                     {!this.props.isLogged ? (

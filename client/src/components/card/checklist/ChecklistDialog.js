@@ -4,29 +4,22 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import { styles } from './StyleChecklist'
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import _action from "../../../actions";
 import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
-import Input from "@material-ui/core/Input/Input";
 import MiniLoader from "../../ui/loader/MiniLoader";
 import List from "@material-ui/core/List/List";
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
-import {Cancel, Send} from "@material-ui/icons";
+import {Cancel} from "@material-ui/icons";
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Fade from "@material-ui/core/Fade/Fade";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 import Grid from "@material-ui/core/Grid/Grid";
 import TextField from "@material-ui/core/TextField/TextField";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-
+import Typography from "@material-ui/core/Typography/Typography";
 
 class ChecklistDialog extends React.Component {
     constructor (props) {
@@ -44,11 +37,12 @@ class ChecklistDialog extends React.Component {
     handleChangeCheckbox = name => event => {
         let index = event.target.id.split('/')[1]
         let value = event.target.checked
-        this.state.card.TaskCardFks[index].chtState = value //TODO put and setState in this version its not immutable
+        let card = Object.assign({}, this.state.card)
+        card.TaskCardFks[index].chtState = value //TODO put and setState in this version its not immutable
         let taskId = this.state.card.TaskCardFks[index].taskId
 
         this.props.onUpdateTask(taskId, {chtState: value})
-        this.setState({ maj: true });
+        this.setState({ card: card });
     };
 
     handleCreateTask = event => {
@@ -107,9 +101,13 @@ class ChecklistDialog extends React.Component {
                         }
                     ) : null}
                 </List>
-                <DialogContentText>
-                    Add a new task
-                </DialogContentText>
+                <Grid container justify='center'>
+                    <Grid xs={11} item>
+                        <Typography variant='caption'>
+                            Add a new task
+                        </Typography>
+                    </Grid>
+                </Grid>
                 <Grid justify='center' alignItems='flex-end' container className={ classes.marginBottom }>
                     <Grid item xs={11}>
                         <TextField

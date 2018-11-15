@@ -133,7 +133,6 @@ module.exports = {
                     }
                     else {
                         try {
-                            console.log(res)
                             if (res) {
                                 req.body.result = member
                                 next()
@@ -178,7 +177,6 @@ module.exports = {
                 where: { memberPseudo: req.body.memberPseudo }
             })
             .then(member => {
-                console.log(member)
                 if (member) res.status(400).send(['This pseudo is already taken.', 'memberPseudo'])
                 else next()
             })
@@ -299,7 +297,6 @@ module.exports = {
                         bcrypt.compare(req.body.memberPassword, member.memberPassword, (err, res) => {
                             if (err) console.log('Member:findOneSignIn | ' + err)
                             else {
-                                console.log(res)
                                 if (res) {
                                     member.memberPassword = null
                                     req.body.result = member

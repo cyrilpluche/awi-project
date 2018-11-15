@@ -8,7 +8,6 @@ import _action from "../../../actions/index";
 import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
 import ListItem from "@material-ui/core/ListItem/ListItem";
-import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import List from "@material-ui/core/List/List";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";

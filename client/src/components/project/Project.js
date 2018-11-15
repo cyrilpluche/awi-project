@@ -8,7 +8,6 @@ import _helper from '../../helpers'
 
 // Drag and drop 
 import { DragDropContext} from 'react-beautiful-dnd';
-import {findWhere} from 'underscore';
 
 // Components
 import Lists from './list/Lists'
@@ -32,7 +31,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Divider from "@material-ui/core/Divider/Divider";
 
 // Styles
 import {withStyles } from '@material-ui/core/styles';
@@ -172,7 +170,6 @@ class Project extends Component {
 
             // we call creatList action specifying the title, project id and father list id.
         }else{
-            let lastElement = lists[lists.length -1]
             this.props.createList(listName,idProject,lists.length, this.props.currentMember)
         }
 
@@ -242,16 +239,16 @@ class Project extends Component {
                 //let updateList = lists.find(list => list.listId === dragId)
                 //let updateList = findWhere(lists,{listId: dragId})
 
-                let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
+                //let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 
-                let childUpdatedList = findWhere(lists,{listFather: findList.listId})
+                //let childUpdatedList = findWhere(lists,{listFather: findList.listId})
 
 
-                let indexOfUpdateList = lists.indexOf(findList)
+                //let indexOfUpdateList = lists.indexOf(findList)
 
                 //New father and child of dragged list
-                let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
-                let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
+                //let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
+                //let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
 
 
                 // Change fathers of list in DB

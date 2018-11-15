@@ -64,13 +64,15 @@ const methods = {
     flatSearchList (queryResult) {
         let flat = []
         for (let project of queryResult ) {
-            for (let list of project.Project.ListProjectFks) {
-                flat.push({
-                    id: list.dataValues.id,
-                    label: list.dataValues.label,
-                    projectId: project.projectId,
-                    projectTitle: project.Project.dataValues.label
-                })
+            if (project.Project !== null) {
+                for (let list of project.Project.ListProjectFks) {
+                    flat.push({
+                        id: list.dataValues.id,
+                        label: list.dataValues.label,
+                        projectId: project.projectId,
+                        projectTitle: project.Project.dataValues.label
+                    })
+                }
             }
         }
         return flat

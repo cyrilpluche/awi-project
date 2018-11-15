@@ -1,5 +1,4 @@
 import _service from "../services";
-import _helper from "../helpers";
 
 const labels = {
     GET_CARD: 'GET_CARD',
@@ -163,7 +162,6 @@ function getMembersOnCard (cardId, projectId) {
             memberhasprojectStatus: 1
         })
             .then(members => {
-                console.log(members)
                 dispatch({
                     type: labels.FIND_ALL_MEMBERS_ON_CARD,
                     payload: {

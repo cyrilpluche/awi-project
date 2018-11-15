@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import {Send,Cancel} from '@material-ui/icons';
+import {Send} from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import {withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -99,17 +99,6 @@ class MemberOnCard extends Component {
 
     render() {
         const { membersOnCard, membersOffCard, classes, ...other } = this.props;
-
-        const ITEM_HEIGHT = 48;
-        const ITEM_PADDING_TOP = 8;
-        const MenuProps = {
-            PaperProps: {
-                style: {
-                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                    width: 250,
-                },
-            },
-        };
 
         /** Members on the card */
         const activeMembersList = (

@@ -3,7 +3,6 @@ import _action from '../actions';
 const labels = _action.signinAction.labels
 const labelsNavbar = _action.navbarAction.labels
 const labelsProfile = _action.profileAction.labels
-const labelsSignup = _action.signupAction.labels
 
 
 const initialState = {

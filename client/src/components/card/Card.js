@@ -1,6 +1,5 @@
 /** REACT */
 import React from 'react';
-import ReactDOMServer from "react-dom/server";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import connect from "react-redux/es/connect/connect";
@@ -23,7 +22,6 @@ import TextField from "@material-ui/core/TextField/TextField";
 import Grid from "@material-ui/core/Grid/Grid";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton';
 import LabelIcon from '@material-ui/icons/Label'
 import {Edit,Done,Cancel} from '@material-ui/icons';
@@ -211,7 +209,7 @@ class Cardboard extends React.Component {
                                                     label="Due Date"
                                                     type="date"
                                                     disabled={!this.state.editDueDate}
-                                                    value={this.state.dueDate}
+                                                    value={this.state.dueDate ? this.state.dueDate : ''}
                                                     className={classes.textField}
                                                     InputLabelProps={{
                                                         shrink: true,
@@ -239,7 +237,7 @@ class Cardboard extends React.Component {
                                                     label="Due Date"
                                                     type="date"
                                                     disabled={!this.state.editDueDate}
-                                                    value={this.state.dueDate}
+                                                    value={this.state.dueDate ? this.state.dueDate : ''}
                                                     className={classes.textField}
                                                     InputLabelProps={{
                                                         shrink: true,

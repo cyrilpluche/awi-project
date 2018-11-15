@@ -6,9 +6,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { styles } from './Style'
 import SimpleDialog from '../../ui/dialog/SimpleDialog'
-import MiniLoader from "../../ui/loader/MiniLoader";
-import connect from "react-redux/es/connect/connect";
-import _action from "../../../actions";
 import Grid from "@material-ui/core/Grid/Grid";
 
 
