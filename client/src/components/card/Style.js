@@ -74,12 +74,6 @@ export const styles = theme => ({
         marginLeft:  'auto',
         marginRight: 0
     },
-    buttonLabel:{
-        height: '5%',
-        margin: 10,
-        backgroundColor: 'yellow',
-        fontWeight: 'bolt'
-    },
     editButton:{
         height: '5%',
         display: 'block',
@@ -110,6 +104,12 @@ export const styles = theme => ({
         color:'green'
     },
     markdown:{
-        backgroundColor : 'lightgrey'
+        backgroundColor : 'lightgrey',
+    },
+    buttonLabel: {
+        margin: 0,
+        padding: 0,
+        width: '5px !important',
+        heigth: '5px !important'
     }
 });

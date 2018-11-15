@@ -14,6 +14,7 @@ router.get('/find_all/:id', listController.findAllOfProject);
 router.post('/create', listController.create);
 
 router.put('/update/:id', listController.update);
+router.put('/update_list_order', listController.updateFromArray);
 
 router.delete('/delete/:id', listController.delete);
 

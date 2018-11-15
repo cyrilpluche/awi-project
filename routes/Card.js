@@ -23,6 +23,7 @@ router.post('/create_member_has_card', mhcController.create);
 router.post('/create_card_has_label', chlController.create);
 
 router.put('/update/:id', cardController.update);
+router.put('/update_card_order', cardController.updateFromArray);
 
 router.delete('/delete', cardController.delete);
 router.delete('/delete_member_has_card', mhcController.delete);

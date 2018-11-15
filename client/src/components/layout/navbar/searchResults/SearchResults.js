@@ -47,9 +47,12 @@ class SearchResults extends React.Component {
 
     renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem, type }) {
         const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-        var id = type + '/' + suggestion.id
-        if (type !== 'project') id += '/' + suggestion.projectId
-        if (type === 'card') id += '/' + suggestion.listId
+        var id = 'project/'
+        if (type === 'project') id += suggestion.id
+        else {
+            id += suggestion.projectId
+        }
+        if (type === 'card') id += '/' + suggestion.listId + '/' + suggestion.id
         const { classes } = this.props;
 
         return (
@@ -123,23 +126,7 @@ class SearchResults extends React.Component {
     }
 
     handleClickSuggestion (event) {
-        let type = event.target.id.split('/')[0]
-        let id = event.target.id.split('/')[1]
-        let route = ''
-
-        if (type === 'project') {
-            this.setState({
-                isOpen: false,
-                searchInput: ''
-            })
-            route = '/project/' + id
-        } else if (type === 'list') {
-            route = '/project/' + id
-        } else {
-            let listId = event.target.id.split('/')[3]
-            let projectId = event.target.id.split('/')[2]
-            route = '/project/' + projectId + '/' + listId + '/' + id
-        }
+        let route = event.target.id
         this.setState({
             isOpen: false,
             searchInput: ''

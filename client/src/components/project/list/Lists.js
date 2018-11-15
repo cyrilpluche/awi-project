@@ -92,6 +92,7 @@ class Lists extends Component {
                                     className={classes.buttonList}
                                 >
                                     <AddIcon />
+                                    New list
                                 </Button>
                             </div>
                             <SimpleDialog

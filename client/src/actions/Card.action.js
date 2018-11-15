@@ -5,6 +5,7 @@ const labels = {
     GET_CARD: 'GET_CARD',
     GET_CARD_ERROR: 'GET_CARD_ERROR',
     UPDATE_CARD: 'UPDATE_CARD',
+    UPDATE_POSITION_CARD : "UPDATE_POSITION_CARD",
     ERROR_UPDATE_CARD : 'ERROR_UPDATE_CARD',
     DELETE_CARD: 'DELETE_CARD',
     DELETE_CARD_ERROR: 'DELETE_CARD_ERROR',
@@ -310,6 +311,17 @@ function addComments (cardId, memberId, text) {
     })
 }
 
+function updatePositionCard (cards) {
+    return dispatch => {
+        _service.Card.updateCardOrder(cards)
+            .then(res => {
+                dispatch({
+                    type: labels.UPDATE_POSITION_CARD
+                })
+            })
+    }
+}
+
 export const cardAction = {
     labels,
     getCard,
@@ -325,5 +337,6 @@ export const cardAction = {
     deleteLinkLabel,
     getMembersOnCard,
     findAllComments,
-    addComments
+    addComments,
+    updatePositionCard
 }

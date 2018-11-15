@@ -177,23 +177,17 @@ class ProjectList extends React.Component {
             </Dialog>
         )
 
-        /** Gallery save */
-        /*const gallery = (
-            <Lazy component="a" href={"/project/" + project.projectId} >
-                <img src={"https://res.cloudinary.com/o1-g1-prello/image/upload/v1541634595/prello%20project/adventure-beach-blue-386025.jpg"} width={'100%'} alt='prello logo'/>
-            </Lazy>
-        )*/
-
         /** NEW PROJECT LIST */
         const projectList2 = (
             <GridList className={classes.gridList} cols={2.5}>
                 {this.props.projects.map(project => {
-                    return (
-                        <GridListTile
-                            key={project.projectId}
-                        >
-                            <img id={project.projectId} onClick={this.goToProject} src={Background} alt='project background'/>
-                            {project.projectIsFavorite ? (
+                    if (this.props.isFavorite && project.projectIsFavorite) {
+                        return (
+                            <GridListTile
+                                key={project.projectId}
+                            >
+                                <img id={project.projectId} onClick={this.goToProject} src={Background}
+                                     alt='project background'/>
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     classes={{
@@ -210,7 +204,15 @@ class ProjectList extends React.Component {
                                         </IconButton>
                                     }
                                 />
-                            ) : (
+                            </GridListTile>
+                        )
+                    } else if (!this.props.isFavorite && !project.projectIsFavorite) {
+                        return (
+                            <GridListTile
+                                key={project.projectId}
+                            >
+                                <img id={project.projectId} onClick={this.goToProject} src={Background}
+                                     alt='project background'/>
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     classes={{
@@ -227,10 +229,9 @@ class ProjectList extends React.Component {
                                         </IconButton>
                                     }
                                 />
-                            )}
-
-                        </GridListTile>
-                    )
+                            </GridListTile>
+                        )
+                    }
                 })}
             </GridList>
         )
@@ -253,13 +254,13 @@ class ProjectList extends React.Component {
                     <Typography variant="overline">
                         {this.props.title}
                     </Typography>
-                    {createProjectButton}
+                    { !this.props.isFavorite ? createProjectButton : null}
                 </Grid>
                 <Grid xs={12} item>
                     <Divider/>
                 </Grid>
                 <Grid xs={12} item>
-                     {projectList2}
+                    {projectList2}
                 </Grid>
             </Grid>
         )

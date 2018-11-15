@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { styles } from '../Style'
+import { styles } from './Style'
 import _action from "../../../actions/index";
 import connect from "react-redux/es/connect/connect";
 import * as PropTypes from "prop-types";
@@ -11,6 +11,8 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import List from "@material-ui/core/List/List";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Grid from "@material-ui/core/Grid/Grid";
 
 
 class LabelDialog extends React.Component {
@@ -28,11 +30,12 @@ class LabelDialog extends React.Component {
         //let checked = event.target.checked
         let index = event.target.id.split('/')[1]
         let checked = event.target.checked
+        let label = this.props.labels[index]
         let labelId = this.props.labels[index].labelId
         let cardId = this.props.card.cardId
 
         if(checked){
-            this.state.card.HaslabelCardFks.push({ cardId: cardId, labelId: labelId }) //TODO use setState
+            this.state.card.HaslabelCardFks.push({ cardId: cardId, labelId: labelId, Label: label  }) //TODO use setState
             this.props.onCreateLinkLabel({ cardId: cardId, labelId: labelId })
         }else{
             let indexLink = this.state.card.HaslabelCardFks.findIndex(list => list.labelId === labelId)
@@ -43,38 +46,54 @@ class LabelDialog extends React.Component {
     };
 
     handleClose = () => {
-        this.props.onClose(this.props.selectedValue);
+        this.props.onClose();
     };
 
     render() {
         const { classes, onClose, selectedValue, onDeleteLinkLabel, onCreateLinkLabel, ...other } = this.props;
         return (
-            <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} className={classes.dialog}>
+            <Dialog
+                onClose={this.handleClose}
+                aria-labelledby="simple-dialog-title"
+                maxWidth="xs"
+                {...other}
+            >
                 <DialogTitle id="simple-dialog-title">Set labels</DialogTitle>
-                <div className={classes.root}>
+                <DialogContent>
                     <List component="nav">
                         { this.props.labels == null ? (
-                                null
-                            ) :  this.props.labels ? this.props.labels.map((label,index) => {
+                            null
+                        ) :  this.props.labels ? this.props.labels.map((label,index) => {
                             return (
-                                <div key={label.labelId}>
-                                    <ListItem
-                                        style={{backgroundColor: label.labelColor}}
-                                        selected={this.state.selectedIndex === 2}
-                                    >
-                                        <ListItemText primary={label.labelDescription} />
+                                <ListItem
+                                    key={label.labelId}
+                                    selected={this.state.selectedIndex === 2}
+                                >
+                                    <Grid justify='center' alignItems='center' container>
+                                        <Button variant="contained" style={{backgroundColor: label.labelColor}}/>
                                         <Checkbox
+                                            style={{color: label.labelColor}}
                                             id={'checklist/'+index}
                                             onChange={this.handleChangeCheckbox('checklist')}
                                             value='checklist'
                                             checked = {!(this.state.card.HaslabelCardFks.find(link => link.labelId === label.labelId) === undefined)}
                                         />
-                                    </ListItem>
-                                </div>
+                                    </Grid>
+                                </ListItem>
                             )
                         }):null}
+                        <ListItem>
+                            <Button
+                                color='primary'
+                                variant='outlined'
+                                fullWidth
+                                onClick={this.handleClose}
+                            >
+                                ok
+                            </Button>
+                        </ListItem>
                     </List>
-                </div>
+                </DialogContent>
             </Dialog>
         );
     }

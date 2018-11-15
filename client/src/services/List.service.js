@@ -11,7 +11,7 @@ const List = {
     getAll (idProject) {
         return Api.get(url + 'find_all/'+ idProject).then(res => res.data)
     },
-    
+
 
     get (object) {
         let where = helper.Request.urlFromObject(object)
@@ -19,7 +19,7 @@ const List = {
     },
 
     create(body){
-        
+
         return Api.post(url + 'create', body).then(res => res.data)
     },
 
@@ -32,9 +32,13 @@ const List = {
     },
 
     searchbarLists (str) {
-    let where = helper.Request.urlFromObject(str)
-    return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
-}
+        let where = helper.Request.urlFromObject(str)
+        return Api.get(url + 'find_all_searchbar' + where).then(res => res.data)
+    },
+
+    updateListOrder (listsOrder) {
+        return Api.put(url + 'update_list_order', {lists: listsOrder}).then(res => res.data)
+    }
 
 }
 

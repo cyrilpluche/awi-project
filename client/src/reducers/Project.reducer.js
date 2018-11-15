@@ -199,9 +199,7 @@ export function project (state = initialState, action) {
                 members : action.payload
             };
         case listLabels.UPDATE_POSITION_LISTS:
-            console.log(action.payload[0].projectId)
-            console.log(action.payload)
-            socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload}) 
+            socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload})
             return {
                 ...state,
                 lists : action.payload

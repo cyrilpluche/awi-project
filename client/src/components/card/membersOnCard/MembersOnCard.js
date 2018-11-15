@@ -159,7 +159,7 @@ class MemberOnCard extends Component {
                             }}
                         >
                             {membersOffCard.map((member, index) =>
-                                <MenuItem value={index}>{member.memberPseudo}</MenuItem>
+                                <MenuItem key={index} value={index}>{member.memberPseudo}</MenuItem>
                             )}
                         </Select>
                     </FormControl>

@@ -57,6 +57,10 @@ const Card = {
         return Api.delete(url + 'delete_member_has_card' + where).then(res => res.data)
     },
 
+    updateCardOrder (cardsOrder) {
+        return Api.put(url + 'update_card_order', {cards: cardsOrder}).then(res => res.data)
+    }
+
 }
 
 export default Card

@@ -166,6 +166,20 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    updateFromArray (req, res, next) {
+        for (let card of req.body.cards) {
+            Card
+                .update({cardFather: card.cardFather}, {
+                    where: { cardId: card.cardId }
+                })
+                .then(isUpdated => {
+
+                    if (req.body.cards.indexOf(card) === req.body.cards.length - 1) next()
+                })
+                .catch(error => next(error))
+        }
+    },
+
     /*  localhost:4200/api/card/delete/:id
      *
      *  return: A boolean. true = deleted, false = no deleted.

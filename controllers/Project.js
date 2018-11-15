@@ -3,6 +3,7 @@ const helper = require('../helpers/helpersMethod');
 const Project = require('../config/db_connection').Project;
 const List = require('../config/db_connection').List;
 const Card = require('../config/db_connection').Card;
+const CardHasLabel = require('../config/db_connection').Cardhaslabel;
 const Label = require('../config/db_connection').Label;
 const Member = require('../config/db_connection').Member;
 
@@ -121,7 +122,7 @@ module.exports = {
         let updateField = {};
 
         if (req.query.memberHasProjectStatus !== undefined &&
-                req.query.memberHasProjectStatus != null)
+            req.query.memberHasProjectStatus != null)
             updateField.memberhasprojectStatus = req.query.memberHasProjectStatus;
 
         if (req.query.projectIsFavorite !== undefined && req.query.projectIsFavorite != null)
@@ -216,21 +217,21 @@ module.exports = {
     },
 
     /**Find a member that has a project
-     * 
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
+     *
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
      */
     findMemberHasProject(req, res, next){
         MemberHasProject.findOne(
-            { 
-                where: req.query 
+            {
+                where: req.query
             }
         ).then(result => {
             if(result) res.send(true)
             else res.send(false)
         })
-        .catch(e =>res.status(400).send(e) )
+            .catch(e =>res.status(400).send(e) )
     },
 
     /**
@@ -247,14 +248,24 @@ module.exports = {
                     {
                         model: Card,
                         as: 'CardListFks' ,
-                        include: [{ all: true }]
+                        include: [
+                            { all: true },
+
+                            {
+                                model: CardHasLabel,
+                                as: 'HaslabelCardFks',
+                                include: [{ model: Label, as: 'Label'}]
+                            }
+                        ]
                     }
                 ]
             }
         ).then(listsCards => {
-            req.body.result = listsCards
+            //req.body.result = listsCards
+
+            req.body.result = helper.computeListOrder(listsCards)
             next()
         })
-        .catch(e =>res.status(400).send(e))
+            .catch(e =>res.status(400).send(e))
     }
 }

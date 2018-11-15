@@ -57,7 +57,8 @@ class ListPrello extends Component{
     createNewCard(){
         let cardName = this.state.newCardTitle
         let listId = this.props.list.listId
-        if(cardName) this.props.createCard(cardName,listId,this.props.idProject, this.props.member)
+        let cardFather = this.props.list.CardListFks.length
+        if(cardName) this.props.createCard(cardName,listId,this.props.idProject, this.props.member, cardFather)
     }
 
 
@@ -226,7 +227,9 @@ class ListPrello extends Component{
                                                     badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0}
                                                     className={classes.badge}
                                                     color='error'
-                                                />
+                                                >
+                                                    <p style={{color:'#155fa0'}}>p</p>
+                                                </Badge>
                                                 <Typography variant='overline' className={ classes.whiteText }>
                                                     {this.props.list.listTitle}
                                                 </Typography>

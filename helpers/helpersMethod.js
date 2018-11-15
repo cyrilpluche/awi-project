@@ -110,6 +110,40 @@ const methods = {
         //filter.membersOffCard = members
 
         return filter
+    },
+
+    computeListOrder (lists) {
+        let listsOrder = []
+        let father = 0
+
+        for (let l of lists) {
+            /** We select list in order */
+            let index = lists.findIndex(list => list.listFather === father)
+
+            while (index === -1) {
+                father += 1
+                index = lists.findIndex(list => list.listFather === father)
+            }
+
+            /** We sort her cards */
+            let cardsOrder = []
+            let cardFather = 0
+            for (let c of lists[index].CardListFks) {
+                let indexCard = lists[index].CardListFks.findIndex(card => card.cardFather === cardFather)
+
+                while (indexCard === -1) {
+                    cardFather += 1
+                    indexCard = lists[index].CardListFks.findIndex(card => card.cardFather === cardFather)
+                }
+
+                cardsOrder.push(lists[index].CardListFks[indexCard])
+                cardFather += 1
+            }
+            lists[index].dataValues.CardListFks = cardsOrder
+            listsOrder.push(lists[index])
+            father += 1
+        }
+        return listsOrder
     }
 };
 
