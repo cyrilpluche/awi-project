@@ -7,6 +7,7 @@ import _helper from '../../helpers'
 
 /** COMPONENTS */
 import PrelloDesktop from '../../public/files/Prello-linux-x64.zip'
+import PrelloMac from '../../public/files/Prello-darwin-x64.zip'
 
 /** MATERIAL UI */
 import { style } from './Style'
@@ -49,7 +50,7 @@ class Download extends React.Component {
                     <Grid xs={5} item>
                         <Grid container justify="center" alignItems="center">
                             <Typography variant="overline">
-                                Available for linux
+                                Available for linux and Mac
                             </Typography>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
@@ -62,7 +63,7 @@ class Download extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
-                            <Grid item xs={4}>
+                            <Grid item xs={4} className={ classes.marginBottomXs }>
                                 <Button
                                     href={PrelloDesktop}
                                     download
@@ -71,7 +72,22 @@ class Download extends React.Component {
                                     fullWidth
                                     className={classes.button}
                                 >
-                                    Get Prello
+                                    Get on LINUX
+                                    <GetAppIcon className={classes.rightIcon} />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        <Grid justify='center' container alignItems="center">
+                            <Grid item xs={4}>
+                                <Button
+                                    href={PrelloMac}
+                                    download
+                                    variant="outlined"
+                                    color="primary"
+                                    fullWidth
+                                    className={classes.button}
+                                >
+                                    Get on MAC
                                     <GetAppIcon className={classes.rightIcon} />
                                 </Button>
                             </Grid>

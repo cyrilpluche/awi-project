@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "package": "asar pack Prello-linux-x64/resources/app Prello-linux-x64/resources/app.asar",
-    "build": "electron-packager . Prello --ignore=nodes_modules/electron-*"
+    "build": "electron-packager . Prello --ignore=nodes_modules/electron-*",
+    "build-all": "electron-packager . Prello --all --ignore=nodes_modules/electron-*"
   },
   "keywords": [],
   "author": "",
