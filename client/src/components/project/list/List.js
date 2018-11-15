@@ -211,7 +211,6 @@ class ListPrello extends Component{
                     return (
                         <div className={classes.list}
                              {...provided.draggableProps}
-                             style={style}
                              ref={provided.innerRef}
                         >
                             <List

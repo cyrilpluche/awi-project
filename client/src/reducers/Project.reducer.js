@@ -24,6 +24,12 @@ export function project (state = initialState, action) {
                 isLoading: true
             };
 
+        case projectLabels.LOAD_PROJECT:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case cardLabels.LOAD_PROJECT:
             return {
                 ...state,
@@ -33,7 +39,8 @@ export function project (state = initialState, action) {
         case projectLabels.GET_ALL_LISTS: 
             return {
                 ...state,
-                lists:action.payload
+                lists:action.payload,
+                isLoading: false
             };
 
         case projectLabels.CREATE_LIST:

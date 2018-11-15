@@ -14,6 +14,7 @@ import {findWhere} from 'underscore';
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
 import Filter from '../ui/filter/Filter'
+import LoaderPage from '../ui/loader/Loader'
 
 // Material Ui
 import Grid from '@material-ui/core/Grid';
@@ -575,42 +576,44 @@ class Project extends Component {
                             </Button>
                         </div>}
                 </Typography>
-                <Grid container spacing={24} >
+                <Grid item xs={12} className={ classes.maxWidth } >
+                    <Grid container className={ classes.maxWidth } spacing={24}>
 
-                    {/**===================  MEMBERS BUTTON  ========================================= */}
-                    <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
-                        <SupervisorAccount className={classes.leftIcon} />
-                        {this.props.members? this.props.members.length : 0} Members
-                    </Button>
-                    <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                        {/**===================  MEMBERS BUTTON  ========================================= */}
+                        <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
+                            <SupervisorAccount className={classes.leftIcon} />
+                            {this.props.members? this.props.members.length : 0} Members
+                        </Button>
+                        <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
 
-                    {/**===================  VISIBILITY BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
-                        <RemoveRedEye className={classes.leftIcon} />
-                        Visibility
-                    </Button>
-                    <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                        {/**===================  VISIBILITY BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
+                            <RemoveRedEye className={classes.leftIcon} />
+                            Visibility
+                        </Button>
+                        <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
 
-                    {/*===================  ACTIVITY BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
-                        <Description className={classes.leftIcon} />
-                        Activity
-                    </Button>
-                    {renderActivity}
+                        {/*===================  ACTIVITY BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
+                            <Description className={classes.leftIcon} />
+                            Activity
+                        </Button>
+                        {renderActivity}
 
-                    {/*===================  FILTER BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
-                        <FilterList className={classes.leftIcon} />
-                        Filter
-                    </Button>
-                    {renderFilter}
+                        {/*===================  FILTER BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
+                            <FilterList className={classes.leftIcon} />
+                            Filter
+                        </Button>
+                        {renderFilter}
 
-                    {/*===================  ARCHIVED BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
-                        <Archive className={classes.leftIcon} />
-                        Archived
-                    </Button>
-                    {renderArchived}
+                        {/*===================  ARCHIVED BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
+                            <Archive className={classes.leftIcon} />
+                            Archived
+                        </Button>
+                        {renderArchived}
+                    </Grid>
                 </Grid>
             </Grid>
         );
@@ -634,7 +637,16 @@ class Project extends Component {
         return (
             <div className={classes.projectBody}>
                 {header}
-                {dndArea}
+                {this.props.isLoading ? (
+                    <Grid container justify='center' alignItems='center'>
+                        <LoaderPage/>
+                    </Grid>
+                ) : (
+                    <div>
+                        {dndArea}
+                    </div>
+                )}
+
             </div>
         )
     }
@@ -649,7 +661,8 @@ const mapStateToProps = (state) => ({
     logged: state.signin.member,
     hasProject : state.project.loggedHasProject,
     activities: state.project.activities,
-    currentMemberId: state.signin.member.memberId
+    currentMemberId: state.signin.member.memberId,
+    isLoading: state.project.isLoading
     //labels : state.project.labels || []
 })
 

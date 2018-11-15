@@ -2,6 +2,7 @@ import _service from '../services'
 import moment from "moment";
 
 const labels = {
+    LOAD_PROJECT: "LOAD_PROJECT",
     GET_ALL_LISTS :"GET_ALL_LISTS",
     CREATE_LIST : "CREATE_LIST",
     UPDATE_LIST : "UPDATE_LIST",
@@ -31,6 +32,7 @@ const labels = {
  */
 function findAllLists (idProject) {
     return dispatch => {
+        dispatch({ type: labels.LOAD_PROJECT })
         const body ={
             projectId: idProject
         }
