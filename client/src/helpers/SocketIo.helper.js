@@ -4,7 +4,7 @@
 
 import io from "socket.io-client"
 
-const socket = io('http://prello-ig.herokuapp.com')
+const socket = io('https://prello-ig.herokuapp.com')
 
 export default socket
 
