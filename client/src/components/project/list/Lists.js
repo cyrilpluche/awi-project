@@ -6,9 +6,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { styles } from './Style'
 import SimpleDialog from '../../ui/dialog/SimpleDialog'
-import MiniLoader from "../../ui/loader/MiniLoader";
-import connect from "react-redux/es/connect/connect";
-import _action from "../../../actions";
 import Grid from "@material-ui/core/Grid/Grid";
 
 
@@ -59,16 +56,27 @@ class Lists extends Component {
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
                     <div
+                        className={ classes.widthMax }
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
-                        <Grid container spacing={24} className={classes.listsGrid}>
+                        <Grid container justify='flex-start' className={ classes.buttonAddList }>
+                            <Button
+                                onClick={this.handleClickOpen}
+                                variant="outlined"
+                                color='primary'
+                                aria-label="Add"
+                                className={classes.buttonList}
+                            >
+                                <AddIcon />
+                                New list
+                            </Button>
+                        </Grid>
+                        <Grid container id='listScroll'>
                             {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) =>
-                                <Grid xs={2} item key={list.listTitle+list.listId}>
-
+                                <Grid item key={list.listTitle+list.listId}>
                                     <List
                                         idProject={idProject}
-                                        key={list.listTitle+list.listId}
                                         list={list}
                                         listIndex={index}
                                         index={index}
@@ -79,21 +87,9 @@ class Lists extends Component {
                                         member={this.props.member}
                                         route = {this.props.route}
                                     />
-
                                 </Grid>
                             )}
                             {provided.placeholder}
-                            <div>
-                                <Button
-                                    onClick={this.handleClickOpen}
-                                    variant="outlined"
-                                    color='primary'
-                                    aria-label="Add"
-                                    className={classes.buttonList}
-                                >
-                                    <AddIcon />
-                                </Button>
-                            </div>
                             <SimpleDialog
                                 type="list"
                                 open={this.state.open}

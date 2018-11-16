@@ -4,12 +4,13 @@ import { signupAction } from './Signup.action';
 import { navbarAction } from './Navbar.action';
 import { notificationAction } from './Notification.action';
 import { profileAction } from './Profile.action';
-import {projectAction} from './Project.action';
-import {listAction} from './List.action';
-import {cardAction} from "./Card.action";
+import { projectAction} from './Project.action';
+import { listAction} from './List.action';
+import { cardAction} from "./Card.action";
 import { searchbarAction } from "./Searchbar.action";
 import { invitationAction } from "./Invitation.action";
-import  { memberAction } from "./Member.action";
+import { memberAction } from "./Member.action";
+import { teamAction } from "./Team.action";
 
 const _action = {
     dashboardAction,
@@ -23,7 +24,8 @@ const _action = {
     cardAction,
     searchbarAction,
     invitationAction,
-    memberAction
+    memberAction,
+    teamAction
 }
 
 export default _action

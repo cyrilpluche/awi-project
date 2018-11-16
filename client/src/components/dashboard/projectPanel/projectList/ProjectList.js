@@ -4,40 +4,24 @@ import PropTypes from 'prop-types';
 import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
-import { Lazy } from 'react-lazy'
 import _helper from '../../../../helpers'
 import Background from '../../../../public/images/project-bg.jpg'
 import Gallery from '../../../ui/gallery/BackgroundGallery'
-import { Scrollbars } from 'react-custom-scrollbars';
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from "@material-ui/core/IconButton";
-import AddFavoriteIcon from '@material-ui/icons/StarBorderOutlined'
-import ClearIon from '@material-ui/icons/Clear'
+
 import StarIcon from '@material-ui/icons/Star'
 import StarBorderIcon from '@material-ui/icons/StarBorder'
 
-import AddProjectIcon from '@material-ui/icons/Add'
-import LockerIcon from '@material-ui/icons/Lock'
-import ProjectIcon from '@material-ui/icons/SchoolRounded'
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputBase from '@material-ui/core/InputBase';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Typography from "@material-ui/core/es/Typography/Typography";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
-import CardActions from "@material-ui/core/es/CardActions/CardActions";
 import GridListTile from "@material-ui/core/es/GridListTile/GridListTile";
 import GridList from "@material-ui/core/es/GridList/GridList";
 import GridListTileBar from "@material-ui/core/es/GridListTileBar/GridListTileBar";
@@ -177,23 +161,17 @@ class ProjectList extends React.Component {
             </Dialog>
         )
 
-        /** Gallery save */
-        /*const gallery = (
-            <Lazy component="a" href={"/project/" + project.projectId} >
-                <img src={"https://res.cloudinary.com/o1-g1-prello/image/upload/v1541634595/prello%20project/adventure-beach-blue-386025.jpg"} width={'100%'} alt='prello logo'/>
-            </Lazy>
-        )*/
-
         /** NEW PROJECT LIST */
         const projectList2 = (
             <GridList className={classes.gridList} cols={2.5}>
                 {this.props.projects.map(project => {
-                    return (
-                        <GridListTile
-                            key={project.projectId}
-                        >
-                            <img id={project.projectId} onClick={this.goToProject} src={Background} alt='project background'/>
-                            {project.projectIsFavorite ? (
+                    if (this.props.isFavorite && project.projectIsFavorite) {
+                        return (
+                            <GridListTile
+                                key={project.projectId}
+                            >
+                                <img id={project.projectId} onClick={this.goToProject} src={Background}
+                                     alt='project background'/>
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     classes={{
@@ -210,7 +188,15 @@ class ProjectList extends React.Component {
                                         </IconButton>
                                     }
                                 />
-                            ) : (
+                            </GridListTile>
+                        )
+                    } else if (!this.props.isFavorite && !project.projectIsFavorite) {
+                        return (
+                            <GridListTile
+                                key={project.projectId}
+                            >
+                                <img id={project.projectId} onClick={this.goToProject} src={Background}
+                                     alt='project background'/>
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     classes={{
@@ -227,10 +213,11 @@ class ProjectList extends React.Component {
                                         </IconButton>
                                     }
                                 />
-                            )}
-
-                        </GridListTile>
-                    )
+                            </GridListTile>
+                        )
+                    } else {
+                        return null
+                    }
                 })}
             </GridList>
         )
@@ -253,13 +240,13 @@ class ProjectList extends React.Component {
                     <Typography variant="overline">
                         {this.props.title}
                     </Typography>
-                    {createProjectButton}
+                    { !this.props.isFavorite ? createProjectButton : null}
                 </Grid>
                 <Grid xs={12} item>
                     <Divider/>
                 </Grid>
                 <Grid xs={12} item>
-                     {projectList2}
+                    {projectList2}
                 </Grid>
             </Grid>
         )

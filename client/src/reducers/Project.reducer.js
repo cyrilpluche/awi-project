@@ -24,6 +24,12 @@ export function project (state = initialState, action) {
                 isLoading: true
             };
 
+        case projectLabels.LOAD_PROJECT:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case cardLabels.LOAD_PROJECT:
             return {
                 ...state,
@@ -33,7 +39,8 @@ export function project (state = initialState, action) {
         case projectLabels.GET_ALL_LISTS: 
             return {
                 ...state,
-                lists:action.payload
+                lists:action.payload,
+                isLoading: false
             };
 
         case projectLabels.CREATE_LIST:
@@ -46,6 +53,13 @@ export function project (state = initialState, action) {
                 ...state,
                 lists 
             };
+
+        case projectLabels.CREATE_LIST_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
         case listLabels.CREATE_CARD:
             let listWithCard = Array.from(state.lists)
             let findList = listWithCard.find(list => list.listId === action.payload.listId)
@@ -68,7 +82,23 @@ export function project (state = initialState, action) {
                 ...state,
                 lists : listWithCard,
                 isLoading:false
-            }; 
+            };
+
+        case cardLabels.ADD_MEMBER_ON_CARD:
+            let newMember = action.payload.newMember
+            let listIndex = action.payload.listIndex
+            let cardIndexx = action.payload.cardIndex
+            let listsCards = Array.from(state.lists)
+
+            let element = {Member: newMember}
+
+            listsCards[listIndex].CardListFks[cardIndexx].MemberhascardCardFks.push(element)
+            console.log('WOHOU')
+            return {
+                ...state,
+                lists: listsCards
+            };
+
         case listLabels.UPDATE_CARD:   
             socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload})
             return {
@@ -199,9 +229,7 @@ export function project (state = initialState, action) {
                 members : action.payload
             };
         case listLabels.UPDATE_POSITION_LISTS:
-            console.log(action.payload[0].projectId)
-            console.log(action.payload)
-            socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload}) 
+            socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload})
             return {
                 ...state,
                 lists : action.payload

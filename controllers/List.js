@@ -141,6 +141,20 @@ module.exports = {
             .catch(error => next(error))
     },
 
+    updateFromArray(req, res, next) {
+        for (let list of req.body.lists) {
+            List
+                .update({listFather: list.listFather}, {
+                    where: { listId: list.listId }
+                })
+                .then(isUpdated => {
+
+                    if (req.body.lists.indexOf(list) === req.body.lists.length - 1) next()
+                })
+                .catch(error => next(error))
+        }
+    },
+
     /*  localhost:4200/api/list/delete/:id
      *
      *  return: A boolean. true = deleted, false = no deleted.

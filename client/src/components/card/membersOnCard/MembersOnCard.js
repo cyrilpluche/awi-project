@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import {Send,Cancel} from '@material-ui/icons';
+import {Send} from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import {withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -59,19 +59,19 @@ class MemberOnCard extends Component {
     /** ==================== ADD / REMOVE MEMBERS ==================== */
     addMember (event) {
         const { onAddMember } = this.props
-        console.log(this.state)
 
         let index = this.state.newMemberIndex
         let member = this.props.membersOffCard[index]
         let cardId = this.props.card.cardId
 
+        //We copy previous arrays
         let membersOnCard = Array.from(this.props.membersOnCard)
         let membersOffCard = Array.from(this.props.membersOffCard)
 
         membersOnCard.push(member)
         membersOffCard.splice(index, 1)
 
-        onAddMember(member.memberId, cardId, membersOnCard, membersOffCard)
+        onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, this.props.listIndex, this.props.cardIndex, member)
 
         this.setState({
             membersOnCard: membersOnCard,
@@ -86,10 +86,14 @@ class MemberOnCard extends Component {
         let member = this.props.membersOnCard[index]
         let cardId = this.props.card.cardId
 
-        this.state.membersOffCard.push(member)
-        this.state.membersOnCard.splice(index, 1)
+        //We copy previous arrays
+        let membersOnCard = Array.from(this.props.membersOnCard)
+        let membersOffCard = Array.from(this.props.membersOffCard)
 
-        onRemoveMember(member.memberId, cardId, this.state.membersOnCard, this.state.membersOffCard)
+        membersOffCard.push(member)
+        membersOnCard.splice(index, 1)
+
+        onRemoveMember(member.memberId, cardId, membersOnCard, membersOffCard)
         this.setState({ maj: true })
     }
 
@@ -100,21 +104,10 @@ class MemberOnCard extends Component {
     render() {
         const { membersOnCard, membersOffCard, classes, ...other } = this.props;
 
-        const ITEM_HEIGHT = 48;
-        const ITEM_PADDING_TOP = 8;
-        const MenuProps = {
-            PaperProps: {
-                style: {
-                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                    width: 250,
-                },
-            },
-        };
-
         /** Members on the card */
         const activeMembersList = (
             <List className={ classes.memberList + ' ' + classes.marginBottomTop + ' ' + classes.modalWidth}>
-                {this.props.isLoading ?
+                {this.props.isloading  === 'true' ?
                     <MiniLoader size={15} />
                     :
                     <div>
@@ -144,7 +137,7 @@ class MemberOnCard extends Component {
         /** Members off the card */
         const otherMembers = (
             <div className={ classes.modalWidth}>
-                {this.props.isLoading ?
+                {this.props.isloading === 'true' ?
                     <MiniLoader size={15} />
                     :
                     <FormControl className={classes.formControl + ' ' + classes.modalWidth}>
@@ -159,7 +152,7 @@ class MemberOnCard extends Component {
                             }}
                         >
                             {membersOffCard.map((member, index) =>
-                                <MenuItem value={index}>{member.memberPseudo}</MenuItem>
+                                <MenuItem key={index} value={index}>{member.memberPseudo}</MenuItem>
                             )}
                         </Select>
                     </FormControl>
@@ -213,7 +206,7 @@ class MemberOnCard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isLoading: state.card.isLoading,
+    isloading: state.card.isLoading.toString(),
     membersOnCard: state.card.membersOnCard,
     membersOffCard: state.card.membersOffCard
 })

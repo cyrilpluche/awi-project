@@ -23,7 +23,6 @@ import { styles } from './Style'
 import Grid from "@material-ui/core/Grid/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
 import Fade from "@material-ui/core/Fade/Fade";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 
 
@@ -81,23 +80,26 @@ class MemberDialog extends Component {
             memberId: event.currentTarget.id.split('/')[1]
         }
         this.props.removeMemberFromProject(query)
+        this.setState({ maj: true });
     }
 
     handleChangeCheckbox = name => event => {
         let index = event.target.id.split('/')[1]
         let mhppState = event.target.checked
-        this.state.members[index].Member.HaspermissionprojectMember1Fks[0].mhppState = mhppState
+        let member = Object.assign({}, this.props.members[index])
+        console.log('INDEX', index)
+        console.log('STATE', this.state)
+        console.log('PROPS', this.props)
 
-        let projectId = this.props.projectInfo.projectId
-        let memberId = this.state.members[index].memberId
-        let permissionId = this.state.members[index].Member.HaspermissionprojectMember1Fks[0].permissionId
-        this.props.onUpdatePermission(projectId, memberId, permissionId, mhppState, this.state.members)
+        if (member.Member) {
+            member.Member.HaspermissionprojectMember1Fks[0].mhppState = mhppState
+            let projectId = this.props.projectInfo.projectId
+            let memberId = member.memberId
+            let permissionId = member.Member.HaspermissionprojectMember1Fks[0].permissionId
+            this.props.onUpdatePermission(projectId, memberId, permissionId, mhppState, this.props.members)
+        }
         this.setState({ maj: true });
     };
-
-    handleSetAsAdmin(memberId){
-        this.props.removeMemberFromProject(this.props.projectInfo.projectId, memberId)
-    }
 
     render() {
         const {onUpdatePermission, isLoading, isAdmin, setAsAdministrator,removeMemberFromProject, sendInvitation, projectInfo, classes, onClose, selectedValue, ...other } = this.props;
@@ -158,7 +160,7 @@ class MemberDialog extends Component {
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
                                     <ListItemText primary={member.Member.memberPseudo}/>
                                     <div>
-                                        {this.props.isAdmin === true && member.memberId !== this.props.currentMemberId ?
+                                        {this.props.isAdmin === true && member.memberId !== this.props.currentmemberid ?
                                             <div>
                                                 <IconButton id={'member/' + member.Member.memberId} color="secondary"  onClick={this.handleRemoveFromProject}>
                                                     <Cancel />
@@ -170,7 +172,7 @@ class MemberDialog extends Component {
                                                     placement="top-start">
                                                     <Checkbox
                                                         checked={member.Member.HaspermissionprojectMember1Fks[0].mhppState}
-                                                        id={'isAdmin/' + this.state.members.indexOf(member).toString()}
+                                                        id={'isAdmin/' + this.props.members.indexOf(member).toString()}
                                                         onChange={this.handleChangeCheckbox('members')}
                                                         value='members'
                                                     />
@@ -215,7 +217,7 @@ class MemberDialog extends Component {
 const mapStateToProps = (state) => ({
     projectInfo : state.project.projectInfo || [],
     members : state.project.members,
-    currentMemberId: state.signin.member.memberId,
+    currentmemberid: state.signin.member.memberId,
     isLoading: state.project.isLoading
 })
 const mapDispatchToProps ={

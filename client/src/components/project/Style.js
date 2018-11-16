@@ -1,26 +1,27 @@
 export const styles = theme => ({
     projectBody: {
         fontFamily : `"Roboto", "Helvetica", "Arial", sans-serif`
-        
+
     },
     projectHeader: {
         marginTop: theme.spacing.unit * 1,
-        marginLeft: theme.spacing.unit * 4,
-        marginBottom: theme.spacing.unit * 3,
+        paddingLeft: theme.spacing.unit * 4,
+        paddingBottom: theme.spacing.unit * 3,
         alignText: `left`,
-             
+        width: '100%'
+
     },
     projectTitle: {
         marginTop: theme.spacing.unit * 1,
         marginLeft: theme.spacing.unit * 2,
         alignText: `left`,
         color:`#3f51b5`
-             
+
     },
     button: {
         margin: theme.spacing.unit,
-        
-      },
+
+    },
     leftIcon:{
         marginRight: theme.spacing.unit,
     },
@@ -53,14 +54,16 @@ export const styles = theme => ({
         border : `1px solid lightgrey`,
         margin: '10px',
         borderRadius:'10px'
-      },
+    },
     restoreButton: {
         color: 'green',
         border : `1px solid green`,
     },
     expandPanel:{
         width: '100%',
+    },
+    widthMax: {
+        maxWidth: '100%'
     }
-
 
 })

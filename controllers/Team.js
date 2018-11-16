@@ -1,6 +1,6 @@
 const helper = require('../helpers/helpersMethod');
 const Team = require('../config/db_connection').Team;
-const Teamhasmember = require('../config/db_connection').Teamhasmember
+const TeamHasMember = require('../config/db_connection').TeamHasMember
 const sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
@@ -43,7 +43,7 @@ module.exports = {
     },
 
     findAllTeamMember (req, res, next) {
-        Teamhasmember.findAll({
+        TeamHasMember.findAll({
             where: {member_id: req.params.member},
             include: [
                 {

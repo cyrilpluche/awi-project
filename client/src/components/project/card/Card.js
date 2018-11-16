@@ -18,11 +18,6 @@ class Card extends Component{
                     index={this.props.index}
                 >
                     {(provided, snapshot) =>  {
-                        const style = {
-                            //backgroundColor: snapshot.isDragging ? 'lightblue' : 'lightgreen',
-                            fontSize: 18,
-                            ...provided.draggableProps.style,
-                        };
                         return (
                             <div
                                 {...provided.draggableProps}

@@ -6,10 +6,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import SimpleDialog from '../../ui/dialog/SimpleDialog'
 import { styles } from './Style'
-import { connect } from 'react-redux'
-import _action from '../../../actions'
 
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import Badge from '@material-ui/core/Badge';
 import TextField from '@material-ui/core/TextField';
@@ -23,7 +20,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MiniLoader from "../../ui/loader/MiniLoader";
 
 import { Done} from '@material-ui/icons';
 import ListItem from "@material-ui/core/ListItem/ListItem";
@@ -57,7 +53,8 @@ class ListPrello extends Component{
     createNewCard(){
         let cardName = this.state.newCardTitle
         let listId = this.props.list.listId
-        if(cardName) this.props.createCard(cardName,listId,this.props.idProject, this.props.member)
+        let cardFather = this.props.list.CardListFks.length
+        if(cardName) this.props.createCard(cardName,listId,this.props.idProject, this.props.member, cardFather)
     }
 
 
@@ -203,14 +200,9 @@ class ListPrello extends Component{
         return (
             <Draggable draggableId={"List:"+this.props.list.listId} index={this.props.index}>
                 {(provided,snapshot) => {
-                    const style = {
-                        fontSize: 18,
-                        ...provided.draggableProps.style,
-                    };
                     return (
                         <div className={classes.list}
                              {...provided.draggableProps}
-                             style={style}
                              ref={provided.innerRef}
                         >
                             <List
@@ -226,7 +218,9 @@ class ListPrello extends Component{
                                                     badgeContent={list.CardListFks ? list.CardListFks.filter(card => card.cardStatus === 0).length : 0}
                                                     className={classes.badge}
                                                     color='error'
-                                                />
+                                                >
+                                                    <p style={{color:'#155fa0'}}>p</p>
+                                                </Badge>
                                                 <Typography variant='overline' className={ classes.whiteText }>
                                                     {this.props.list.listTitle}
                                                 </Typography>
@@ -264,11 +258,7 @@ class ListPrello extends Component{
 
                                 </ListItem>
                                 <Droppable droppableId={this.props.list.listId+":"+this.props.list.listTitle} type="CARD">
-                                    {(provided,snapshot) => {
-                                        const style = {
-                                            //backgroundColor: '#e4e4e4',
-                                            ...provided.droppableProps.style,
-                                        };
+                                    {(provided) => {
                                         return (
                                             <div
                                                 ref={provided.innerRef}

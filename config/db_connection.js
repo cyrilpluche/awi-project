@@ -37,7 +37,7 @@ module.exports = {
     MemberHasCard: models.Memberhascard,
     MemberHasAction: models.Memberhasaction,
     MemberHasPermissionProject: models.Memberhaspermissionproject,
-    Teamhasmember: models.Teamhasmember,
+    TeamHasMember: models.Teamhasmember,
     Label: models.Label
 
 };

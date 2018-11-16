@@ -3,35 +3,20 @@ import {connect} from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import { style } from './Style'
 import PropTypes from 'prop-types';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
-import PeopleIcon from '@material-ui/icons/People'
-import ClearIon from '@material-ui/icons/Clear'
-import IconButton from "@material-ui/core/IconButton";
-import GroupWork from '@material-ui/icons/SupervisedUserCircle'
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputBase from '@material-ui/core/InputBase';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import GridList from "@material-ui/core/es/GridList/GridList";
 import GridListTile from "@material-ui/core/es/GridListTile/GridListTile";
 import GridListTileBar from "@material-ui/core/es/GridListTileBar/GridListTileBar";
 import Background from '../../../public/images/project-bg.jpg'
 import TextField from "@material-ui/core/es/TextField/TextField";
+import _action from "../../../actions";
 
 
 // todo import action
@@ -65,7 +50,7 @@ class TeamPanel extends React.Component {
     };
 
     createTeam () {
-        console.log('CREATE THE TEAM')
+        this.props.onCreateTeam(this.state.teamName)
     }
 
 
@@ -169,7 +154,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    
+    onCreateTeam: _action.teamAction.createTeam
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(TeamPanel));

@@ -22,12 +22,14 @@ const labels = {
 }
 
 
-function createCard(cardTitle,listId,projectId, member) {
+function createCard(cardTitle,listId,projectId, member, cardFather) {
+    console.log(cardFather)
     const body = {
         cardTitle: cardTitle,
         cardStatus : 0,
         listId: listId,
-        cardDescription: ''
+        cardDescription: '',
+        cardFather: cardFather
     }
     return dispatch => {
         dispatch({ type: labels.LOAD_PROJECT })
@@ -241,8 +243,9 @@ function updateListStatus(listId, status){
     }
 }
 
-function updatePositionLists(newOrderedArray){
+function updatePositionLists(newOrderedArray, listsOrder){
     return dispatch => {
+        _service.List.updateListOrder(listsOrder)
         dispatch({
             type: labels.UPDATE_POSITION_LISTS,
             payload: newOrderedArray

@@ -1,6 +1,7 @@
 import _service from '../services'
 
 const labels = {
+    LOAD_PROFILE_PICTURE: 'LOAD_PROFILE_PICTURE',
     UPDATE_MEMBER: 'UPDATE_MEMBER',
     UPDATE_MEMBER_ERROR: 'UPDATE_MEMBER_ERROR',
     UPDATE_PASSWORD: 'UPDATE_PASSWORD',
@@ -10,6 +11,36 @@ const labels = {
 function updateMember(attributes) {
     return (dispatch) => {
         _service.Member.update(attributes)
+            .then(res => {
+                if (res) {
+                    localStorage.setItem('memberToken', res.memberToken)
+                    dispatch({
+                        type: labels.UPDATE_MEMBER,
+                        payload: {
+                            member: res
+                        }
+                    })
+                } else {
+                    dispatch({
+                        type: labels.UPDATE_MEMBER_ERROR,
+                    })
+                }
+
+            })
+            .catch((err) => {
+                dispatch({
+                    type: labels.UPDATE_MEMBER_ERROR,
+                })
+            });
+    };
+}
+
+function updateMemberPicture (attributes, memberId) {
+    return (dispatch) => {
+        dispatch({
+            type: labels.LOAD_PROFILE_PICTURE,
+        })
+        _service.Member.updateProfilePicture(attributes, memberId)
             .then(res => {
                 if (res) {
                     localStorage.setItem('memberToken', res.memberToken)
@@ -70,5 +101,6 @@ function updateMemberPassword (passwords) {
 export const profileAction = {
     labels,
     updateMember,
-    updateMemberPassword
+    updateMemberPassword,
+    updateMemberPicture
 }

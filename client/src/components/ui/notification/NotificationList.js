@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import Notification from "./Notification"
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from "@material-ui/core/Divider/Divider";
-import Button from "@material-ui/core/Button/Button";
 
 const styles = theme => ({
     menuItem: {},

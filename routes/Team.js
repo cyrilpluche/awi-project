@@ -3,18 +3,20 @@ const router = express.Router();
 const mw = require('../middlewares')
 
 const teamController = require('../controllers').Team;
+const thmController = require('../controllers').TeamHasMember;
 
 router.use(mw.Token.verifyToken)
 
-router.get('/find_all', mw.Token.verifyToken, teamController.findAll);
-router.get('/find_all/:member', mw.Token.verifyToken, teamController.findAllTeamMember);
+router.get('/find_all', teamController.findAll);
+router.get('/find_all/:member', teamController.findAllTeamMember);
 
-router.get('/find_one/:id', mw.Token.verifyToken, teamController.findOne);
+router.get('/find_one/:id', teamController.findOne);
 
-router.post('/create', mw.Token.verifyToken, teamController.create);
+router.post('/create', teamController.create);
+router.post('/create_thm', thmController.create);
 
-router.put('/update/:id', mw.Token.verifyToken, teamController.update);
+router.put('/update/:id', teamController.update);
 
-router.delete('/delete/:id', mw.Token.verifyToken, teamController.delete);
+router.delete('/delete/:id', teamController.delete);
 
 module.exports = router;

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
-import _action from "../../../actions";
 
 const IMAGES =
     [

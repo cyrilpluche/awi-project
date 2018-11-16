@@ -2,8 +2,10 @@ import _service from '../services'
 import moment from "moment";
 
 const labels = {
+    LOAD_PROJECT: "LOAD_PROJECT",
     GET_ALL_LISTS :"GET_ALL_LISTS",
     CREATE_LIST : "CREATE_LIST",
+    CREATE_LIST_ERROR: "CREATE_LIST_ERROR",
     UPDATE_LIST : "UPDATE_LIST",
     GET_PROJECT_INFO : "GET_PROJECT_INFO",
     GET_ALL_MEMBERS:"GET_ALL_MEMBERS",
@@ -31,6 +33,7 @@ const labels = {
  */
 function findAllLists (idProject) {
     return dispatch => {
+        dispatch({ type: labels.LOAD_PROJECT })
         const body ={
             projectId: idProject
         }
@@ -97,7 +100,11 @@ function createList (listTitle, projectId, listFather, member) {
                 })
             })
             .catch((err) => {
-                dispatch(err)
+                console.log(err)
+                dispatch({
+                    type: labels.CREATE_LIST_ERROR,
+                    payload: err
+                });
             });
     }
 }
@@ -324,21 +331,6 @@ function removeMemberFromProject(query){
                 })
             });
     }
-}
-
-/**TODO SERVICE
- * Update the status of a member for a specific project. Set him as admin
- */
-function setMemberAsAdmin(projectId, memberId){
-    return dispatch => {
-
-        dispatch({
-            type: labels.SET_MEMBER_ADMIN,
-            payload: false
-        });
-
-    }
-
 }
 
 /**

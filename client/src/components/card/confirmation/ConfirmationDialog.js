@@ -9,7 +9,6 @@ import _action from "../../../actions/index";
 import connect from "react-redux/es/connect/connect";
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from '../Style'
-import * as PropTypes from "prop-types";
 
 class ConfirmationDialog extends React.Component {
     state = {

@@ -8,13 +8,12 @@ import _service from '../../services'
 
 // Drag and drop 
 import { DragDropContext} from 'react-beautiful-dnd';
-import {findWhere} from 'underscore';
 
 // Components
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
 import Filter from '../ui/filter/Filter'
-
+import LoaderPage from '../ui/loader/Loader'
 
 // Material Ui
 import Grid from '@material-ui/core/Grid';
@@ -32,7 +31,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Divider from "@material-ui/core/Divider/Divider";
 
 // Styles
 import {withStyles } from '@material-ui/core/styles';
@@ -168,12 +166,11 @@ class Project extends Component {
 
         // if its the first list created for this project, the list has no father
         if(lists.length === 0 ){
-            this.props.createList(listName,idProject,null)
+            this.props.createList(listName,idProject,0,  this.props.currentMember)
 
             // we call creatList action specifying the title, project id and father list id.
         }else{
-            let lastElement = lists[lists.length -1]
-            this.props.createList(listName,idProject,lastElement.listId, this.props.currentMember)
+            this.props.createList(listName,idProject,lists.length, this.props.currentMember)
         }
 
     }
@@ -189,8 +186,8 @@ class Project extends Component {
     }
 
     /*============= CARD ACTIONS ======================*/
-    createCard(cardName,listId,idProject){
-        this.props.createCard(cardName,listId,idProject, this.props.currentMember)
+    createCard(cardName,listId,idProject, member, cardFather){
+        this.props.createCard(cardName,listId,idProject, this.props.currentMember, cardFather)
     }
 
 
@@ -235,7 +232,6 @@ class Project extends Component {
 
             const newArrayList = newLists.concat(archivedList)
 
-            this.props.updatePositionLists(newArrayList)
             //set state with the new list           
             this.setState({lists:newArrayList},() =>{
 
@@ -243,23 +239,26 @@ class Project extends Component {
                 //let updateList = lists.find(list => list.listId === dragId)
                 //let updateList = findWhere(lists,{listId: dragId})
 
-                let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
+                //let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
 
-                let childUpdatedList = findWhere(lists,{listFather: findList.listId})
+                //let childUpdatedList = findWhere(lists,{listFather: findList.listId})
 
 
-                let indexOfUpdateList = lists.indexOf(findList)
+                //let indexOfUpdateList = lists.indexOf(findList)
 
                 //New father and child of dragged list
-                let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
-                let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
+                //let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
+                //let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
 
 
                 // Change fathers of list in DB
                 /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
                  if(findList)  this.props.moveList(updateList.listId,listFather)
                  if(listChild) this.props.moveList(listChild,updateList.listId)*/
-            })
+             })
+            /** Keeps order list updated */
+            let listsOrder = _helper.Method.computeListOrder(this.state.lists)
+            this.props.updatePositionLists(newArrayList, listsOrder)
         }
 
         // When a card has been dragged and dropped
@@ -270,7 +269,6 @@ class Project extends Component {
 
             let destinationListId = Number.parseInt(destination.droppableId.split(':')[0])
             let destinationList =  Object.assign({},lists.find(list => list.listId === destinationListId ))
-
             let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
 
             if(destinationListId !== sourceListId){
@@ -304,8 +302,8 @@ class Project extends Component {
                     //this.socket.emit('move', newList)
                     this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
-
-
+                let listsOrder = _helper.Method.computeCardOrder(this.state.lists)
+                this.props.onUpdatePositionCard(listsOrder)
             }
             else{
 
@@ -324,13 +322,12 @@ class Project extends Component {
 
                 newList.splice(sourceListIndex,1,)
                 newList.splice(sourceListIndex,0, sourceList)
-                console.log(newList)
                 this.setState({lists: newList}, () =>{
                     this.props.updatePositionLists(newList)
                     // this.socket.emit('move', newList)
                 })
-
-
+                let listsOrder = _helper.Method.computeCardOrder(this.state.lists)
+                this.props.onUpdatePositionCard(listsOrder)
             }
 
 
@@ -576,42 +573,44 @@ class Project extends Component {
                             </Button>
                         </div>}
                 </Typography>
-                <Grid container spacing={24} >
+                <Grid item xs={12} className={ classes.maxWidth } >
+                    <Grid container className={ classes.maxWidth } spacing={24}>
 
-                    {/**===================  MEMBERS BUTTON  ========================================= */}
-                    <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
-                        <SupervisorAccount className={classes.leftIcon} />
-                        {this.props.members? this.props.members.length : 0} Members
-                    </Button>
-                    <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
+                        {/**===================  MEMBERS BUTTON  ========================================= */}
+                        <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
+                            <SupervisorAccount className={classes.leftIcon} />
+                            {this.props.members? this.props.members.length : 0} Members
+                        </Button>
+                        <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
 
-                    {/**===================  VISIBILITY BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
-                        <RemoveRedEye className={classes.leftIcon} />
-                        Visibility
-                    </Button>
-                    <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
+                        {/**===================  VISIBILITY BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
+                            <RemoveRedEye className={classes.leftIcon} />
+                            Visibility
+                        </Button>
+                        <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
 
-                    {/*===================  ACTIVITY BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
-                        <Description className={classes.leftIcon} />
-                        Activity
-                    </Button>
-                    {renderActivity}
+                        {/*===================  ACTIVITY BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
+                            <Description className={classes.leftIcon} />
+                            Activity
+                        </Button>
+                        {renderActivity}
 
-                    {/*===================  FILTER BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
-                        <FilterList className={classes.leftIcon} />
-                        Filter
-                    </Button>
-                    {renderFilter}
+                        {/*===================  FILTER BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
+                            <FilterList className={classes.leftIcon} />
+                            Filter
+                        </Button>
+                        {renderFilter}
 
-                    {/*===================  ARCHIVED BUTTON  ========================================= */}
-                    < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
-                        <Archive className={classes.leftIcon} />
-                        Archived
-                    </Button>
-                    {renderArchived}
+                        {/*===================  ARCHIVED BUTTON  ========================================= */}
+                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
+                            <Archive className={classes.leftIcon} />
+                            Archived
+                        </Button>
+                        {renderArchived}
+                    </Grid>
                 </Grid>
             </Grid>
         );
@@ -635,7 +634,16 @@ class Project extends Component {
         return (
             <div className={classes.projectBody}>
                 {header}
-                {dndArea}
+                {this.props.isLoading ? (
+                    <Grid container justify='center' alignItems='center'>
+                        <LoaderPage/>
+                    </Grid>
+                ) : (
+                    <div>
+                        {dndArea}
+                    </div>
+                )}
+
             </div>
         )
     }
@@ -650,7 +658,8 @@ const mapStateToProps = (state) => ({
     logged: state.signin.member,
     hasProject : state.project.loggedHasProject,
     activities: state.project.activities,
-    currentMemberId: state.signin.member.memberId
+    currentMemberId: state.signin.member.memberId,
+    isLoading: state.project.isLoading
     //labels : state.project.labels || []
 })
 
@@ -674,7 +683,8 @@ const mapDispatchToProps ={
     updateListTitle: _action.listAction.updateListTitle,
     deleteList: _action.listAction.deleteList,
     archiveList: _action.listAction.updateListStatus,
-    loadLists:  _action.projectAction.loadLists
+    loadLists:  _action.projectAction.loadLists,
+    onUpdatePositionCard:  _action.cardAction.updatePositionCard
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Project))

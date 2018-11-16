@@ -20,6 +20,9 @@ export const styles = theme => ({
         minHeight : `100px`,
         justifyContent: `center`,
         textAlign: `center`,*/
+        width: '272px',
+        margin: '7px',
+        marginRight: 0,
         backgroundColor:`#1e88e5`,
     },
     listTitle: {
@@ -69,8 +72,9 @@ export const styles = theme => ({
         marginBottom: 20
     },
     listsGrid: {
-        marginLeft:  theme.spacing.unit * 5,
-        marginRight: theme.spacing.unit * 5,
+        paddingLeft:  theme.spacing.unit * 5,
+        paddingRight: theme.spacing.unit * 5,
+        maxWidth: '100%'
     },
     listTitle2: {
         backgroundColor: '#155fa0',
@@ -86,5 +90,26 @@ export const styles = theme => ({
     },
     whiteText: {
         color: 'white'
+    },
+    widthMax: {
+        maxWidth: '100%',
+        paddingLeft: theme.spacing.unit * 5,
+    },
+    gridList: {
+        display: 'grid',
+        flexWrap: 'nowrap',
+        transform: 'translateZ(0)',
+    },
+    buttonAddList: {
+        marginBottom: theme.spacing.unit * 5,
+    },
+    listItem: {
+        width: '200px',
+    },
+    horizontalScrollWrapper: {
+        width: '100%',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        backgroundColor: 'red',
     }
 });

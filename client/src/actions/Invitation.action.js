@@ -1,6 +1,5 @@
 import _service from '../services'
 import _helper from '../helpers'
-import moment from 'moment'
 
 const labels = {
     MEMBER_EXIST: 'MEMBER_EXIST',

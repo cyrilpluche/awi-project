@@ -13,6 +13,8 @@ const MemberHasCard = require('./MemberHasCard');
 const MemberHasAction = require('./MemberHasAction');
 const MemberHasPermissionProject = require('./MemberHasPermissionProject');
 
+const TeamHasMember = require('./TeamHasMember');
+
 const CardHasLabel = require('./CardHasLabel');
 
 const Action = require('./Action');
@@ -34,6 +36,8 @@ module.exports = {
     MemberHasCard,
     MemberHasAction,
     MemberHasPermissionProject,
+
+    TeamHasMember,
 
     CardHasLabel,
 

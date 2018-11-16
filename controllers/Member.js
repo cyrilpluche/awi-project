@@ -3,11 +3,16 @@ const Member = require('../config/db_connection').Member;
 const Project = require('../config/db_connection').Project;
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
-const mw = require('../middlewares')
-const jwt = require('jsonwebtoken');
-// const qs = require('querystring');
+const cloudinary = require('cloudinary');
 const request = require('superagent');
-const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus', 'memberPicture']
+const fs = require('fs');
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET
+});
 
 module.exports = {
 
@@ -133,7 +138,6 @@ module.exports = {
                     }
                     else {
                         try {
-                            console.log(res)
                             if (res) {
                                 req.body.result = member
                                 next()
@@ -178,7 +182,6 @@ module.exports = {
                 where: { memberPseudo: req.body.memberPseudo }
             })
             .then(member => {
-                console.log(member)
                 if (member) res.status(400).send(['This pseudo is already taken.', 'memberPseudo'])
                 else next()
             })
@@ -299,7 +302,6 @@ module.exports = {
                         bcrypt.compare(req.body.memberPassword, member.memberPassword, (err, res) => {
                             if (err) console.log('Member:findOneSignIn | ' + err)
                             else {
-                                console.log(res)
                                 if (res) {
                                     member.memberPassword = null
                                     req.body.result = member
@@ -527,17 +529,32 @@ module.exports = {
             })
     },
 
-    cryptPasswordQuery (req, res, next) {
-        if (req.query.memberPassword) {
-            bcrypt.hash(req.query.memberPassword, 10, (err, hash) => {
-                if (err) res.status(400).send('Member:create:bcrypt | ' + err)
-                else {
-                    req.query.memberPassword = hash
-                    next()
+    storeProfilePicture (req, res, next) {
+        let picture = req.files.image
+        cloudinary.v2.uploader.upload_stream(
+            {
+                public_id: "profile_pictures/" + req.query.memberId,
+                transformation: [
+                    {width: 250, crop: "scale"},
+                    {quality: "auto"}
+                ]
+            },
+            function(err, result) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    Member
+                        .update(
+                            {memberPicture: result.url},
+                            {where: req.query}
+                        )
+                        .then(Member => {
+                            req.body.result = true
+                            next()
+                        })
+                        .catch((error) => res.status(400).send(error));
                 }
-            })
-        }
-        else next()
+            }).end(picture.data)
     }
 
 }
