@@ -12,13 +12,21 @@ import {MuiThemeProvider} from "@material-ui/core/es";
 import Grid from "@material-ui/core/Grid/Grid";
 import _action from "../../../actions";
 import Snackbar from "../../ui/snackbar/Snackbar"
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import MiniLoader from "../../ui/loader/MiniLoader"
+import classNames from 'classnames';
+import Divider from "@material-ui/core/Divider/Divider";
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import { FilePond } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
 
 class Overview extends React.Component {
     constructor (props) {
         super(props)
-        this.generateTextfields = this.generateTextfields.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.submit = this.submit.bind(this)
+        this.changePicture = this.changePicture.bind(this)
+        this.handleProfilePicture = this.handleProfilePicture.bind(this)
 
         this.state = {
             labelsForClient: ['First name', 'Last name', 'Pseudo'],
@@ -57,6 +65,25 @@ class Overview extends React.Component {
         })
     }
 
+    handleProfilePicture (event) {
+        this.setState({
+            file: event.target.files[0]
+        })
+    }
+
+    changePicture () {
+        if (this.state.file) {;
+            const formData = new FormData()
+            formData.append('image', this.state.file[0], this.state.file[0].name)
+
+            this.props.onUpdateMemberPicture(formData, this.props.member.memberId)
+            this.setState({
+                openSnackbar: true,
+                isEditable: false
+            })
+        }
+    }
+
     // Handle the snackbar state
     handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -66,38 +93,6 @@ class Overview extends React.Component {
     };
 
     // Loop that create textfields
-    generateTextfields = () => {
-        const { classes } = this.props;
-
-        let attributes = {
-            memberFirstname: this.state.memberFirstname,
-            memberLastname: this.state.memberLastname,
-            memberPseudo: this.state.memberPseudo,
-        }
-
-        let values = Object.values(attributes)
-        let keys = Object.keys(attributes)
-        var textfields = [];
-        let index = 0
-
-        for (let item of values) {
-            textfields.push(
-                <TextField
-                    disabled={!this.state.isEditable}
-                    key={keys[index]}
-                    id={keys[index]}
-                    label={this.state.labelsForClient[index]}
-                    className={classes.textField}
-                    value={item}
-                    onChange={this.handleChange(keys[index])}
-                    margin="normal"
-                    variant="outlined"
-                />
-            )
-            index += 1
-        }
-        return textfields
-    }
 
     render() {
         const { classes } = this.props;
@@ -108,7 +103,48 @@ class Overview extends React.Component {
                 alignItems="center"
                 justify="center"
             >
-                <Grid item>
+                <Grid container justify='center' className={ classes.logoContainer }>
+                    { !this.props.isLoading ? (
+                        <Avatar
+                            alt={this.state.memberFirstname + 'sharp'}
+                            src={this.props.member.memberPicture}
+                            className={classNames(classes.avatar, classes.bigAvatar)}
+                        />
+                    ) : (
+                        <MiniLoader size={200} />
+                    )}
+
+                </Grid>
+                <Grid justify='center' alignItems='center' container>
+                    <Grid xs={4} item>
+                        <FilePond
+                            maxFiles={3}
+                            className={classes.upload }
+                            onupdatefiles={(fileItems) => {
+                                // Set current file objects to this.state
+                                this.setState({
+                                    file: fileItems.map(fileItem => fileItem.file)
+                                });
+                            }}
+                        />
+                    </Grid>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        size="small"
+                        className={classes.button}
+                        disabled={!this.state.isEditable}
+                        onClick={this.changePicture}
+                    >
+                        <AddAPhotoIcon className={(classes.leftIcon, classes.iconSmall)} />
+                    </Button>
+                </Grid>
+                <Grid justify='center' container>
+                    <Grid item xs={12}>
+                        <Divider/>
+                    </Grid>
+                </Grid>
+                <Grid container justify='flex-start'>
                     <FormControlLabel
                         control={
                             <Switch
@@ -120,8 +156,6 @@ class Overview extends React.Component {
                         }
                         label="Edit informations"
                     />
-                </Grid>
-                <Grid item>
                     <MuiThemeProvider theme={Theme.successWarningError}>
                         <Button
                             color="primary"
@@ -136,7 +170,10 @@ class Overview extends React.Component {
                         </Button>
                     </MuiThemeProvider>
                 </Grid>
-                <Grid container justify="center">
+                <Grid item>
+
+                </Grid>
+                <Grid container justify="flex-start">
                     <form className={classes.container} noValidate autoComplete="off">
                         <TextField
                             disabled={!this.state.isEditable}
@@ -191,11 +228,13 @@ class Overview extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    member: state.signin.member
+    member: state.signin.member,
+    isLoading: state.profile.isLoading
 })
 
 const mapDispatchToProps = {
-    onUpdateMember: _action.profileAction.updateMember
+    onUpdateMember: _action.profileAction.updateMember,
+    onUpdateMemberPicture: _action.profileAction.updateMemberPicture
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(Overview));

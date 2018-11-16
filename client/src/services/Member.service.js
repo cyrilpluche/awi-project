@@ -1,6 +1,7 @@
 // import axios from 'axios';
 import helper from "../helpers";
 import Api from './Api'
+import axios from 'axios';
 
 const url = 'member/'
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
@@ -105,7 +106,15 @@ const Member = {
     deleteInvitation (query) {
         let where = helper.Request.urlFromObject(query)
         return Api.delete(url + 'delete_invitation' + where).then(res => res.data)
-    }
+    },
+
+    /** ==================== CLOUDINARY ==================== */
+    updateProfilePicture (body, query) {
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('memberToken')
+        axios.defaults.headers.common['Content-Type'] = 'multipart/form-data'
+        let where = helper.Request.urlFromObject({memberId: query})
+        return axios.put(Api.BASE_URL + url + 'update_picture' + where, body).then(res => res.data)
+    },
 }
 
 export default Member

@@ -52,6 +52,8 @@ module.exports = {
                     }
                 })
             } else {
+                console.log('TOKEN\n\n')
+                console.log(req.headers)
                 res.status(400).send('No token provided.');
             }
         } else {

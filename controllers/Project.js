@@ -7,7 +7,9 @@ const CardHasLabel = require('../config/db_connection').Cardhaslabel;
 const Label = require('../config/db_connection').Label;
 const Member = require('../config/db_connection').Member;
 
+const MemberHasCard = require('../config/db_connection').MemberHasCard
 const MemberHasProject = require('../config/db_connection').MemberHasProject
+
 const sequelize = require('../config/db_connection').sequelize;
 const Sequelize = require('../config/db_connection').Sequelize;
 
@@ -255,6 +257,12 @@ module.exports = {
                                 model: CardHasLabel,
                                 as: 'HaslabelCardFks',
                                 include: [{ model: Label, as: 'Label'}]
+                            },
+
+                            {
+                                model: MemberHasCard,
+                                as: 'MemberhascardCardFks',
+                                include: [{ model: Member, as: 'Member', attribute: ['memberPicture']}]
                             }
                         ]
                     }

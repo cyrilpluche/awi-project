@@ -10,7 +10,7 @@ const List = require('../config/db_connection').List
 const Card = require('../config/db_connection').Card
 const Permission = require('../config/db_connection').Permission
 
-const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus']
+const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPseudo', 'memberEmail', 'memberStatus', 'memberPicture']
 
 module.exports = {
 

@@ -26,10 +26,12 @@ import IconButton from '@material-ui/core/IconButton';
 import LabelIcon from '@material-ui/icons/Label'
 import {Edit,Done,Cancel} from '@material-ui/icons';
 import MemberOnCard from "./membersOnCard/MembersOnCard";
+import classNames from 'classnames';
 
 /** MARKDOWN EDITOR */
 import SimpleMDEReact from "react-simplemde-editor";
 import "simplemde/dist/simplemde.min.css";
+import ActivityList from "../ui/activity/ActivityList";
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -347,26 +349,33 @@ class Cardboard extends React.Component {
                                 {this.state.card.cardTitle}
                             </Typography>
                             <Grid container>
-                            {this.state.card.HaslabelCardFks ? this.state.card.HaslabelCardFks.map(label =>
-                                label.Label ?
-                                    <LabelIcon
-                                        key={label.labelId}
-                                        style={{
-                                            color: label.Label.labelColor,
-                                        }}
-                                    />
-                                : null
+                                {this.state.card.HaslabelCardFks ? this.state.card.HaslabelCardFks.map(label =>
+                                    label.Label ?
+                                        <LabelIcon
+                                            key={label.labelId}
+                                            style={{
+                                                color: label.Label.labelColor,
+                                            }}
+                                        />
+                                        : null
 
-                            ) : null}
+                                ) : null}
+                            </Grid>
+                            <Grid container alignItems='center' justify='flex-end'>
+                                {this.state.card.MemberhascardCardFks ? this.state.card.MemberhascardCardFks.map(member =>
+                                    member.Member.memberPicture ?
+                                        <Avatar
+                                            alt={member.Member.memberFirstname + 'sharp'}
+                                            src={member.Member.memberPicture}
+                                            className={classNames(classes.avatar, classes.littleAvatar)}
+                                        />
+                                        :
+                                        <Avatar className={classes.orangeAvatar} key={member.memberId}>
+                                            {member.Member.memberFirstname.toUpperCase()[0]}
+                                        </Avatar>
+                                ) : null}
                             </Grid>
                         </Grid>
-                        {this.props.currentCard.members ? (
-                            <div className={classes.rowRight}>
-                                <Avatar className={classes.marginCard}>
-                                    {this.state.card.members}
-                                </Avatar>
-                            </div>
-                        ) : null}
                     </CardActionArea>
                 </Card>
             </div>

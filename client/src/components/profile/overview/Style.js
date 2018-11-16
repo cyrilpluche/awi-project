@@ -26,4 +26,18 @@ export const style = theme => ({
     iconSmall: {
         fontSize: 20,
     },
+    avatar: {
+        margin: 10,
+    },
+    bigAvatar: {
+        width: 200,
+        height: 200,
+    },
+    logoContainer: {
+        marginBottom: theme.spacing.unit * 5,
+    },
+    upload: {
+        color: 'black',
+        width: '100%'
+    }
 });

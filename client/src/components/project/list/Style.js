@@ -20,7 +20,7 @@ export const styles = theme => ({
         minHeight : `100px`,
         justifyContent: `center`,
         textAlign: `center`,*/
-        width: '200px',
+        width: '272px',
         margin: '7px',
         marginRight: 0,
         backgroundColor:`#1e88e5`,

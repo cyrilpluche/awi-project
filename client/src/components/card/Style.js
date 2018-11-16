@@ -111,5 +111,21 @@ export const styles = theme => ({
         padding: 0,
         width: '5px !important',
         heigth: '5px !important'
-    }
+    },
+    orangeAvatar: {
+        margin: 2,
+        color: '#17394d',
+        backgroundColor: '#dfe3e6',
+        height: '28px',
+        width: '28px',
+        fontSize: '15px',
+        fontStyle: 'bold'
+    },
+    avatar: {
+        margin: 2,
+    },
+    littleAvatar: {
+        width: 28,
+        height: 28,
+    },
 });

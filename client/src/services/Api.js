@@ -12,6 +12,7 @@ we only need to change the BASE_URL if we want to change the server
  */
 
 const apiMethods = {
+    BASE_URL,
     SOCKET_URL,
     headers: {
         Authorization: localStorage.getItem('memberToken')
