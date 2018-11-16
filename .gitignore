@@ -2,12 +2,12 @@
 
 node_modules/
 
-\.idea/codeStyles/Project\.xml
-
-\.idea/workspace\.xml
+\.idea/
 
 client/node_modules/
 
 \.idea/jsLibraryMappings\.xml
 
 node_modules/
+
+desktop/

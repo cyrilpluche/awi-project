@@ -7,7 +7,6 @@
       <change afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/public/files/Prello-linux-x64.zip" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/public/manifest.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/public/prello-logo-2.png" afterDir="false" />
@@ -96,6 +95,7 @@
       <change afterPath="$PROJECT_DIR$/client/src/helpers/index.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/public/files/Prello-darwin-x64.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/public/files/Prello-linux-x64.zip" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/public/images/prello-logo-2.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/public/images/project-bg.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/reducers/Card.reducer.js" afterDir="false" />
@@ -120,6 +120,7 @@
       <change afterPath="$PROJECT_DIR$/client/src/services/Task.service.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/services/Team.service.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/services/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/client/node_modules/" />
@@ -140,6 +141,7 @@
         <counts>
           <entry key="LICENSE" value="1" />
           <entry key="env" value="3" />
+          <entry key="gitignore" value="1" />
           <entry key="js" value="356" />
           <entry key="json" value="5" />
           <entry key="png" value="1" />
@@ -156,13 +158,14 @@
           <entry key="Image" value="1" />
           <entry key="JSON" value="5" />
           <entry key="JavaScript" value="356" />
-          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="PLAIN_TEXT" value="5" />
           <entry key="TypeScript" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="env" value="6" />
+          <entry key="gitignore" value="10" />
           <entry key="js" value="13368" />
           <entry key="json" value="12" />
           <entry key="txt" value="1" />
@@ -173,7 +176,7 @@
           <entry key=".env file" value="6" />
           <entry key="JSON" value="12" />
           <entry key="JavaScript" value="13368" />
-          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="PLAIN_TEXT" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -198,7 +201,7 @@
         <entry file="file://$PROJECT_DIR$/client/src/helpers/SocketIo.helper.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
             </state>
           </provider>
         </entry>
@@ -212,11 +215,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/components/download/Download.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="690">
               <caret line="78" selection-start-line="78" selection-end-line="78" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -262,12 +274,11 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/client" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/client/src/components/project/card/Card.js" />
         <option value="$PROJECT_DIR$/client/src/components/layout/navbar/Navbar.js" />
         <option value="$PROJECT_DIR$/client/src/components/project/list/List.js" />
         <option value="$PROJECT_DIR$/client/src/components/dashboard/projectPanel/projectList/ProjectList.js" />
@@ -318,6 +329,7 @@
         <option value="$PROJECT_DIR$/controllers/Team.js" />
         <option value="$PROJECT_DIR$/routes/Team.js" />
         <option value="$PROJECT_DIR$/client/src/components/download/Download.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -331,14 +343,12 @@
   </component>
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/client/node_modules" />
-    <handled-path value="$PROJECT_DIR$/desktop/Prello-darwin-x64/Prello.app/Contents/Resources/app/node_modules" />
     <handled-path value="$PROJECT_DIR$/desktop/node_modules" />
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
       <path value="$PROJECT_DIR$/client/package.json" />
-      <path value="$PROJECT_DIR$/desktop/Prello-darwin-x64/Prello.app/Contents/Resources/app/package.json" />
       <path value="$PROJECT_DIR$/desktop/package.json" />
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
@@ -359,32 +369,6 @@
             <path>
               <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="files" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -436,15 +420,16 @@
       <workItem from="1542275464623" duration="32224000" />
       <workItem from="1542312240335" duration="162000" />
       <workItem from="1542313074854" duration="17474000" />
-      <workItem from="1542363386543" duration="20549000" />
+      <workItem from="1542363386543" duration="20890000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67976000" />
+    <option name="totallyTimeSpent" value="68317000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19313647" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -471,7 +456,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="Terminal" order="4" weight="0.5666401" />
+      <window_info anchor="right" id="Terminal" order="4" visible="true" weight="0.38387868" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19313647" />
@@ -509,15 +494,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/src/reducers/Dashboard.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/middlewares/Token.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -886,7 +862,7 @@
     <entry file="file://$PROJECT_DIR$/client/src/helpers/SocketIo.helper.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
@@ -908,6 +884,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="690">
           <caret line="78" selection-start-line="78" selection-end-line="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
         </state>
       </provider>
     </entry>
