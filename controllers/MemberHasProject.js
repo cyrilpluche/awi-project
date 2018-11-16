@@ -78,7 +78,7 @@ module.exports = {
                 include: [{
                     model: Member,
                     as: 'Member',
-                    attributes: ['memberId', 'memberPseudo']
+                    attributes: ['memberId', 'memberPseudo', 'memberFirstname', 'memberPicture']
                 }]
             })
             .then(mhps => {

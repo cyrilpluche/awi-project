@@ -53,6 +53,7 @@ export function project (state = initialState, action) {
                 ...state,
                 lists 
             };
+
         case listLabels.CREATE_CARD:
             let listWithCard = Array.from(state.lists)
             let findList = listWithCard.find(list => list.listId === action.payload.listId)
@@ -75,7 +76,23 @@ export function project (state = initialState, action) {
                 ...state,
                 lists : listWithCard,
                 isLoading:false
-            }; 
+            };
+
+        case cardLabels.ADD_MEMBER_ON_CARD:
+            let newMember = action.payload.newMember
+            let listIndex = action.payload.listIndex
+            let cardIndexx = action.payload.cardIndex
+            let listsCards = Array.from(state.lists)
+
+            let element = {Member: newMember}
+
+            listsCards[listIndex].CardListFks[cardIndexx].MemberhascardCardFks.push(element)
+            console.log('WOHOU')
+            return {
+                ...state,
+                lists: listsCards
+            };
+
         case listLabels.UPDATE_CARD:   
             socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload})
             return {

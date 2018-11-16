@@ -59,19 +59,19 @@ class MemberOnCard extends Component {
     /** ==================== ADD / REMOVE MEMBERS ==================== */
     addMember (event) {
         const { onAddMember } = this.props
-        console.log(this.state)
 
         let index = this.state.newMemberIndex
         let member = this.props.membersOffCard[index]
         let cardId = this.props.card.cardId
 
+        //We copy previous arrays
         let membersOnCard = Array.from(this.props.membersOnCard)
         let membersOffCard = Array.from(this.props.membersOffCard)
 
         membersOnCard.push(member)
         membersOffCard.splice(index, 1)
 
-        onAddMember(member.memberId, cardId, membersOnCard, membersOffCard)
+        onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, this.props.listIndex, this.props.cardIndex, member)
 
         this.setState({
             membersOnCard: membersOnCard,
@@ -86,10 +86,14 @@ class MemberOnCard extends Component {
         let member = this.props.membersOnCard[index]
         let cardId = this.props.card.cardId
 
-        this.state.membersOffCard.push(member)
-        this.state.membersOnCard.splice(index, 1)
+        //We copy previous arrays
+        let membersOnCard = Array.from(this.props.membersOnCard)
+        let membersOffCard = Array.from(this.props.membersOffCard)
 
-        onRemoveMember(member.memberId, cardId, this.state.membersOnCard, this.state.membersOffCard)
+        membersOffCard.push(member)
+        membersOnCard.splice(index, 1)
+
+        onRemoveMember(member.memberId, cardId, membersOnCard, membersOffCard)
         this.setState({ maj: true })
     }
 
@@ -103,7 +107,7 @@ class MemberOnCard extends Component {
         /** Members on the card */
         const activeMembersList = (
             <List className={ classes.memberList + ' ' + classes.marginBottomTop + ' ' + classes.modalWidth}>
-                {this.props.isLoading ?
+                {this.props.isloading  === 'true' ?
                     <MiniLoader size={15} />
                     :
                     <div>
@@ -133,7 +137,7 @@ class MemberOnCard extends Component {
         /** Members off the card */
         const otherMembers = (
             <div className={ classes.modalWidth}>
-                {this.props.isLoading ?
+                {this.props.isloading === 'true' ?
                     <MiniLoader size={15} />
                     :
                     <FormControl className={classes.formControl + ' ' + classes.modalWidth}>
@@ -202,7 +206,7 @@ class MemberOnCard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isLoading: state.card.isLoading,
+    isloading: state.card.isLoading.toString(),
     membersOnCard: state.card.membersOnCard,
     membersOffCard: state.card.membersOffCard
 })

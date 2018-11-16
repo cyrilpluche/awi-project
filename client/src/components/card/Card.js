@@ -300,6 +300,8 @@ class Cardboard extends React.Component {
                                 <MemberOnCard
                                     route={this.props.route}
                                     card={this.props.currentCard}
+                                    listIndex={this.props.listIndex}
+                                    cardIndex={this.props.cardIndex}
                                 />
                                 <LabelDialog
                                     route={this.props.route}
@@ -365,6 +367,7 @@ class Cardboard extends React.Component {
                                 {this.state.card.MemberhascardCardFks ? this.state.card.MemberhascardCardFks.map(member =>
                                     member.Member.memberPicture ?
                                         <Avatar
+                                            key={member.memberId}
                                             alt={member.Member.memberFirstname + 'sharp'}
                                             src={member.Member.memberPicture}
                                             className={classNames(classes.avatar, classes.littleAvatar)}

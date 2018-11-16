@@ -178,7 +178,7 @@ function getMembersOnCard (cardId, projectId) {
     }
 }
 
-function addMember(memberId, cardId, membersOnCard, membersOffCard) {
+function addMember(memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, member) {
     let body = {
         cardId: cardId,
         memberId: memberId
@@ -188,11 +188,15 @@ function addMember(memberId, cardId, membersOnCard, membersOffCard) {
 
         _service.Card.addMember(body)
             .then(mhc => {
+                console.log('GO CHARLY')
                 dispatch({
                     type: labels.ADD_MEMBER_ON_CARD,
                     payload: {
                         membersOnCard: membersOnCard,
-                        membersOffCard: membersOffCard
+                        membersOffCard: membersOffCard,
+                        newMember: member,
+                        cardIndex: cardIndex,
+                        listIndex: listIndex
                     }
                 })
             })
