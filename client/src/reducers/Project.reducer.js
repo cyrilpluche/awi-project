@@ -54,6 +54,12 @@ export function project (state = initialState, action) {
                 lists 
             };
 
+        case projectLabels.CREATE_LIST_ERROR:
+            return {
+                ...state,
+                isLoading: false
+            };
+
         case listLabels.CREATE_CARD:
             let listWithCard = Array.from(state.lists)
             let findList = listWithCard.find(list => list.listId === action.payload.listId)

@@ -197,7 +197,10 @@ module.exports = {
     findAllProjectMember (req, res, next) {
         MemberHasProject.findAll(
             {
-                where: {member_id: req.params.member},
+                where: {
+                    member_id: req.params.member,
+                    memberhasprojectStatus: 1
+                },
                 include: [
                     {
                         model: Project,

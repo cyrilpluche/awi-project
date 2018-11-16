@@ -166,7 +166,7 @@ class Project extends Component {
 
         // if its the first list created for this project, the list has no father
         if(lists.length === 0 ){
-            this.props.createList(listName,idProject,0)
+            this.props.createList(listName,idProject,0,  this.props.currentMember)
 
             // we call creatList action specifying the title, project id and father list id.
         }else{

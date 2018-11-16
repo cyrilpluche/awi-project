@@ -80,18 +80,24 @@ class MemberDialog extends Component {
             memberId: event.currentTarget.id.split('/')[1]
         }
         this.props.removeMemberFromProject(query)
+        this.setState({ maj: true });
     }
 
     handleChangeCheckbox = name => event => {
         let index = event.target.id.split('/')[1]
         let mhppState = event.target.checked
-        let member = Object.assign({}, this.state.members[index])
-        member.Member.HaspermissionprojectMember1Fks[0].mhppState = mhppState
+        let member = Object.assign({}, this.props.members[index])
+        console.log('INDEX', index)
+        console.log('STATE', this.state)
+        console.log('PROPS', this.props)
 
-        let projectId = this.props.projectInfo.projectId
-        let memberId = member.memberId
-        let permissionId = member.Member.HaspermissionprojectMember1Fks[0].permissionId
-        this.props.onUpdatePermission(projectId, memberId, permissionId, mhppState, this.state.members)
+        if (member.Member) {
+            member.Member.HaspermissionprojectMember1Fks[0].mhppState = mhppState
+            let projectId = this.props.projectInfo.projectId
+            let memberId = member.memberId
+            let permissionId = member.Member.HaspermissionprojectMember1Fks[0].permissionId
+            this.props.onUpdatePermission(projectId, memberId, permissionId, mhppState, this.props.members)
+        }
         this.setState({ maj: true });
     };
 
@@ -166,7 +172,7 @@ class MemberDialog extends Component {
                                                     placement="top-start">
                                                     <Checkbox
                                                         checked={member.Member.HaspermissionprojectMember1Fks[0].mhppState}
-                                                        id={'isAdmin/' + this.state.members.indexOf(member).toString()}
+                                                        id={'isAdmin/' + this.props.members.indexOf(member).toString()}
                                                         onChange={this.handleChangeCheckbox('members')}
                                                         value='members'
                                                     />

@@ -16,6 +16,7 @@ import GridListTile from "@material-ui/core/es/GridListTile/GridListTile";
 import GridListTileBar from "@material-ui/core/es/GridListTileBar/GridListTileBar";
 import Background from '../../../public/images/project-bg.jpg'
 import TextField from "@material-ui/core/es/TextField/TextField";
+import _action from "../../../actions";
 
 
 // todo import action
@@ -49,7 +50,7 @@ class TeamPanel extends React.Component {
     };
 
     createTeam () {
-        console.log('CREATE THE TEAM')
+        this.props.onCreateTeam(this.state.teamName)
     }
 
 
@@ -153,7 +154,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    
+    onCreateTeam: _action.teamAction.createTeam
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(style)(TeamPanel));

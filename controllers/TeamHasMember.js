@@ -1,28 +1,29 @@
 const helper = require('../helpers/helpersMethod');
 const Team = require('../config/db_connection').Team;
-const TeamHasMember = require('../config/db_connection').TeamHasMember
+const Teamhasmember = require('../config/db_connection').Teamhasmember
 const sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
     /* ================= CRUD ================= */
 
-    /*  localhost:4200/api/team/create
-     *
+    /**
      *  req.body = {
-     *      teamName = name
+     *      teamId: INT,
+     *      memberId: INT,
+     *      teamStatus: INT
      *  }
      *
-     *  return: The Team object.
+     *  return: The TeamHasMember object.
      */
     create(req, res, next) {
-        Team
+        Teamhasmember
             .create(req.body)
-            .then(team => {
-                req.body.result = team
+            .then(thm => {
+                req.body.result = thm
                 next()
             })
-            .catch(error => next(error))
+            .catch(error => res.status(400).send(error))
     },
 
     /*  localhost:4200/api/team/find_all --- ?teamName=name... (optional)
@@ -30,54 +31,30 @@ module.exports = {
      *  return: Array of team objects with given attributes.
      */
     findAll(req, res, next) {
-        Team
+        Teamhasmember
             .findAll({
                 order : sequelize.col('teamId'),
                 where: req.query
             })
-            .then(teams => {
-                req.body.result = teams
+            .then(thms => {
+                req.body.result = thms
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     },
-
-    findAllTeamMember (req, res, next) {
-        TeamHasMember.findAll({
-            where: {member_id: req.params.member},
-            include: [
-                {
-                    model: Team,
-                    as: 'Team'
-
-                }
-            ]
-        })
-            .then(result => {
-                let teams = [];
-
-                for (let i = 0; i < result.length; i++){
-                    teams.push(
-                        helper.flatTeams(result[i])
-                    )
-                }
-                res.send(teams)
-            })
-    },
-
 
     /*  localhost:4200/api/team/find_one --- ?teamName=name... (optional)
      *
      *  return: Team object with given attributes.
      */
     findOne(req, res, next) {
-        Team
+        Teamhasmember
             .findOne({ where: req.query })
-            .then(team => {
-                req.body.result = team
+            .then(thm => {
+                req.body.result = thm
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     },
 
     /*  localhost:4200/api/team/update/2
@@ -89,7 +66,7 @@ module.exports = {
      *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
-        Team
+        Teamhasmember
             .update(req.body, {
                 where: { teamId: req.params.id }
             })
@@ -97,7 +74,7 @@ module.exports = {
                 req.body.result = isUpdated[0] === 1
                 next()
             })
-            .catch(error => next(error))
+            .catch(error => res.status(400).send(error))
     },
 
     /*  localhost:4200/api/member/delete/5
@@ -105,7 +82,7 @@ module.exports = {
      *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
-        Team
+        Teamhasmember
             .destroy({
                 where: {
                     teamId: req.params.id
@@ -115,6 +92,6 @@ module.exports = {
                 req.body.result = isDeleted === 1
                 next()
             })
-            .catch(error => next(error));
+            .catch(error => res.status(400).send(error));
     }
 }

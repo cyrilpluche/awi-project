@@ -1,5 +1,9 @@
 const helper = require('../helpers/helpersMethod');
 const MemberHasCard = require('../config/db_connection').MemberHasCard
+
+const List = require('../config/db_connection').List
+const Card = require('../config/db_connection').Card
+
 const sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
@@ -36,6 +40,8 @@ module.exports = {
                 include: [{ all: true }]
             })
             .then(mhcs => {
+                console.log('FOUND')
+                console.log(mhcs.length)
                 req.body.result = mhcs
                 next()
             })

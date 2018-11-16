@@ -5,6 +5,7 @@ const labels = {
     LOAD_PROJECT: "LOAD_PROJECT",
     GET_ALL_LISTS :"GET_ALL_LISTS",
     CREATE_LIST : "CREATE_LIST",
+    CREATE_LIST_ERROR: "CREATE_LIST_ERROR",
     UPDATE_LIST : "UPDATE_LIST",
     GET_PROJECT_INFO : "GET_PROJECT_INFO",
     GET_ALL_MEMBERS:"GET_ALL_MEMBERS",
@@ -99,7 +100,11 @@ function createList (listTitle, projectId, listFather, member) {
                 })
             })
             .catch((err) => {
-                dispatch(err)
+                console.log(err)
+                dispatch({
+                    type: labels.CREATE_LIST_ERROR,
+                    payload: err
+                });
             });
     }
 }
