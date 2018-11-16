@@ -94,8 +94,6 @@
       <change afterPath="$PROJECT_DIR$/client/src/helpers/Store.helper.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/helpers/index.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/public/files/Prello-darwin-x64.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/public/files/Prello-linux-x64.zip" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/public/images/prello-logo-2.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/public/images/project-bg.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/reducers/Card.reducer.js" afterDir="false" />
@@ -120,7 +118,6 @@
       <change afterPath="$PROJECT_DIR$/client/src/services/Task.service.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/services/Team.service.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/services/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/client/node_modules/" />
@@ -196,44 +193,7 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/helpers/SocketIo.helper.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="45" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/components/download/Download.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="78" selection-start-line="78" selection-end-line="78" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -370,6 +330,11 @@
               <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="awi-project" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="awi-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="awi-project" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -420,18 +385,17 @@
       <workItem from="1542275464623" duration="32224000" />
       <workItem from="1542312240335" duration="162000" />
       <workItem from="1542313074854" duration="17474000" />
-      <workItem from="1542363386543" duration="20890000" />
+      <workItem from="1542363386543" duration="21139000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68317000" />
+    <option name="totallyTimeSpent" value="68566000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19313647" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19313647" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="DB Browser" order="3" />
@@ -456,7 +420,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="Terminal" order="4" visible="true" weight="0.38387868" />
+      <window_info active="true" anchor="right" id="Terminal" order="4" visible="true" weight="0.3830806" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19313647" />
