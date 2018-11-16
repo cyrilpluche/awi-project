@@ -6,8 +6,8 @@ import { withStyles } from '@material-ui/core/styles';
 import _helper from '../../helpers'
 
 /** COMPONENTS */
-import PrelloDesktop from '../../public/files/Prello-linux-x64.zip'
-import PrelloMac from '../../public/files/Prello-darwin-x64.zip'
+/*import PrelloDesktop from '../../public/files/Prello-linux-x64.zip'
+import PrelloMac from '../../public/files/Prello-darwin-x64.zip'*/
 
 /** MATERIAL UI */
 import { style } from './Style'
@@ -62,7 +62,6 @@ class Download extends React.Component {
                         <Grid justify='center' container alignItems="center">
                             <Grid item xs={4} className={ classes.marginBottomXs }>
                                 <Button
-                                    href={PrelloDesktop}
                                     download
                                     variant="outlined"
                                     color="primary"
@@ -77,7 +76,6 @@ class Download extends React.Component {
                         <Grid justify='center' container alignItems="center">
                             <Grid item xs={4}>
                                 <Button
-                                    href={PrelloMac}
                                     download
                                     variant="outlined"
                                     color="primary"
