@@ -1,13 +1,14 @@
 export const styles = theme => ({
     listArea: {
-        margin: theme.spacing.unit * 1,
-        display: 'flex',
-        padding:theme.spacing.unit * 1,           
-        //whiteSpace: `nowrap`,
+        //margin: theme.spacing.unit * 1,
+        //display: 'flex',
+        //padding:theme.spacing.unit * 1,           
+        whiteSpace: `nowrap`,
         overflowY: `auto`,
+        flexWrap: 'inherit'
         //position: `fixed`,
-        left: `0`, 
-        right: `0`
+        //left: `0`, 
+        //right: `0`
              
     },
     list: {
