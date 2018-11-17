@@ -20,6 +20,7 @@ const labels = {
     CREATE_TASK_ERROR: 'CREATE_TASK_ERROR',
     LOAD_CARD: "LOAD_CARD",
     GET_ALL_LABEL: 'GET_ALL_LABEL',
+    GET_ALL_LABEL_ERROR:"GET_ALL_LABEL_ERROR",
     CREATE_LINK_LABEL: 'CREATE_LINK_LABEL',
     CREATE_LINK_LABEL_ERROR: 'CREATE_LINK_LABEL_ERROR',
     DELETE_LINK_LABEL: 'CREATE_LINK_LABEL',
@@ -32,6 +33,9 @@ const labels = {
     ADD_COMMENTS_ON_CARD: 'ADD_COMMENTS_ON_CARD'
 }
 
+/** Get a card
+ * @param cardId card Id
+ */
 function getCard(cardId) {
     return dispatch => {
         _service.Card.get({cardId: cardId})
@@ -42,11 +46,16 @@ function getCard(cardId) {
                 });
             })
             .catch((err) => {
-                dispatch(err)
+                dispatch({
+                    type: labels.GET_CARD_ERROR,
+                });
             });
     }
 }
 
+/** Get labels of a specific project
+ * @param projectId  project id
+ */
 function getLabels(projectId) {
     return dispatch => {
         _service.Label.getAll({ projectId: projectId })
@@ -57,12 +66,19 @@ function getLabels(projectId) {
                 });
             })
             .catch((err) => {
-                dispatch(err)
+                dispatch({
+                    type: labels.GET_ALL_LABEL_ERROR,
+                });
             });
     }
 }
 
-
+/**Update a card
+ * @param card card to update
+ * @param body object containing information to update with
+ * @param listIndex index of the list containing this card
+ * @param cardIndex index of the card in the list
+ */
 function updatecard(card, body,listIndex, cardIndex) {
 
 
@@ -84,7 +100,10 @@ function updatecard(card, body,listIndex, cardIndex) {
         })
 };
 
-
+/**Update a task
+ * @param taskId task id
+ * @param body Object containing updates
+ */
 function updateTask(taskId, body) {
     return dispatch => _service.Task.update({taskId: taskId}, body)
         .then(isUpdated => {
@@ -105,6 +124,10 @@ function updateTask(taskId, body) {
         })
 };
 
+/** Delete a task
+ * @param taskId task Id
+ * @param card card containing task
+ */
 function deleteTask(taskId, card) {
     return dispatch => _service.Task.delete({taskId: taskId})
         .then(isDeleted => {
@@ -126,6 +149,11 @@ function deleteTask(taskId, card) {
         })
 };
 
+/**Delete a card
+ * @param cardId card Id
+ * @param listIndex list index that contains the card
+ * @param cardIndex card index under the list
+ */
 function deleteCard(cardId, listIndex, cardIndex) {
     return dispatch => {
         dispatch({ type: labels.LOAD_PROJECT })
@@ -153,6 +181,10 @@ function deleteCard(cardId, listIndex, cardIndex) {
     }
 };
 
+/** Get all member affected to a card
+ * @param cardId card Id
+ * @param projectId project Id 
+ */
 function getMembersOnCard (cardId, projectId) {
     return dispatch => {
         dispatch({type: labels.LOAD_CARD})
@@ -178,6 +210,15 @@ function getMembersOnCard (cardId, projectId) {
     }
 }
 
+/** Add a member to a card
+ * @param memberId
+ * @param cardId
+ * @param membersOnCard
+ * @param membersOffCard
+ * @param listIndex
+ * @param cardIndex
+ * @param member
+ */
 function addMember(memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, member) {
     let body = {
         cardId: cardId,
@@ -208,6 +249,12 @@ function addMember(memberId, cardId, membersOnCard, membersOffCard, listIndex, c
     }
 };
 
+/** Remove a member from a card
+ * @param memberId
+ * @param cardId
+ * @param membersOnCard
+ * @param membersOffCard
+ */
 function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
     let query = {
         cardId: cardId,
@@ -240,6 +287,10 @@ function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
     }
 };
 
+/**Create a new task
+ * @param newTask new task name
+ * @param card card that contains the task
+ */
 function createTask(newTask, card) {
     return dispatch => {
         dispatch({
@@ -260,6 +311,9 @@ function createTask(newTask, card) {
     }
 };
 
+/** Create label link with a card
+ * @param query Object that contains cardId and labelId
+ */
 function createLinkLabel(query) {
     return dispatch => {
         //{cardId: 1, labelId :1}
@@ -276,6 +330,9 @@ function createLinkLabel(query) {
     }
 };
 
+/** Delete a label link with a card
+ * @param query Object that contains cardId and labelId
+ */
 function deleteLinkLabel(query) {
     return dispatch => _service.Card.deleteLinkLabel(query)
         .then(isDeleted => {
@@ -296,6 +353,9 @@ function deleteLinkLabel(query) {
         })
 };
 
+/** Find all comment of a card
+ * @param cardId card Id
+ */
 function findAllComments(cardId) {
     return dispatch => _service.Comments.getAllComments(cardId).then(comments => dispatch({
         type: labels.FIND_ALL_COMMENTS_ON_CARD,
@@ -303,6 +363,11 @@ function findAllComments(cardId) {
     }))
 }
 
+/** Add comments to a card
+ * @param cardId card Id
+ * @param memberId member id
+ * @param text comment text
+ */
 function addComments (cardId, memberId, text) {
     return dispatch => _service.Comments.addComments().then(comment => {
         // TODO trigger notification
@@ -313,6 +378,9 @@ function addComments (cardId, memberId, text) {
     })
 }
 
+/**Update position of cards
+ * @param cards an array of cards
+ */
 function updatePositionCard (cards) {
     return dispatch => {
         _service.Card.updateCardOrder(cards)
