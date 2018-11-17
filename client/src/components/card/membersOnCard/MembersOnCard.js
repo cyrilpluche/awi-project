@@ -71,7 +71,7 @@ class MemberOnCard extends Component {
         membersOnCard.push(member)
         membersOffCard.splice(index, 1)
 
-        onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, this.props.listIndex, this.props.cardIndex, member)
+        if(member) onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, this.props.listIndex, this.props.cardIndex, member)
 
         this.setState({
             membersOnCard: membersOnCard,

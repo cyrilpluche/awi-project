@@ -24,7 +24,8 @@ const labels = {
     GET_ALL_PERMISSIONS: "GET_ALL_PERMISSIONS",
     GET_ALL_PERMISSIONS_ERROR: "GET_ALL_PERMISSIONS_ERROR",
     UPDATE_PERMISSION_MEMBER: "UPDATE_PERMISSION_MEMBER",
-    UPDATE_PERMISSION_MEMBER_ERROR: "UPDATE_PERMISSION_MEMBER_ERROR"
+    UPDATE_PERMISSION_MEMBER_ERROR: "UPDATE_PERMISSION_MEMBER_ERROR",
+    UPDATE_PROJECT_INFO:"UPDATE_PROJECT_INFO"
 }
 
 /** TODO SERVICE
@@ -52,6 +53,15 @@ function loadLists(lists){
         dispatch({
             type: labels.GET_ALL_LISTS,
             payload: lists
+        });
+    }
+}
+
+function loadProjectInfo(projectInfo){
+    return dispatch => {
+        dispatch({
+            type: labels.UPDATE_PROJECT_INFO,
+            payload: projectInfo
         });
     }
 }
@@ -442,5 +452,6 @@ export const projectAction = {
     updatePermissionMember,
     getMemberHasProject,
     getAllPermissions,
-    loadLists
+    loadLists,
+    loadProjectInfo
 }
