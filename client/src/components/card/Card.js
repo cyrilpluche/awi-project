@@ -7,6 +7,7 @@ import connect from "react-redux/es/connect/connect";
 /** COMPONENTS */
 import { styles } from './Style'
 import _action from "../../actions";
+import _helper from "../../helpers";
 import Checklist from './checklist/ChecklistDialog';
 import LabelDialog from './label/LabelDialog'
 import ConfirmationDialog from './confirmation/ConfirmationDialog';
@@ -59,7 +60,6 @@ class Cardboard extends React.Component {
             init: false,
         };
     }
-
 
 
     componentDidUpdate(){
@@ -153,6 +153,10 @@ class Cardboard extends React.Component {
 
     render() {
         const { classes } = this.props;
+
+        _helper.History.listen( location =>  {
+            this.setState({ open: this.props.route.params.cardid.toString() === this.props.currentCard.cardId.toString() })
+        });
 
         const cardDialog = (
 
@@ -347,11 +351,8 @@ class Cardboard extends React.Component {
                 <Card className={classes.card} onClick={this.handleOpen} >
                     <CardActionArea>
                         <Grid justify='center' alignItems='center' container>
-                            <Typography variant="subtitle2">
-                                {this.state.card.cardTitle}
-                            </Typography>
                             <Grid container>
-                                {this.state.card.HaslabelCardFks ? this.state.card.HaslabelCardFks.map(label =>
+                                {this.props.currentCard.HaslabelCardFks ? this.props.currentCard.HaslabelCardFks.map(label =>
                                     label.Label ?
                                         <LabelIcon
                                             key={label.labelId}
@@ -363,8 +364,11 @@ class Cardboard extends React.Component {
 
                                 ) : null}
                             </Grid>
+                            <Typography variant="subtitle2">
+                                {this.state.card.cardTitle}
+                            </Typography>
                             <Grid container alignItems='center' justify='flex-end'>
-                                {this.state.card.MemberhascardCardFks ? this.state.card.MemberhascardCardFks.map(member =>
+                                {this.props.currentCard.MemberhascardCardFks ? this.props.currentCard.MemberhascardCardFks.map(member =>
                                     member.Member.memberPicture ?
                                         <Avatar
                                             key={member.memberId}

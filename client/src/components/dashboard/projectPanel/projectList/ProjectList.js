@@ -147,8 +147,6 @@ class ProjectList extends React.Component {
                         </Grid>
                     </form>
 
-                    <Gallery/>
-
                     <Button
                         color="primary"
                         fullWidth
