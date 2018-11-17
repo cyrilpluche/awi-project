@@ -6,7 +6,8 @@ const labels = {
     SEARCH_CARDS :"SEARCH_CARDS",
     SEARCH_CARDS_ERROR :"SEARCH_CARDS_ERROR",
     SEARCH_LISTS :"SEARCH_LISTS",
-    SEARCH_LISTS_ERROR :"SEARCH_LISTS_ERROR"
+    SEARCH_LISTS_ERROR :"SEARCH_LISTS_ERROR",
+    SEARCH_RESET: "SEARCH_RESET"
 }
 
 
@@ -82,10 +83,19 @@ function searchCards (value, memberId) {
     }
 }
 
+function resetSearchArrays () {
+    return dispatch => {
+        dispatch({
+            type: labels.SEARCH_RESET
+        });
+    }
+}
+
 export const searchbarAction = {
     labels,
     searchProjects,
     searchLists,
-    searchCards
+    searchCards,
+    resetSearchArrays
 }
 

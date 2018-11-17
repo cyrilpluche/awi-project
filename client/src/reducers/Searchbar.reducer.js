@@ -43,6 +43,14 @@ export function searchbar (state = initialState, action) {
                 cardsFound: []
             };
 
+        case labels.SEARCH_RESET:
+            return {
+                ...state,
+                projectsFound: [],
+                listsFound: [],
+                cardsFound: []
+            };
+
         default:
             return state
     }
