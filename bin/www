@@ -38,9 +38,14 @@ io.on('connection', (client) => {
         client.leave(idBoard)
     });
 
+  client.on('updateLists',(project) =>{
+    
+    client.broadcast.to(project.projectId).emit('updateLists', project.lists);
+  });
+
   client.on('updateProject',(project) =>{
     
-    client.broadcast.to(project.projectId).emit('updateProject', project.lists);
+    client.broadcast.to(project.projectId).emit('updateProject', project.info);
   });
 
   client.on('disconnect', (client)=>{

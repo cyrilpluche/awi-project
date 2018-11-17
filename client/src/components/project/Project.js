@@ -69,15 +69,21 @@ class Project extends Component {
         this.createCard = this.createCard.bind(this)
         this.createNewList = this.createNewList.bind(this)
 
-        this.socket.on('updateProject', this.socketUpdate.bind(this))
+        this.socket.on('updateLists', this.socketUpdateLists.bind(this))
+        this.socket.on('updateProject', this.socketUpdateProject.bind(this))
 
 
 
     }
 
-    socketUpdate(lists){
+    socketUpdateLists(lists){
          this.props.loadLists(lists)
      }
+    
+     socketUpdateProject(project){
+         console.log(project)
+        this.props.loadProjectInfo(project)
+    }
 
     componentWillMount() {
         const {match, currentMemberId, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
@@ -684,6 +690,7 @@ const mapDispatchToProps ={
     deleteList: _action.listAction.deleteList,
     archiveList: _action.listAction.updateListStatus,
     loadLists:  _action.projectAction.loadLists,
+    loadProjectInfo:  _action.projectAction.loadProjectInfo,
     onUpdatePositionCard:  _action.cardAction.updatePositionCard
 }
 
