@@ -276,6 +276,7 @@ export function project (state = initialState, action) {
             
             //concat both lists
             arrayOfList[listWithCardIndex].CardListFks = notarchivedCards.concat(archiveCards)
+            socket.emit("updateProject", {projectId:arrayOfList[0].projectId,lists:arrayOfList})  
             return {
                 ...state,
                 lists : arrayOfList,
