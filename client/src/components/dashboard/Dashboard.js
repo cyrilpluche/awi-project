@@ -51,7 +51,7 @@ class Dashboard extends React.Component {
                             title={"Favorite projects"}
                             iconList={'work_outline'}
                             projects={this.props.allProjects}
-                            canCreateProject
+                            canCreateProject={false}
                             isFavorite={true}
                         />
 
@@ -59,7 +59,7 @@ class Dashboard extends React.Component {
                             title={"Personal projects"}
                             iconList={'work_outline'}
                             projects={this.props.allProjects}
-                            canCreateProject
+                            canCreateProject={true}
                             isFavorite={false}
                         />
                     </Grid>
