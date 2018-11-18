@@ -25,7 +25,6 @@ const methods = {
         result.projectVisibility = project.projectVisibility;
         result.projectStatus = project.projectStatus;
         result.projectDateTarget = project.projectDateTarget;
-        result.contributor = project.MemberhasprojectProjectFks.length
 
         result.Project = undefined;
         return result

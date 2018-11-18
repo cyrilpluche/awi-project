@@ -267,14 +267,7 @@ module.exports = {
                 include: [
                     {
                         model: Project,
-                        as: 'Project',
-                        include: [
-                            {
-                                model: MemberHasProject,
-                                as: 'MemberhasprojectProjectFks',
-                                where: { memberhasprojectStatus: 1 }
-                            }
-                        ]
+                        as: 'Project'
                     }
                 ]
             }

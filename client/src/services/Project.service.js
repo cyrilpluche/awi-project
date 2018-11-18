@@ -17,6 +17,7 @@ const Project = {
     },
 
     getAllProjectsMember (member_id) { // get all member that member is involved in
+        console.log(Api)
         return Api.get(url + 'find_all_member/' + member_id).then(res => res.data).catch(e => e.error)
     },
 
