@@ -185,7 +185,7 @@ class Cardboard extends React.Component {
                                             />
                                             : null
                                     )}
-                                    {this.props.refresh.length}
+                                    {this.props.refresh}
                                 </Grid>
                                 <Grid item xs={12}>
 

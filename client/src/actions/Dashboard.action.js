@@ -28,7 +28,7 @@ const findOneProject = () => ({
  */
 const receivedProject = json => ({
     type: labels.RECEIVE_PROJECT,
-    json: json.project,
+    payload: json.project,
 })
 
 /** Fetch a project

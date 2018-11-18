@@ -283,8 +283,6 @@ function removeMember (memberId, cardId, membersOnCard, membersOffCard, listInde
                 }
             })
             .catch (e => {
-                console.log(e)
-
                 dispatch({
                     type: labels.DELETE_MEMBER_ERROR
                 })
