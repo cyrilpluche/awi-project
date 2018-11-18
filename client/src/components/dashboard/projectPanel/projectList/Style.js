@@ -33,17 +33,15 @@ export const style = theme => ({
         display: 'flex',
     },
     favoriteButtonIcon: {
-        color: '#ffd11a',
-        float: 'left',
+        color: '#ffeb3b',
         '&:hover': {
-            color: '#ffffe6',
+            color: '#ffc107',
         }
     },
     addFavoriteButtonIcon: {
         color: '#ffffe6',
-        float: 'right',
         '&:hover': {
-            color: '#ffd11a'
+            color: '#ffc107',
         }
     },
     Icon: {

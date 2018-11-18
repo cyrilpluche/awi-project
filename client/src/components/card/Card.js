@@ -175,6 +175,7 @@ class Cardboard extends React.Component {
                         <Grid justify='center' container>
                             <Grid xs={8} item className={classes.scrollContainer}>
                                 <Grid item xs={12}>
+                                    {this.props.refresh}
                                     {this.props.currentCard.HaslabelCardFks.map(label =>
                                         label.Label ?
                                             <LabelIcon
@@ -473,7 +474,8 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    isLoading: state.project.isLoading
+    isLoading: state.project.isLoading,
+    refresh: state.project.maj
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,
