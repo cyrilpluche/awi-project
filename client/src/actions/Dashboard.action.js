@@ -15,15 +15,24 @@ const labels = {
     DASHBOARD_HIDE_ERROR_MSG: 'project:hide_error_msg' // to hide the error message
 }
 
+/**Find one project
+ * 
+ */
 const findOneProject = () => ({
     type: labels.FIND_ONE_PROJECT,
 })
 
+/** Receive a project
+ * @param json a project object
+ */
 const receivedProject = json => ({
     type: labels.RECEIVE_PROJECT,
     json: json.project,
 })
 
+/** Fetch a project
+ * @param attributes project attributes
+ */
 function fetchProject(attributes) {
     return (dispatch) => {
 
@@ -39,6 +48,9 @@ function fetchProject(attributes) {
     };
 }
 
+/** Get all project of a member
+ * @param member_id member id
+ */
 function getAllProjectsMember (member_id) {
     return dispatch => _service.Project.getAllProjectsMember(member_id)
         .then(projects => {
@@ -56,6 +68,9 @@ function getAllProjectsMember (member_id) {
         })
 }
 
+/** Get all team of a member
+ * @param member_id member id
+ */
 function getAllTeams(member_id) {
     return dispatch => {
         _service.Team.getAll(member_id).then(teams => {
@@ -70,7 +85,11 @@ function getAllTeams(member_id) {
     }
 }
 
-
+/** Update status of a member project
+ * @param projectId project id
+ * @param memberId member id
+ * @param projectIsFavorite 
+ */
 function updateMemberHasProject (projectId, memberId, projectIsFavorite) {
     let dataObject = {
         projectId, memberId, projectIsFavorite
@@ -93,6 +112,15 @@ function updateMemberHasProject (projectId, memberId, projectIsFavorite) {
         })
 }
 
+/** Create a project
+ * @param projectTitle new project title
+ * @param projectVisibility visibility set on the new project
+ * @param projectStatus status of the new project
+ * @param projectDateTarget target date of the new project
+ * @param memberId member id 
+ * @param memberhasprojectStatus 
+ * @param member
+ */
 function createProject (projectTitle, projectVisibility, projectStatus = 0, projectDateTarget,
                         memberId, memberhasprojectStatus = 0, member) {
 
@@ -156,6 +184,9 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
         })
 }
 
+/**
+ * Hide error message
+ */
 function hideErrorMessage() {
     return dispatch => dispatch({
         type: labels.DASHBOARD_HIDE_ERROR_MSG

@@ -34,11 +34,17 @@ class LabelDialog extends React.Component {
         let cardId = this.props.card.cardId
 
         if(checked){
-            this.state.card.HaslabelCardFks.push({ cardId: cardId, labelId: labelId, Label: label  }) //TODO use setState
+            let newCard = Object.assign({}, this.state.card)
+            newCard.HaslabelCardFks.push({ cardId: cardId, labelId: labelId, Label: label  })
+            this.setState({card:newCard })
+            //this.state.card.HaslabelCardFks.push({ cardId: cardId, labelId: labelId, Label: label  }) //TODO use setState
             this.props.onCreateLinkLabel({ cardId: cardId, labelId: labelId })
         }else{
             let indexLink = this.state.card.HaslabelCardFks.findIndex(list => list.labelId === labelId)
-            this.state.card.HaslabelCardFks.splice(indexLink,1) //TODO use setState
+            let newCard = Object.assign({}, this.state.card)
+            newCard.HaslabelCardFks.splice(indexLink,1)
+            this.setState({card:newCard })
+            //this.state.card.HaslabelCardFks.splice(indexLink,1) //TODO use setState
             this.props.onDeleteLinkLabel({ cardId: cardId, labelId: labelId })
         }
         this.setState({ maj: true });

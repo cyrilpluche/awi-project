@@ -135,7 +135,8 @@ module.exports = {
                                 { [Sequelize.Op.like]: '%' + req.query.str + '%' },
                                 { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
                             ]
-                        }
+                        },
+                        projectStatus: 0
                     },
                     attributes: [['project_id', 'id'], ['project_title', 'label']]
                 }]

@@ -5,6 +5,7 @@ const List = require('../config/db_connection').List
 const Card = require('../config/db_connection').Card
 
 const sequelize = require('../config/db_connection').sequelize;
+const Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
@@ -136,5 +137,40 @@ module.exports = {
                 next()
             })
             .catch(error => res.status(400).send(error))
-    }
+    },
+
+    deleteAllFromProjectMember (req, res, next) {
+        List
+            .findAll({
+                where: {projectId: req.query.projectId}
+            })
+            .then(lists => {
+                let flatList = helper.listToArrayListId(lists)
+                Card
+                    .findAll({
+                        where: {
+                            [Sequelize.Op.or]: flatList
+                        }
+                    })
+                    .then(cards => {
+                        let flatCard = helper.cardToArrayCardId(cards)
+
+                        MemberHasCard
+                            .destroy({
+                                where: {
+                                    memberId: req.query.memberId,
+                                    [Sequelize.Op.or]: flatCard
+                                }
+                            })
+                            .then(isDeleted => {
+                                req.body.result = isDeleted > 0
+                                next()
+                            })
+                            .catch(error => { res.status(400).send(error) })
+                    })
+                    .catch(error => { res.status(400).send(error) })
+            })
+            .catch(error => { res.status(400).send(error) })
+
+    },
 }

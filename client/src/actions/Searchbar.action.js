@@ -6,10 +6,14 @@ const labels = {
     SEARCH_CARDS :"SEARCH_CARDS",
     SEARCH_CARDS_ERROR :"SEARCH_CARDS_ERROR",
     SEARCH_LISTS :"SEARCH_LISTS",
-    SEARCH_LISTS_ERROR :"SEARCH_LISTS_ERROR"
+    SEARCH_LISTS_ERROR :"SEARCH_LISTS_ERROR",
+    SEARCH_RESET: "SEARCH_RESET"
 }
 
-
+/** Search for projects
+ * @param value name to search
+ * @param memberId member id
+ */
 function searchProjects (value, memberId) {
     return dispatch => {
         if (value !== '') {
@@ -34,6 +38,10 @@ function searchProjects (value, memberId) {
     }
 }
 
+/** Search for lists
+ * @param value name to search
+ * @param memberId member id
+ */
 function searchLists (value, memberId) {
     return dispatch => {
         if (value !== '') {
@@ -58,6 +66,10 @@ function searchLists (value, memberId) {
     }
 }
 
+/** Search for cards
+ * @param value name to search
+ * @param memberId member id 
+ */
 function searchCards (value, memberId) {
     return dispatch => {
         if (value !== '') {
@@ -82,10 +94,19 @@ function searchCards (value, memberId) {
     }
 }
 
+function resetSearchArrays () {
+    return dispatch => {
+        dispatch({
+            type: labels.SEARCH_RESET
+        });
+    }
+}
+
 export const searchbarAction = {
     labels,
     searchProjects,
     searchLists,
-    searchCards
+    searchCards,
+    resetSearchArrays
 }
 

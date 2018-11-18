@@ -58,7 +58,7 @@ class MemberOnCard extends Component {
 
     /** ==================== ADD / REMOVE MEMBERS ==================== */
     addMember (event) {
-        const { onAddMember } = this.props
+        const { onAddMember, listIndex, cardIndex } = this.props
 
         let index = this.state.newMemberIndex
         let member = this.props.membersOffCard[index]
@@ -71,7 +71,7 @@ class MemberOnCard extends Component {
         membersOnCard.push(member)
         membersOffCard.splice(index, 1)
 
-        onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, this.props.listIndex, this.props.cardIndex, member)
+        if(member) onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, member)
 
         this.setState({
             membersOnCard: membersOnCard,
@@ -80,7 +80,7 @@ class MemberOnCard extends Component {
     }
 
     removeMember = name => event => {
-        const { onRemoveMember } = this.props
+        const { onRemoveMember, listIndex, cardIndex } = this.props
 
         let index = event.currentTarget.id.split('/')[1]
         let member = this.props.membersOnCard[index]
@@ -90,10 +90,11 @@ class MemberOnCard extends Component {
         let membersOnCard = Array.from(this.props.membersOnCard)
         let membersOffCard = Array.from(this.props.membersOffCard)
 
+        //New arrays
         membersOffCard.push(member)
         membersOnCard.splice(index, 1)
 
-        onRemoveMember(member.memberId, cardId, membersOnCard, membersOffCard)
+        onRemoveMember(member.memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, index)
         this.setState({ maj: true })
     }
 
@@ -118,7 +119,7 @@ class MemberOnCard extends Component {
                                 <Tooltip
                                     TransitionComponent={Fade}
                                     TransitionProps={{timeout: 600}}
-                                    title="Admin"
+                                    title="Remove"
                                     placement="top-start">
                                     <Checkbox
                                         checked={true}

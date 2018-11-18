@@ -1,25 +1,10 @@
 export const styles = theme => ({
     listArea: {
-        margin: theme.spacing.unit * 1,
-        display: 'flex',
-        padding:theme.spacing.unit * 1,           
-        //whiteSpace: `nowrap`,
+        whiteSpace: `nowrap`,
         overflowY: `auto`,
-        //position: `fixed`,
-        left: `0`, 
-        right: `0`
-             
+        flexWrap: 'inherit'
     },
     list: {
-        /*margin: theme.spacing.unit * 2,
-        border:`1px solid lightgrey`,
-        borderRadius : `4px`,
-        backgroundColor:`white`,
-        width: `200px`,
-        minWidth : `200px`,
-        minHeight : `100px`,
-        justifyContent: `center`,
-        textAlign: `center`,*/
         width: '272px',
         margin: '7px',
         marginRight: 0,

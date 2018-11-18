@@ -128,4 +128,10 @@ export const styles = theme => ({
         width: 28,
         height: 28,
     },
+    moreIcon: {
+        padding: 4,
+    },
+    firstRow: {
+        marginRight: 10
+    }
 });
