@@ -15,7 +15,7 @@ const fileUpload = require('express-fileupload');
 
 const app = express();
 
-const expressSwagger = require('express-swagger-generator')(app);
+/*const expressSwagger = require('express-swagger-generator')(app);
 
 let options = {
     swaggerDefinition: {
@@ -43,7 +43,7 @@ let options = {
     basedir: __dirname, //app absolute path
     files: ['./controllers/*.js'] //Path to the API handle folder
 };
-expressSwagger(options)
+expressSwagger(options)*/
 
 // view engine setup
 /*app.set('views', path.join(__dirname, 'views'));
