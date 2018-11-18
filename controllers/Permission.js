@@ -5,15 +5,25 @@ const Permission = require('../config/db_connection').Permission
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= Permission CONTROLLER ================= */
 
     /**
-     *  req.body = {
-     *      permissionTitle: String,
-     *      permissionDescription: Boolean,
-     *  }
+     * @typedef Permission
+     * @property {integer} permissionId.required
+     * @property {string} permissionTitle
+     * @property {string} permissionDescription
+     */
+
+    /**
+     * This function create a new Permission.
+     * @route POST /api/permission/create
+     * @group Permission - Operations about permission.
+     * @param {string} permissionTitle
+     * @parzm {string} permissionDescription
+     * @returns {Permission.model} 200 - A new Permission created.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: The Permission object.
      */
     create(req, res, next) {
         Permission
@@ -25,9 +35,14 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function find all the Permissions.
+     * @route GET /api/permission/find_all
+     * @group Permission - Operations about permission.
+     * @returns {Array.<Permission>} 200 - All the Permissions.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Permission objects with given attributes of the query.
      */
     findAll(req, res, next) {
         Permission
@@ -42,10 +57,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function find a Permission.
+     * @route GET /api/permission/find_one
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.required
+     * @returns {Array.<Permission>} 200 - The Permission found.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *
-     *  return: Permission object with given attributes of the query.
      */
     findOne(req, res, next) {
         Permission
@@ -59,14 +79,17 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function update a Permission.
+     * @route PUT /api/permission/update
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.required
+     * @param {string} permissionTitle.body.optional
+     * @param {string} permissionDescription.body.optional
+     * @returns {boolean} 200 - Boolean, true if the permission was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      permissionTitle: String,
-     *      permissionDescription: Boolean,
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Permission
@@ -80,9 +103,17 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+
+    /**
+     * This function delete a Permission.
+     * @route DELETE /api/permission/update
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.optional
+     * @param {string} permissionDescription.optional
+     * @returns {boolean} 200 - Boolean, true if the permission was deleted.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Permission

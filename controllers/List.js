@@ -7,19 +7,30 @@ const Project = require('../config/db_connection').Project
 
 module.exports = {
 
-    /* =================
+    /* ================= LIST CONTROLLER =============== */
 
-    /*  localhost:4200/api/list/create
+    /**
+     * @typedef List
+     * @property {integer} listId.required
+     * @property {string} listTitle.optional
+     * @property {integer} projectId.optional
+     * @property {integer} cardIdIsTheFather.optional
+     * @property {integer} listIdIsTheFather.optional
+     * @property {integer} listIdIsTheChild.optional
+     */
+
+    /**
+     * This function create a new list.
+     * @route POST /api/list/create
+     * @group List - Operations about lists.
+     * @param {string} listTitle.optional
+     * @param {integer} projectId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} listIdIsTheFather.optional
+     * @param {integer} listIdIsTheChild.optional
+     * @returns {List.model} 200 - New card object
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      listTitle: String,
-     *      listStatus: Int,
-     *      projectId: Int,
-     *      listIdIsTheFather: Int, (optional),
-     *      listIdIsTheChild: Int, (optional)
-     *  }
-     *
-     *  return: New List object.
      */
     create(req, res, next) {
         List
@@ -31,9 +42,18 @@ module.exports = {
             .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/list/find_all --- ?listTitle=title... (optional)
+    /**
+     * This function find all the lists matching.
+     * @route GET /api/list/find_all
+     * @group List - Operations about lists.
+     * @param {string} listTitle.optional
+     * @param {integer} projectId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} listIdIsTheFather.optional
+     * @param {integer} listIdIsTheChild.optional
+     * @returns {<Array.Action>} 200 - All the list matching.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of List objects with given attributes.
      */
     findAll(req, res, next) {
         List
@@ -48,9 +68,14 @@ module.exports = {
             .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/card/find_all_searchbar?str=customStr. (optional)
+    /**
+     * This function find all the lists matching the keywords.
+     * @route GET /api/list/find_all_searchbar
+     * @group List - Operations about lists.
+     * @param {string} str - The keyword
+     * @returns {<Array.Action>} 200 - All the list matching the keywords.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Cards objects with given attributes.
      */
     findAllSearchbar(req, res, next) {
         MemberHasProject
@@ -85,9 +110,13 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-     /*  localhost:4200/api/list/find_all/:id
+    /**
+     * This function find all the lists for a project.
+     * @route GET /api/list/find_all/:id
+     * @group List - Operations about lists.
+     * @returns {<Array.Action>} 200 - All the list for a project.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of List objects with given attributes.
      */
     findAllOfProject(req, res, next) {
         List
@@ -102,10 +131,18 @@ module.exports = {
             .catch(error => next(error))
     },
 
-
-    /*  localhost:4200/api/list/find_one --- ?listTitle=title... (optional)
+    /**
+     * This function find the first list matching.
+     * @route GET /api/list/find_one
+     * @group List - Operations about lists.
+     * @param {string} listTitle.optional
+     * @param {integer} projectId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} listIdIsTheFather.optional
+     * @param {integer} listIdIsTheChild.optional
+     * @returns {<Array.Action>} 200 - The first list matching.
+     * @returns {Error}  500 - error
      *
-     *  return: List object with given attributes.
      */
     findOne(req, res, next) {
         List
@@ -117,17 +154,18 @@ module.exports = {
             .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/list/update/:id
+    /**
+     * This function update a list.
+     * @route PUT /api/list/update/:id
+     * @group List - Operations about lists.
+     * @param {string} listTitle.optional
+     * @param {integer} projectId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} listIdIsTheFather.optional
+     * @param {integer} listIdIsTheChild.optional
+     * @returns {boolean} 200 - Boolean, true if the list was updated.
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      listTitle: String, (optional)
-     *      listStatus: Int, (optional)
-     *      projectId: Int, (optional)
-     *      listIdIsTheFather: Int, (optional),
-     *      listIdIsTheChild: Int, (optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         List
@@ -141,6 +179,14 @@ module.exports = {
             .catch(error => next(error))
     },
 
+    /**
+     * This function update the order of the lists contained in the array.
+     * @route PUT /api/list/update_list_order
+     * @group List - Operations about lists.
+     * @param {Array.<List>} lists.body
+     * @returns {Error}  500 - error
+     *
+     */
     updateFromArray(req, res, next) {
         for (let list of req.body.lists) {
             List
@@ -158,6 +204,14 @@ module.exports = {
     /*  localhost:4200/api/list/delete/:id
      *
      *  return: A boolean. true = deleted, false = no deleted.
+     */
+    /**
+     * This function delete a list.
+     * @route DELETE /api/list/delete/:id
+     * @group List - Operations about lists.
+     * @returns {boolean} 200 - Boolean, true if the list was deleted.
+     * @returns {Error}  500 - error
+     *
      */
     delete(req, res, next) {
         List

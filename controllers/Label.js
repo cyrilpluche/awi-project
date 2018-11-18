@@ -6,7 +6,7 @@ module.exports = {
 
     /* ================= CRUD ================= */
 
-    /**
+    /*
      *  req.body = {
      *      labelColor: Integer,
      *      labelDescription: String,
@@ -14,6 +14,24 @@ module.exports = {
      *  }
      *
      *  return: The Label object.
+     */
+
+    /**
+     * @typedef Label
+     * @property {integer} labelId.required
+     * @property {string} labelColor.required
+     * @property {integer} projectId.required
+     */
+
+    /**
+     * This function create a new label.
+     * @route POST /api/label/create
+     * @group Label - Operations about labels.
+     * @param {Label.model} label.body.required - the new label
+     * @returns {Label.model} 200 - New label object
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     create(req, res, next) {
         Label
@@ -42,9 +60,20 @@ module.exports = {
         }
     },
 
-    /**  ?labelId=id... (optional)
+    /*  ?labelId=id... (optional)
      *
      *  return: Array of Label objects with given attributes of the query.
+     */
+    /**
+     * This function find all the labels.
+     * @route GET /api/label/find_all
+     * @group Label - Operations about labels.
+     * @param {integer} labelId.optional
+     * @param {integer} projectId.optional
+     * @returns {Array.<Label>} 200 - All the label matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     findAll(req, res, next) {
         Label
@@ -59,9 +88,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?labelId=id... (optional)
+    /**
+     * This function find a label.
+     * @route GET /api/label/find_one
+     * @group Label - Operations about labels.
+     * @param {integer} labelId.optional
+     * @returns {Label.model} 200 - The first label matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Label object with given attributes of the query.
      */
     findOne(req, res, next) {
         Label
@@ -75,15 +110,17 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?labelId=id... (optional)
+    /**
+     * This function find a label.
+     * @route PUT /api/label/update
+     * @group Label - Operations about labels.
+     * @param {integer} labelId.optional
+     * @param {integer} projectId.optional
+     * @param {Label.model} label.body.required
+     * @returns {boolean} 200 - Boolean, true if the label was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      labelColor: Integer,
-     *      labelDescription: String
-     *      projectId: INT
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Label
@@ -97,9 +134,16 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?labelId=id... (optional)
+    /**
+     * This function find a label.
+     * @route DELETE /api/label/delete
+     * @group Label - Operations about labels.
+     * @param {integer} labelId.optional
+     * @param {integer} projectId.optional
+     * @returns {boolean} 200 - Boolean, true if the label was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Label

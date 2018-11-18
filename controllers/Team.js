@@ -5,15 +5,23 @@ const sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= Team CONTROLLER ================= */
 
-    /*  localhost:4200/api/team/create
+    /**
+     * @typedef Team
+     * @property {integer} teamId.required
+     * @property {string} teamName.required
      *
-     *  req.body = {
-     *      teamName = name
-     *  }
+     */
+
+    /**
+     * This function create a new Team.
+     * @route POST /api/team/create
+     * @group Team - Operations about team.
+     * @param {string} teamName.required
+     * @returns {Team.model} 200 - A new Team created.
+     * @returns {Error}  500 - error
      *
-     *  return: The Team object.
      */
     create(req, res, next) {
         Team
@@ -25,9 +33,14 @@ module.exports = {
             .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/team/find_all --- ?teamName=name... (optional)
+    /**
+     * This function find all the teams matching
+     * @route GET /api/team/find_all
+     * @group Team - Operations about team.
+     * @param {string} teamName.optional
+     * @returns {Array.<Team>} 200 - All the teams matching.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of team objects with given attributes.
      */
     findAll(req, res, next) {
         Team
@@ -42,6 +55,15 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    /**
+     * This function find all the teams of a member.
+     * @route GET /api/team/find_all
+     * @group Team - Operations about team.
+     * @param {integer} memberId
+     * @returns {Array.<Team>} 200 - All the teams of the given member.
+     * @returns {Error}  500 - error
+     *
+     */
     findAllTeamMember (req, res, next) {
         TeamHasMember.findAll({
             where: {member_id: req.params.member},
@@ -65,10 +87,13 @@ module.exports = {
             })
     },
 
-
-    /*  localhost:4200/api/team/find_one --- ?teamName=name... (optional)
+    /**
+     * This function find a team.
+     * @route GET /api/team/find_one/:id
+     * @group Team - Operations about team.
+     * @returns {Array.<Team>} 200 - The team found.
+     * @returns {Error}  500 - error
      *
-     *  return: Team object with given attributes.
      */
     findOne(req, res, next) {
         Team
@@ -80,13 +105,15 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/team/update/2
+    /**
+     * This function update a team.
+     * @route PUT /api/team/update/:id
+     * @group Team - Operations about team.
+     * @param {integer} teamId.required
+     * @param {string} teamName.body.optional
+     * @returns {boolean} 200 - Boolean, true if the team was updated.
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      teamName = name
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Team
@@ -100,9 +127,13 @@ module.exports = {
             .catch(error => next(error))
     },
 
-    /*  localhost:4200/api/member/delete/5
+    /**
+     * This function delete a team.
+     * @route DELETE /api/team/delete/:id
+     * @group Team - Operations about team.
+     * @returns {boolean} 200 - Boolean, true if the team was deleted.
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Team
