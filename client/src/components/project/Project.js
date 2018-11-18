@@ -12,7 +12,6 @@ import { DragDropContext} from 'react-beautiful-dnd';
 // Components
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
-import Filter from '../ui/filter/Filter'
 import LoaderPage from '../ui/loader/Loader'
 
 // Material Ui
@@ -20,7 +19,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
-import {RestorePage, Archive, SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
+import {RestorePage, Archive, SupervisorAccount,RemoveRedEye,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
@@ -417,42 +416,6 @@ class Project extends Component {
             </Drawer>
         );
 
-        /* ================= FILTER DRAWER================= */
-        const renderFilter = (
-            <Drawer
-                anchor="right"
-                open={this.state.openFilter}
-                onClose={this.toggleDrawer('openFilter', false)}
-            >
-                <div
-                    tabIndex={0}
-                    role="button"
-                    onKeyDown={this.toggleDrawer('openFilter', false)}
-                >
-                    <Grid alignItems='center' justify='center' container >
-                        <Grid xs={2} item>
-                            <IconButton
-                                onClick={this.toggleDrawer('openFilter', false)}
-                                color="inherit"
-                            >
-                                <ChevronLeftIcon color='primary' />
-                            </IconButton>
-                        </Grid>
-                        <Grid xs={8} item>
-                            <Button fullWidth color="primary" className={classes.drawer}>
-                                Filter
-                            </Button>
-                        </Grid>
-                        <Grid xs={2} item>
-                        </Grid>
-                    </Grid>
-                    <div>
-                        <Filter projectInfo={projectInfo}/>
-                    </div>
-                </div>
-            </Drawer>
-        );
-
         /* ================= ARCHIVED DRAWER================= */
         const renderArchived = (
             <Drawer
@@ -625,7 +588,7 @@ class Project extends Component {
                         <LoaderPage/>
                     </Grid>
                 ) : (
-                    <div>
+                    <div className={classes.fullHeight} id='container1'>
                         {dndArea}
                     </div>
                 )}

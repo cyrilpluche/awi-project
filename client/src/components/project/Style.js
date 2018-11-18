@@ -1,7 +1,10 @@
 export const styles = theme => ({
     projectBody: {
-        fontFamily : `"Roboto", "Helvetica", "Arial", sans-serif`
-
+        fontFamily : `"Roboto", "Helvetica", "Arial", sans-serif`,
+        minHeight: '85%',
+    },
+    fullHeight: {
+        minHeight: '85'
     },
     projectHeader: {
         marginTop: theme.spacing.unit * 1,

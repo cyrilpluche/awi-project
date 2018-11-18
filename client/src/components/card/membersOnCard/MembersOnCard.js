@@ -58,7 +58,7 @@ class MemberOnCard extends Component {
 
     /** ==================== ADD / REMOVE MEMBERS ==================== */
     addMember (event) {
-        const { onAddMember, listIndex, cardIndex } = this.props
+        const { onAddMember, listindex, cardindex } = this.props
 
         let index = this.state.newMemberIndex
         let member = this.props.membersOffCard[index]
@@ -71,7 +71,7 @@ class MemberOnCard extends Component {
         membersOnCard.push(member)
         membersOffCard.splice(index, 1)
 
-        if(member) onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, member)
+        if(member) onAddMember(member.memberId, cardId, membersOnCard, membersOffCard, listindex, cardindex, member)
 
         this.setState({
             membersOnCard: membersOnCard,
@@ -80,7 +80,7 @@ class MemberOnCard extends Component {
     }
 
     removeMember = name => event => {
-        const { onRemoveMember, listIndex, cardIndex } = this.props
+        const { onRemoveMember, listindex, cardindex } = this.props
 
         let index = event.currentTarget.id.split('/')[1]
         let member = this.props.membersOnCard[index]
@@ -94,7 +94,7 @@ class MemberOnCard extends Component {
         membersOffCard.push(member)
         membersOnCard.splice(index, 1)
 
-        onRemoveMember(member.memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, index)
+        onRemoveMember(member.memberId, cardId, membersOnCard, membersOffCard, listindex, cardindex, index)
         this.setState({ maj: true })
     }
 

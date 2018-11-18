@@ -56,7 +56,7 @@ class Lists extends Component {
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
                     <div
-                        className={ classes.widthMax }
+                        className={ classes.widthMax + ' ' + classes.listHeight }
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >

@@ -201,7 +201,7 @@ class ListPrello extends Component{
             <Draggable draggableId={"List:"+this.props.list.listId} index={this.props.index}>
                 {(provided,snapshot) => {
                     return (
-                        <div className={classes.list}
+                        <div className={classes.list + ' ' + classes.borderRadius + ' ' + classes.borderRadiusBottom}
                              {...provided.draggableProps}
                              ref={provided.innerRef}
                         >
@@ -209,8 +209,9 @@ class ListPrello extends Component{
                                 component="nav"
                                 disablePadding={true}
                                 dense={true}
+                                className={ classes.borderRadius }
                             >
-                                <ListItem {...provided.dragHandleProps} className={classes.listTitle2}>
+                                <ListItem {...provided.dragHandleProps} className={classes.listTitle2 + ' ' + classes.borderRadius}>
                                     <ListItemText>
                                         {!editListTitle ?
                                             <Grid justify='flex-start' alignItems='center' container>
@@ -292,7 +293,7 @@ class ListPrello extends Component{
                                             fullWidth
                                             color='primary'
                                             size="small"
-                                            className={classes.button}
+                                            className={classes.button + ' ' + classes.borderRadiusBottom}
                                             onClick={this.handleClickOpen}>
                                             <AddIcon /> new card
                                         </Button>

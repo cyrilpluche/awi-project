@@ -75,7 +75,9 @@ class LabelDialog extends React.Component {
                                     selected={this.state.selectedIndex === 2}
                                 >
                                     <Grid justify='center' alignItems='center' container>
-                                        <Button variant="contained" style={{backgroundColor: label.labelColor}}/>
+                                        <Button variant="contained" style={{backgroundColor: label.labelColor}}>
+                                            {' '}
+                                        </Button>
                                         <Checkbox
                                             style={{color: label.labelColor}}
                                             id={'checklist/'+index}

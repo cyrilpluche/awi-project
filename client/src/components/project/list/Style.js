@@ -2,13 +2,24 @@ export const styles = theme => ({
     listArea: {
         whiteSpace: `nowrap`,
         overflowY: `auto`,
-        flexWrap: 'inherit'
+        flexWrap: 'inherit',
+    },
+    listHeight: {
+        height: '100%'
     },
     list: {
         width: '272px',
         margin: '7px',
         marginRight: 0,
         backgroundColor:`#1e88e5`,
+    },
+    borderRadius: {
+        borderTopLeftRadius: '10px',
+        borderTopRightRadius: '10px'
+    },
+    borderRadiusBottom: {
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px'
     },
     listTitle: {
         textAlign:`left`,
@@ -79,6 +90,7 @@ export const styles = theme => ({
     widthMax: {
         maxWidth: '100%',
         paddingLeft: theme.spacing.unit * 5,
+        height: '100%'
     },
     gridList: {
         display: 'grid',

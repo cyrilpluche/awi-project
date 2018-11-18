@@ -32,7 +32,6 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 /** MARKDOWN EDITOR */
 import SimpleMDEReact from "react-simplemde-editor";
 import "simplemde/dist/simplemde.min.css";
-import ActivityList from "../ui/activity/ActivityList";
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -47,6 +46,7 @@ class Cardboard extends React.Component {
         this.validEditDescription = this.validEditDescription.bind(this)
         this.handleEditTitle =  this.handleEditTitle.bind(this)
         this.validEditTitle = this.validEditTitle.bind(this)
+
         this.state = {
             open: this.props.route.params.cardid ?
                 this.props.route.params.cardid.toString() === this.props.currentCard.cardId.toString() : false,
@@ -61,9 +61,7 @@ class Cardboard extends React.Component {
         };
     }
 
-
-
-    componentDidUpdate(){
+    componentDidUpdate (){
         if(!this.state.init){
             this.setState({
                 dueDate : this.props.currentCard.cardDateTarget,
@@ -175,7 +173,38 @@ class Cardboard extends React.Component {
                 <DialogContent>
                     { this.props.currentCard ? (
                         <Grid justify='center' container>
-                            <Grid xs={8} item>
+                            <Grid xs={8} item className={classes.scrollContainer}>
+                                <Grid item xs={12}>
+                                    {this.props.currentCard.HaslabelCardFks.map(label =>
+                                        label.Label ?
+                                            <LabelIcon
+                                                key={label.labelId}
+                                                style={{
+                                                    color: label.Label.labelColor,
+                                                }}
+                                            />
+                                            : null
+                                    )}
+                                </Grid>
+                                <Grid item xs={12}>
+
+                                    { this.props.isLoading ?
+                                        <MiniLoader/>
+                                        :
+                                        this.props.currentCard.MemberhascardCardFks ? this.props.currentCard.MemberhascardCardFks.map(member =>
+                                            member.Member.memberPicture ?
+                                                <Avatar
+                                                    key={member.memberId}
+                                                    alt={member.Member.memberFirstname + 'sharp'}
+                                                    src={member.Member.memberPicture}
+                                                    className={classNames(classes.avatar, classes.littleAvatar)}
+                                                />
+                                                :
+                                                <Avatar className={classes.orangeAvatar} key={member.memberId}>
+                                                    {member.Member.memberFirstname.toUpperCase()[0]}
+                                                </Avatar>
+                                        ) : null}
+                                </Grid>
                                 <form className={classes.container} noValidate autoComplete="off">
 
                                     <Grid container justify='space-between' alignItems='center'>
@@ -278,7 +307,7 @@ class Cardboard extends React.Component {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={2}>
-                                            { this.state.editDescription?
+                                            { this.state.editDescription ?
                                                 <IconButton
                                                     className={classes.done}
                                                     size="small"
@@ -287,14 +316,15 @@ class Cardboard extends React.Component {
                                                 >
                                                     <Done fontSize="small" />
                                                 </IconButton>
-                                                :<IconButton  color="primary" size="small" aria-label="valid" onClick={this.editDescription}>
+                                                :
+                                                <IconButton  color="primary" size="small" aria-label="valid" onClick={this.editDescription}>
                                                     <Edit fontSize="small" />
                                                 </IconButton>
                                             }
                                         </Grid>
                                         <Grid item xs={12}>
                                             <SimpleMDEReact
-                                                className={classes.markdown}
+                                                className={classes.markdown + ' ' + classes.mdeSize}
                                                 getMdeInstance={this.getInstance}
                                                 value={this.state.description}
                                                 onChange={this.handleChangeDescription('description')}
@@ -311,8 +341,8 @@ class Cardboard extends React.Component {
                                 <MemberOnCard
                                     route={this.props.route}
                                     card={this.props.currentCard}
-                                    listIndex={this.props.listIndex}
-                                    cardIndex={this.props.cardIndex}
+                                    listindex={this.props.listIndex}
+                                    cardindex={this.props.cardIndex}
                                 />
                                 <LabelDialog
                                     route={this.props.route}
