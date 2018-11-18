@@ -5,16 +5,27 @@ const sequelize = require('../config/db_connection').sequelize;
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= TeamHasMember CONTROLLER ================= */
 
     /**
-     *  req.body = {
-     *      teamId: INT,
-     *      memberId: INT,
-     *      teamStatus: INT
-     *  }
+     * @typedef TeamHasMember
+     * @property {integer} teamHasMember.required
+     * @property {integer} teamId.required
+     * @property {integer} memberId.required
+     * @property {integer} teamStatus.required
      *
-     *  return: The TeamHasMember object.
+     */
+
+    /**
+     * This function create a new TeamHasMember.
+     * @route POST /api/team/create_thm
+     * @group Team - Operations about team.
+     * @param {integer} teamId.required
+     * @param {integer} memberId.required
+     * @property {integer} teamStatus
+     * @returns {TeamHasMember.model} 200 - A new TeamHasMember created.
+     * @returns {Error}  500 - error
+     *
      */
     create(req, res, next) {
         Teamhasmember

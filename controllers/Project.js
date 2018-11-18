@@ -15,18 +15,30 @@ const Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
-    /* =================
+    /* ================= Project CONTROLLER ================== */
 
-    /*  localhost:4200/api/project/create
+
+    /**
+     * @typedef Project
+     * @property {integer} projectId.required
+     * @property {string} projectTitle
+     * @property {string} permissionDescription
+     * @property {integer} projectStatus
+     * @property {date} projectDateTarget.optional
      *
-     *  req.body = {
-     *      projectTitle = project title,
-     *      projectVisibility = 1,
-     *      projectStatus = 2,
-     *      projectDateTarget = 01/01/2018 (optional)
-     *  }
+     */
+
+    /**
+     * This function create a new Project.
+     * @route POST /api/project/create
+     * @group Project - Operations about project.
+     * @param {string} projectTitle
+     * @param {string} permissionDescription
+     * @param {integer} projectStatus
+     * @param {date} projectDateTarget.optional
+     * @returns {Project.model} 200 - A new Project created.
+     * @returns {Error}  500 - error
      *
-     *  return: The Project object.
      */
     create(req, res, next) {
         Project
@@ -38,14 +50,31 @@ module.exports = {
             .catch(error => next(error))
     },
 
+    /**
+     * This function create a new MemberHasProject.
+     * @route POST /api/project/createMemberHasProject
+     * @group Project - Operations about project.
+     * @param {integer} projectId
+     * @param {integer} memberhasprojectStatus
+     * @returns {MemberHasProject.model} 200 - A new MemberHasProject created.
+     * @returns {Error}  500 - error
+     *
+     */
     createMemberHasProject (req, res, next) {
         MemberHasProject.create(req.body)
             .then(mhp => res.send(mhp))
     },
 
-    /*  localhost:4200/api/project/find_all --- ?projectTitle=title... (optional)
+    /**
+     * This function find all the projects matching.
+     * @route GET /api/project/find_all
+     * @group Project - Operations about project.
+     * @param {string} projectTitle.optional
+     * @param {integer} projectStatus.optional
+     * @param {date} projectDateTarget.optional
+     * @returns {Array.<Project>} 200 - All the projects matching.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Project objects with given attributes.
      */
     findAll(req, res, next) {
         Project
@@ -60,9 +89,17 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/project/find_one --- ?projectTitle=title... (optional)
+
+    /**
+     * This function find the first project matching.
+     * @route GET /api/project/find_one
+     * @group Project - Operations about project.
+     * @param {string} projectTitle.optional
+     * @param {integer} projectStatus.optional
+     * @param {date} projectDateTarget.optional
+     * @returns {Project.model} 200 - the project matching.
+     * @returns {Error}  500 - error
      *
-     *  return: Project object with given attributes.
      */
     findOne(req, res, next) {
         Project
@@ -74,9 +111,14 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/project/find_one/:id 
+
+    /**
+     * This function find a project by id .
+     * @route GET /api/project/find_one/:id
+     * @group Project - Operations about project.
+     * @returns {Project.model} 200 - the project found.
+     * @returns {Error}  500 - error
      *
-     *  return: Project object with given attributes.
      */
     findProjectInfo(req, res, next) {
         Project
@@ -90,16 +132,17 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/project/update/2
+    /**
+     * This function update a project.
+     * @route PUT /api/project/update/:id
+     * @group Project - Operations about project.
+     * @param {string} projectTitle.body.optional
+     * @param {string} projectVisibility.body.optional
+     * @param {integer} projectStatus.body.optional
+     * @param {date} projectDateTarget.body.optional
+     * @returns {boolean} 200 - Boolean, true if the project was updated.
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      projectTitle = project title, (optional)
-     *      projectVisibility = 1, (optional)
-     *      projectStatus = 2, (optional)
-     *      projectDateTarget = 01/01/2018 (optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Project
@@ -112,13 +155,18 @@ module.exports = {
             })
     },
 
-
     /**
-     * 127.0.0.1:4200/api/project/update_memberhasProject?memberId=1&projectId=2&projectIsFavorite=false
-     * update a memberhasProject ligne by setting favorite to favorite
-     * @param req
-     * @param res
-     * @param next
+     * This function update a MemberHasProject.
+     * @route PUT /api/project/update_memberHasProject
+     * @group Project - Operations about project.
+     * @param {integer} projectId.body
+     * @param {integer} memberId.body
+     * @param {integer} memberhasprojectStatus.body
+     * @param {boolean} projectIsFavorite.body.optional
+     * @returns {boolean} 200 - Boolean, true if the MemberHasProject was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     updateMemberHasProject(req, res, next) {
         let updateField = {};
@@ -142,9 +190,13 @@ module.exports = {
             .catch(e => res.status(400).send(e))
     },
 
-    /**  localhost:4200/api/project/delete/5
+    /**
+     * This function delete a project.
+     * @route PUT /api/project/delete/:id
+     * @group Project - Operations about project.
+     * @returns {boolean} 200 - Boolean, true if the project was deleted.
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Project
@@ -162,9 +214,16 @@ module.exports = {
 
     /* ================ CUSTOM METHODS =============== */
 
-    /*  localhost:4200/api/project/find_all_searchbar?str=customStr&memberId=id. (optional)
+
+    /**
+     * This function find all the projects matching the keyword or memberId.
+     * @route GET /api/project/find_all_searchbar
+     * @group Project - Operations about project.
+     * @param {string} str.optional
+     * @param {integer} memberId.optional
+     * @returns {Array.<Project>} 200 - All the projects matching.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Project objects with given attributes.
      */
     findAllSearchbar(req, res, next) {
         Project
@@ -188,11 +247,15 @@ module.exports = {
     },
 
 
+
     /**
-     * find all project that the member participate
-     * @param req
-     * @param res
-     * @param next
+     * This function find all the MemberHasProject matching (all the project of a member).
+     * @route GET /api/project/find_all_member/:member
+     * @group Project - Operations about project.
+     * @returns {Array.<MemberHasProject>} 200 - All the MemberHasProject matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     findAllProjectMember (req, res, next) {
         MemberHasProject.findAll(
@@ -221,11 +284,15 @@ module.exports = {
             .catch(e =>res.status(400).send(e) )
     },
 
-    /**Find a member that has a project
+    /**
+     * This function find a specific member of a project.
+     * @route GET /api/project/member_has_project
+     * @group Project - Operations about project.
+     * @param {integer} projectId.optional
+     * @returns {Array.<MemberHasProject>} 200 - All the MemberHasProject matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     * @param {*} req
-     * @param {*} res
-     * @param {*} next
      */
     findMemberHasProject(req, res, next){
         MemberHasProject.findOne(
@@ -240,10 +307,14 @@ module.exports = {
     },
 
     /**
-     * find all lists and cards of a project
-     * @param req
-     * @param res
-     * @param next
+     * This function find all lists and cards of a project.
+     * @route GET /api/project/find_all_lists_cards
+     * @group Project - Operations about project.
+     * @param {integer} projectId.optional
+     * @returns {Array} 200 - All lists and cards of a project.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     findAllListsCards (req, res, next) {
         List.findAll(
@@ -272,8 +343,6 @@ module.exports = {
                 ]
             }
         ).then(listsCards => {
-            //req.body.result = listsCards
-
             req.body.result = helper.computeListOrder(listsCards)
             next()
         })

@@ -9,23 +9,30 @@ const Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
-    /* ================= SEQUELIZE METHODS ================= */
-    /* ================= SEQUELIZE METHODS ================= */
+    /* ================= ACTION CONTROLLER ================= */
 
     /**
-     *  req.body = {
-     *      actionType: Int,
-     *      actionTitle: String,
-     *      actionDescription: String
-     *      memberId: Int,
-     *      actionDateCreation: Date,
-     *      cardId: Int, (optional)
-     *      listId: Int, (optional)
-     *      projectId: Int, (optional)
-     *      teamId: Int (optional)
-     *  }
+     * @typedef Action
+     * @property {integer} actionType.required
+     * @property {string} actionTitle.required
+     * @property {string} actionDescription.required
+     * @property {integer} memberId.required
+     * @property {date} actionDateCreation.required
+     * @property {integer} cardId
+     * @property {integer} listId
+     * @property {integer} projectId
+     * @property {integer} teamId
+     */
+
+    /**
+     * This function create a new action.
+     * @route POST /api/action/create
+     * @group Action - Operations about action
+     * @param {Action.model} action.body.required - the new action
+     * @returns {Action.model} 200 - New action object
+     * @returns {Error}  400 - Action:create | error message
+     * @returns {Error}  500 - error
      *
-     *  return: New Action object.
      */
     create(req, res, next) {
         Action
@@ -38,9 +45,21 @@ module.exports = {
             .catch(error => res.status(400).send('Action:create | ' + error));
     },
 
-    /*  localhost:4200/api/action/find_all --- ?actionTitle=title... (optional)
+    /**
+     * This function find all the actions.
+     * @route GET /api/action/find_all
+     * @group Action - Operations about action
+     * @param {integer} actionType.optional
+     * @param {string} actionTitle.optional
+     * @param {integer} memberId.optional
+     * @param {date} actionDateCreation.optional
+     * @param {integer} cardId.optional
+     * @param {integer} listId.optional
+     * @param {integer} projectId.optional
+     * @param {integer} teamId.optional
+     * @returns {Array.<Action>} 200 - An array of actions.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Action objects with given attributes sorted by actionDateCreation.
      */
     findAll(req, res, next) {
         Action
@@ -55,6 +74,14 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    /**
+     * This function find all the comments corresponding to a card.
+     * @route GET /api/action/find_all_comments/:card
+     * @group Action - Operations about action
+     * @returns {Array.<Action>} 200 - An array of actions.
+     * @returns {Error}  500 - error
+     *
+     */
     findAllComments (req, res, next) {
 
         MemberHasAction.findAll({
@@ -101,9 +128,20 @@ module.exports = {
         }).then(r => res.send(r)) */
     },
 
-    /*  localhost:4200/api/action/find_one --- ?actionTitle=title... (optional)
+    /**
+     * This function find a action.
+     * @route GET /api/action/find_one
+     * @group Action - Operations about action
+     * @param {string} actionTitle.optional
+     * @param {integer} memberId.optional
+     * @param {date} actionDateCreation.optional
+     * @param {integer} cardId.optional
+     * @param {integer} listId.optional
+     * @param {integer} projectId.optional
+     * @param {integer} teamId.optional
+     * @returns {Array.<Action>} 200 - An action
+     * @returns {Error}  500 - error
      *
-     *  return: Action object with given attributes.
      */
     findOne(req, res, next) {
         Action
@@ -115,22 +153,20 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/action/update/:id
+
+    /**
+     * This function update an action.
+     * @route PUT /api/action/update/:id
+     * @group Action - Operations about action
+     * @param {integer} memberId.body.optional
+     * @param {date} actionDateCreation.body.optional
+     * @param {integer} cardId.body.optional
+     * @param {integer} listId.body.optional
+     * @param {integer} projectId.body.optional
+     * @param {integer} teamId.body.optional
+     * @returns {boolean} 200 - A boolean, true if the action was updated.
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      actionType: Int, (optional)
-     *      actionStatus: Int, (optional)
-     *      actionTitle: String, (optional
-     *      actionDescription: String (optional),
-     *      actionDateCreation: Int, (optional)
-     *      memberId: Int, (optional)
-     *      teamId: Int, (optional)
-     *      projectId: Int, (optional)
-     *      listId: Int, (optional)
-     *      cardId: Int (optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Action
@@ -187,9 +223,13 @@ module.exports = {
     },
 
 
-    /*  localhost:4200/api/action/delete/:id
+    /**
+     * This function delete an action.
+     * @route DELETE /api/action/delete/:id
+     * @group Action - Operations about action
+     * @returns {boolean} 200 - A boolean, true if the action was deleted.
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Action
@@ -208,6 +248,14 @@ module.exports = {
     /*  localhost:4200/api/action/find_all_unarchived
      *
      *  return: Array of  unarchived Action objects with given attributes.
+     */
+    /**
+     * This function find all the UNarchived actions.
+     * @route GET /api/action/find_all_unarchived
+     * @group Action - Operations about action
+     * @returns {Array.<Action>} 200 - All the UNarchived actions.
+     * @returns {Error}  500 - error
+     *
      */
     findAllUnarchived(req, res, next) {
         let Op = Sequelize.Op

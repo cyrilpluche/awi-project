@@ -12,12 +12,19 @@ module.exports = {
     /* ================= CRUD ================= */
 
     /**
-     *  req.body = {
-     *      cardId: INT,
-     *      memberId: INT
-     *  }
+     * @typedef MemberHasCard
+     * @property {integer} cardId.required
+     * @property {integer} memberId.required
+     */
+
+    /**
+     * This function create a new MemberHasCard.
+     * @route POST /api/card/create_member_has_card
+     * @group Card - Operations about cards.
+     * @param {MemberHasCard.model} MemberHasCard.body.required
+     * @returns {CardHasLabel.model} 200 - New MemberHasCard object.
+     * @returns {Error}  500 - error
      *
-     *  return: The MHC object.
      */
     create(req, res, next) {
         MemberHasCard
@@ -29,10 +36,7 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
-     *
-     *  return: Array of MHC objects with given attributes of the query.
-     */
+
     findAll(req, res, next) {
         MemberHasCard
             .findAll({
@@ -49,6 +53,16 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
+    /**
+     * This function find all the member of a card.
+     * @route GET /api/card/find_all_members
+     * @group Card - Operations about cards.
+     * @param {integer} cardId.required
+     * @returns {Array.<Member>} 200 - All the member of the card.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
+     */
     findAllMembers(req, res, next) {
         MemberHasCard
             .findAll({
@@ -65,7 +79,7 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /*  ?cardId=id... (optional)
      *
      *  return: MHC object with given attributes of the query.
      */
@@ -82,7 +96,7 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /*  ?cardId=id... (optional)
      *
      *  req.body = {
      *      cardId: INT, (optional)
@@ -103,9 +117,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /**
+     * This function delete a MemberHasCard
+     * @route DELETE /api/card/delete_member_has_card
+     * @group Card - Operations about cards.
+     * @param {integer} cardId.optional
+     * @returns {boolean} 200 - A boolean, true if the MemberHasCard was deleted.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         MemberHasCard

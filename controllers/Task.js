@@ -5,16 +5,29 @@ const Task = require('../config/db_connection').Task
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= Task CONTROLLER ================= */
+
 
     /**
-     *  req.body = {
-     *      taskTitle: String,
-     *      chtState: Boolean,
-     *      cardId: INT,
-     *  }
+     * @typedef Task
+     * @property {integer} taskId.required
+     * @property {string} taskTitle
+     * @property {boolean} chtState
+     * @property {integer} cardId
      *
-     *  return: The Task object.
+     */
+
+    /**
+     * This function create a new Task.
+     * @route POST /api/task/create
+     * @group Task - Operations about task.
+     * @param {string} taskTitle
+     * @param {boolean} chtState
+     * @param {integer} cardId
+     * @returns {Task.model} 200 - A new Task created.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     create(req, res, next) {
         Task
@@ -26,9 +39,16 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /**
+     * This function find all the tasks matching.
+     * @route GET /api/task/find_all
+     * @group Task - Operations about task.
+     * @param {string} taskTitle
+     * @param {integer} cardId
+     * @returns {Array.<Task>} 200 - All the Tasks matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Task objects with given attributes of the query.
      */
     findAll(req, res, next) {
         Task
@@ -44,9 +64,16 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /**
+     * This function the first task found.
+     * @route GET /api/task/find_one
+     * @group Task - Operations about task.
+     * @param {string} taskTitle
+     * @param {integer} cardId
+     * @returns {Task.model} 200 - The task found.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Task object with given attributes of the query.
      */
     findOne(req, res, next) {
         Task
@@ -61,7 +88,7 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /*  ?cardId=id... (optional)
      *
      *  req.body = {
      *      taskTitle: String,
@@ -70,6 +97,21 @@ module.exports = {
      *  }
      *
      *  return: A boolean. true = Updated, false = Not updated.
+     */
+
+    /**
+     * This function update a task.
+     * @route PUT /api/task/update
+     * @group Task - Operations about task.
+     * @param {string} taskTitle
+     * @param {integer} taskId
+     * @param {string} taskTitle.body.optional
+     * @param {boolean} chtState.body.optional
+     * @param {integer} cardId.body.optional
+     * @returns {boolean} 200 - Boolean, true if the task was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     update(req, res, next) {
         Task
@@ -83,9 +125,20 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?cardId=id... (optional)
+    /*  ?cardId=id... (optional)
      *
      *  return: A boolean. true = deleted, false = no deleted.
+     */
+    /**
+     * This function delete a task.
+     * @route DELETE /api/task/delete
+     * @group Task - Operations about task.
+     * @param {integer} taskId
+     * @param {integer} cardId.body.optional
+     * @returns {boolean} 200 - Boolean, true if the task was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     delete(req, res, next) {
         Task
