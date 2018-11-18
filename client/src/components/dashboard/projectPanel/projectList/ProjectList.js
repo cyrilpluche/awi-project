@@ -5,8 +5,6 @@ import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
 import _helper from '../../../../helpers'
-import Background from '../../../../public/images/project-bg.jpg'
-import Gallery from '../../../ui/gallery/BackgroundGallery'
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -161,25 +159,33 @@ class ProjectList extends React.Component {
 
         /** NEW PROJECT LIST */
         const projectList2 = (
-            <GridList className={classes.gridList} cols={2.5}>
+            <GridList className={classes.gridList} cols={5}>
                 {this.props.projects.map(project => {
                     if (this.props.isFavorite && project.projectIsFavorite) {
                         return (
                             <GridListTile
                                 key={project.projectId}
+                                className={ classes.borderRadius }
                             >
-                                <img id={project.projectId} onClick={this.goToProject} src={Background}
-                                     alt='project background'/>
+                                <Grid container
+                                      onClick={this.goToProject}
+                                      id={project.projectId}
+                                      className={classes.imgInformationsFav + ' ' + classes.borderRadius + ' ' + classes.borderRadiusBottom }
+                                >
+
+                                </Grid>
                                 <GridListTileBar
                                     title={project.projectTitle}
+                                    subtitle={'Contributors : ' + project.contributor}
                                     classes={{
                                         root: classes.titleBar,
                                         title: classes.gridTitle,
                                     }}
+                                    className={ classes.borderRadiusBottom }
                                     actionIcon={
                                         <IconButton>
                                             <StarIcon
-                                                className={classes.gridTitle}
+                                                className={ classes.favoriteButtonIcon }
                                                 id={'project/' + this.props.projects.indexOf(project)}
                                                 onClick={this.setProjectFavorite}
                                             />
@@ -192,19 +198,26 @@ class ProjectList extends React.Component {
                         return (
                             <GridListTile
                                 key={project.projectId}
+                                className={ classes.borderRadius }
                             >
-                                <img id={project.projectId} onClick={this.goToProject} src={Background}
-                                     alt='project background'/>
+                                <Grid container
+                                      onClick={this.goToProject}
+                                      id={project.projectId}
+                                      className={classes.imgInformations + ' ' + classes.borderRadius + ' ' + classes.borderRadiusBottom }
+                                >
+                                </Grid>
                                 <GridListTileBar
                                     title={project.projectTitle}
+                                    subtitle={'Contributors : ' + project.contributor}
                                     classes={{
                                         root: classes.titleBar,
                                         title: classes.gridTitle,
                                     }}
+                                    className={ classes.borderRadiusBottom }
                                     actionIcon={
                                         <IconButton>
                                             <StarBorderIcon
-                                                className={classes.gridTitle}
+                                                className={classes.addFavoriteButtonIcon}
                                                 id={'project/' + this.props.projects.indexOf(project)}
                                                 onClick={this.setProjectFavorite}
                                             />

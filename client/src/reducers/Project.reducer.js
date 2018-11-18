@@ -12,7 +12,8 @@ const initialState = {
     members: [],
     isLoading: false,
     activities: [],
-    permissions: []
+    permissions: [],
+    maj: ''
 };
 
 export function project (state = initialState, action) {
@@ -95,9 +96,14 @@ export function project (state = initialState, action) {
 
             listsCards[listIndex].CardListFks[cardIndexx].MemberhascardCardFks.push(element)
             socket.emit("updateLists", {projectId:listsCards[0].projectId,lists:listsCards})
+
+            let maj2 = state.maj
+            if (maj2 === '') maj2 = ' '
+            else maj2 = ''
             return {
                 ...state,
-                lists: listsCards
+                lists: listsCards,
+                maj: maj2
             };
 
         case cardLabels.DELETE_MEMBER:
@@ -109,10 +115,34 @@ export function project (state = initialState, action) {
 
             listsCards1[listIndex1].CardListFks[cardIndex1].MemberhascardCardFks.splice(elementIndex, 1)
             socket.emit("updateLists", {projectId:listsCards1[0].projectId,lists:listsCards1})
+
+            let maj3 = state.maj
+            if (maj3 === '') maj3 = ' '
+            else maj3 = ''
+
             return {
                 ...state,
-                lists: listsCards1
+                lists: listsCards1,
+                maj: maj3
             };
+
+        case cardLabels.CREATE_LINK_LABEL:
+            let maj = state.maj
+            if (maj === '') maj = ' '
+            else maj = ''
+            return {
+                ...state,
+                maj: maj
+            }
+
+        case cardLabels.DELETE_LINK_LABEL:
+            let maj1 = state.maj
+            if (maj1 === '') maj1 = ' '
+            else maj1 = ''
+            return {
+                ...state,
+                maj: maj1
+            }
 
         case listLabels.UPDATE_CARD:   
             socket.emit("updateLists", {projectId:action.payload[0].projectId,lists:action.payload})
@@ -191,6 +221,7 @@ export function project (state = initialState, action) {
         case projectLabels.REMOVE_MEMBER_FROM_PROJECT:
             return {
                 ...state,
+                maj: ''
             };
         //TODO
         case projectLabels.SET_MEMBER_ADMIN:

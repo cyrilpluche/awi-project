@@ -185,6 +185,7 @@ class Cardboard extends React.Component {
                                             />
                                             : null
                                     )}
+                                    {this.props.refresh.length}
                                 </Grid>
                                 <Grid item xs={12}>
 
@@ -473,7 +474,8 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    isLoading: state.project.isLoading
+    isLoading: state.project.isLoading,
+    refresh: state.project.maj
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,

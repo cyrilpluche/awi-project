@@ -7,11 +7,11 @@ import _action from '../../actions'
 
 /** COMPONENTS */
 import ProjectList from './projectPanel/projectList/ProjectList'
-import TeamPanel from './teamPanel/TeamPanel'
 
 /** MATERIAL UI */
 import { style } from './Style'
 import Grid from '@material-ui/core/Grid';
+import Loader from "../ui/loader/Loader";
 
 class Dashboard extends React.Component {
     constructor (props) {
@@ -44,36 +44,29 @@ class Dashboard extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Grid container className={classes.layout}>
-                <Grid xs={5} item className={classes.subLayout}>
-                    <Grid justify="center" container>
-                        <TeamPanel teams={this.props.teams}/>
+            <Grid container justify='center' alignItems='center' className={classes.layout}>
+                { !this.props.isLoading ?
+                    <Grid xs={10} item className={classes.subLayout}>
+                        <ProjectList
+                            title={"Favorite projects"}
+                            iconList={'work_outline'}
+                            projects={this.props.allProjects}
+                            canCreateProject
+                            isFavorite={true}
+                        />
+
+                        <ProjectList
+                            title={"Personal projects"}
+                            iconList={'work_outline'}
+                            projects={this.props.allProjects}
+                            canCreateProject
+                            isFavorite={false}
+                        />
                     </Grid>
-                </Grid>
-                <Grid xs={7} item className={classes.subLayout}>
-                    <ProjectList
-                        title={"Favorite projects"}
-                        iconList={'work_outline'}
-                        projects={this.props.allProjects}
-                        canCreateProject
-                        isFavorite={true}
-                    />
+                    :
+                    <Loader/>
+                }
 
-                    <ProjectList
-                        title={"Personal projects"}
-                        iconList={'work_outline'}
-                        projects={this.props.allProjects}
-                        canCreateProject
-                        isFavorite={false}
-                    />
-
-                    <ProjectList
-                        title={"Team project"}
-                        iconList={'people_outline'}
-                        projects={this.props.teamProjects}
-                        canCreateProject
-                    />
-                </Grid>
             </Grid>
         )
     }
@@ -83,20 +76,14 @@ Dashboard.propTypes = {
     classes: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => {
-    let list_favorite = []
-    for (let i = 0; i < state.dashboard.projects.length; i++) {
-        if (state.dashboard.projects[i].projectIsFavorite) list_favorite.push(state.dashboard.projects[i])
-    } // only save the favorite projects of the member
-    return {
-        errorMessage: state.dashboard.errorMsg,
-        allProjects: state.dashboard.projects,
-        favoriteProjects: list_favorite,
-        teamProjects: [], // todo
-        memberId: state.signin.member.memberId,
-        teams: state.dashboard.teams
-    }
-}
+const mapStateToProps = (state) => ({
+    errorMessage: state.dashboard.errorMsg,
+    allProjects: state.dashboard.projects,
+    teamProjects: [], // todo
+    memberId: state.signin.member.memberId,
+    teams: state.dashboard.teams,
+    isLoading: state.dashboard.isLoading
+})
 
 const mapDispatchToProps = {
     loadProjects: _action.dashboardAction.getAllProjectsMember,

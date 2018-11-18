@@ -3,6 +3,7 @@ import _helper from '../helpers'
 import moment from "moment";
 
 const labels = {
+    LOAD_DASHBOARD: "LOAD_DASHBOARD",
     SELECT_PROJECT: 'project:select_one',
     FIND_ONE_PROJECT: 'project:find_one',
     RECEIVE_PROJECT: 'project:received',
@@ -52,20 +53,25 @@ function fetchProject(attributes) {
  * @param member_id member id
  */
 function getAllProjectsMember (member_id) {
-    return dispatch => _service.Project.getAllProjectsMember(member_id)
-        .then(projects => {
-            dispatch({
-                type: labels.SELECT_ALL_PROJECT_MEMBER,
-                payload: projects
-            })
+    return dispatch => {
+        dispatch({
+            type: labels.LOAD_DASHBOARD
         })
-        .catch (e => {
-            console.log(e)
-            dispatch({
-                type: labels.DASHBOARD_ACTION_ERROR,
-                errorMsg: 'We can\'t load your project for the moment, please try later or contact an administrator.'
+        _service.Project.getAllProjectsMember(member_id)
+            .then(projects => {
+                dispatch({
+                    type: labels.SELECT_ALL_PROJECT_MEMBER,
+                    payload: projects
+                })
             })
-        })
+            .catch (e => {
+                console.log(e)
+                dispatch({
+                    type: labels.DASHBOARD_ACTION_ERROR,
+                    errorMsg: 'We can\'t load your project for the moment, please try later or contact an administrator.'
+                })
+            })
+    }
 }
 
 /** Get all team of a member

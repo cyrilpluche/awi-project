@@ -13,6 +13,9 @@ const initialState = {
 
 export function dashboard (state = initialState, action) {
     switch (action.type) {
+        case labels.LOAD_DASHBOARD:
+            return { ...state, isLoading: true, errorMsg: '' };
+
         case labels.SELECT_PROJECT:
             return { ...state, project: action.project, errorMsg: '' };
 
@@ -23,7 +26,7 @@ export function dashboard (state = initialState, action) {
             return { ...state, project: action.json, loading: false, errorMsg:'' };
 
         case labels.SELECT_ALL_PROJECT_MEMBER:
-            return { ...state, projects:action.payload, errorMsg: '' };
+            return { ...state, projects:action.payload, errorMsg: '', isLoading: false };
 
         case labels.SELECT_ALL_TEAM_MEMBER:
             return { ...state, teams:action.payload, errorMsg: '' };

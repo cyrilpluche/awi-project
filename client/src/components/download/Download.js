@@ -5,10 +5,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import _helper from '../../helpers'
 
-/** COMPONENTS */
-/*import PrelloDesktop from '../../public/files/Prello-linux-x64.zip'
-import PrelloMac from '../../public/files/Prello-darwin-x64.zip'*/
-
 /** MATERIAL UI */
 import { style } from './Style'
 import Grid from "@material-ui/core/Grid/Grid";
@@ -26,8 +22,21 @@ class Download extends React.Component {
         _helper.History.push('/home')
     }
 
+    goToLink (event) {
+        const type = event.currentTarget.id
+
+        const windowsLink = 'https://drive.google.com/open?id=1T_1kY6ZImpbK8B5d9Mi88dvk2P2ucRLj'
+        const linuxLink = 'https://drive.google.com/open?id=1r6_hcyRj3lUi73n_7h-SQdgKsrp6XBPL'
+        const macLink = 'https://drive.google.com/open?id=10kXDiLWnG8eUSSLbefu3Z6wSTS2fugUX'
+
+        if (type === 'linux') window.open(linuxLink)
+        else if (type === 'mac') window.open(macLink)
+        else if (type === 'windows') window.open(windowsLink)
+    }
+
     render() {
         const { classes } = this.props;
+
 
         return (
             <Grid container justify="center">
@@ -62,6 +71,8 @@ class Download extends React.Component {
                         <Grid justify='center' container alignItems="center">
                             <Grid item xs={4} className={ classes.marginBottomXs }>
                                 <Button
+                                    id='linux'
+                                    onClick={this.goToLink}
                                     download
                                     variant="outlined"
                                     color="primary"
@@ -74,8 +85,10 @@ class Download extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
-                            <Grid item xs={4}>
+                            <Grid item xs={4} className={ classes.marginBottomXs }>
                                 <Button
+                                    id='mac'
+                                    onClick={this.goToLink}
                                     download
                                     variant="outlined"
                                     color="primary"
@@ -83,6 +96,22 @@ class Download extends React.Component {
                                     className={classes.button}
                                 >
                                     Get on MAC
+                                    <GetAppIcon className={classes.rightIcon} />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        <Grid justify='center' container alignItems="center">
+                            <Grid item xs={4}>
+                                <Button
+                                    id='windows'
+                                    onClick={this.goToLink}
+                                    download
+                                    variant="outlined"
+                                    color="primary"
+                                    fullWidth
+                                    className={classes.button}
+                                >
+                                    Get on WINDOWS
                                     <GetAppIcon className={classes.rightIcon} />
                                 </Button>
                             </Grid>
