@@ -227,7 +227,7 @@ class Project extends Component {
             dragId = Number.parseInt(dragId[1])
             let findList = notArchivedList.find(list => list.listId === dragId)
 
-            let indexOfList = notArchivedList.indexOf(findList)
+            let indexOfList = notArchivedList.findIndex(list => list.listId === findList.listId)
             let newLists = Array.from(notArchivedList)
 
             //remove list from list of list
@@ -240,28 +240,8 @@ class Project extends Component {
 
             //set state with the new list           
             this.setState({lists:newArrayList},() =>{
-
-                //this.socket.emit('move', newArrayList)
-                //let updateList = lists.find(list => list.listId === dragId)
-                //let updateList = findWhere(lists,{listId: dragId})
-
-                //let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
-
-                //let childUpdatedList = findWhere(lists,{listFather: findList.listId})
-
-
-                //let indexOfUpdateList = lists.indexOf(findList)
-
-                //New father and child of dragged list
-                //let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
-                //let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
-
-
-                // Change fathers of list in DB
-                /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
-                 if(findList)  this.props.moveList(updateList.listId,listFather)
-                 if(listChild) this.props.moveList(listChild,updateList.listId)*/
              })
+
             /** Keeps order list updated */
             let listsOrder = _helper.Method.computeListOrder(this.state.lists)
             this.props.updatePositionLists(newArrayList, listsOrder)
@@ -277,6 +257,7 @@ class Project extends Component {
             let destinationList =  Object.assign({},lists.find(list => list.listId === destinationListId ))
             let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
 
+            // When card has been dragged in another list
             if(destinationListId !== sourceListId){
 
                 const notArchivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 0))
@@ -305,7 +286,7 @@ class Project extends Component {
                 newList.splice(destinationListIndex,0,destinationList)
 
                 this.setState({lists: newList}, () =>{
-                    //this.socket.emit('move', newList)
+                    
                     this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
                 let listsOrder = _helper.Method.computeCardOrder(this.state.lists)
@@ -330,24 +311,22 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0, sourceList)
                 this.setState({lists: newList}, () =>{
                     this.props.updatePositionLists(newList)
-                    // this.socket.emit('move', newList)
+                    
                 })
                 let listsOrder = _helper.Method.computeCardOrder(this.state.lists)
                 this.props.onUpdatePositionCard(listsOrder)
             }
 
-
-
-            // this.props.updateCard(cardId,findListId.listId)}*/
-
         }
 
     };
 
+    //Make title editable
     handleEditTitle(){
         this.setState({editProjectTitle:true})
     }
 
+    // Edit project Title
     handleValidationEditTitle(){
         this.setState({editProjectTitle:false})
         const {newProjectTitle} = this.state
@@ -384,6 +363,7 @@ class Project extends Component {
         });
     };
 
+    // Restore archived card or list
     handleRestoreArchived = (name,type) => event =>{
 
         if(type === "list") {
@@ -604,11 +584,11 @@ class Project extends Component {
                         {renderActivity}
 
                         {/*===================  FILTER BUTTON  ========================================= */}
-                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
+                        {/*< Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
                             <FilterList className={classes.leftIcon} />
                             Filter
                         </Button>
-                        {renderFilter}
+                        {renderFilter}*/}
 
                         {/*===================  ARCHIVED BUTTON  ========================================= */}
                         < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
@@ -666,7 +646,7 @@ const mapStateToProps = (state) => ({
     activities: state.project.activities,
     currentMemberId: state.signin.member.memberId,
     isLoading: state.project.isLoading
-    //labels : state.project.labels || []
+    
 })
 
 const mapDispatchToProps ={
