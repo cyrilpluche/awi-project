@@ -8,6 +8,9 @@ const labels = {
     UPDATE_PASSWORD_ERROR: 'UPDATE_PASSWORD_ERROR'
 }
 
+/** Update a member
+ * @param attributes Object contains data to update with
+ */
 function updateMember(attributes) {
     return (dispatch) => {
         _service.Member.update(attributes)
@@ -35,6 +38,10 @@ function updateMember(attributes) {
     };
 }
 
+/** Update member picture profile
+ * @param attributes
+ * @param memebrId
+ */
 function updateMemberPicture (attributes, memberId) {
     return (dispatch) => {
         dispatch({
@@ -65,6 +72,9 @@ function updateMemberPicture (attributes, memberId) {
     };
 }
 
+/**Update member password
+ * @param password
+ */
 function updateMemberPassword (passwords) {
     return (dispatch) => {
         _service.Member.updatePassword(passwords)

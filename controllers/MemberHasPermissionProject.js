@@ -4,17 +4,29 @@ const Permission = require('../config/db_connection').Permission
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= MemberHasPermissionProject CONTROLLER ================= */
 
     /**
-     *  req.body = {
-     *      permissionId: INT,
-     *      projectId: INT,
-     *      memberId: INT,
-     *      mhppState: BOOL
-     *  }
+     * @typedef MemberHasPermissionProject
+     * @property {integer} memberHasPermissionProjectId.required
+     * @property {integer} permissionId.required
+     * @property {integer} projectId
+     * @property {integer} memberId
+     * @property {boolean} mhppState
+     */
+
+    /**
+     * This function create a new member.
+     * @route POST /api/permission/create_for_project
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.required
+     * @param {integer} projectId
+     * @param {integer} memberId
+     * @param {boolean} mhppState
+     * @returns {string} 200 - A new MemberHasPermissionProject created.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: The MHPP object.
      */
     create(req, res, next) {
         Mhpp
@@ -26,9 +38,17 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function find all the MemberHasPermissionProject matching.
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.optional
+     * @param {integer} projectId.optional
+     * @param {integer} memberId.optional
+     * @param {boolean} mhppState.optional
+     * @returns {Array.<MemberHasPermissionProject>} 200 - A array of MemberHasPermissionProject.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Array of MHPP objects with given attributes of the query.
      */
     findAll(req, res, next) {
         Mhpp
@@ -43,6 +63,7 @@ module.exports = {
             })
             .catch(error => res.status(400).send(error))
     },
+
 
     findAllFromMembers(req, res, next) {
         let members = req.body.result
@@ -75,10 +96,16 @@ module.exports = {
 
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function find the first MemberHasPermissionProject matching.
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.optional
+     * @param {integer} projectId.optional
+     * @param {integer} memberId.optional
+     * @returns {Permission.model} 200 - Permission object with given attributes of the query..
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *
-     *  return: Permission object with given attributes of the query.
      */
     findOne(req, res, next) {
         Mhpp
@@ -92,16 +119,20 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function update a the permission of a project member.
+     * @route PUT /api/permission/update_for_project
+     * @group Permission - Operations about permission.
+     * @param {integer} permissionId.optional
+     * @param {integer} projectId.optional
+     * @param {integer} memberId.optional
+     * @param {integer} permissionId.body.optional
+     * @param {integer} projectId.body.optional
+     * @param {integer} memberId.body.optional
+     * @returns {boolean} 200 - Boolean, true if the MemberHasPermissionProject was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      permissionId: INT, (optional)
-     *      projectId: INT, (optional)
-     *      memberId: INT, (optional)
-     *      mhhpState: BOOL (optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Mhpp
@@ -115,9 +146,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?permissionId=id... (optional)
+    /**
+     * This function delete a MemberHasPermissionProject.
+     * @route DELETE /api/permission/delete_for_project
+     * @group Permission - Operations about permission.
+     * @param {integer} MemberHasPermissionProjectId
+     * @returns {boolean} 200 - Boolean, true if the MemberHasPermissionProject was deleted.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Mhpp
@@ -132,7 +169,10 @@ module.exports = {
     },
 
     /**
-     *  return: Create all permission (false) for a new member on  project.
+     * This function create all permission (false) for a new member on project.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     initAll (req, res, next) {
         Mhpp

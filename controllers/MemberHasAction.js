@@ -8,17 +8,18 @@ const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPs
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= MemberHasAction CONTROLLER ================= */
+
 
     /**
-     *  req.body = {
-     *      actionId: INT,
-     *      memberId: INT,
-     *      mhaStatus: INT,
-     *  }
-     *
-     *  return: The object.
+     * @typedef MemberHasAction
+     * @property {integer} memberHasActionId.required
+     * @property {integer} actionId
+     * @property {integer} memberId
+     * @property {integer} mhaStatus
      */
+
+
     create(req, res, next) {
         MemberHasAction
             .create(req.body)
@@ -30,13 +31,13 @@ module.exports = {
     },
 
     /**
-     *  req.body = {
-     *      actionId: INT,
-     *      members: [{memberId: id}, ...],
-     *      mhaStatus: INT,
-     *  }
+     * This function create a new member.
+     * @param {integer} actionId
+     * @param {Array.<Member>} members
+     * @returns {boolean} 200 - Boolean, true if all MHA are created.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: true if all MHA are created, else false.
      */
     createFromArray (req, res, next) {
         let members = req.body.result
@@ -67,9 +68,15 @@ module.exports = {
 
     },
 
-    /**  ?actionId=id... (optional)
+    /**
+     * This function find all the MemberHasAction matching.
+     * @param {integer} actionId
+     * @param {integer} memberId
+     * @param {integer} mhaStatus
+     * @returns {Array.<MembmerHasAction>} 200 - Array of MemberHasAction.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Array of MHA objects with given attributes of the query.
      */
     findAll(req, res, next) {
         MemberHasAction
@@ -85,9 +92,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?actionId=id... (optional)
+    /**
+     * This function find the first MemberHasAction matching.
+     * @param {integer} actionId
+     * @param {integer} memberId
+     * @param {integer} mhaStatus
+     * @returns {MembmerHasAction.model} 200 - Array of MemberHasAction.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: MHA object with given attributes of the query.
      */
     findOne(req, res, next) {
         MemberHasAction
@@ -105,15 +118,16 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?actionId=id... (optional)
+    /**
+     * This function update a MemberHasAction.
+     * @param {integer} actionId
+     * @param {integer} actionId.body
+     * @param {integer} memberId.body
+     * @param {integer} mhaStatus.body
+     * @returns {boolean} 200 - Boolean, true if the MemberHasAction was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      actionId: INT,
-     *      memberId: INT,
-     *      mhaStatus: INT,
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         MemberHasAction
@@ -127,9 +141,18 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?actionId=id... (optional)
+    /*  ?actionId=id... (optional)
      *
      *  return: A boolean. true = deleted, false = no deleted.
+     */
+    /**
+     * This function delete a MemberHasAction.
+     * @param {integer} actionId
+     * @param {integer} memberId
+     * @returns {boolean} 200 - Boolean, true if the MemberHasAction was deleted.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     delete(req, res, next) {
         MemberHasAction

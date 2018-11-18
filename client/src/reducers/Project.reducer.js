@@ -36,7 +36,8 @@ export function project (state = initialState, action) {
                 isLoading: true
             };
 
-        case projectLabels.GET_ALL_LISTS: 
+        case projectLabels.GET_ALL_LISTS:
+
             return {
                 ...state,
                 lists:action.payload,
@@ -48,7 +49,7 @@ export function project (state = initialState, action) {
             newList.CardListFks = []
             let lists = [...state.lists,newList]
              
-            socket.emit("updateProject", {projectId:lists[0].projectId,lists:lists})
+            socket.emit("updateLists", {projectId:lists[0].projectId,lists:lists})
             return {
                 ...state,
                 lists 
@@ -77,7 +78,7 @@ export function project (state = initialState, action) {
             findList.CardListFks = notarchivedCardsCreate.concat(archivedCardsCreate)
             listWithCard.splice(findListIndex,1)
             listWithCard.splice(findListIndex,0,findList)
-            socket.emit("updateProject", {projectId:listWithCard[0].projectId,lists:listWithCard})
+            socket.emit("updateLists", {projectId:listWithCard[0].projectId,lists:listWithCard})
             return {
                 ...state,
                 lists : listWithCard,
@@ -93,14 +94,28 @@ export function project (state = initialState, action) {
             let element = {Member: newMember}
 
             listsCards[listIndex].CardListFks[cardIndexx].MemberhascardCardFks.push(element)
-            console.log('WOHOU')
+            socket.emit("updateLists", {projectId:listsCards[0].projectId,lists:listsCards})
             return {
                 ...state,
                 lists: listsCards
             };
 
+        case cardLabels.DELETE_MEMBER:
+            let listIndex1 = action.payload.listIndex
+            let cardIndex1 = action.payload.cardIndex
+            let elementIndex = action.payload.elementIndex
+
+            let listsCards1 = Array.from(state.lists)
+
+            listsCards1[listIndex1].CardListFks[cardIndex1].MemberhascardCardFks.splice(elementIndex, 1)
+            socket.emit("updateLists", {projectId:listsCards1[0].projectId,lists:listsCards1})
+            return {
+                ...state,
+                lists: listsCards1
+            };
+
         case listLabels.UPDATE_CARD:   
-            socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload})
+            socket.emit("updateLists", {projectId:action.payload[0].projectId,lists:action.payload})
             return {
                 ...state,
                 lists : action.payload
@@ -117,7 +132,7 @@ export function project (state = initialState, action) {
             let allList = Array.from(state.lists)
             allList.splice(updateListIndex,1)
             allList.splice(updateListIndex,0,newListTitle)
-            socket.emit("updateProject", {projectId:allList[0].projectId,lists:allList})
+            socket.emit("updateLists", {projectId:allList[0].projectId,lists:allList})
             return {
                 ...state,
                 lists: allList
@@ -129,7 +144,7 @@ export function project (state = initialState, action) {
             let newLists = Array.from(state.lists)
             newLists.splice(updateListStatusIndex,1)
             newLists.splice(updateListStatusIndex,0,newListStatus)
-            socket.emit("updateProject", {projectId:newLists[0].projectId,lists:newLists})
+            socket.emit("updateLists", {projectId:newLists[0].projectId,lists:newLists})
             return {
                 ...state,
                 lists: newLists
@@ -140,16 +155,22 @@ export function project (state = initialState, action) {
         const projectId = state.lists.find(list => list.listId === action.payload ).projectId
         let newlists = Array.from(state.lists)
         newlists.splice(deletedListIndex,1)
-        socket.emit("updateProject", {projectId:projectId,lists:newlists})    
+        socket.emit("updateLists", {projectId:projectId,lists:newlists})    
             return {
                 ...state,
                 lists: newlists,
             };
         case projectLabels.GET_PROJECT_INFO:
+        socket.emit("updateProject", {projectId:action.payload[0].projectId,info:action.payload[0]})  
             return {
                 ...state,
                 projectInfo: action.payload[0]
             };
+        case projectLabels.UPDATE_PROJECT_INFO:
+        return {
+            ...state,
+            projectInfo: action.payload
+        };
         case projectLabels.GET_ALL_MEMBERS:
             return {
                 ...state,
@@ -229,7 +250,7 @@ export function project (state = initialState, action) {
                 members : action.payload
             };
         case listLabels.UPDATE_POSITION_LISTS:
-            socket.emit("updateProject", {projectId:action.payload[0].projectId,lists:action.payload})
+            socket.emit("updateLists", {projectId:action.payload[0].projectId,lists:action.payload})
             return {
                 ...state,
                 lists : action.payload
@@ -239,7 +260,7 @@ export function project (state = initialState, action) {
 
             let updatedLists = Array.from(state.lists)
             updatedLists[action.payload.listIndex].CardListFks.splice(action.payload.cardIndex, 1)
-            socket.emit("updateProject", {projectId:updatedLists[0].projectId,lists:updatedLists}) 
+            socket.emit("updateLists", {projectId:updatedLists[0].projectId,lists:updatedLists}) 
             return {
                 ...state,
                 lists : updatedLists,
@@ -255,7 +276,7 @@ export function project (state = initialState, action) {
             let archivedCardsArray = archivedCards[action.payload.listIndex].CardListFks.filter(card => card.cardStatus === 1)
             //concat both lists
             archivedCards[action.payload.listIndex].CardListFks = notarchivedCardsArray.concat(archivedCardsArray)
-            socket.emit("updateProject", {projectId:archivedCards[0].projectId,lists:archivedCards}) 
+            socket.emit("updateLists", {projectId:archivedCards[0].projectId,lists:archivedCards}) 
             return {
                 ...state,
                 lists : archivedCards,
@@ -276,6 +297,7 @@ export function project (state = initialState, action) {
             
             //concat both lists
             arrayOfList[listWithCardIndex].CardListFks = notarchivedCards.concat(archiveCards)
+            socket.emit("updateLists", {projectId:arrayOfList[0].projectId,lists:arrayOfList})  
             return {
                 ...state,
                 lists : arrayOfList,
@@ -289,7 +311,7 @@ export function project (state = initialState, action) {
             let cardDueDateIndex = listsOld[listDueDateIndex].CardListFks.findIndex(card => card.cardId === action.payload.card.cardId)
 
             listsOld[listDueDateIndex].CardListFks[cardDueDateIndex].cardDateTarget =  action.payload.dueDate
-            socket.emit("updateProject", {projectId:listsOld[0].projectId,lists:listsOld}) 
+            socket.emit("updateLists", {projectId:listsOld[0].projectId,lists:listsOld}) 
             return {
                 ...state,
                 lists : listsOld
@@ -302,7 +324,7 @@ export function project (state = initialState, action) {
             let cardDescriptionIndex = oldLists[listDescriptionIndex].CardListFks.findIndex(card => card.cardId === action.payload.card.cardId)
 
             oldLists[listDescriptionIndex].CardListFks[cardDescriptionIndex].cardDescription =  action.payload.description
-            socket.emit("updateProject", {projectId:oldLists[0].projectId,lists:oldLists}) 
+            socket.emit("updateLists", {projectId:oldLists[0].projectId,lists:oldLists}) 
             return {
                 ...state,
                 lists : oldLists
@@ -315,7 +337,7 @@ export function project (state = initialState, action) {
             let cardTitleIndex = listsArray[listTitleIndex].CardListFks.findIndex(card => card.cardId === action.payload.card.cardId)
 
             listsArray[listTitleIndex].CardListFks[cardTitleIndex].cardTitle=  action.payload.title
-            socket.emit("updateProject", {projectId:listsArray[0].projectId,lists:listsArray}) 
+            socket.emit("updateLists", {projectId:listsArray[0].projectId,lists:listsArray}) 
             return {
                 ...state,
                 lists : listsArray

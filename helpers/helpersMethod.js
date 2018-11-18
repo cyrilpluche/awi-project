@@ -146,6 +146,22 @@ const methods = {
             father += 1
         }
         return listsOrder
+    },
+
+    listToArrayListId (lists) {
+        let flat = []
+        for (let l of lists) {
+            flat.push({ listId: l.listId })
+        }
+        return flat
+    },
+
+    cardToArrayCardId (cards) {
+        let flat = []
+        for (let c of cards) {
+            flat.push({ cardId: c.cardId })
+        }
+        return flat
     }
 };
 

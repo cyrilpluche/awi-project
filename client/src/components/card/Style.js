@@ -106,6 +106,9 @@ export const styles = theme => ({
     markdown:{
         backgroundColor : 'lightgrey',
     },
+    mdeSize: {
+        //height: 100
+    },
     buttonLabel: {
         margin: 0,
         padding: 0,
@@ -127,5 +130,16 @@ export const styles = theme => ({
     littleAvatar: {
         width: 28,
         height: 28,
+    },
+    moreIcon: {
+        padding: 4,
+    },
+    firstRow: {
+        marginRight: 10
+    },
+    scrollContainer: {
+        overflowY: 'scroll',
+        height: theme.spacing.unit * 70,
+        paddingLeft: 2
     },
 });

@@ -12,11 +12,11 @@ import Checklist from './checklist/ChecklistDialog';
 import LabelDialog from './label/LabelDialog'
 import ConfirmationDialog from './confirmation/ConfirmationDialog';
 import MiniLoader from "../ui/loader/MiniLoader";
+import _helper from "../../helpers";
 
 /** MATERIAL UI */
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Button from "@material-ui/core/Button/Button";
 import TextField from "@material-ui/core/TextField/TextField";
@@ -28,11 +28,11 @@ import LabelIcon from '@material-ui/icons/Label'
 import {Edit,Done,Cancel} from '@material-ui/icons';
 import MemberOnCard from "./membersOnCard/MembersOnCard";
 import classNames from 'classnames';
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 /** MARKDOWN EDITOR */
 import SimpleMDEReact from "react-simplemde-editor";
 import "simplemde/dist/simplemde.min.css";
-import ActivityList from "../ui/activity/ActivityList";
 
 class Cardboard extends React.Component {
     constructor (props) {
@@ -47,6 +47,7 @@ class Cardboard extends React.Component {
         this.validEditDescription = this.validEditDescription.bind(this)
         this.handleEditTitle =  this.handleEditTitle.bind(this)
         this.validEditTitle = this.validEditTitle.bind(this)
+
         this.state = {
             open: this.props.route.params.cardid ?
                 this.props.route.params.cardid.toString() === this.props.currentCard.cardId.toString() : false,
@@ -61,8 +62,7 @@ class Cardboard extends React.Component {
         };
     }
 
-
-    componentDidUpdate(){
+    componentDidUpdate (){
         if(!this.state.init){
             this.setState({
                 dueDate : this.props.currentCard.cardDateTarget,
@@ -155,7 +155,13 @@ class Cardboard extends React.Component {
         const { classes } = this.props;
 
         _helper.History.listen( location =>  {
-            this.setState({ open: this.props.route.params.cardid.toString() === this.props.currentCard.cardId.toString() })
+            try {
+                let isOpen = location.pathname.split('/')[4].toString() === this.props.currentCard.cardId.toString()
+                this.setState({ open: isOpen })
+            } catch (err) {
+                // Nothing
+                this.setState({ open: false })
+            }
         });
 
         const cardDialog = (
@@ -168,7 +174,38 @@ class Cardboard extends React.Component {
                 <DialogContent>
                     { this.props.currentCard ? (
                         <Grid justify='center' container>
-                            <Grid xs={8} item>
+                            <Grid xs={8} item className={classes.scrollContainer}>
+                                <Grid item xs={12}>
+                                    {this.props.currentCard.HaslabelCardFks.map(label =>
+                                        label.Label ?
+                                            <LabelIcon
+                                                key={label.labelId}
+                                                style={{
+                                                    color: label.Label.labelColor,
+                                                }}
+                                            />
+                                            : null
+                                    )}
+                                </Grid>
+                                <Grid item xs={12}>
+
+                                    { this.props.isLoading ?
+                                        <MiniLoader/>
+                                        :
+                                        this.props.currentCard.MemberhascardCardFks ? this.props.currentCard.MemberhascardCardFks.map(member =>
+                                            member.Member.memberPicture ?
+                                                <Avatar
+                                                    key={member.memberId}
+                                                    alt={member.Member.memberFirstname + 'sharp'}
+                                                    src={member.Member.memberPicture}
+                                                    className={classNames(classes.avatar, classes.littleAvatar)}
+                                                />
+                                                :
+                                                <Avatar className={classes.orangeAvatar} key={member.memberId}>
+                                                    {member.Member.memberFirstname.toUpperCase()[0]}
+                                                </Avatar>
+                                        ) : null}
+                                </Grid>
                                 <form className={classes.container} noValidate autoComplete="off">
 
                                     <Grid container justify='space-between' alignItems='center'>
@@ -271,7 +308,7 @@ class Cardboard extends React.Component {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={2}>
-                                            { this.state.editDescription?
+                                            { this.state.editDescription ?
                                                 <IconButton
                                                     className={classes.done}
                                                     size="small"
@@ -280,14 +317,15 @@ class Cardboard extends React.Component {
                                                 >
                                                     <Done fontSize="small" />
                                                 </IconButton>
-                                                :<IconButton  color="primary" size="small" aria-label="valid" onClick={this.editDescription}>
+                                                :
+                                                <IconButton  color="primary" size="small" aria-label="valid" onClick={this.editDescription}>
                                                     <Edit fontSize="small" />
                                                 </IconButton>
                                             }
                                         </Grid>
                                         <Grid item xs={12}>
                                             <SimpleMDEReact
-                                                className={classes.markdown}
+                                                className={classes.markdown + ' ' + classes.mdeSize}
                                                 getMdeInstance={this.getInstance}
                                                 value={this.state.description}
                                                 onChange={this.handleChangeDescription('description')}
@@ -304,8 +342,8 @@ class Cardboard extends React.Component {
                                 <MemberOnCard
                                     route={this.props.route}
                                     card={this.props.currentCard}
-                                    listIndex={this.props.listIndex}
-                                    cardIndex={this.props.cardIndex}
+                                    listindex={this.props.listIndex}
+                                    cardindex={this.props.cardIndex}
                                 />
                                 <LabelDialog
                                     route={this.props.route}
@@ -348,27 +386,69 @@ class Cardboard extends React.Component {
         return (
             <div>
                 {cardDialog}
-                <Card className={classes.card} onClick={this.handleOpen} >
-                    <CardActionArea>
-                        <Grid justify='center' alignItems='center' container>
-                            <Grid container>
-                                {this.props.currentCard.HaslabelCardFks ? this.props.currentCard.HaslabelCardFks.map(label =>
-                                    label.Label ?
-                                        <LabelIcon
-                                            key={label.labelId}
-                                            style={{
-                                                color: label.Label.labelColor,
-                                            }}
-                                        />
-                                        : null
+                <Card className={classes.card}>
+                    <Grid justify='center' alignItems='center' container>
 
-                                ) : null}
+                        {this.props.currentCard.HaslabelCardFks && this.props.currentCard.HaslabelCardFks.length > 0 ?
+                            <Grid container alignItems='center' justify='space-between' className={ classes.firstRow }>
+                                <Grid item xs={11}>
+                                    {this.props.currentCard.HaslabelCardFks.map(label =>
+                                        label.Label ?
+                                            <LabelIcon
+                                                key={label.labelId}
+                                                style={{
+                                                    color: label.Label.labelColor,
+                                                }}
+                                            />
+                                            : null
+                                    )}
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <IconButton
+                                        onClick={this.handleOpen}
+                                        aria-label="Comments"
+                                        size="small"
+                                        className={ classes.moreIcon }
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </Grid>
                             </Grid>
-                            <Typography variant="subtitle2">
-                                {this.state.card.cardTitle}
-                            </Typography>
-                            <Grid container alignItems='center' justify='flex-end'>
-                                {this.props.currentCard.MemberhascardCardFks ? this.props.currentCard.MemberhascardCardFks.map(member =>
+
+                            : null }
+
+                        {this.props.currentCard.HaslabelCardFks ?
+                            this.props.currentCard.HaslabelCardFks.length === 0 ?
+                                <Grid container alignItems='center' justify='space-between' className={ classes.firstRow }>
+                                    <Grid item xs={11}>
+                                        <Typography variant="subtitle2">
+                                            {this.state.card.cardTitle}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            onClick={this.handleOpen}
+                                            aria-label="Comments"
+                                            size="small"
+                                            className={ classes.moreIcon }
+                                        >
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
+                                :
+                                <Grid container alignItems='center'>
+                                    <Typography variant="subtitle2">
+                                        {this.state.card.cardTitle}
+                                    </Typography>
+                                </Grid>
+                            : null
+                        }
+                        <Grid container alignItems='center' justify='flex-end'>
+                            { this.props.isLoading ?
+                                <MiniLoader/>
+                                :
+                                this.props.currentCard.MemberhascardCardFks ? this.props.currentCard.MemberhascardCardFks.map(member =>
                                     member.Member.memberPicture ?
                                         <Avatar
                                             key={member.memberId}
@@ -381,9 +461,8 @@ class Cardboard extends React.Component {
                                             {member.Member.memberFirstname.toUpperCase()[0]}
                                         </Avatar>
                                 ) : null}
-                            </Grid>
                         </Grid>
-                    </CardActionArea>
+                    </Grid>
                 </Card>
             </div>
         );
@@ -395,6 +474,7 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+    isLoading: state.project.isLoading
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,

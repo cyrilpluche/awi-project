@@ -9,6 +9,9 @@ const labels = {
     INVITATION_REPLY_ERROR: 'INVITATION_REPLY_ERROR'
 }
 
+/** Check if member exist in the database
+ * @param memberToken member token
+ */
 function isMemberExist (memberToken) {
     return (dispatch) => {
         _service.Member.decrpytInvitation(memberToken)
@@ -58,6 +61,12 @@ function isMemberExist (memberToken) {
     };
 }
 
+/** Reply to an invitation 
+ * @param accept
+ * @param body
+ * @param query
+ * @param member
+ */
 function replyToInvitation (accept, body, query, member) {
     return (dispatch) => {
         if (accept) {

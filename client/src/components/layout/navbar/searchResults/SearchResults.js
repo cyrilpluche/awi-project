@@ -131,6 +131,7 @@ class SearchResults extends React.Component {
             isOpen: false,
             searchInput: ''
         })
+        this.props.onResetSearchArrays()
         _helper.History.push(route)
     }
 
@@ -165,13 +166,13 @@ class SearchResults extends React.Component {
                                 value={this.state.searchInput}
                             />
                             <div {...getMenuProps()}>
-                                {this.state.isOpen ? (
+                                {this.state.isOpen && this.state.input !== '' ? (
                                     <Paper className={classes.paper} square>
                                         {this.props.projects.length > 0 ?(
                                             <div>
                                                 <div id='label' className={classes.labelSearchTitle}>
                                                     <Typography variant="overline" >
-                                                        Projects
+                                                        Projects {this.props.projects.length}
                                                     </Typography>
                                                 </div>
                                                 <Divider/>
@@ -258,7 +259,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onSearchProjects : _action.searchbarAction.searchProjects,
     onSearchLists : _action.searchbarAction.searchLists,
-    onSearchCards : _action.searchbarAction.searchCards
+    onSearchCards : _action.searchbarAction.searchCards,
+    onResetSearchArrays: _action.searchbarAction.resetSearchArrays
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(SearchResults));

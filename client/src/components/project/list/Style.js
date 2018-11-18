@@ -1,29 +1,25 @@
 export const styles = theme => ({
     listArea: {
-        margin: theme.spacing.unit * 1,
-        display: 'flex',
-        padding:theme.spacing.unit * 1,           
-        //whiteSpace: `nowrap`,
+        whiteSpace: `nowrap`,
         overflowY: `auto`,
-        //position: `fixed`,
-        left: `0`, 
-        right: `0`
-             
+        flexWrap: 'inherit',
+    },
+    listHeight: {
+        height: '100%'
     },
     list: {
-        /*margin: theme.spacing.unit * 2,
-        border:`1px solid lightgrey`,
-        borderRadius : `4px`,
-        backgroundColor:`white`,
-        width: `200px`,
-        minWidth : `200px`,
-        minHeight : `100px`,
-        justifyContent: `center`,
-        textAlign: `center`,*/
         width: '272px',
         margin: '7px',
         marginRight: 0,
         backgroundColor:`#1e88e5`,
+    },
+    borderRadius: {
+        borderTopLeftRadius: '10px',
+        borderTopRightRadius: '10px'
+    },
+    borderRadiusBottom: {
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px'
     },
     listTitle: {
         textAlign:`left`,
@@ -94,6 +90,7 @@ export const styles = theme => ({
     widthMax: {
         maxWidth: '100%',
         paddingLeft: theme.spacing.unit * 5,
+        height: '100%'
     },
     gridList: {
         display: 'grid',

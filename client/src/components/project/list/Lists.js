@@ -56,7 +56,7 @@ class Lists extends Component {
             <Droppable droppableId="allList" direction="horizontal" type="LIST">
                 {(provided) =>(
                     <div
-                        className={ classes.widthMax }
+                        className={ classes.widthMax + ' ' + classes.listHeight }
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
@@ -72,7 +72,7 @@ class Lists extends Component {
                                 New list
                             </Button>
                         </Grid>
-                        <Grid container id='listScroll'>
+                        <Grid container id='listScroll' className={classes.listArea}>
                             {lists.length === 0 ? '' :lists.filter(list => list.listStatus === 0).map((list, index) =>
                                 <Grid item key={list.listTitle+list.listId}>
                                     <List

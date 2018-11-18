@@ -11,22 +11,28 @@ var Sequelize = require('../config/db_connection').Sequelize;
 
 module.exports = {
 
-    /* =================
+    /* ================= CARD CONTROLLER =============== */
 
-    /*  localhost:4200/api/card/create
+    /**
+     * @typedef Card
+     * @property {integer} cardId.required
+     * @property {string} cardTitle.required
+     * @property {string} cardDescription.required
+     * @property {integer} cardStatus.required
+     * @property {date} cardDateTarget
+     * @property {integer} listId
+     * @property {integer} cardIdIsTheFather
+     * @property {integer} cardIdIsTheChild
+     */
+
+    /**
+     * This function create a new card.
+     * @route POST /api/card/create
+     * @group Card - Operations about cards.
+     * @param {Card.model} card.body.required - the new card
+     * @returns {Card.model} 200 - New card object
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      cardTitle: String,
-     *      cardDescription: String, (optional)
-     *      cardStatus: Int,
-     *      cardDateTarget: Date, (optional),
-     *      cardDateEnd: Date, (optional),
-     *      listId: Int,
-     *      cardIdIsTheFather: Int, (optional)
-     *      cardIdIsTheChild: Int (optional)
-     *  }
-     *
-     *  return: New Card object.
      */
     create(req, res, next) {
         Card
@@ -38,9 +44,20 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/card/find_all --- ?cardTitle=title... (optional)
+    /**
+     * This function find all the cards.
+     * @route GET /api/card/find_all
+     * @group Card - Operations about cards.
+     * @param {string} cardTitle.optional
+     * @param {string} cardDescription.optional
+     * @param {integer} cardStatus.optional
+     * @param {date} cardDateTarget.optional
+     * @param {integer} listId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} cardIdIsTheChild.optional
+     * @returns {Array.<Card>} 200 - An array of cards.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Card objects with given attributes.
      */
     findAll(req, res, next) {
         Card
@@ -55,9 +72,16 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/card/find_all_searchbar?str=customStr. (optional)
+
+
+    /**
+     * This function find all the cards matching to the keyword.
+     * @route GET /api/card/find_all_searchbar
+     * @group Card - Operations about cards.
+     * @param {string} str.optional - the keyword
+     * @returns {Array.<Card>} 200 - An array of cards.
+     * @returns {Error}  500 - error
      *
-     *  return: Array of Cards objects with given attributes.
      */
     findAllSearchbar(req, res, next) {
         MemberHasProject
@@ -84,7 +108,8 @@ module.exports = {
                                         { [Sequelize.Op.like]: '%' + req.query.str + '%' },
                                         { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
                                     ]
-                                }
+                                },
+                                cardStatus: 0
                             }
                         }]
                     }]
@@ -96,10 +121,14 @@ module.exports = {
             })
             .catch(error => res.status(400).send(error));
     },
-    
-    /*  localhost:4200/api/card/find_all/:id
-     *  
-     *  return: Array of Card objects for a given list.
+
+    /**
+     * This function find all the cards of the specified list.
+     * @route GET /api/card/find_all/:id
+     * @group Card - Operations about cards.
+     * @returns {Array.<Card>} 200 - An array of cards.
+     * @returns {Error}  500 - error
+     *
      */
     findAllOfList(req, res, next) {
         Card
@@ -114,10 +143,20 @@ module.exports = {
             .catch(error => next(error));
     },
 
-
-    /*  localhost:4200/api/card/find_one --- ?cardTitle=title... (optional)
+    /**
+     * This function find one card matching to the parameters.
+     * @route GET /api/card/find_one
+     * @group Card - Operations about cards.
+     * @param {string} cardTitle.optional
+     * @param {string} cardDescription.optional
+     * @param {integer} cardStatus.optional
+     * @param {date} cardDateTarget.optional
+     * @param {integer} listId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} cardIdIsTheChild.optional
+     * @returns {Card.model} 200 - the first matching card.
+     * @returns {Error}  500 - error
      *
-     *  return: Card object with given attributes.
      */
     findOne(req, res, next) {
         Card
@@ -139,20 +178,20 @@ module.exports = {
             .catch(error => next(error));
     },
 
-    /*  localhost:4200/api/card/update/:id
+    /**
+     * This function update a card.
+     * @route PUT /api/card/update/:id
+     * @group Card - Operations about cards.
+     * @param {string} cardTitle.optional
+     * @param {string} cardDescription.optional
+     * @param {integer} cardStatus.optional
+     * @param {date} cardDateTarget.optional
+     * @param {integer} listId.optional
+     * @param {integer} cardIdIsTheFather.optional
+     * @param {integer} cardIdIsTheChild.optional
+     * @returns {boolean} 200 - A boolean, true if the card was updated.
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      cardTitle: String, (optional)
-     *      cardDescription: String, (optional)
-     *      cardStatus: Int, (optional)
-     *      cardDateTarget: Date, (optional),
-     *      cardDateEnd: Date, (optional),
-     *      listId: Int, (optional)
-     *      cardIdIsTheFather: Int, (optional)
-     *      cardIdIsTheChild: Int (optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         Card
@@ -166,6 +205,14 @@ module.exports = {
             .catch(error => next(error));
     },
 
+    /**
+     * This function update the order of the cards contained in the array.
+     * @route PUT /api/card/update_card_order
+     * @group Card - Operations about cards.
+     * @param {Array.<Card>} cards.required - An array of cards.
+     * @returns {Error}  500 - error
+     *
+     */
     updateFromArray (req, res, next) {
         for (let card of req.body.cards) {
             Card
@@ -180,9 +227,13 @@ module.exports = {
         }
     },
 
-    /*  localhost:4200/api/card/delete/:id
+    /**
+     * This function delete a card.
+     * @route DELETE /api/card/delete/:id
+     * @group Card - Operations about cards.
+     * @returns {boolean} 200 - A boolean, true if the card was deleted.
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Card

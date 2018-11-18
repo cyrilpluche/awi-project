@@ -134,6 +134,7 @@ class MemberDialog extends Component {
                             <Button
                                 fullWidth
                                 size='small'
+                                disabled={!this.props.isAdmin}
                                 color="primary"
                                 className={classes.validIcon}
                                 onClick={this.submitInvitation.bind(this)}

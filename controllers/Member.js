@@ -16,22 +16,39 @@ cloudinary.config({
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= MEMBER CONTROLLER ================= */
 
-    /**  localhost:4200/api/member/create
+    /**
+     * @typedef Member
+     * @property {integer} memberId.required
+     * @property {string} memberFirstname
+     * @property {string} memberLastname
+     * @property {string} memberFirstname
+     * @property {string} memberPseudo
+     * @property {string} memberEmail
+     * @property {string} memberPassword
+     * @property {string} memberPicture
+     * @property {integer} memberStatus
+     * @property {boolean} memberIsLinkWithGithub
+     */
+
+    /**
+     * This function create a new member.
+     * @route POST /api/member/create
+     * @group Member - Operations about members.
+     * @param {string} memberFirstname
+     * @param {string} memberLastname
+     * @param {string} memberFirstname
+     * @param {string} memberPseudo
+     * @param {string} memberEmail
+     * @param {string} memberPassword.optional
+     * @param {string} memberPicture.optional
+     * @param {integer} memberStatus
+     * @param {boolean} memberIsLinkWithGithub.optional
+     * @returns {string} 200 - A new token specific for the member created.
+     * @returns {Error}  400 - Member:create | error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      memberFirstname = firstname,
-     *      memberLastname = lastname,
-     *      memberPseudo = pseudo,
-     *      memberEmail = email,
-     *      memberPassword = password,
-     *      memberPicture = url, (optional)
-     *      memberStatus = status,
-     *      memberOauthGithub = url (optional)
-     *  }
-     *
-     *  return: A new token specific for the member created.
      */
     create(req, res, next) {
         bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
@@ -66,9 +83,14 @@ module.exports = {
 
     },
 
-    /*  localhost:4200/api/member/find_all/:idProject
+    /**
+     * This function find all the member of a project.
+     * @route GET /api/member/find_all/:idProject
+     * @group Member - Operations about members.
+     * @returns {Array.<Member>} 200 - An array of the project members.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Array of member objects with given attributes.
      */
     findAllProjectMember(req, res, next) {
         Member
@@ -90,10 +112,22 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/member/find_all --- ?memberId=id... (optional)
-    *
-    *  return: Array of member objects with given attributes.
-    */
+    /**
+     * This function find all the member matching order by id.
+     * @route GET /api/member/find_all/:idProject
+     * @group Member - Operations about members.
+     * @param {string} memberFirstname.optional
+     * @param {string} memberLastname.optional
+     * @param {string} memberFirstname.optional
+     * @param {string} memberPseudo.optional
+     * @param {string} memberEmail.optional
+     * @param {integer} memberStatus
+     * @param {boolean} memberIsLinkWithGithub.optional
+     * @returns {Array.<Member>} 200 - An array of all the members matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
+     */
     findAll(req, res, next) {
         Member
             .findAll({
@@ -108,9 +142,21 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-    /*  localhost:4200/api/member/find_one --- ?memberId=id... (optional)
+    /**
+     * This function find the first member matching.
+     * @route GET /api/member/find_one
+     * @group Member - Operations about members.
+     * @param {integer} memberId.optional
+     * @param {string} memberFirstname.optional
+     * @param {string} memberLastname.optional
+     * @param {string} memberFirstname.optional
+     * @param {string} memberPseudo.optional
+     * @param {string} memberEmail.optional
+     * @param {integer} memberStatus
+     * @returns {Array.<Member>} 200 - An array of all the members matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Member object with given attributes.
      */
     findOne(req, res, next) {
         Member
@@ -125,6 +171,17 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
+    /**
+     * This function find the member and update his password.
+     * @route GET /api/member/update_password
+     * @group Member - Operations about members.
+     * @param {integer} memberId.required
+     * @param {password} memberPassword.required
+     * @returns {Member.model} 200 - The member updated
+     * @returns {Error}  400 - Member:findOneUpdatePassword | error message
+     * @returns {Error}  500 - error
+     *
+     */
     findOneUpdatePassword (req, res, next) {
         Member
             .findOne({
@@ -133,7 +190,7 @@ module.exports = {
             .then(member => {
                 bcrypt.compare(req.query.memberPassword, member.memberPassword, (err, res) => {
                     if (err) {
-                        console.log('Member:findOneSignIn | ' + err)
+                        console.log('Member:findOneUpdatePassword | ' + err)
                         next()
                     }
                     else {
@@ -142,9 +199,9 @@ module.exports = {
                                 req.body.result = member
                                 next()
                             }
-                            else res.status(400).send('Email or password is incorrect.')
+                            else res.status(400).send('Password is incorrect.')
                         } catch (err) {
-                            res.status(400).send('Email or password is incorrect.')
+                            res.status(400).send('Member not found.')
                         }
                     }
                 });
@@ -152,13 +209,33 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
+    /**
+     * This function find the member and update his status.
+     * @route GET /api/member/sign_up
+     * @group Member - Operations about members.
+     * @param {string} memberFirstname
+     * @param {string} memberLastname
+     * @param {string} memberFirstname
+     * @param {string} memberPseudo
+     * @param {string} memberEmail
+     * @param {string} memberPassword.optional
+     * @param {string} memberPicture.optional
+     * @param {integer} memberStatus
+     * @param {boolean} memberIsLinkWithGithub.optional
+     * @returns {Array.<Member>} 200 - An array of all the members matching.
+     * @returns {Error}  400 - This email address is already taken.
+     * @returns {Error}  400 - This pseudo is already taken.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
+     */
     findOneSignup (req, res, next) {
         Member
             .findOne({
                 where: { memberEmail: req.query.memberEmail }
             })
             .then(member => {
-                if (member) res.status(400).send(['This email adress is already taken.', 'memberEmail'])
+                if (member) res.status(400).send(['This email address is already taken.', 'memberEmail'])
                 else {
                     Member
                         .findOne({
@@ -176,6 +253,17 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
+    /**
+     * This function find a member invited.
+     * @route GET /api/member/find_one_invitation
+     * @group Member - Operations about members.
+     * @param {string} memberPseudo
+     * @returns {Member} 200 - The member matching
+     * @returns {Error}  400 - This pseudo is already taken.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
+     */
     findOneInvitation (req, res, next) {
         Member
             .findOne({
@@ -189,6 +277,9 @@ module.exports = {
     },
 
     /**
+     * body:
+     * memberEmail
+     * memberPassword
      *  return: Take the member with the decoded arguments
      */
     findOneForLog(req, res, next) {
@@ -210,20 +301,15 @@ module.exports = {
             .catch(error => res.status(400).send('Member:findOneForLog | ' + error));
     },
 
-    /*  localhost:4200/api/member/update/2
+    /**
+     * This function update a member.
+     * @route PUT /api/member/update
+     * @group Member - Operations about members.
+     * @param {Member.model} member.required
+     * @returns {boolean} 200 - Boolean, true if the member was updated.
+     * @returns {Error}  400 - Member:update | error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      memberFirstname = firstname, (optional)
-     *      memberLastname = lastname, (optional)
-     *      memberPseudo = pseudo, (optional)
-     *      memberEmail = email, (optional)
-     *      memberPassword = password, (optional)
-     *      memberPicture = url, (optional)
-     *      memberStatus = status, (optional)
-     *      memberOauthGithub = url (optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         if (req.body.memberPassword) {
@@ -257,9 +343,13 @@ module.exports = {
 
     },
 
-    /*  localhost:4200/api/member/delete/5
+    /**
+     * This function delete a member.
+     * @route DELETE /api/member/delete/:id
+     * @group Member - Operations about members.
+     * @returns {boolean} 200 - Boolean, true if the member was deleted.
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         Member
@@ -277,14 +367,17 @@ module.exports = {
 
     /* ================= METHODS ================= */
 
-    /*  localhost:4200/api/member/sign_in
+
+    /**
+     * This function find the user and connect him if credentials matched.
+     * @route POST /api/member/sign_in
+     * @group Member - Operations about members.
+     * @param {string} memberPseudo.body.required
+     * @param {string} memberPassword.body.required
+     * @returns {Member.model} 200 - The member find.
+     * @returns {Error}  400 - Member:findOneSignIn | error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      memberPseudo = memberEmail,
-     *      memberPassword = password
-     *  }
-     *
-     *  return: Find the user and connect him if credentials matched.
      */
     findOneSignIn(req, res, next) {
         Member
@@ -327,9 +420,15 @@ module.exports = {
         next()
     },
 
-    /*  localhost:4200/api/member/sign_up
+    /**
+     * This function return a member decrypted with the token.
+     * @route GET /api/member/is_logged
+     * @group Member - Operations about members.
+     * @param {Member.model} member.body.required
+     * @returns {Member.model} 200 - The member find.
+     * @returns {Error}  400 - This account is not confirmed.
+     * @returns {Error}  500 - error
      *
-     *  return: The member decrypted with the token.
      */
     signIn(req, res, next) {
         try {
@@ -347,7 +446,8 @@ module.exports = {
         }
     },
 
-    /*  localhost:4200/api/member/sign_up
+    /*  body:
+     *  Member
      *
      *  return: The member decrypted with the token.
      */
@@ -360,6 +460,15 @@ module.exports = {
         else next('Wrong password')
     },
 
+    /**
+     * This function return a member decrypted with the token.
+     * @route GET /api/member/validate_account
+     * @group Member - Operations about members.
+     * @param {Member.model} member.body.required
+     * @returns {Error}  400 - Failed to decrypt the token.
+     * @returns {Error}  500 - error
+     *
+     */
     validateAccount(req, res, next) {
         if (req.decoded) {
             req.query = {
@@ -372,12 +481,19 @@ module.exports = {
             next()
         }
         else {
-            res.status(400).send('Failed to decrypt the token')
+            res.status(400).send('Failed to decrypt the token.')
         }
     },
 
-    /*
-     *  return: A boolean. true = Updated, false = Not updated.
+   /**
+     * This function find the user and connect him if credentials matched.
+     * @route POST /api/member/password_forgotten
+     * @group Member - Operations about members.
+     * @param {string} memberEmail.body.required
+     * @returns {boolean} 200 - Boolean, true is the password was updated.
+     * @returns {Error}  400 - Member:resetPassword | error message
+     * @returns {Error}  500 - error
+     *
      */
     resetPassword(req, res, next) {
         bcrypt.hash(req.body.memberPassword, 10, (err, hash) => {
@@ -396,22 +512,28 @@ module.exports = {
         });
     },
 
-    /*  localhost:4200/api/member/invitation_token?memberToken=token
+    /**
+     * This function decrypt the token of an invitation and put it in the query.
+     * @route GET /api/member/decrypt_invitation
+     * @group Member - Operations about members.
+     * @returns {Error}  500 - Information missing from the token
      *
-     *  return: Decrypt the token of an invitation and put it in the query.
      */
     tokenToQuery(req, res, next) {
         try {
             req.query = {memberEmail: req.decoded.memberEmail}
             next()
         } catch (err) {
-            res.status(500).send('Informations missing from the token')
+            res.status(500).send('Information missing from the token')
         }
     },
 
-    /*  localhost:4200/api/member/invitation_token?memberToken=token
+    /**
+     * This function check if the user exist for an invitation.
+     * @route GET /api/member/decrypt_invitationn
+     * @group Member - Operations about members.
+     * @returns {Error}  500 - Information missing from the token
      *
-     *  return: Check if the user exist for an invitation.
      */
     decodedToResult(req, res, next) {
         try {
@@ -444,10 +566,13 @@ module.exports = {
     // -----------------------
 
 
-
-    /**  localhost:4200/api/member/sign_in_with_github
+    /**
+     * This function redirecy the user on GitHub to connect.
+     * @route GET /api/member/sign_in_with_github
+     * @group Member - Operations about members.
+     * @returns {string} 200 -  The github url authentification.
+     * @returns {Error}  500 - Information missing from the token
      *
-     *  return: a string, the github url authentification
      */
     sign_in_with_github(req, res, next) {
         const client_id = 'client_id=' + process.env.GITHUB_CLIENT_ID
@@ -465,7 +590,7 @@ module.exports = {
         }
     },
 
-    /**  localhost:4200/api/member/github_callback
+    /*  localhost:4200/api/member/github_callback
      *
      *  this route is called after the success authentification of an user on github website.
      *   Return in body : a member
@@ -497,6 +622,9 @@ module.exports = {
             })
     },
 
+    /*
+     * Get the user info from github
+     */
     github_get_user (req, res, next) {
         request
             .get('https://api.github.com/user')
@@ -510,6 +638,11 @@ module.exports = {
             })
     },
 
+    /*
+     * Req: member
+     * search if the member already exist. If not, create him.
+     * Return: put the user in the req.body
+     */
     find_one_github (req, res, next) {
         let defaultData = {
             memberFirstname: 'unknow',

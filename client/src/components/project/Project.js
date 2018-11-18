@@ -12,7 +12,6 @@ import { DragDropContext} from 'react-beautiful-dnd';
 // Components
 import Lists from './list/Lists'
 import ActivityList from '../ui/activity/ActivityList'
-import Filter from '../ui/filter/Filter'
 import LoaderPage from '../ui/loader/Loader'
 
 // Material Ui
@@ -20,7 +19,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
-import {RestorePage, Archive, SupervisorAccount,RemoveRedEye,FilterList,Description,Edit, Done} from '@material-ui/icons';
+import {RestorePage, Archive, SupervisorAccount,RemoveRedEye,Description,Edit, Done} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import MemberDialog from '../ui/dialog/MemberDialog'
 import VisibilityDialog from '../ui/dialog/VisibilityDialog'
@@ -69,15 +68,21 @@ class Project extends Component {
         this.createCard = this.createCard.bind(this)
         this.createNewList = this.createNewList.bind(this)
 
-        this.socket.on('updateProject', this.socketUpdate.bind(this))
+        this.socket.on('updateLists', this.socketUpdateLists.bind(this))
+        this.socket.on('updateProject', this.socketUpdateProject.bind(this))
 
 
 
     }
 
-    socketUpdate(lists){
+    socketUpdateLists(lists){
          this.props.loadLists(lists)
      }
+    
+     socketUpdateProject(project){
+         console.log(project)
+        this.props.loadProjectInfo(project)
+    }
 
     componentWillMount() {
         const {match, currentMemberId, logged, getMemberHasProject, getProjectInfo,getAllListsWithCards, getMemberStatus,getActivity} = this.props
@@ -221,7 +226,7 @@ class Project extends Component {
             dragId = Number.parseInt(dragId[1])
             let findList = notArchivedList.find(list => list.listId === dragId)
 
-            let indexOfList = notArchivedList.indexOf(findList)
+            let indexOfList = notArchivedList.findIndex(list => list.listId === findList.listId)
             let newLists = Array.from(notArchivedList)
 
             //remove list from list of list
@@ -234,28 +239,8 @@ class Project extends Component {
 
             //set state with the new list           
             this.setState({lists:newArrayList},() =>{
-
-                //this.socket.emit('move', newArrayList)
-                //let updateList = lists.find(list => list.listId === dragId)
-                //let updateList = findWhere(lists,{listId: dragId})
-
-                //let fatherOfUpdatedList = findList.listFather === undefined ? null : findList.listFather
-
-                //let childUpdatedList = findWhere(lists,{listFather: findList.listId})
-
-
-                //let indexOfUpdateList = lists.indexOf(findList)
-
-                //New father and child of dragged list
-                //let listFather = lists[indexOfUpdateList-1] === undefined ? null : lists[indexOfUpdateList-1].listId
-                //let listChild = lists[indexOfUpdateList+1] === undefined ? null : lists[indexOfUpdateList+1].listId
-
-
-                // Change fathers of list in DB
-                /* if(childUpdatedList) this.props.moveList(childUpdatedList.listId,fatherOfUpdatedList)
-                 if(findList)  this.props.moveList(updateList.listId,listFather)
-                 if(listChild) this.props.moveList(listChild,updateList.listId)*/
              })
+
             /** Keeps order list updated */
             let listsOrder = _helper.Method.computeListOrder(this.state.lists)
             this.props.updatePositionLists(newArrayList, listsOrder)
@@ -271,6 +256,7 @@ class Project extends Component {
             let destinationList =  Object.assign({},lists.find(list => list.listId === destinationListId ))
             let draggedCard = sourceList.CardListFks.find(card => card.cardId === draggableId )
 
+            // When card has been dragged in another list
             if(destinationListId !== sourceListId){
 
                 const notArchivedCardsSource = Array.from(sourceList.CardListFks.filter(card => card.cardStatus === 0))
@@ -299,7 +285,7 @@ class Project extends Component {
                 newList.splice(destinationListIndex,0,destinationList)
 
                 this.setState({lists: newList}, () =>{
-                    //this.socket.emit('move', newList)
+                    
                     this.props.updateCard(draggedCard.cardId, destinationList.listId,newList)
                 })
                 let listsOrder = _helper.Method.computeCardOrder(this.state.lists)
@@ -324,24 +310,22 @@ class Project extends Component {
                 newList.splice(sourceListIndex,0, sourceList)
                 this.setState({lists: newList}, () =>{
                     this.props.updatePositionLists(newList)
-                    // this.socket.emit('move', newList)
+                    
                 })
                 let listsOrder = _helper.Method.computeCardOrder(this.state.lists)
                 this.props.onUpdatePositionCard(listsOrder)
             }
 
-
-
-            // this.props.updateCard(cardId,findListId.listId)}*/
-
         }
 
     };
 
+    //Make title editable
     handleEditTitle(){
         this.setState({editProjectTitle:true})
     }
 
+    // Edit project Title
     handleValidationEditTitle(){
         this.setState({editProjectTitle:false})
         const {newProjectTitle} = this.state
@@ -378,6 +362,7 @@ class Project extends Component {
         });
     };
 
+    // Restore archived card or list
     handleRestoreArchived = (name,type) => event =>{
 
         if(type === "list") {
@@ -426,42 +411,6 @@ class Project extends Component {
                     </Grid>
                     <div className={classes.drawerList}>
                         <ActivityList activities={this.props.activities}/>
-                    </div>
-                </div>
-            </Drawer>
-        );
-
-        /* ================= FILTER DRAWER================= */
-        const renderFilter = (
-            <Drawer
-                anchor="right"
-                open={this.state.openFilter}
-                onClose={this.toggleDrawer('openFilter', false)}
-            >
-                <div
-                    tabIndex={0}
-                    role="button"
-                    onKeyDown={this.toggleDrawer('openFilter', false)}
-                >
-                    <Grid alignItems='center' justify='center' container >
-                        <Grid xs={2} item>
-                            <IconButton
-                                onClick={this.toggleDrawer('openFilter', false)}
-                                color="inherit"
-                            >
-                                <ChevronLeftIcon color='primary' />
-                            </IconButton>
-                        </Grid>
-                        <Grid xs={8} item>
-                            <Button fullWidth color="primary" className={classes.drawer}>
-                                Filter
-                            </Button>
-                        </Grid>
-                        <Grid xs={2} item>
-                        </Grid>
-                    </Grid>
-                    <div>
-                        <Filter projectInfo={projectInfo}/>
                     </div>
                 </div>
             </Drawer>
@@ -598,11 +547,11 @@ class Project extends Component {
                         {renderActivity}
 
                         {/*===================  FILTER BUTTON  ========================================= */}
-                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
+                        {/*< Button color="primary" className={classes.button} onClick={this.toggleDrawer('openFilter', true)}>
                             <FilterList className={classes.leftIcon} />
                             Filter
                         </Button>
-                        {renderFilter}
+                        {renderFilter}*/}
 
                         {/*===================  ARCHIVED BUTTON  ========================================= */}
                         < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
@@ -639,7 +588,7 @@ class Project extends Component {
                         <LoaderPage/>
                     </Grid>
                 ) : (
-                    <div>
+                    <div className={classes.fullHeight} id='container1'>
                         {dndArea}
                     </div>
                 )}
@@ -660,7 +609,7 @@ const mapStateToProps = (state) => ({
     activities: state.project.activities,
     currentMemberId: state.signin.member.memberId,
     isLoading: state.project.isLoading
-    //labels : state.project.labels || []
+    
 })
 
 const mapDispatchToProps ={
@@ -684,6 +633,7 @@ const mapDispatchToProps ={
     deleteList: _action.listAction.deleteList,
     archiveList: _action.listAction.updateListStatus,
     loadLists:  _action.projectAction.loadLists,
+    loadProjectInfo:  _action.projectAction.loadProjectInfo,
     onUpdatePositionCard:  _action.cardAction.updatePositionCard
 }
 

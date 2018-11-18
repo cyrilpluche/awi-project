@@ -14,17 +14,27 @@ const memberFilter = ['memberId', 'memberFirstname', 'memberLastname', 'memberPs
 
 module.exports = {
 
-    /* ================= CRUD ================= */
+    /* ================= MemberHasProject CONTROLLER ================= */
+
 
     /**
-     *  req.body = {
-     *      projectId: INT,
-     *      memberId: INT,
-     *      memberhasprojectStatus: INT,
-     *      projectIsFavorite: Boolean (Optional)
-     *  }
+     * @typedef MemberHasProject - It represents the member of a project.
+     * @property {integer} memberHasProjectId.required
+     * @property {integer} projectId
+     * @property {integer} memberhasprojectStatus
+     * @property {boolean} projectIsFavorite
+     */
+
+    /**
+     * This function create a new MemberHasProject.
+     * @route POST /api/project/create_mhp
+     * @group Project - Operations about project.
+     * @param {integer} projectId
+     * @param {integer} memberhasprojectStatus
+     * @returns {MemberHasProject.model} 200 - A new MemberHasProject created.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: The object.
      */
     create(req, res, next) {
         MemberHasProject
@@ -36,9 +46,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?projectId=id... (optional)
+    /**
+     * This function find all the MemberHasProject matching.
+     * @route GET /api/project/find_all_members
+     * @group Project - Operations about project.
+     * @param {integer} projectId.optional
+     * @returns {Array.<MemberHasProject>} 200 - All the MemberHasProject matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: Array of mhp objects with given attributes of the query.
      */
     findAll(req, res, next) {
         MemberHasProject
@@ -67,6 +83,7 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
+
     findAllForCard(req, res, next) {
         MemberHasProject
             .findAll({
@@ -88,8 +105,19 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**
+    /*
      *  return: Array of Project objects containing the str query.
+     */
+
+    /**
+     * This function find all the MemberHasProject matching the keywords.
+     * @route GET /api/project/find_all_searchbar
+     * @group Project - Operations about project.
+     * @param {string} str - the keywords
+     * @returns {Array.<MemberHasProject>} 200 - All the MemberHasProject matching the keywords.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
+     *
      */
     findAllSearchbar(req, res, next) {
         MemberHasProject
@@ -107,7 +135,8 @@ module.exports = {
                                 { [Sequelize.Op.like]: '%' + req.query.str + '%' },
                                 { [Sequelize.Op.like]: '%' + req.query.str.charAt(0).toUpperCase() + req.query.str.slice(1) + '%' }
                             ]
-                        }
+                        },
+                        projectStatus: 0
                     },
                     attributes: [['project_id', 'id'], ['project_title', 'label']]
                 }]
@@ -120,9 +149,13 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
 
-    /**  ?projectId=id... (optional)
+    /**
+     * This function find all the MemberHasProject matching.
+     * @param {integer} projectId.optional
+     * @returns {Array.<MemberHasProject>} 200 - All the MemberHasProject matching.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: MHP object with given attributes of the query.
      */
     findOne(req, res, next) {
         MemberHasProject
@@ -140,16 +173,19 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?projectId=id... (optional)
+
+    /**
+     * This function update a MemberHasProject.
+     * @route PUT /api/project/update_mhp
+     * @group Project - Operations about project.
+     * @param {integer} projectId.body
+     * @param {integer} memberId.body
+     * @param {integer} memberhasprojectStatus.body
+     * @param {boolean} projectIsFavorite.body.optional
+     * @returns {boolean} 200 - Boolean, true if the MemberHasProject was updated.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  req.body = {
-     *      projectId: INT,
-     *      memberId: INT,
-     *      memberhasprojectStatus: INT,
-     *      projectIsFavorite: Boolean (Optional)
-     *  }
-     *
-     *  return: A boolean. true = Updated, false = Not updated.
      */
     update(req, res, next) {
         MemberHasProject
@@ -163,9 +199,15 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
-    /**  ?projectId=id... (optional)
+    /**
+     * This function delete a MemberHasProject .
+     * @route DELETE /api/project/delete_mhp
+     * @group Project - Operations about project.
+     * @param {integer} projectId.body
+     * @returns {boolean} 200 - Boolean, true if the MemberHasProject was deleted.
+     * @returns {Error}  400 - error message
+     * @returns {Error}  500 - error
      *
-     *  return: A boolean. true = deleted, false = no deleted.
      */
     delete(req, res, next) {
         MemberHasProject

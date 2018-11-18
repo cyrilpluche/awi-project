@@ -22,6 +22,6 @@ router.put('/update', permissionController.update);
 router.put('/update_for_project', mhppController.update);
 
 router.delete('/delete', permissionController.delete);
-router.delete('/delete_for_project', mhppController.delete, mhpController.delete);
+router.delete('/delete_for_project', mhppController.delete, mhpController.delete, mhcController.deleteAllFromProjectMember);
 
 module.exports = router;
