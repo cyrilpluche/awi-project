@@ -7,7 +7,6 @@ import connect from "react-redux/es/connect/connect";
 /** COMPONENTS */
 import { styles } from './Style'
 import _action from "../../actions";
-import _helper from "../../helpers";
 import Checklist from './checklist/ChecklistDialog';
 import LabelDialog from './label/LabelDialog'
 import ConfirmationDialog from './confirmation/ConfirmationDialog';

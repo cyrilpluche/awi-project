@@ -1,15 +1,15 @@
 {
-  "main.js": "/static/js/main.24da046d.chunk.js",
-  "main.js.map": "/static/js/main.24da046d.chunk.js.map",
-  "static/css/1.b0fedca5.chunk.css": "/static/css/1.b0fedca5.chunk.css",
-  "static/js/1.586bd1c0.chunk.js": "/static/js/1.586bd1c0.chunk.js",
-  "static/js/1.586bd1c0.chunk.js.map": "/static/js/1.586bd1c0.chunk.js.map",
+  "main.js": "/static/js/main.3e129a86.chunk.js",
+  "main.js.map": "/static/js/main.3e129a86.chunk.js.map",
+  "static/css/1.0f0f57d6.chunk.css": "/static/css/1.0f0f57d6.chunk.css",
+  "static/js/1.45c275bc.chunk.js": "/static/js/1.45c275bc.chunk.js",
+  "static/js/1.45c275bc.chunk.js.map": "/static/js/1.45c275bc.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
-  "static/css/1.b0fedca5.chunk.css.map": "/static/css/1.b0fedca5.chunk.css.map",
+  "static/css/1.0f0f57d6.chunk.css.map": "/static/css/1.0f0f57d6.chunk.css.map",
   "static/media/prello-logo-2.png": "/static/media/prello-logo-2.2fc2e951.png",
   "static/media/download-picture.png": "/static/media/download-picture.0c0e7e11.png",
   "index.html": "/index.html",
-  "precache-manifest.c1a2bb9e64d76230b3c787ea041d80f2.js": "/precache-manifest.c1a2bb9e64d76230b3c787ea041d80f2.js",
+  "precache-manifest.a96ecbc89fe26d0d9bd2b8237be28dfa.js": "/precache-manifest.a96ecbc89fe26d0d9bd2b8237be28dfa.js",
   "service-worker.js": "/service-worker.js"
 }
