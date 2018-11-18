@@ -1,3 +1,5 @@
+import bg from '../../public/images/bg-singin.png'
+
 export const style = theme => ({
     layout: {
         height: '100%',
@@ -23,7 +25,8 @@ export const style = theme => ({
     },
     leftLayout: {
         height: '100%',
-        backgroundColor: '#2c387e',
+        //backgroundColor: '#2c387e',
+        backgroundImage: `url(${bg})`,
         padding: theme.spacing.unit * 2,
     },
     errorLabel: {

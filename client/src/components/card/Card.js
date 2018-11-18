@@ -175,7 +175,6 @@ class Cardboard extends React.Component {
                         <Grid justify='center' container>
                             <Grid xs={8} item className={classes.scrollContainer}>
                                 <Grid item xs={12}>
-                                    {this.props.refresh}
                                     {this.props.currentCard.HaslabelCardFks.map(label =>
                                         label.Label ?
                                             <LabelIcon
@@ -186,6 +185,7 @@ class Cardboard extends React.Component {
                                             />
                                             : null
                                     )}
+                                    {this.props.refresh.length}
                                 </Grid>
                                 <Grid item xs={12}>
 

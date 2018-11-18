@@ -119,7 +119,7 @@ class MemberDialog extends Component {
                             <TextField
                                 id="invitationEmail"
                                 label="Email"
-                                disabled={this.props.isLoading}
+                                disabled={this.props.isLoading || this.props.isAdmin === false}
                                 error={this.state.errorMsg !== ''}
                                 fullWidth
                                 value={this.state.memberEmail}

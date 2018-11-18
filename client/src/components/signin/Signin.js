@@ -4,7 +4,6 @@ import _action from '../../actions'
 import { style } from './Style'
 import logo from '../../public/images/prello-logo-2.png'
 
-
 // CSS imports
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
