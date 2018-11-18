@@ -310,11 +310,22 @@ function removeMemberFromProject(query){
         });
         _service.Member.deleteInvitation(query)
             .then(res => {
-                dispatch({
-                    type: labels.REMOVE_MEMBER_FROM_PROJECT
-                })
                 _service.Permission.deleteForMemberOnProject(query)
-                    .then(res2 => {
+                    .then(isDeleted => {
+                        dispatch({
+                            type: labels.REMOVE_MEMBER_FROM_PROJECT
+                        })
+                        dispatch({ type: labels.LOAD_PROJECT })
+                        const body ={
+                            projectId: query.projectId
+                        }
+                        _service.Project.getAllWithCards(body)
+                            .then(res => {
+                                dispatch({
+                                    type: labels.GET_ALL_LISTS,
+                                    payload: res
+                                });
+                            })
                         _service.Project.getAllMembers({ projectId: query.projectId })
                             .then(res => {
                                 dispatch({

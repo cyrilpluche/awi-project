@@ -362,7 +362,7 @@ class Cardboard extends React.Component {
                                 {this.state.card.cardTitle}
                             </Typography>
                             <Grid container>
-                                {this.state.card.HaslabelCardFks ? this.state.card.HaslabelCardFks.map(label =>
+                                {this.props.currentCard.HaslabelCardFks ? this.props.currentCard.HaslabelCardFks.map(label =>
                                     label.Label ?
                                         <LabelIcon
                                             key={label.labelId}
@@ -375,19 +375,22 @@ class Cardboard extends React.Component {
                                 ) : null}
                             </Grid>
                             <Grid container alignItems='center' justify='flex-end'>
-                                {this.state.card.MemberhascardCardFks ? this.state.card.MemberhascardCardFks.map(member =>
-                                    member.Member.memberPicture ?
-                                        <Avatar
-                                            key={member.memberId}
-                                            alt={member.Member.memberFirstname + 'sharp'}
-                                            src={member.Member.memberPicture}
-                                            className={classNames(classes.avatar, classes.littleAvatar)}
-                                        />
-                                        :
-                                        <Avatar className={classes.orangeAvatar} key={member.memberId}>
-                                            {member.Member.memberFirstname.toUpperCase()[0]}
-                                        </Avatar>
-                                ) : null}
+                                { this.props.isLoading ?
+                                    <MiniLoader/>
+                                    :
+                                    this.props.currentCard.MemberhascardCardFks ? this.props.currentCard.MemberhascardCardFks.map(member =>
+                                        member.Member.memberPicture ?
+                                            <Avatar
+                                                key={member.memberId}
+                                                alt={member.Member.memberFirstname + 'sharp'}
+                                                src={member.Member.memberPicture}
+                                                className={classNames(classes.avatar, classes.littleAvatar)}
+                                            />
+                                            :
+                                            <Avatar className={classes.orangeAvatar} key={member.memberId}>
+                                                {member.Member.memberFirstname.toUpperCase()[0]}
+                                            </Avatar>
+                                    ) : null}
                             </Grid>
                         </Grid>
                     </CardActionArea>
@@ -402,6 +405,7 @@ Cardboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+    isLoading: state.project.isLoading
 })
 const mapDispatchToProps = {
     onUpdateCard : _action.cardAction.updatecard,

@@ -28,5 +28,7 @@ router.put('/update_card_order', cardController.updateFromArray);
 router.delete('/delete', cardController.delete);
 router.delete('/delete_member_has_card', mhcController.delete);
 router.delete('/delete_card_has_label', chlController.delete);
+router.delete('/delete_all_mhc_project_member', mhcController.deleteAllFromProjectMember);
+
 
 module.exports = router;

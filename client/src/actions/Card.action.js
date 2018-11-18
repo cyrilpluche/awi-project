@@ -188,7 +188,6 @@ function addMember(memberId, cardId, membersOnCard, membersOffCard, listIndex, c
 
         _service.Card.addMember(body)
             .then(mhc => {
-                console.log('GO CHARLY')
                 dispatch({
                     type: labels.ADD_MEMBER_ON_CARD,
                     payload: {
@@ -208,7 +207,8 @@ function addMember(memberId, cardId, membersOnCard, membersOffCard, listIndex, c
     }
 };
 
-function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
+function removeMember (memberId, cardId, membersOnCard, membersOffCard, listIndex, cardIndex, elementIndex) {
+
     let query = {
         cardId: cardId,
         memberId: memberId
@@ -223,7 +223,10 @@ function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
                         type: labels.DELETE_MEMBER,
                         payload: {
                             membersOnCard: membersOnCard,
-                            membersOffCard: membersOffCard
+                            membersOffCard: membersOffCard,
+                            listIndex: listIndex,
+                            cardIndex: cardIndex,
+                            elementIndex: elementIndex
                         }
                     })
                 } else {
@@ -233,6 +236,8 @@ function removeMember (memberId, cardId, membersOnCard, membersOffCard) {
                 }
             })
             .catch (e => {
+                console.log(e)
+
                 dispatch({
                     type: labels.DELETE_MEMBER_ERROR
                 })

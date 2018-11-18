@@ -100,6 +100,20 @@ export function project (state = initialState, action) {
                 lists: listsCards
             };
 
+        case cardLabels.DELETE_MEMBER:
+            let listIndex1 = action.payload.listIndex
+            let cardIndex1 = action.payload.cardIndex
+            let elementIndex = action.payload.elementIndex
+
+            let listsCards1 = Array.from(state.lists)
+
+            listsCards1[listIndex1].CardListFks[cardIndex1].MemberhascardCardFks.splice(elementIndex, 1)
+            socket.emit("updateLists", {projectId:listsCards1[0].projectId,lists:listsCards1})
+            return {
+                ...state,
+                lists: listsCards1
+            };
+
         case listLabels.UPDATE_CARD:   
             socket.emit("updateLists", {projectId:action.payload[0].projectId,lists:action.payload})
             return {
