@@ -99,7 +99,7 @@ export const style = theme => ({
     gridList: {
         flexWrap: 'nowrap',
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-        transform: 'translateZ(0)',
+        //transform: 'translateZ(0)',
     },
     gridTitle: {
         color: '#fff',

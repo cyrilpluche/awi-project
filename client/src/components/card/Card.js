@@ -366,13 +366,6 @@ class Cardboard extends React.Component {
                                     cardIndex={this.props.cardIndex}
                                     handleParentClose={this.handleClose}
                                 />
-                                <Button
-                                    color="primary"
-                                    className={classes.button}
-                                    fullWidth
-                                >
-                                    Attachment
-                                </Button>
                             </Grid>
                         </Grid>
 

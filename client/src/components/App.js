@@ -92,7 +92,7 @@ class App extends Component {
                     <Route path="/invitation/:token" component={Invitation} />
                     <Route path="/project/:id/:listid/:cardid" component={Project}/>
                     <Route path="/project/:id" component={Project}/>
-
+                    <Route path='*' render={() => <Redirect to="/home" />}/>
                 </Switch>
             </div>
         )

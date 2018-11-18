@@ -233,17 +233,6 @@ class ProjectList extends React.Component {
             </GridList>
         )
 
-        /** NEW BUTTON */
-        let createProjectButton = ''
-        if (this.props.canCreateProject){
-            createProjectButton = (
-                <Button color="primary" className={classes.button} onClick={this.handleClickOpenDialog}>
-                    New
-                    <AddIcon className={classes.rightIcon} />
-                </Button>
-            )
-        }
-
         return (
             <Grid container className={ classes.projectLayout}>
                 {createProjectDialog}
@@ -251,7 +240,12 @@ class ProjectList extends React.Component {
                     <Typography variant="overline">
                         {this.props.title}
                     </Typography>
-                    { !this.props.isFavorite ? createProjectButton : null}
+                    { !this.props.isFavorite ? (
+                        <Button color="primary" className={classes.button} onClick={this.handleClickOpenDialog}>
+                            New
+                            <AddIcon className={classes.rightIcon} />
+                        </Button>
+                    ) : null}
                 </Grid>
                 <Grid xs={12} item>
                     <Divider/>
