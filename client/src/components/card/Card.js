@@ -11,6 +11,7 @@ import Checklist from './checklist/ChecklistDialog';
 import LabelDialog from './label/LabelDialog'
 import ConfirmationDialog from './confirmation/ConfirmationDialog';
 import MiniLoader from "../ui/loader/MiniLoader";
+import _helper from "../../helpers";
 
 /** MATERIAL UI */
 import Card from '@material-ui/core/Card';
@@ -153,6 +154,16 @@ class Cardboard extends React.Component {
 
     render() {
         const { classes } = this.props;
+
+        _helper.History.listen( location =>  {
+            try {
+                let isOpen = location.pathname.split('/')[4].toString() === this.props.currentCard.cardId.toString()
+                this.setState({ open: isOpen })
+            } catch (err) {
+                // Nothing
+                this.setState({ open: false })
+            }
+        });
 
         const cardDialog = (
 
