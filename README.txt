@@ -31,7 +31,7 @@ CLOUDINARY_SECRET=
     pgen template sequelize -t sequelize-template
 
 (Every time you change database structure)
-    pgen exec sequelize-template -d prello -u postgres -p postgres -t models
+    pgen exec sequelize-template -d prello -u postgre_username -p postgre_pwd -t models
 
 5. Generate GraphQL schemas
 (Only on the first time)

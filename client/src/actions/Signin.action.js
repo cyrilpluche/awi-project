@@ -71,7 +71,6 @@ function isMemberLoggedGithub () {
         if (memberToken) {
             _service.Member.isLogged()
                 .then(res => {
-                    console.log('AH BAH GARS : ', res)
                     dispatch({
                         type: labels.IS_LOGGED,
                         payload: res
@@ -114,8 +113,6 @@ function resetField () {
 }
 
 function signinWithGithub () {
-
-
     return dispatch => {
 
         _service.Member.signInWithGithub()
