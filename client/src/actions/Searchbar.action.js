@@ -9,7 +9,10 @@ const labels = {
     SEARCH_LISTS_ERROR :"SEARCH_LISTS_ERROR"
 }
 
-
+/** Search for projects
+ * @param value name to search
+ * @param memberId member id
+ */
 function searchProjects (value, memberId) {
     return dispatch => {
         if (value !== '') {
@@ -34,6 +37,10 @@ function searchProjects (value, memberId) {
     }
 }
 
+/** Search for lists
+ * @param value name to search
+ * @param memberId member id
+ */
 function searchLists (value, memberId) {
     return dispatch => {
         if (value !== '') {
@@ -58,6 +65,10 @@ function searchLists (value, memberId) {
     }
 }
 
+/** Search for cards
+ * @param value name to search
+ * @param memberId member id 
+ */
 function searchCards (value, memberId) {
     return dispatch => {
         if (value !== '') {

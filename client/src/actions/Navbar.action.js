@@ -11,6 +11,9 @@ const labels = {
 
 }
 
+/** Logg off, remove token from local storage
+ * 
+ */
 function logOff () {
     localStorage.removeItem('memberToken')
     _helper.History.push('/')
@@ -22,6 +25,9 @@ function logOff () {
 }
 
 /* =============== NOTIFICATIONS =============== */
+/** Get all non archived notifications 
+ * 
+ */
 function getAllNonArchivedNotifications () {
     return dispatch => {
         _service.Action.getNonArchived()
@@ -62,6 +68,9 @@ function handleCheckboxNotification (notifications, newNotification, index, isRe
     }
 }
 
+/** Update notifications, set as read
+ * @param notifications array of notifications
+ */
 function updateNotifications (notifications) {
     return dispatch => {
         _service.Action.updateMultiple(notifications)
