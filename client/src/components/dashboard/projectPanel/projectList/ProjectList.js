@@ -5,7 +5,6 @@ import { style } from './Style'
 import { withStyles } from '@material-ui/core/styles';
 import _action from '../../../../actions'
 import _helper from '../../../../helpers'
-import Background from '../../../../public/images/project-bg.jpg'
 
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -166,9 +165,15 @@ class ProjectList extends React.Component {
                         return (
                             <GridListTile
                                 key={project.projectId}
+                                className={ classes.borderRadius }
                             >
-                                <img id={project.projectId} onClick={this.goToProject} src={Background}
-                                     alt='project background'/>
+                                <Grid container
+                                      onClick={this.goToProject}
+                                      id={project.projectId}
+                                      className={classes.imgInformationsFav + ' ' + classes.borderRadius + ' ' + classes.borderRadiusBottom }
+                                >
+
+                                </Grid>
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     subtitle={'Contributors : ' + project.contributor}
@@ -176,6 +181,7 @@ class ProjectList extends React.Component {
                                         root: classes.titleBar,
                                         title: classes.gridTitle,
                                     }}
+                                    className={ classes.borderRadiusBottom }
                                     actionIcon={
                                         <IconButton>
                                             <StarIcon
@@ -192,10 +198,14 @@ class ProjectList extends React.Component {
                         return (
                             <GridListTile
                                 key={project.projectId}
+                                className={ classes.borderRadius }
                             >
-                                <img id={project.projectId} onClick={this.goToProject} src={Background}
-                                     alt='project background'
-                                />
+                                <Grid container
+                                      onClick={this.goToProject}
+                                      id={project.projectId}
+                                      className={classes.imgInformations + ' ' + classes.borderRadius + ' ' + classes.borderRadiusBottom }
+                                >
+                                </Grid>
                                 <GridListTileBar
                                     title={project.projectTitle}
                                     subtitle={'Contributors : ' + project.contributor}
@@ -203,6 +213,7 @@ class ProjectList extends React.Component {
                                         root: classes.titleBar,
                                         title: classes.gridTitle,
                                     }}
+                                    className={ classes.borderRadiusBottom }
                                     actionIcon={
                                         <IconButton>
                                             <StarBorderIcon

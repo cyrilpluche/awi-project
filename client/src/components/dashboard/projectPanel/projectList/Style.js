@@ -110,7 +110,23 @@ export const style = theme => ({
     },
     projectLayout: {
         marginBottom: theme.spacing.unit * 5
-    }
+    },
+    imgInformationsFav: {
+        backgroundColor: '#f44336',
+        height: '100%'
+    },
+    imgInformations: {
+        backgroundColor: '#3f51b5',
+        height: '100%'
+    },
+    borderRadius: {
+        borderTopLeftRadius: '10px',
+        borderTopRightRadius: '10px'
+    },
+    borderRadiusBottom: {
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px'
+    },
 });
 
 
