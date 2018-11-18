@@ -47,7 +47,12 @@ class Dashboard extends React.Component {
             <Grid container justify='center' alignItems='center' className={classes.layout}>
                 { !this.props.isLoading ?
                     <Grid xs={10} item className={classes.subLayout}>
-
+                        <ProjectList
+                            title={"Personal projects"}
+                            iconList={'work_outline'}
+                            projects={this.props.allProjects}
+                            isFavorite={false}
+                        />
                     </Grid>
                     :
                     <Loader/>

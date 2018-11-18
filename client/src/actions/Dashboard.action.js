@@ -133,6 +133,7 @@ function createProject (projectTitle, projectVisibility, projectStatus = 0, proj
     return dispatch => _service.Project.createProject( projectTitle, projectVisibility, projectStatus, projectDateTarget)
         .then(project => {
             const projectId = project.projectId
+
             _service.Project.createMemberHasProject(memberId, projectId, memberhasprojectStatus)
                 .then( () => {
                     let project = {

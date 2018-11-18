@@ -133,6 +133,20 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-301548103">
       <usages-collector id="statistics.file.extensions.open">
@@ -166,7 +180,7 @@
         <counts>
           <entry key="env" value="6" />
           <entry key="gitignore" value="10" />
-          <entry key="js" value="13593" />
+          <entry key="js" value="13628" />
           <entry key="json" value="12" />
           <entry key="txt" value="1" />
         </counts>
@@ -175,7 +189,7 @@
         <counts>
           <entry key=".env file" value="6" />
           <entry key="JSON" value="12" />
-          <entry key="JavaScript" value="13593" />
+          <entry key="JavaScript" value="13628" />
           <entry key="PLAIN_TEXT" value="11" />
         </counts>
       </usages-collector>
@@ -199,20 +213,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/actions/Dashboard.action.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="134" column="47" selection-start-line="134" selection-start-column="47" selection-end-line="134" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/components/dashboard/Dashboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="49" column="30" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
+            <state relative-caret-position="225">
+              <caret line="48" column="69" selection-start-line="48" selection-start-column="69" selection-end-line="48" selection-end-column="69" />
               <folding>
                 <element signature="e#13#38#0" expanded="true" />
                 <element signature="e#308#339#0" expanded="true" />
@@ -226,11 +231,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/components/dashboard/projectPanel/projectList/ProjectList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="234" column="8" selection-start-line="234" selection-start-column="8" selection-end-line="234" selection-end-column="8" />
+            <state relative-caret-position="177">
+              <caret line="220" column="101" selection-start-line="220" selection-start-column="101" selection-end-line="220" selection-end-column="101" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -277,6 +282,7 @@
       <find>remove</find>
       <find>console.log</find>
       <find>canCreate</find>
+      <find>id</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -331,11 +337,11 @@
         <option value="$PROJECT_DIR$/client/src/actions/Card.action.js" />
         <option value="$PROJECT_DIR$/client/src/components/card/Card.js" />
         <option value="$PROJECT_DIR$/client/src/components/App.js" />
-        <option value="$PROJECT_DIR$/client/src/components/dashboard/Dashboard.js" />
         <option value="$PROJECT_DIR$/client/src/services/Project.service.js" />
-        <option value="$PROJECT_DIR$/client/src/actions/Dashboard.action.js" />
         <option value="$PROJECT_DIR$/client/src/components/dashboard/projectPanel/projectList/Style.js" />
+        <option value="$PROJECT_DIR$/client/src/actions/Dashboard.action.js" />
         <option value="$PROJECT_DIR$/client/src/components/dashboard/projectPanel/projectList/ProjectList.js" />
+        <option value="$PROJECT_DIR$/client/src/components/dashboard/Dashboard.js" />
       </list>
     </option>
   </component>
@@ -496,18 +502,18 @@
       <workItem from="1542313074854" duration="17474000" />
       <workItem from="1542363386543" duration="21417000" />
       <workItem from="1542452123945" duration="4214000" />
-      <workItem from="1542577625507" duration="1368000" />
+      <workItem from="1542577625507" duration="1858000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76570000" />
+    <option name="totallyTimeSpent" value="77060000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15802075" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15802075" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="DB Browser" order="3" />
@@ -528,11 +534,11 @@
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="12" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
-      <window_info anchor="right" id="Database" order="0" />
+      <window_info anchor="right" id="Database" order="0" weight="0.32960895" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="Terminal" order="4" weight="0.28332004" />
+      <window_info active="true" anchor="right" id="Terminal" order="4" visible="true" weight="0.28332004" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15562649" />
@@ -868,24 +874,6 @@
     <entry file="file://$PROJECT_DIR$/client/src/components/Style.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/actions/Dashboard.action.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="134" column="47" selection-start-line="134" selection-start-column="47" selection-end-line="134" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/components/dashboard/Dashboard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="49" column="30" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
-          <folding>
-            <element signature="e#13#38#0" expanded="true" />
-            <element signature="e#308#339#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/components/dashboard/Style.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -896,12 +884,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/actions/Dashboard.action.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="135" column="12" selection-start-line="135" selection-start-column="12" selection-end-line="135" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/components/dashboard/projectPanel/projectList/ProjectList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="234" column="8" selection-start-line="234" selection-start-column="8" selection-end-line="234" selection-end-column="8" />
+        <state relative-caret-position="177">
+          <caret line="220" column="101" selection-start-line="220" selection-start-column="101" selection-end-line="220" selection-end-column="101" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/dashboard/Dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="48" column="69" selection-start-line="48" selection-start-column="69" selection-end-line="48" selection-end-column="69" />
+          <folding>
+            <element signature="e#13#38#0" expanded="true" />
+            <element signature="e#308#339#0" expanded="true" />
           </folding>
         </state>
       </provider>
