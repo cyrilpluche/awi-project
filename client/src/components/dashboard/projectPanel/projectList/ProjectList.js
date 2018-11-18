@@ -171,6 +171,7 @@ class ProjectList extends React.Component {
                                      alt='project background'/>
                                 <GridListTileBar
                                     title={project.projectTitle}
+                                    subtitle={'Contributors : ' + project.contributor}
                                     classes={{
                                         root: classes.titleBar,
                                         title: classes.gridTitle,
@@ -178,7 +179,7 @@ class ProjectList extends React.Component {
                                     actionIcon={
                                         <IconButton>
                                             <StarIcon
-                                                className={classes.gridTitle}
+                                                className={ classes.favoriteButtonIcon }
                                                 id={'project/' + this.props.projects.indexOf(project)}
                                                 onClick={this.setProjectFavorite}
                                             />
@@ -197,6 +198,7 @@ class ProjectList extends React.Component {
                                 />
                                 <GridListTileBar
                                     title={project.projectTitle}
+                                    subtitle={'Contributors : ' + project.contributor}
                                     classes={{
                                         root: classes.titleBar,
                                         title: classes.gridTitle,
@@ -204,7 +206,7 @@ class ProjectList extends React.Component {
                                     actionIcon={
                                         <IconButton>
                                             <StarBorderIcon
-                                                className={classes.gridTitle}
+                                                className={classes.addFavoriteButtonIcon}
                                                 id={'project/' + this.props.projects.indexOf(project)}
                                                 onClick={this.setProjectFavorite}
                                             />
