@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dashboard from './dashboard/Dashboard'
+import WaveIt from './waveIt/WaveIt'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
@@ -94,6 +94,7 @@ class App extends Component {
                     <Route path="/invitation/:token" component={Invitation} />
                     <Route path="/project/:id/:listid/:cardid" component={Project}/>
                     <Route path="/project/:id" component={Project}/>
+                    <Route exact path="/schedules" component={WaveIt}/>
                     <Route path='*' render={() => <Redirect to="/home" />}/>
                 </Switch>
             </div>
