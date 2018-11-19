@@ -113,13 +113,19 @@ class DashboardFix extends React.Component {
                             margin="normal"
                         />
                     </Grid>
-                    <Grid container justify='center' >
+                    <Grid container justify='space-around' >
+                        <Typography variant='overline' >
+                            Private
+                        </Typography>
                         <Switch
                             checked={this.state.isPublic}
                             onChange={this.handleChangeCheckbox('isPublic')}
                             value="isPublic"
                             color="default"
                         />
+                        <Typography variant='overline'>
+                            Public
+                        </Typography>
                     </Grid>
                     <Grid container justify='center' >
                         <Button
@@ -137,7 +143,7 @@ class DashboardFix extends React.Component {
 
         /** Personal project */
         const projectList = (
-            <div className={classes.maxWidth} >
+            <div className={ classes.maxWidth2 }>
                 <div id='projectScroll' className={classes.projectArea}>
                     {projects.map((project, index) =>
                         !project.project.projectIsFavorite ? (
@@ -182,7 +188,7 @@ class DashboardFix extends React.Component {
 
         /** Favorite project */
         const favoriteList = (
-            <div className={classes.maxWidth}>
+            <div className={ classes.maxWidth2 }>
                 <div id='projectScroll' className={classes.projectArea}>
                     {projects.map((project, index) =>
                         project.project.projectIsFavorite ? (

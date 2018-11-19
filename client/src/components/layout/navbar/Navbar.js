@@ -26,6 +26,7 @@ import Drawer from "@material-ui/core/Drawer/Drawer";
 import Divider from "@material-ui/core/Divider/Divider";
 import Button from "@material-ui/core/Button/Button";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday"
 
 // Material UI style
 import PropTypes from 'prop-types';
@@ -51,6 +52,10 @@ class Navbar extends React.Component {
 
         // Profile
         this.displayComponent = this.displayComponent.bind(this)
+
+        // Others
+        this.goToDownloadPage = this.goToDownloadPage.bind(this)
+        this.goToWaveIt = this.goToWaveIt.bind(this)
 
         this.state = {
             anchorEl: null,
@@ -126,7 +131,13 @@ class Navbar extends React.Component {
     }
 
     goToDownloadPage () {
+        this.handleMobileMenuClose()
         _helper.History.push('/download')
+    }
+
+    goToWaveIt () {
+        this.handleMobileMenuClose()
+        _helper.History.push('/schedules')
     }
 
     render() {
@@ -220,7 +231,13 @@ class Navbar extends React.Component {
                 open={isMobileMenuOpen}
                 onClose={this.handleMobileMenuClose}
             >
-                <MenuItem onClick={this.goToDownloadPage}>
+                <MenuItem onClick={this.goToWaveIt.bind(this)}>
+                    <IconButton color="secondary">
+                        <CalendarTodayIcon />
+                    </IconButton>
+                    <p>Schedules</p>
+                </MenuItem>
+                <MenuItem onClick={this.goToDownloadPage.bind(this)}>
                     <IconButton color="primary">
                         <GetAppIcon />
                     </IconButton>
@@ -281,6 +298,14 @@ class Navbar extends React.Component {
                             </div>
                             <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
+                                <IconButton
+                                    aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.goToWaveIt}
+                                    color="inherit"
+                                >
+                                    <CalendarTodayIcon />
+                                </IconButton>
                                 <IconButton
                                     aria-owns={isMenuOpen ? 'material-appbar' : null}
                                     aria-haspopup="true"

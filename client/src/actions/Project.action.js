@@ -1,5 +1,6 @@
 import _service from '../services'
 import moment from "moment";
+import _helper from '../helpers'
 
 const labels = {
     LOAD_PROJECT: "LOAD_PROJECT",
@@ -169,10 +170,18 @@ function getProjectInfo(projectId){
     return dispatch => {
         _service.Project.getOne(projectId)
             .then(res => {
-                dispatch({
-                    type: labels.GET_PROJECT_INFO,
-                    payload: res
-                });
+                if (res.length > 0) {
+                    dispatch({
+                        type: labels.GET_PROJECT_INFO,
+                        payload: res
+                    });
+                } else {
+                    dispatch({
+                        type: labels.GET_PROJECT_INFO_ERROR
+                    });
+                    _helper.History.push('/home')
+                }
+
             })
             .catch((err) => {
                 dispatch({

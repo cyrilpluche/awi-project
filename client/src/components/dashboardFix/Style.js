@@ -94,7 +94,14 @@ export const style = theme => ({
         marginBottom: theme.spacing.unit,
     },
     maxWidth: {
-        maxWidth: '100%'
+        maxWidth: '98%',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+        paddingRight: 'auto',
+        paddingLeft: 'auto'
+    },
+    maxWidth2: {
+        maxWidth: '98%',
     }
 
 });

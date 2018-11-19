@@ -140,6 +140,9 @@ export const styles = theme => ({
     scrollContainer: {
         overflowY: 'scroll',
         height: theme.spacing.unit * 70,
-        paddingLeft: 2
+        //paddingRight: 2
     },
+    noMargin: {
+        margin: 0
+    }
 });

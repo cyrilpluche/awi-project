@@ -172,7 +172,7 @@ class Cardboard extends React.Component {
                 <DialogContent>
                     { this.props.currentCard ? (
                         <Grid justify='center' container>
-                            <Grid xs={8} item className={classes.scrollContainer}>
+                            <Grid xs={12} md={8} item className={classes.scrollContainer}>
                                 <Grid item xs={12}>
                                     {this.props.currentCard.HaslabelCardFks.map(label =>
                                         label.Label ?
