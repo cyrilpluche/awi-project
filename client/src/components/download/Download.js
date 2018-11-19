@@ -53,7 +53,7 @@ class Download extends React.Component {
                 </Typography>
 
                 <Grid container justify="center" alignItems="center">
-                    <Grid xs={5} item>
+                    <Grid xs={10} md={5} item>
                         <Grid container justify="center" alignItems="center">
                             <Typography variant="overline">
                                 Available for linux and Mac
@@ -69,7 +69,7 @@ class Download extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
-                            <Grid item xs={4} className={ classes.marginBottomXs }>
+                            <Grid item xs={10} sm={8} md={4} className={ classes.marginBottomXs }>
                                 <Button
                                     id='linux'
                                     onClick={this.goToLink}
@@ -85,7 +85,7 @@ class Download extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
-                            <Grid item xs={4} className={ classes.marginBottomXs }>
+                            <Grid item xs={10} sm={8} md={4} className={ classes.marginBottomXs }>
                                 <Button
                                     id='mac'
                                     onClick={this.goToLink}
@@ -101,7 +101,7 @@ class Download extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid justify='center' container alignItems="center">
-                            <Grid item xs={4}>
+                            <Grid item xs={10} sm={8} md={4}>
                                 <Button
                                     id='windows'
                                     onClick={this.goToLink}
@@ -117,7 +117,7 @@ class Download extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid xs={5} item>
+                    <Grid xs={10} md={5} item>
                         <Grid container justify="center" alignItems="center">
                             <img src={downloadPicture} alt='download' className={classes.downloadPicture}/>
                         </Grid>

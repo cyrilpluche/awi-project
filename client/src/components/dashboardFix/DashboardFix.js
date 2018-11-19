@@ -113,13 +113,19 @@ class DashboardFix extends React.Component {
                             margin="normal"
                         />
                     </Grid>
-                    <Grid container justify='center' >
+                    <Grid container justify='space-around' >
+                        <Typography variant='overline' >
+                            Private
+                        </Typography>
                         <Switch
                             checked={this.state.isPublic}
                             onChange={this.handleChangeCheckbox('isPublic')}
                             value="isPublic"
                             color="default"
                         />
+                        <Typography variant='overline'>
+                            Public
+                        </Typography>
                     </Grid>
                     <Grid container justify='center' >
                         <Button

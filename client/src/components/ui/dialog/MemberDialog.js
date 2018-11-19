@@ -80,17 +80,18 @@ class MemberDialog extends Component {
             memberId: event.currentTarget.id.split('/')[1]
         }
         this.props.removeMemberFromProject(query)
-        this.setState({ maj: true });
+        console.log(event.currentTarget.id.split('/')[1])
+        console.log(this.props.currentmemberid)
+        if (event.currentTarget.id.split('/')[1].toString() === this.props.currentmemberid.toString()) _helper.History.push('/home')
+        else this.setState({ maj: true });
     }
 
     handleChangeCheckbox = name => event => {
         let index = event.target.id.split('/')[1]
         let mhppState = event.target.checked
         let member = Object.assign({}, this.props.members[index])
-        console.log('INDEX', index)
-        console.log('STATE', this.state)
-        console.log('PROPS', this.props)
-
+        console.log(member)
+        console.log(this.props.currentmemberid)
         if (member.Member) {
             member.Member.HaspermissionprojectMember1Fks[0].mhppState = mhppState
             let projectId = this.props.projectInfo.projectId
@@ -161,11 +162,12 @@ class MemberDialog extends Component {
                                 <ListItem key={member.Member.memberId} className={ classes.memberItem }>
                                     <ListItemText primary={member.Member.memberPseudo}/>
                                     <div>
-                                        {this.props.isAdmin === true && member.memberId !== this.props.currentmemberid ?
-                                            <div>
-                                                <IconButton id={'member/' + member.Member.memberId} color="secondary"  onClick={this.handleRemoveFromProject}>
-                                                    <Cancel />
-                                                </IconButton>
+                                        <div>
+                                            <IconButton id={'member/' + member.Member.memberId} color="secondary"  onClick={this.handleRemoveFromProject}>
+                                                <Cancel />
+                                            </IconButton>
+                                            {this.props.isAdmin === true && member.memberId !== this.props.currentmemberid ?
+
                                                 <Tooltip
                                                     TransitionComponent={Fade}
                                                     TransitionProps={{ timeout: 600 }}
@@ -178,7 +180,8 @@ class MemberDialog extends Component {
                                                         value='members'
                                                     />
                                                 </Tooltip>
-                                            </div> : '' }
+                                                : '' }
+                                        </div>
                                     </div>
                                 </ListItem>
                             ) : null

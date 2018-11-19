@@ -526,24 +526,30 @@ class Project extends Component {
                     <Grid container className={ classes.maxWidth } spacing={24}>
 
                         {/**===================  MEMBERS BUTTON  ========================================= */}
-                        <Button color="primary" className={classes.button} onClick={this.handleClickOpen}>
-                            <SupervisorAccount className={classes.leftIcon} />
-                            {this.props.members? this.props.members.length : 0} Members
-                        </Button>
+                        <Grid item xs={6} sm={4} md={3} lg={2}  >
+                            <Button fullWidth color="primary" className={classes.button} onClick={this.handleClickOpen}>
+                                <SupervisorAccount className={classes.leftIcon} />
+                                {this.props.members? this.props.members.length : 0} Members
+                            </Button>
+                        </Grid>
                         <MemberDialog  isAdmin={this.props.isAdmin} open={this.state.openMemberDialog} onClose={this.handleClose.bind(this)} />
 
                         {/**===================  VISIBILITY BUTTON  ========================================= */}
-                        < Button color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
-                            <RemoveRedEye className={classes.leftIcon} />
-                            Visibility
-                        </Button>
+                        <Grid item xs={6} sm={4} md={3} lg={2}>
+                            < Button fullWidth color="primary" className={classes.button} onClick={this.handleClickOpenVisibility}>
+                                <RemoveRedEye className={classes.leftIcon} />
+                                Visibility
+                            </Button>
+                        </Grid>
                         <VisibilityDialog isAdmin={this.props.isAdmin} open={this.state.openVisibilityDialog} onClose={this.handleClose.bind(this)}/>
 
                         {/*===================  ACTIVITY BUTTON  ========================================= */}
-                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
-                            <Description className={classes.leftIcon} />
-                            Activity
-                        </Button>
+                        <Grid item xs={6} sm={4} md={3} lg={2}>
+                            < Button fullWidth color="primary" className={classes.button} onClick={this.toggleDrawer('openActivity', true)}>
+                                <Description className={classes.leftIcon} />
+                                Activity
+                            </Button>
+                        </Grid>
                         {renderActivity}
 
                         {/*===================  FILTER BUTTON  ========================================= */}
@@ -554,10 +560,12 @@ class Project extends Component {
                         {renderFilter}*/}
 
                         {/*===================  ARCHIVED BUTTON  ========================================= */}
-                        < Button color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
-                            <Archive className={classes.leftIcon} />
-                            Archived
-                        </Button>
+                        <Grid item xs={6} sm={4} md={3} lg={2}>
+                            < Button fullWidth color="primary" className={classes.button} onClick={this.toggleDrawer('openArchived', true)}>
+                                <Archive className={classes.leftIcon} />
+                                Archived
+                            </Button>
+                        </Grid>
                         {renderArchived}
                     </Grid>
                 </Grid>

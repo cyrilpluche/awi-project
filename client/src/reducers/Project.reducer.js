@@ -2,6 +2,7 @@ import { projectAction } from '../actions/Project.action';
 import { listAction } from '../actions/List.action';
 import { cardAction } from '../actions/Card.action';
 import socket from '../helpers/SocketIo.helper'
+import _helper from '../helpers'
 
 const projectLabels = projectAction.labels
 const listLabels = listAction.labels
@@ -196,6 +197,7 @@ export function project (state = initialState, action) {
                 ...state,
                 projectInfo: action.payload[0]
             };
+
         case projectLabels.UPDATE_PROJECT_INFO:
         return {
             ...state,
