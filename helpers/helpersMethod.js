@@ -163,6 +163,18 @@ const methods = {
             flat.push({ cardId: c.cardId })
         }
         return flat
+    },
+
+    computeContributors (projects) {
+        let flat = []
+        for (let project of projects) {
+            let contributors = project.Project.MemberhasprojectProjectFks.length
+            flat.push({
+                project: project,
+                contributors: contributors
+            })
+        }
+        return flat
     }
 };
 

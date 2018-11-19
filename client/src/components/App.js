@@ -18,6 +18,7 @@ import AccountConfirmation from "./signup/accountConfirmation/AccountConfirmatio
 import TokenVerification from "./signup/accountConfirmation/TokenVerification"
 import PasswordForgotten from "./signin/passwordForgotten/PasswordForgotten"
 import SearchResults from "./layout/navbar/searchResults/SearchResults"
+import DashboardFix from './dashboardFix/DashboardFix'
 import Download from "./download/Download"
 
 class App extends Component {
@@ -86,7 +87,7 @@ class App extends Component {
             <div className={classes.layout}>
                 <Navbar/>
                 <Switch>
-                    <Route path="/home" component={Dashboard}/>
+                    <Route path="/home" component={DashboardFix}/>
                     <Route path="/profile" component={Profile}/>
                     <Route path="/results" component={SearchResults}/>
                     <Route exact path="/download" component={Download} />

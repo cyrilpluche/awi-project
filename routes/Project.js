@@ -20,6 +20,7 @@ router.get('/find_all_members', mw.Token.verifyToken, memberHasProjectController
 router.get('/find_all_actions', mw.Token.verifyToken, actionController.findAll)
 router.get('/find_all_mhp',mw.Token.verifyToken, memberHasProjectController.findAll);
 router.get('/member_is_admin', mhppController.findOne);
+router.get('/find_all_projects_member',mw.Token.verifyToken, memberHasProjectController.findAllProjectMember);
 
 router.get('/find_one', projectController.findOne);
 router.get('/find_one/:id', projectController.findProjectInfo);
