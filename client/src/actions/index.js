@@ -11,6 +11,7 @@ import { searchbarAction } from "./Searchbar.action";
 import { invitationAction } from "./Invitation.action";
 import { memberAction } from "./Member.action";
 import { teamAction } from "./Team.action";
+import { dashboardFixAction } from './DashboardFix.action';
 
 const _action = {
     dashboardAction,
@@ -25,7 +26,8 @@ const _action = {
     searchbarAction,
     invitationAction,
     memberAction,
-    teamAction
+    teamAction,
+    dashboardFixAction
 }
 
 export default _action

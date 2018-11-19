@@ -83,6 +83,32 @@ module.exports = {
             .catch(error => res.status(400).send(error))
     },
 
+    findAllProjectMember (req, res, next) {
+        MemberHasProject.findAll(
+            {
+                where: req.query,
+                include: [
+                    {
+                        model: Project,
+                        as: 'Project',
+                        include: [
+                            {
+                                model: MemberHasProject,
+                                as: 'MemberhasprojectProjectFks',
+                                where: { memberhasprojectStatus: 1 }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ).then(projects => {
+            let flatProjects = helper.computeContributors(projects)
+            req.body.result = flatProjects
+            next()
+        })
+            .catch(e =>res.status(400).send(e) )
+    },
+
 
     findAllForCard(req, res, next) {
         MemberHasProject
@@ -188,6 +214,8 @@ module.exports = {
      *
      */
     update(req, res, next) {
+        console.log(req.query)
+        console.log(req.body.projectIsFavorite)
         MemberHasProject
             .update(req.body, {
                 where: req.query

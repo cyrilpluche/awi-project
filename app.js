@@ -7,8 +7,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const bodyParser = require('body-parser');
-
 const indexRouter = require('./routes');
 const end = require('./controllers').End;
 const fileUpload = require('express-fileupload');

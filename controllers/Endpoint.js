@@ -10,10 +10,8 @@ module.exports = {
      */
     sendRes(req, res) {
         try {
-            console.log('TRQL')
             res.status(201).send(req.body.result)
         } catch (error) {
-            console.log('FINAL ERROR')
             console.log(error)
             res.status(400).send(error)
         }

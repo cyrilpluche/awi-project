@@ -11,6 +11,11 @@ const Project = {
         return Api.get(url + 'find_all').then(res => res.data)
     },
 
+    getAllProjectsForMember (query) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.get(url + 'find_all_projects_member' + where).then(res => res.data)
+    },
+
     getAllWithCards (object) {
         let where = helper.Request.urlFromObject(object)
         return Api.get(url + 'find_all_lists_cards' +where).then(res => res.data)
@@ -42,7 +47,7 @@ const Project = {
     },
 
     update(projectId,body){
-        return Api.put(url + 'update/' +projectId, body).then(res => res.data)
+        return Api.put(url + 'update/' + projectId, body).then(res => res.data)
     },
 
     createProject (projectTitle, projectVisibility, projectStatus = 0, projectDateTarget = null) {
@@ -127,19 +132,19 @@ const Project = {
         return Api.get(url + 'member_is_admin' + where).then(res => res.data)
     },
 
-    setAsAdmin(object){
-         /**
-         * object = {
-         * memberId: ..
-         * projectId: ...
-         * }
-         */
-
-         /**
-          * Set the member as administrator of the project given as parameter
-          *  in the DB -> Table memberhaspermissionproject, attribute : mhpp_state = true
-          */
+    createProjectForMember(body){
+         return Api.post(url + 'create_mhp', body).then(res => res.data)
     },
+
+    createProjectFix(body){
+        return Api.post(url + 'create', body).then(res => res.data)
+    },
+
+    updateFix (query, body) {
+        let where = helper.Request.urlFromObject(query)
+        return Api.put(url + 'update_mhp' + where, body).then(res => res.data)
+    },
+
     getActivity(projectId){
         /**
          * Return all activities related to this project 

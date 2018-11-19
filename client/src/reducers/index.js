@@ -8,6 +8,7 @@ import { project } from './Project.reducer';
 import { card } from "./Card.reducer";
 import { searchbar } from "./Searchbar.reducer";
 import { invitation } from "./Invitation.reducer";
+import { dashboardFix } from './DashboardFix.reducer';
 
 const rootReducer = combineReducers({
     dashboard,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     project,
     card,
     searchbar,
-    invitation
+    invitation,
+    dashboardFix
 });
 
 export default rootReducer;
