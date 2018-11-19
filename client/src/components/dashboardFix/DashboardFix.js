@@ -143,7 +143,7 @@ class DashboardFix extends React.Component {
 
         /** Personal project */
         const projectList = (
-            <div className={classes.maxWidth} >
+            <div className={ classes.maxWidth2 }>
                 <div id='projectScroll' className={classes.projectArea}>
                     {projects.map((project, index) =>
                         !project.project.projectIsFavorite ? (
@@ -188,7 +188,7 @@ class DashboardFix extends React.Component {
 
         /** Favorite project */
         const favoriteList = (
-            <div className={classes.maxWidth}>
+            <div className={ classes.maxWidth2 }>
                 <div id='projectScroll' className={classes.projectArea}>
                     {projects.map((project, index) =>
                         project.project.projectIsFavorite ? (
