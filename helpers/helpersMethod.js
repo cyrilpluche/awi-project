@@ -116,6 +116,7 @@ const methods = {
     },
 
     computeListOrder (lists) {
+        let limit = 30
         let listsOrder = []
         let father = 0
 
@@ -123,7 +124,7 @@ const methods = {
             /** We select list in order */
             let index = lists.findIndex(list => list.listFather === father)
 
-            while (index === -1) {
+            while (index === -1  && index < limit) {
                 father += 1
                 index = lists.findIndex(list => list.listFather === father)
             }
@@ -134,7 +135,7 @@ const methods = {
             for (let c of lists[index].CardListFks) {
                 let indexCard = lists[index].CardListFks.findIndex(card => card.cardFather === cardFather)
 
-                while (indexCard === -1) {
+                while (indexCard === -1 && indexCard < limit) {
                     cardFather += 1
                     indexCard = lists[index].CardListFks.findIndex(card => card.cardFather === cardFather)
                 }
